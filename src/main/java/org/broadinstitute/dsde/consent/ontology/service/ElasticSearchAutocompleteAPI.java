@@ -1,10 +1,10 @@
-package org.genomebridge.consent.autocomplete.service;
+package org.broadinstitute.dsde.consent.ontology.service;
 
+import org.broadinstitute.dsde.consent.ontology.resources.TermResource;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
-import org.genomebridge.consent.autocomplete.resources.TermResource;
 
 import java.util.ArrayList;
 import java.util.Collections;

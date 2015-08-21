@@ -1,4 +1,4 @@
-package org.genomebridge.consent.autocomplete.service;
+package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.codahale.metrics.health.HealthCheck;
 import org.elasticsearch.action.admin.cluster.health.ClusterHealthResponse;

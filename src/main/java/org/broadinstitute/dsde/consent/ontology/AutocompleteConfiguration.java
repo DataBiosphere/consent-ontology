@@ -1,4 +1,4 @@
-package org.genomebridge.consent.autocomplete;
+package org.broadinstitute.dsde.consent.ontology;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;

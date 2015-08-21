@@ -1,4 +1,4 @@
-package org.genomebridge.consent.autocomplete;
+package org.broadinstitute.dsde.consent.ontology;
 
 import com.hubspot.dropwizard.guice.GuiceBundle;
 
@@ -7,9 +7,9 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+import org.broadinstitute.dsde.consent.ontology.resources.AllTermsResource;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.genomebridge.consent.autocomplete.resources.AllTermsResource;
-import org.genomebridge.consent.autocomplete.resources.TranslateResource;
+import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
