@@ -1,4 +1,4 @@
-package org.genomebridge.consent.autocomplete;
+package org.broadinstitute.dsde.consent.ontology;
 
 import java.util.List;
 

@@ -42,7 +42,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>org.genomebridge.consent.autocomplete.AutocompleteApplication</mainClass>
+                            <mainClass>org.broadinstitute.dsde.consent.ontology.AutocompleteApplication</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -98,7 +98,7 @@
                         <configuration>
                             <transformers>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
-                                    <mainClass>org.genomebridge.consent.autocomplete.AutocompleteApplication</mainClass>
+                                    <mainClass>org.broadinstitute.dsde.consent.ontology.AutocompleteApplication</mainClass>
                                 </transformer>
                                 <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
                             </transformers>

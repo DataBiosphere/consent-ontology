@@ -1,8 +1,8 @@
-package org.genomebridge.consent.autocomplete;
+package org.broadinstitute.dsde.consent.ontology;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
 import io.dropwizard.testing.junit.ResourceTestRule.Builder;
-import org.genomebridge.consent.autocomplete.resources.TranslateResource;
+import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 import org.junit.ClassRule;
 import org.junit.Test;
 

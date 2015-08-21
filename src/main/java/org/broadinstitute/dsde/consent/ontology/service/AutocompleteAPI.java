@@ -1,6 +1,6 @@
-package org.genomebridge.consent.autocomplete.service;
+package org.broadinstitute.dsde.consent.ontology.service;
 
-import org.genomebridge.consent.autocomplete.resources.TermResource;
+import org.broadinstitute.dsde.consent.ontology.resources.TermResource;
 
 import java.util.List;
 

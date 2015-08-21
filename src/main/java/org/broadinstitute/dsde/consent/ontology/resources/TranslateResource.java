@@ -1,4 +1,4 @@
-package org.genomebridge.consent.autocomplete.resources;
+package org.broadinstitute.dsde.consent.ontology.resources;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;

@@ -1,4 +1,4 @@
-package org.genomebridge.consent.autocomplete;
+package org.broadinstitute.dsde.consent.ontology;
 
 /**
  * see https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS to understand CORS.

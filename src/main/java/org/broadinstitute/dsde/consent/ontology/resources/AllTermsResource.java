@@ -1,7 +1,7 @@
-package org.genomebridge.consent.autocomplete.resources;
+package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
-import org.genomebridge.consent.autocomplete.service.AutocompleteAPI;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 
 import javax.ws.rs.*;
 import java.util.List;

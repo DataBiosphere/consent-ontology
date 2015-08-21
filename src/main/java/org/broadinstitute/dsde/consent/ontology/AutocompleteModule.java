@@ -1,15 +1,15 @@
-package org.genomebridge.consent.autocomplete;
+package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import io.dropwizard.setup.Environment;
+import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.genomebridge.consent.autocomplete.service.AutocompleteAPI;
-import org.genomebridge.consent.autocomplete.service.ElasticSearchAutocompleteAPI;
-import org.genomebridge.consent.autocomplete.service.ElasticSearchHealthCheck;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
 
 public class AutocompleteModule extends AbstractModule {
 
