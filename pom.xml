@@ -10,6 +10,9 @@
     <properties>
         <java.version>1.8</java.version>
         <jackson.version>2.6.0</jackson.version>
+        <pellet.version>2.3.6-ansell</pellet.version>
+        <owl.version>3.5.2</owl.version>
+        <jena.version>2.6.4</jena.version>
         <lucene.version>4.9.0</lucene.version>
         <hsqldb.version>2.3.3</hsqldb.version>
         <mysql.version>5.1.31</mysql.version>
@@ -184,19 +187,71 @@
         </dependency>
 
         <dependency>
-            <groupId>org.genomebridge</groupId>
-            <artifactId>genomebridge-ontology_2.10</artifactId>
-            <version>0.1.0-SNAPSHOT</version>
+            <groupId>com.hp.hpl.jena</groupId>
+            <artifactId>jena</artifactId>
+            <version>${jena.version}</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.slf4j</groupId>
                     <artifactId>slf4j-log4j12</artifactId>
                 </exclusion>
                 <exclusion>
+                    <groupId>org.slf4j</groupId>
+                    <artifactId>slf4j-api</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>net.sourceforge.owlapi</groupId>
+            <artifactId>owlapi-distribution</artifactId>
+            <version>${owl.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ansell.pellet</groupId>
+            <artifactId>pellet-core</artifactId>
+            <version>${pellet.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>msv</groupId>
+                    <artifactId>xsdlib</artifactId>
+                </exclusion>
+                <exclusion>
                     <groupId>log4j</groupId>
                     <artifactId>log4j</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.github.ansell.pellet</groupId>
+            <artifactId>pellet-owlapiv3</artifactId>
+            <version>${pellet.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.github.ansell.owlapi</groupId>
+                    <artifactId>owlapi-api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.ansell.owlapi</groupId>
+                    <artifactId>owlapi-impl</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.ansell.owlapi</groupId>
+                    <artifactId>owlapi-parsers</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.github.ansell.owlapi</groupId>
+                    <artifactId>owlapi-tools</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.codehaus.jackson</groupId>
+            <artifactId>jackson-mapper-asl</artifactId>
+            <version>1.9.13</version>
         </dependency>
 
     </dependencies>
