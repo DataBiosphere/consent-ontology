@@ -19,9 +19,7 @@ public class OntologyProvider {
         // retry a few times if it fails...
         while (lotsa == null && count-- > 0) {
             try {
-                Collection<String> resources = new OntologyList("ontologies.txt",
-                        new ClassLoaderResourceLoader(OntologyProvider.class.getClassLoader())
-                ).getResources();
+                Collection<String> resources = new OntologyList().getResources();
                 Iterator<String> resourceIter = resources.iterator();
                 InputStream[] ontologies = new InputStream[resources.size()];
                 for (int i = 0; i < resources.size() && resourceIter.hasNext(); i++) {

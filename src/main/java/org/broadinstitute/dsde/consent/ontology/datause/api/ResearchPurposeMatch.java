@@ -38,19 +38,21 @@ import java.util.UUID;
 public class ResearchPurposeMatch {
 
     private final OntologyList ontologyList;
-//    private final OntModel baseModel;
 
     public ResearchPurposeMatch() throws IOException, OWLOntologyCreationException {
         this("ontologies.txt", new ClassLoaderResourceLoader(ClassLoader.getSystemClassLoader()));
     }
 
     public ResearchPurposeMatch(String ontologyListName, ResourceLoader loader) throws IOException, OWLOntologyCreationException {
-        this(new OntologyList(ontologyListName, loader));
+        this(new OntologyList(ontologyListName));
+    }
+
+    public ResearchPurposeMatch(String ontologyResource) throws IOException, OWLOntologyCreationException {
+        this(new OntologyList(ontologyResource));
     }
 
     public ResearchPurposeMatch(OntologyList ontologies) throws IOException, OWLOntologyCreationException {
         this.ontologyList = ontologies;
-//        this.baseModel = ontologies.loadBaseOntModel();
     }
 
     private OntClass addNamedEquivalentClass(OntModel model, String name, UseRestriction restriction) {
@@ -65,35 +67,24 @@ public class ResearchPurposeMatch {
         return cls;
     }
 
-    public Boolean[] matchPurpose(ResearchPurpose purpose, SampleSet[] consents) {
-
-        Boolean[] matches = new Boolean[consents.length];
+    public Boolean matchPurpose(ResearchPurpose purpose, SampleSet consent) {
+        Boolean match = false;
         UseRestriction query = purpose.getPurpose();
-
         try {
             OntModel model = ontologyList.loadOntModel();
-//            OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, baseModel);
-
-            for(SampleSet consent : consents) {
-                addNamedEquivalentClass(model, consent.getId(), consent.getRestriction());
-            }
+            addNamedEquivalentClass(model, consent.getId(), consent.getRestriction());
 
             String randomId = UUID.randomUUID().toString();
             OntClass rpClass = addNamedSubClass(model, randomId, query);
             ((PelletInfGraph) model.getGraph()).classify();
 
-            Integer i = 0;
-            for(SampleSet consent : consents) {
-                OntClass sampleSetClass = model.getOntClass(consent.getId());
-                matches[i++] = rpClass.hasSuperClass(sampleSetClass);
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace(System.err);
-        } catch (OWLOntologyCreationException e) {
+            OntClass sampleSetClass = model.getOntClass(consent.getId());
+            match = rpClass.hasSuperClass(sampleSetClass);
+        } catch (IOException | OWLOntologyCreationException e) {
             e.printStackTrace(System.err);
         }
 
-        return matches;
+        return match;
     }
+
 }

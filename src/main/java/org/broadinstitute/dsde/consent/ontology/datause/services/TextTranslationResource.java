@@ -48,8 +48,7 @@ public class TextTranslationResource {
         this.api = api;
         this.namedClassTypes = new ConcurrentHashMap<String,String>();
 
-        OntologyList list = new OntologyList("ontologies.txt",
-                new ClassLoaderResourceLoader(getClass().getClassLoader()));
+        OntologyList list = new OntologyList();
         model = list.loadOntModel();
         ((PelletInfGraph) model.getGraph()).classify();
 
