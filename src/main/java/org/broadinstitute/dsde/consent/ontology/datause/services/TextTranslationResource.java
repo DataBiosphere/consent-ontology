@@ -1,18 +1,3 @@
-/**
- * Copyright 2014 Genome Bridge LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.hp.hpl.jena.ontology.OntClass;
@@ -22,7 +7,6 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestrictionVisitor;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
-import org.broadinstitute.dsde.consent.ontology.datause.utils.ClassLoaderResourceLoader;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
@@ -46,7 +30,7 @@ public class TextTranslationResource {
             throws IOException, OWLOntologyCreationException {
 
         this.api = api;
-        this.namedClassTypes = new ConcurrentHashMap<String,String>();
+        this.namedClassTypes = new ConcurrentHashMap<>();
 
         OntologyList list = new OntologyList();
         model = list.loadOntModel();
@@ -70,7 +54,7 @@ public class TextTranslationResource {
     private String translate(String translateFor,
                              UseRestriction restriction) {
 
-        ArrayList<String> clauses = new ArrayList<String>();
+        ArrayList<String> clauses = new ArrayList<>();
 
         boolean forSampleSet = translateFor.equals("sampleset");
 
@@ -138,7 +122,7 @@ public class TextTranslationResource {
     // "Samples may only be used for the purpose of studying breast cancer, thyroid cancer, or diabetes."
     public String buildDiseaseClause(boolean useMay, UseRestriction r) {
         Set<String> labels = findLabeledTypedClasses("disease", r);
-        String diseaseNames = null;
+        String diseaseNames;
 
         if(labels.size() == 0) {
             return null;
@@ -150,7 +134,7 @@ public class TextTranslationResource {
     }
 
     public String buildOrClause(Collection<String> labels) {
-        String[] array = labels.toArray(new String[0]);
+        String[] array = labels.toArray(new String[labels.size()]);
         if(array.length == 1) { return array[0]; }
         if(array.length == 2) { return String.format("%s or %s", array[0], array[1]); }
 
@@ -169,7 +153,7 @@ public class TextTranslationResource {
     }
 
     public String buildAndClause(Collection<String> labels) {
-        String[] array = labels.toArray(new String[0]);
+        String[] array = labels.toArray(new String[labels.size()]);
         if(array.length == 1) { return array[0]; }
         if(array.length == 2) { return String.format("%s and %s", array[0], array[1]); }
 
@@ -225,7 +209,7 @@ public class TextTranslationResource {
 
     private Set<String> findLabeledTypedClasses(String type, UseRestriction r) {
         Set<Named> named = findNamedClasses(new NamedTypePredicate(type), r);
-        Set<String> labels = new LinkedHashSet<String>();
+        Set<String> labels = new LinkedHashSet<>();
         for(Named n : named) { labels.add(getNamedClassLabel(n)); }
         return labels;
     }
@@ -233,7 +217,7 @@ public class TextTranslationResource {
     private Set<Named> findNamedClasses(RestrictionPredicate pred, UseRestriction r) {
         FilterVisitor visitor = new FilterVisitor(pred);
         r.visit(visitor);
-        Set<Named> named = new HashSet<Named>();
+        Set<Named> named = new HashSet<>();
         for(UseRestriction n : visitor.getMatched()) {
             named.add(((Named)n));
         }
@@ -296,7 +280,7 @@ public class TextTranslationResource {
 }
 
 interface RestrictionPredicate {
-    public boolean accepts(UseRestriction r);
+    boolean accepts(UseRestriction r);
 }
 
 abstract class SimpleUseRestrictionVisitor implements UseRestrictionVisitor {
@@ -311,7 +295,7 @@ class FilterVisitor extends SimpleUseRestrictionVisitor {
 
     public FilterVisitor(RestrictionPredicate p) {
         this.predicate = p;
-        matched = new ArrayList<UseRestriction>();
+        matched = new ArrayList<>();
     }
 
     public boolean visit(UseRestriction r) {

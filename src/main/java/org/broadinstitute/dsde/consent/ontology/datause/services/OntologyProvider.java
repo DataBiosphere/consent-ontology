@@ -3,7 +3,6 @@ package org.broadinstitute.dsde.consent.ontology.datause.services;
 import org.apache.lucene.store.RAMDirectory;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
-import org.broadinstitute.dsde.consent.ontology.datause.utils.ClassLoaderResourceLoader;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import java.io.IOException;
@@ -26,10 +25,7 @@ public class OntologyProvider {
                     ontologies[i] = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceIter.next());
                 }
                 lotsa = new LuceneOntologyTermSearchAPI(new RAMDirectory(), ontologies);
-            } catch (OWLOntologyCreationException e) {
-                lotsa = null;
-                throw new RuntimeException(e);
-            } catch (IOException e) {
+            } catch (OWLOntologyCreationException | IOException e) {
                 lotsa = null;
                 throw new RuntimeException(e);
             }

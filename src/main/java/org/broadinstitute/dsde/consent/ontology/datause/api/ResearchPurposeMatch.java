@@ -1,18 +1,3 @@
-/**
- * Copyright 2014 Genome Bridge LLC
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
 package org.broadinstitute.dsde.consent.ontology.datause.api;
 
 import com.hp.hpl.jena.ontology.OntClass;
@@ -21,8 +6,6 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.ResearchPurpose;
 import org.broadinstitute.dsde.consent.ontology.datause.models.SampleSet;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
-import org.broadinstitute.dsde.consent.ontology.datause.utils.ClassLoaderResourceLoader;
-import org.broadinstitute.dsde.consent.ontology.datause.utils.ResourceLoader;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
@@ -38,14 +21,6 @@ import java.util.UUID;
 public class ResearchPurposeMatch {
 
     private final OntologyList ontologyList;
-
-    public ResearchPurposeMatch() throws IOException, OWLOntologyCreationException {
-        this("ontologies.txt", new ClassLoaderResourceLoader(ClassLoader.getSystemClassLoader()));
-    }
-
-    public ResearchPurposeMatch(String ontologyListName, ResourceLoader loader) throws IOException, OWLOntologyCreationException {
-        this(new OntologyList(ontologyListName));
-    }
 
     public ResearchPurposeMatch(String ontologyResource) throws IOException, OWLOntologyCreationException {
         this(new OntologyList(ontologyResource));
