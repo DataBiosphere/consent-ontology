@@ -34,9 +34,9 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
     private Map<String, OntologyTerm> nameToTerm;
 
     public LuceneOntologyTermSearchAPI(Directory indexDirectory, InputStream... streams) throws OWLOntologyCreationException, IOException {
-        analyzer = new StandardAnalyzer(Version.LUCENE_48);
+        analyzer = new StandardAnalyzer(Version.LUCENE_4_9);
         IndexWriter indexWriter = new IndexWriter(indexDirectory,
-                new IndexWriterConfig(Version.LUCENE_48, analyzer));
+                new IndexWriterConfig(Version.LUCENE_4_9, analyzer));
 
         nameToTerm = new HashMap<>();
 

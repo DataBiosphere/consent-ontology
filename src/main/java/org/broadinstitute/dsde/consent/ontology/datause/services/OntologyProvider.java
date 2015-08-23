@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
+import com.google.common.io.Resources;
 import org.apache.lucene.store.RAMDirectory;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
@@ -22,7 +23,7 @@ public class OntologyProvider {
                 Iterator<String> resourceIter = resources.iterator();
                 InputStream[] ontologies = new InputStream[resources.size()];
                 for (int i = 0; i < resources.size() && resourceIter.hasNext(); i++) {
-                    ontologies[i] = Thread.currentThread().getContextClassLoader().getResourceAsStream(resourceIter.next());
+                    ontologies[i] = Resources.getResource(resourceIter.next()).openStream();
                 }
                 lotsa = new LuceneOntologyTermSearchAPI(new RAMDirectory(), ontologies);
             } catch (OWLOntologyCreationException | IOException e) {

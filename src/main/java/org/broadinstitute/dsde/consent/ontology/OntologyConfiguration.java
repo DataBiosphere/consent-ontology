@@ -3,9 +3,9 @@ package org.broadinstitute.dsde.consent.ontology;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
 
-public class AutocompleteConfiguration extends Configuration {
+public class OntologyConfiguration extends Configuration {
 
-    public AutocompleteConfiguration() {}
+    public OntologyConfiguration() {}
 
     @JsonProperty
     private ElasticSearchConfiguration elasticSearch = new ElasticSearchConfiguration();

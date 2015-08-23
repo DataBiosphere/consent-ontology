@@ -37,7 +37,7 @@ public class OntologyLoader {
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(reader);
         assert ontology != null : "Ontology shouldn't be null";
 
-        HashMap<String, OWLAnnotationProperty> annotationProperties = new HashMap<String, OWLAnnotationProperty>();
+        HashMap<String, OWLAnnotationProperty> annotationProperties = new HashMap<>();
         for (OWLAnnotationProperty property: ontology.getAnnotationPropertiesInSignature()) {
             annotationProperties.put(property.getIRI().getFragment(), property);
         }

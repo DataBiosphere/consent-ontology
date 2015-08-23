@@ -11,7 +11,7 @@ import org.elasticsearch.common.transport.InetSocketTransportAddress;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
 
-public class AutocompleteModule extends AbstractModule {
+public class OntologyModule extends AbstractModule {
 
     @Override
     protected void configure() {
@@ -34,7 +34,7 @@ public class AutocompleteModule extends AbstractModule {
     }
 
     @Provides
-    public AutocompleteAPI providesAPI(Environment env, AutocompleteConfiguration config) {
+    public AutocompleteAPI providesAPI(Environment env, OntologyConfiguration config) {
         ElasticSearchConfiguration esConfig = config.getElasticSearchConfiguration();
         String index = esConfig.index;
         Client client = getClient(esConfig);
