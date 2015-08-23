@@ -24,13 +24,13 @@ import java.util.EnumSet;
  *   https://dropwizard.github.io/dropwizard/manual/core.html
  *
  */
-public class AutocompleteApplication extends Application<AutocompleteConfiguration> {
+public class OntologyApp extends Application<OntologyConfiguration> {
 
     public static void main(String[] args) throws Exception {
-        new AutocompleteApplication().run(args);
+        new OntologyApp().run(args);
     }
 
-    public void run(AutocompleteConfiguration config, Environment env) {
+    public void run(OntologyConfiguration config, Environment env) {
         env.jersey().register(AllTermsResource.class);
         env.jersey().register(TranslateResource.class);
 
@@ -43,11 +43,11 @@ public class AutocompleteApplication extends Application<AutocompleteConfigurati
 
     }
 
-    public void initialize(Bootstrap<AutocompleteConfiguration> bootstrap) {
+    public void initialize(Bootstrap<OntologyConfiguration> bootstrap) {
 
-        GuiceBundle<AutocompleteConfiguration> guiceBundle = GuiceBundle.<AutocompleteConfiguration>newBuilder()
-                .addModule(new AutocompleteModule())
-                .setConfigClass(AutocompleteConfiguration.class)
+        GuiceBundle<OntologyConfiguration> guiceBundle = GuiceBundle.<OntologyConfiguration>newBuilder()
+                .addModule(new OntologyModule())
+                .setConfigClass(OntologyConfiguration.class)
                 .build();
 
         bootstrap.addBundle(guiceBundle);
