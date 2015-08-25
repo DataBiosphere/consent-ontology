@@ -3,7 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.datause.api;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import org.broadinstitute.dsde.consent.ontology.datause.models.ResearchPurpose;
-import org.broadinstitute.dsde.consent.ontology.datause.models.SampleSet;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Consent;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
 import org.mindswap.pellet.jena.PelletInfGraph;
@@ -42,7 +42,7 @@ public class ResearchPurposeMatch {
         return cls;
     }
 
-    public Boolean matchPurpose(ResearchPurpose purpose, SampleSet consent) {
+    public Boolean matchPurpose(ResearchPurpose purpose, Consent consent) {
         Boolean match = false;
         UseRestriction query = purpose.getPurpose();
         try {
