@@ -33,7 +33,7 @@ public class DataUseOwlTest {
 
     @Test
     public void testNegativeMethodsAgainstInverse() {
-        SampleSet consent = new SampleSet(UID, "owner", false,
+        Consent consent = new Consent(UID, "owner",
                 new Not(new Named("http://www.genomebridge.org/ontologies/DURPO/methods_research")));
         Boolean b = matcher.matchPurpose(methodsPurpose, consent);
         Assert.assertFalse(b);
@@ -41,21 +41,21 @@ public class DataUseOwlTest {
 
     @Test
     public void testNegativeMethodsAgainstNothing() {
-        SampleSet consent = new SampleSet(UID, "owner", false, new Nothing());
+        Consent consent = new Consent(UID, "owner", new Nothing());
         Boolean b = matcher.matchPurpose(methodsPurpose, consent);
         Assert.assertFalse(b);
     }
 
     @Test
     public void testPositiveAggregate() {
-        SampleSet consent = new SampleSet(UID, "owner", false, new Everything());
+        Consent consent = new Consent(UID, "owner", new Everything());
         Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
         Assert.assertTrue(b);
     }
 
     @Test
     public void testNegativeAggregateAgainstInverse() {
-        SampleSet consent = new SampleSet(UID, "owner", false,
+        Consent consent = new Consent(UID, "owner",
                 new Not(new Named("http://www.genomebridge.org/ontologies/DURPO/aggregate_research")));
         Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
         Assert.assertFalse(b);
@@ -63,7 +63,7 @@ public class DataUseOwlTest {
 
     @Test
     public void testNegativeAggregateAgainstNothing() {
-        SampleSet consent = new SampleSet(UID, "owner", false, new Nothing());
+        Consent consent = new Consent(UID, "owner", new Nothing());
         Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
         Assert.assertFalse(b);
     }

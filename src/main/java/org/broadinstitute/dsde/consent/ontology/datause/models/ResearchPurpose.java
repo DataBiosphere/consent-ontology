@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
+import com.google.common.base.Objects;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
@@ -28,9 +29,21 @@ public class ResearchPurpose {
     public void setSensitiveTags(String[] tags) { this.sensitiveTags = tags.clone(); }
     public void setPurpose(UseRestriction purpose) { this.purpose = purpose; }
 
-    public int hashCode() { return id.hashCode(); }
+    public int hashCode() {
+        return Objects.hashCode(
+                this.getId(),
+                this.getPurpose(),
+                this.getResearcher(),
+                this.getSensitiveTags());
+    }
+
     public boolean equals(Object o) {
-        return ((o instanceof ResearchPurpose) && ((ResearchPurpose)o).id.equals(id));
+        if(!(o instanceof ResearchPurpose)) { return false; }
+        ResearchPurpose otherPurpose = (ResearchPurpose) o;
+        return Objects.equal(this.getId(), otherPurpose.getId()) &&
+                Objects.equal(this.getPurpose(), otherPurpose.getPurpose()) &&
+                Objects.equal(this.getResearcher(), otherPurpose.getResearcher()) &&
+                Objects.equal(this.getSensitiveTags(), otherPurpose.getSensitiveTags());
     }
 
     public String toString() {
