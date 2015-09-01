@@ -1,22 +1,29 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
+import com.google.common.base.Objects;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.vocabulary.OWL;
 
 public class Everything extends UseRestriction {
 
-    public Everything() {}
+    private String type = "everything";
 
-    public String toString() {
-        return String.format("{ \"type\": \"everything\" }");
+    public Everything() {
     }
 
-    public int hashCode() { return "everything".hashCode(); }
+    public String getType() {
+        return type;
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(type);
+    }
+
+    @Override
     public boolean equals(Object o) {
-        if(!(o instanceof Everything)) { return false; }
-        return true;
+        return o instanceof Everything;
     }
 
     @Override
@@ -27,4 +34,5 @@ public class Everything extends UseRestriction {
     public boolean visitAndContinue(UseRestrictionVisitor visitor) {
         return true;
     }
+
 }
