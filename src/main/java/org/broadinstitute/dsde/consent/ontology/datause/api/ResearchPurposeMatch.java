@@ -18,6 +18,9 @@ import java.util.UUID;
 // the attempt to optimize the performance by using a baseModel to hold the ontologies in memory breaks concurrency..
 // keep the code here for now but commented out... (so I don't forget how to do it)
 
+/**
+ * TODO: Migrate the use of this class to instead use OntologyMatchingActor
+ */
 public class ResearchPurposeMatch {
 
     private final OntologyList ontologyList;
