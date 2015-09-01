@@ -1,5 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology;
 
+import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 
 import io.dropwizard.Application;
@@ -7,7 +10,9 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
+import org.broadinstitute.dsde.consent.ontology.actor.OntologyMatchingActor;
 import org.broadinstitute.dsde.consent.ontology.resources.AllTermsResource;
+import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 
@@ -31,6 +36,10 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     }
 
     public void run(OntologyConfiguration config, Environment env) {
+        final ActorSystem actorSystem = ActorSystem.create("actorSystem");
+        final ActorRef ontologyMatchingActor =
+            actorSystem.actorOf(Props.create(OntologyMatchingActor.class), "OntologyMatchingActor");
+        env.jersey().register(new MatchResource(ontologyMatchingActor));
         env.jersey().register(AllTermsResource.class);
         env.jersey().register(TranslateResource.class);
 

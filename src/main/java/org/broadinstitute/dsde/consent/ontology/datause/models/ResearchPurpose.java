@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Objects;
-import org.codehaus.jackson.map.ObjectMapper;
 
 import java.io.IOException;
 

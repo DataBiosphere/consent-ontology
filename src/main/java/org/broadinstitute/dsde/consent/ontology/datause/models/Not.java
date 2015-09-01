@@ -1,29 +1,43 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
+import com.google.common.base.Objects;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 
 public class Not extends UseRestriction {
 
+    private String type = "not";
+
     private UseRestriction operand;
 
-    public Not() {}
+    public Not() {
+    }
 
     public Not(UseRestriction operand) {
         this.operand = operand;
     }
 
-    public UseRestriction getOperand() { return operand; }
-    public void setOperand(UseRestriction op) { operand = op; }
-
-    public String toString() {
-        return String.format("{ \"type\": \"not\", \"operand\": %s }", operand.toString());
+    public String getType() {
+        return type;
     }
 
-    public int hashCode() { return 37 * (operand.hashCode() + 1); }
+    public UseRestriction getOperand() {
+        return operand;
+    }
 
+    public void setOperand(UseRestriction op) {
+        operand = op;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(type, operand);
+    }
+
+    @Override
     public boolean equals(Object o) {
-        return (o instanceof Not) && ((Not)o).operand.equals(operand);
+        return o instanceof Not &&
+                Objects.equal(this.operand, ((Not) o).operand);
     }
 
     @Override
