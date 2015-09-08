@@ -22,8 +22,8 @@ public class TranslateTest {
     public void testPediatricCancerSample() {
         translate("sampleset",
                 "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"}," +
-                "{\"type\":\"named\",\"name\":\"http://www.genomebridge.org/ontologies/DURPO/children\"}," +
-                "{\"type\":\"named\",\"name\":\"http://www.genomebridge.org/ontologies/DURPO/Non_profit\"}]}",
+                "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/children\"}," +
+                "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}",
                 "Samples may only be used for the purpose of studying cancer. " +
                 "In addition, samples may only be used for the study of children and may not be used for commercial purposes.");
     }
@@ -31,8 +31,8 @@ public class TranslateTest {
     @Test
     public void testBroadPurpose() {
         translate("purpose",
-                "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://www.genomebridge.org/ontologies/DURPO/Broad\"}," +
-                "{\"type\":\"named\",\"name\":\"http://www.genomebridge.org/ontologies/DURPO/Non_profit\"}]}",
+                "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Broad\"}," +
+                "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}",
                 "Any sample which can be used for research at institutions in The Broad Institute.");
     }
 

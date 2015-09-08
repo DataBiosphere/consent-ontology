@@ -47,7 +47,7 @@ public class MatchTest {
     public void testMatch() {
 
         MatchPair pair = new MatchPair(
-            new Named("http://www.genomebridge.org/ontologies/DURPO/methods_research"),
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
             new Everything());
 
         Future<Response> responseFuture = RULE.getJerseyTest().target("/match")
