@@ -7,7 +7,7 @@ This repository contains maintains all ontology-related services
 ```
 mvn clean test
 mvn package
-java -jar ./path/to/jar/file server ./path/to/configuration/file
+java -jar target/consent-ontology.jar server src/test/resources/config.yml
 ```
 
 ## Autocomplete Service
@@ -28,8 +28,7 @@ GET /autocomplete
 | count	    | An optional limit on the number of autosuggested results that are returned. Default value is 20. |
 
 ### Request Parameters:
-Request Header: Accept application/json
-Request Cookie: iPlanetDirectoryPro=<valid authentication token> 
+Request Header: Accept application/json 
 
 ### Response Messages:
 | HTTP Status | Reason |
@@ -51,7 +50,7 @@ An array of responses:
 ### Example:
 
 ```
-curl -v -k -X GET -H 'Accept: application/json' --cookie "iPlanetDirectoryPro=AQI..." https://consent-autocomplete-ci.broadinstitute.org/autocomplete?q=heart%20disease
+curl -v -k -X GET -H 'Accept: application/json' https://consent-autocomplete-ci.broadinstitute.org/autocomplete?q=heart%20disease
 ```
 
 ### Response:
@@ -101,7 +100,6 @@ POST /translate
 
 Request Header: Accept application/json
 Request Header: Content-type application/json
-Request Cookie: iPlanetDirectoryPro=<valid authentication token>
 Request Body: Use Restriction Resource in json format
 
 ### Query Parameters:
@@ -122,7 +120,7 @@ Plain text response
 
 ### Example:
 ```
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' --cookie "iPlanetDirectoryPro=AQI..." https://consent-ci.broadinstitute.org/translate?for=sampleset -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ci.broadinstitute.org/translate?for=sampleset -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
 ```
 
 ### Response:
@@ -146,7 +144,7 @@ curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/j
 * Connection #0 to host consent-ci.broadinstitute.org left intact
 Samples may only be used for the purpose of studying leukemia.
 Example:
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' --cookie "iPlanetDirectoryPro=AQI..." https://consent-ci.broadinstitute.org/translate?for=purpose -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ci.broadinstitute.org/translate?for=purpose -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
 Response:
 > POST /translate?for=purpose HTTP/1.1
 > User-Agent: curl/7.30.0
