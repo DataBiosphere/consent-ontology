@@ -8,7 +8,7 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
 #Configs
-COPY target/ontology.jar /opt/consent-ontology.jar
+COPY target/consent-ontology.jar /opt/consent-ontology.jar
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 CMD ["/usr/bin/supervisord"]
