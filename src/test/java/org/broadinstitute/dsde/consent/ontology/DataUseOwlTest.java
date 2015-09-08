@@ -16,15 +16,11 @@ public class DataUseOwlTest {
 
     private static final ResearchPurpose methodsPurpose = new ResearchPurpose(
             UUID.randomUUID().toString(),
-            "researcher",
-            new Named("http://www.genomebridge.org/ontologies/DURPO/methods_research"),
-            new String[]{});
+            new Named("http://www.genomebridge.org/ontologies/DURPO/methods_research"));
 
     private static final ResearchPurpose aggregatePurpose = new ResearchPurpose(
             UUID.randomUUID().toString(),
-            "researcher",
-            new Named("http://www.genomebridge.org/ontologies/DURPO/aggregate_research"),
-            new String[]{});
+            new Named("http://www.genomebridge.org/ontologies/DURPO/aggregate_research"));
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -33,7 +29,7 @@ public class DataUseOwlTest {
 
     @Test
     public void testNegativeMethodsAgainstInverse() {
-        Consent consent = new Consent(UID, "owner",
+        Consent consent = new Consent(UID, 
                 new Not(new Named("http://www.genomebridge.org/ontologies/DURPO/methods_research")));
         Boolean b = matcher.matchPurpose(methodsPurpose, consent);
         Assert.assertFalse(b);
@@ -41,21 +37,21 @@ public class DataUseOwlTest {
 
     @Test
     public void testNegativeMethodsAgainstNothing() {
-        Consent consent = new Consent(UID, "owner", new Nothing());
+        Consent consent = new Consent(UID, new Nothing());
         Boolean b = matcher.matchPurpose(methodsPurpose, consent);
         Assert.assertFalse(b);
     }
 
     @Test
     public void testPositiveAggregate() {
-        Consent consent = new Consent(UID, "owner", new Everything());
+        Consent consent = new Consent(UID, new Everything());
         Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
         Assert.assertTrue(b);
     }
 
     @Test
     public void testNegativeAggregateAgainstInverse() {
-        Consent consent = new Consent(UID, "owner",
+        Consent consent = new Consent(UID,
                 new Not(new Named("http://www.genomebridge.org/ontologies/DURPO/aggregate_research")));
         Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
         Assert.assertFalse(b);
@@ -63,7 +59,7 @@ public class DataUseOwlTest {
 
     @Test
     public void testNegativeAggregateAgainstNothing() {
-        Consent consent = new Consent(UID, "owner", new Nothing());
+        Consent consent = new Consent(UID, new Nothing());
         Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
         Assert.assertFalse(b);
     }
