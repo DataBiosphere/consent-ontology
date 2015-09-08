@@ -198,10 +198,10 @@ public class TextTranslationResource {
 
         OntClass cls = model.getOntClass(n.getName());
 
-        OntClass geography = model.getOntClass("http://www.genomebridge.org/ontologies/DURPO/geography");
+        OntClass geography = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/geography");
         if(cls.hasSuperClass(geography)) { return "geography"; }
 
-        OntClass population = model.getOntClass("http://www.genomebridge.org/ontologies/DURPO/population");
+        OntClass population = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/population");
         if(cls.hasSuperClass(population)) { return "population"; }
 
         return null;
@@ -268,7 +268,7 @@ public class TextTranslationResource {
     }
 
     private boolean isNonProfitStatus(UseRestriction r) {
-        return isNamedEquals(r, "http://www.genomebridge.org/ontologies/DURPO/Non_profit");
+        return isNamedEquals(r, "http://www.broadinstitute.org/ontologies/DURPO/Non_profit");
     }
 
     /*
