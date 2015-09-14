@@ -46,7 +46,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         // support for cross-origin ajax calls to the autocomplete service
         FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
         corsFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/autocomplete");
-        corsFilter.setInitParameter("allowedOrigins", config.getCorsConfiguration().allowedDomains);
+//        corsFilter.setInitParameter("allowedOrigins", config.getCorsConfiguration().allowedDomains);
         corsFilter.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
         corsFilter.setInitParameter("allowedMethods", "GET");
 
