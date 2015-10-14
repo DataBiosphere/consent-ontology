@@ -112,7 +112,7 @@ public class TextTranslationResource {
 
     // "Samples may not be used for commercial purposes."
     public String buildNonProfitClause(boolean useMay, UseRestriction r) {
-        if(hasTypedClass("non-profit", r)) {
+        if(hasTypedClass("commercial", r)) {
             return useMay ? "may not be used for commercial purposes" : null;
         } else {
             return useMay ? null : "can be used for commercial purposes";
@@ -193,10 +193,13 @@ public class TextTranslationResource {
 
     private String findNamedClassType(Named n) {
 
-        if(isDiseaseClass(n)) { return "disease"; }
-        if(isNonProfitStatus(n)) { return "non-profit"; }
-
         OntClass cls = model.getOntClass(n.getName());
+
+        OntClass disease = model.getOntClass("http://purl.obolibrary.org/obo/DOID_4");
+        if(cls.hasSuperClass(disease)) { return "disease"; }
+
+        OntClass commercial = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/Commercial_Status");
+        if(cls.hasSuperClass(commercial)) { return "commercial"; }
 
         OntClass geography = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/geography");
         if(cls.hasSuperClass(geography)) { return "geography"; }
@@ -245,37 +248,11 @@ public class TextTranslationResource {
         }
     }
 
-    private boolean isDiseaseClass(Named n) {
-        return TextTranslationResource.isDiseaseClass(n.getName());
-    }
-
     // TODO: remove/move this static method; we don't like statics
     // TODO: a more precise means of testing if this term is a disease or not
     public static boolean isDiseaseClass(String s) {
         return s.contains("DOID") || s.contains("SYMP");
     }
-
-    /*
-    private class DiseaseClassPredicate implements RestrictionPredicate {
-        public boolean accepts(UseRestriction r) {
-            return (r instanceof Named) && (isDiseaseClass((Named)r));
-        }
-    }
-    */
-
-    private boolean isNamedEquals(UseRestriction r, String n) {
-        return (r instanceof Named) && ((Named)r).getName().equals(n);
-    }
-
-    private boolean isNonProfitStatus(UseRestriction r) {
-        return isNamedEquals(r, "http://www.broadinstitute.org/ontologies/DURPO/Non_profit");
-    }
-
-    /*
-    private class NonProfitPredicate implements RestrictionPredicate {
-        public boolean accepts(UseRestriction r) { return isNonProfitStatus(r); }
-    }
-    */
 
 }
 
