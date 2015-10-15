@@ -43,7 +43,7 @@ public class MatchResource {
                         System.out.println("Failure: " + failure.getMessage());
                         response.resume(new WebApplicationException(failure));
                     } else {
-                        response.resume(ImmutableMap.of("result", result, "matchPair", matchPair));
+                        response.resume(ImmutableMap.of("result", result, "matchPair", matchPair).toString());
                     }
                 }
             },
