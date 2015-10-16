@@ -50,6 +50,7 @@ public class OntologyList implements OntologyModel {
                 OntologyLoader.loadOntology(is, umodel);
             }
         }
+        ((PelletInfGraph) umodel.getGraph()).classify();
         return umodel;
     }
 
