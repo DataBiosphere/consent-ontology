@@ -7,13 +7,13 @@ import akka.japi.pf.ReceiveBuilder;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import java.io.IOException;
 import java.util.UUID;
+import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
+import org.broadinstitute.dsde.consent.ontology.resources.MatchDTO;
 
 /**
  * TODO: Migrate ontology uses to make use of this actor
@@ -24,10 +24,9 @@ public class OntologyMatchingActor extends AbstractActor {
 
     public OntologyMatchingActor() {
         receive(
-            ReceiveBuilder
-                .match(MatchPair.class, msg -> {
+            ReceiveBuilder.match(MatchDTO.class, msg -> {
                     log.debug("Replying to message: {}", msg);
-                    sender().tell(matchPurpose(msg.purpose, msg.consent), self());
+                    sender().tell(matchPurpose(msg.getPurpose(), msg.getPurpose(), msg.getOntologyModel()), self());
                 })
                 .build()
         );
@@ -45,16 +44,16 @@ public class OntologyMatchingActor extends AbstractActor {
         return cls;
     }
 
-    public Boolean matchPurpose(UseRestriction purpose, UseRestriction consent) {
+    public Boolean matchPurpose(UseRestriction purpose, UseRestriction consent, OntologyModel ontologyList) {
         String consentId = UUID.randomUUID().toString();
         Boolean match = false;
         try {
-            OntModel model = new OntologyList().loadOntModel();
+            OntModel model = ontologyList.getModel();
             addNamedEquivalentClass(model, consentId, consent);
 
             String randomId = UUID.randomUUID().toString();
             OntClass rpClass = addNamedSubClass(model, randomId, purpose);
-            ((PelletInfGraph) model.getGraph()).classify();
+//            ((PelletInfGraph) model.getGraph()).classify();
 
             OntClass sampleSetClass = model.getOntClass(consentId);
             match = rpClass.hasSuperClass(sampleSetClass);

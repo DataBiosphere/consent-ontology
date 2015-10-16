@@ -186,7 +186,8 @@
         <dependency>
             <groupId>com.hubspot.dropwizard</groupId>
             <artifactId>dropwizard-guice</artifactId>
-            <version>0.8.1.0</version>
+            <version>0.8.3.0</version>
+            <type>jar</type>
         </dependency>
 
         <dependency>
@@ -297,6 +298,12 @@
             <artifactId>hsqldb</artifactId>
             <version>${hsqldb.version}</version>
             <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.inject</groupId>
+            <artifactId>guice</artifactId>
+            <version>4.0</version>
         </dependency>
 
     </dependencies>

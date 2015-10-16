@@ -2,7 +2,17 @@ package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
+import com.google.inject.Scopes;
+import com.google.inject.Singleton;
 import io.dropwizard.setup.Environment;
+import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
+import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
+import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
+import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
+import org.broadinstitute.dsde.consent.ontology.datause.ontology.TranslationHelper;
+import org.broadinstitute.dsde.consent.ontology.datause.ontology.TranslationHelperImpl;
+import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
@@ -15,12 +25,20 @@ public class OntologyModule extends AbstractModule {
 
     @Override
     protected void configure() {
+        bind(OntologyModel.class).to(OntologyList.class).in(Scopes.SINGLETON);
+        bind(OntologyTermSearchAPI.class).to(LuceneOntologyTermSearchAPI.class).in(Scopes.SINGLETON);
+        bind(TextTranslationService.class).to(TextTranslationServiceImpl.class).in(Scopes.SINGLETON);
+        bind(TranslationHelper.class).to(TranslationHelperImpl.class).in(Scopes.SINGLETON);
+       
+        bind(OntologyTermSearchAPI.class).in(Singleton.class);
+        bind(TextTranslationService.class).in(Singleton.class);
+        bind(TranslationHelper.class).in(Singleton.class);        
     }
 
     private Client getClient(ElasticSearchConfiguration config) {
         TransportClient client = new TransportClient(ImmutableSettings.settingsBuilder()
                 .put("cluster.name", config.clusterName));
-        for(String address: config.servers) {
+        for (String address : config.servers) {
             int colon = address.indexOf(':');
             int port = 9300;
             String server = address;
