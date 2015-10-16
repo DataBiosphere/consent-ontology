@@ -1,10 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import akka.actor.ActorRef;
+import akka.actor.ActorSystem;
+import akka.actor.Props;
 import akka.dispatch.ExecutionContexts;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
+import java.util.concurrent.Executors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.concurrent.ExecutionContextExecutorService;
@@ -13,7 +17,8 @@ import scala.concurrent.Future;
 import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
-import java.util.concurrent.Executors;
+import org.broadinstitute.dsde.consent.ontology.actor.OntologyMatchingActor;
+import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 
 @Path("/match")
 @Consumes("application/json")
@@ -21,12 +26,13 @@ import java.util.concurrent.Executors;
 public class MatchResource {
 
     private final Logger log = LoggerFactory.getLogger(MatchResource.class);
-    private final ActorRef ontologyMatchingActor;
-    private final ExecutionContextExecutorService execCtx;
-
-    public MatchResource(ActorRef ontologyMatchingActor) {
-        this.ontologyMatchingActor = ontologyMatchingActor;
-        execCtx = ExecutionContexts.fromExecutorService(Executors.newFixedThreadPool(2));
+    private static final ActorSystem actorSystem = ActorSystem.create("actorSystem");
+    private static final ActorRef ontologyMatchingActor = actorSystem.actorOf(Props.create(OntologyMatchingActor.class), "OntologyMatchingActor");
+//    private ActorRef ontologyMatchingActor;
+    private final ExecutionContextExecutorService execCtx = ExecutionContexts.fromExecutorService(Executors.newFixedThreadPool(2));;
+    private OntologyModel ontologyList;
+        
+    public MatchResource() {
     }
 
     @POST
@@ -34,7 +40,8 @@ public class MatchResource {
         // TODO: Timeout should likely be an application-wide property
         Long timeout = 10000L;
         log.debug("Received the following: " + matchPair.toString());
-        final Future<Object> matchFuture = Patterns.ask(ontologyMatchingActor, matchPair, timeout);
+        final MatchDTO matchDTO = new MatchDTO(matchPair, ontologyList);
+        final Future<Object> matchFuture = Patterns.ask(ontologyMatchingActor, matchDTO, timeout);
         matchFuture.onComplete(
             new OnComplete<Object>() {
                 @Override
@@ -51,4 +58,8 @@ public class MatchResource {
         );
     }
 
+    @Inject
+    public void setOntologyList(OntologyModel ontologyList) {
+        this.ontologyList = ontologyList;
+    }
 }

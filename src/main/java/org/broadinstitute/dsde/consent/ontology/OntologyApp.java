@@ -1,8 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
 import com.hubspot.dropwizard.guice.GuiceBundle;
 
 import io.dropwizard.Application;
@@ -10,59 +7,52 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-import org.broadinstitute.dsde.consent.ontology.actor.OntologyMatchingActor;
-import org.broadinstitute.dsde.consent.ontology.resources.AllTermsResource;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 
 import javax.servlet.DispatcherType;
 import javax.servlet.FilterRegistration;
 
 import java.util.EnumSet;
 
-
 /**
  * Top-level entry point to the entire application.
  *
  * See the Dropwizard docs here:
- *   https://dropwizard.github.io/dropwizard/manual/core.html
+ * https://dropwizard.github.io/dropwizard/manual/core.html
  *
  */
 public class OntologyApp extends Application<OntologyConfiguration> {
+
+    private GuiceBundle<OntologyConfiguration> guiceBundle;
 
     public static void main(String[] args) throws Exception {
         new OntologyApp().run(args);
     }
 
+    @Override
     public void run(OntologyConfiguration config, Environment env) {
-        final ActorSystem actorSystem = ActorSystem.create("actorSystem");
-        final ActorRef ontologyMatchingActor =
-            actorSystem.actorOf(Props.create(OntologyMatchingActor.class), "OntologyMatchingActor");
-        env.jersey().register(new MatchResource(ontologyMatchingActor));
-        env.jersey().register(AllTermsResource.class);
-        env.jersey().register(TranslateResource.class);
+//        final ActorSystem actorSystem = ActorSystem.create("actorSystem");
+//        final ActorRef ontologyMatchingActor = actorSystem.actorOf(Props.create(OntologyMatchingActor.class), "OntologyMatchingActor");
+//        env.jersey().register(new MatchResource(ontologyMatchingActor));
+//        env.jersey().register(AllTermsResource.class);
+//        env.jersey().register(TranslateResource.class);
 
         // support for cross-origin ajax calls to the autocomplete service
-//        FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
-//        corsFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), true, "/autocomplete");
-//        corsFilter.setInitParameter("allowedOrigins", config.getCorsConfiguration().allowedDomains);
-//        corsFilter.setInitParameter("allowedHeaders", "X-Requested-With,Content-Type,Accept,Origin");
-//        corsFilter.setInitParameter("allowedMethods", "GET");
-
         FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
         corsFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, env.getApplicationContext().getContextPath() + "/autocomplete");
         corsFilter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,OPTIONS");
         corsFilter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
         corsFilter.setInitParameter(CrossOriginFilter.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "*");
-//        corsFilter.setInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");        
         corsFilter.setInitParameter("allowedHeaders", "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin");
+
     }
 
+    @Override
     public void initialize(Bootstrap<OntologyConfiguration> bootstrap) {
 
-        GuiceBundle<OntologyConfiguration> guiceBundle = GuiceBundle.<OntologyConfiguration>newBuilder()
+        guiceBundle = GuiceBundle.<OntologyConfiguration>newBuilder()
                 .addModule(new OntologyModule())
+                .enableAutoConfig(this.getClass().getPackage().getName())
                 .setConfigClass(OntologyConfiguration.class)
                 .build();
 
@@ -70,4 +60,5 @@ public class OntologyApp extends Application<OntologyConfiguration> {
 
         bootstrap.addBundle(new AssetsBundle("/assets/", "/site"));
     }
+
 }
