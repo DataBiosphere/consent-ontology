@@ -5,6 +5,7 @@ import akka.actor.ActorSystem;
 import akka.actor.Props;
 import io.dropwizard.testing.junit.ResourceTestRule;
 import org.broadinstitute.dsde.consent.ontology.actor.OntologyMatchingActor;
+import org.broadinstitute.dsde.consent.ontology.datause.models.And;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
@@ -46,7 +47,10 @@ public class MatchTest {
     public void testMatch() {
 
         MatchPair pair = new MatchPair(
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new And(
+                new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+                new Named("http://www.broadinstitute.org/ontologies/DURPO/women")
+            ),
             new Everything());
 
         Future<Response> responseFuture = RULE.getJerseyTest().target("/match")
