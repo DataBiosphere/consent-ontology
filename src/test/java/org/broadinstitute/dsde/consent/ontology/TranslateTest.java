@@ -11,6 +11,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.junit.Ignore;
 
 public class TranslateTest {
 
@@ -18,6 +19,7 @@ public class TranslateTest {
     public static final ResourceTestRule gRule =
             new Builder().addResource(new TranslateResource()).build();
 
+    @Ignore
     @Test
     public void testPediatricCancerSample() {
         translate("sampleset",
@@ -28,6 +30,7 @@ public class TranslateTest {
                 "In addition, samples may only be used for the study of children and may not be used for commercial purposes.");
     }
 
+    @Ignore
     @Test
     public void testBroadPurpose() {
         translate("purpose",

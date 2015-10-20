@@ -14,10 +14,9 @@ public class OntologyLoader {
 
     public static void main(String[] args) throws IOException, OWLOntologyCreationException {
 
-        OntologyList list = new OntologyList();
-        OntModel model = list.loadOntModel();
+        OntologyModel list = new OntologyList();
+        OntModel model = list.getModel();
         long size = model.size();
-        System.out.println(String.format("OntModel size: %d", size));
     }
 
     /*
