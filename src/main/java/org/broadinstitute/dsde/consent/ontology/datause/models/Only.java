@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -20,6 +21,7 @@ public class Only extends UseRestriction {
         this.target = obj;
     }
 
+    @JsonIgnore
     public String getType() {
         return type;
     }
