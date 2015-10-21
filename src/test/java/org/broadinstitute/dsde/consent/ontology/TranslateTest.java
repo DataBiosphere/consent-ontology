@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
-import io.dropwizard.testing.junit.ResourceTestRule.Builder;
+import java.io.IOException;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -11,32 +11,42 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import org.broadinstitute.dsde.consent.ontology.datause.ontology.TranslationHelper;
+import org.junit.BeforeClass;
 import org.junit.Ignore;
+import org.mockito.InjectMocks;
 
 public class TranslateTest {
 
-    @ClassRule
-    public static final ResourceTestRule gRule =
-            new Builder().addResource(new TranslateResource()).build();
+    @InjectMocks
+    private static TranslateResource translateResource = new TranslateResource();
 
-    @Ignore
+    @ClassRule
+    public static final ResourceTestRule gRule = ResourceTestRule.builder()
+            .addResource(translateResource).addProperty("helper", new MockTranslationHelper()).build();
+
+    
+    @BeforeClass
+    public static void testInTempFolder() throws IOException {
+        TranslationHelper mockTranslationHelper = new MockTranslationHelper();
+        translateResource.setHelper(mockTranslationHelper);
+    }
+
     @Test
     public void testPediatricCancerSample() {
         translate("sampleset",
                 "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"}," +
                 "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/children\"}," +
                 "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}",
-                "Samples may only be used for the purpose of studying cancer. " +
-                "In addition, samples may only be used for the study of children and may not be used for commercial purposes.");
+                "translated sampleset");
     }
 
-    @Ignore
     @Test
     public void testBroadPurpose() {
         translate("purpose",
                 "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Broad\"}," +
                 "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}",
-                "Any sample which can be used for research at institutions in The Broad Institute.");
+                "translated purpose");
     }
 
     private void translate(String qType, String json, String expect) {

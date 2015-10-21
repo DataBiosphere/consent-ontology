@@ -3,23 +3,22 @@ package org.broadinstitute.dsde.consent.ontology.datause.services;
 import com.google.inject.Inject;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
-import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestrictionVisitor;
-import org.mindswap.pellet.jena.PelletInfGraph;
 
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 public class TextTranslationServiceImpl implements TextTranslationService {
 
-    private LuceneOntologyTermSearchAPI api;
+    private OntologyTermSearchAPI api;
     private OntologyModel ontologyList;
 
     // This is a cache, used to associate a type (element of
@@ -281,7 +280,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     @Inject
-    public void setApi(LuceneOntologyTermSearchAPI api) {
+    public void setApi(OntologyTermSearchAPI api) {
         this.api = api;
     }
 

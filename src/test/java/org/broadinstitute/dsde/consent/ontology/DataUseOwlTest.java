@@ -7,6 +7,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.util.UUID;
+import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
+import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 import org.junit.Ignore;
 
 public class DataUseOwlTest {
@@ -26,9 +28,10 @@ public class DataUseOwlTest {
     @BeforeClass
     public static void setUp() throws Exception {
         matcher = new ResearchPurposeMatch();
+        OntologyModel ontologyList = new OntologyList();
+        matcher.setOntologyList(ontologyList);
     }
 
-    @Ignore
     @Test
     public void testNegativeMethodsAgainstInverse() {
         Consent consent = new Consent(UID, 
@@ -37,7 +40,6 @@ public class DataUseOwlTest {
         Assert.assertFalse(b);
     }
 
-    @Ignore
     @Test
     public void testNegativeMethodsAgainstNothing() {
         Consent consent = new Consent(UID, new Nothing());
@@ -53,7 +55,6 @@ public class DataUseOwlTest {
         Assert.assertTrue(b);
     }
 
-    @Ignore
     @Test
     public void testNegativeAggregateAgainstInverse() {
         Consent consent = new Consent(UID,
@@ -61,8 +62,6 @@ public class DataUseOwlTest {
         Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
         Assert.assertFalse(b);
     }
-
-    @Ignore
     @Test
     public void testNegativeAggregateAgainstNothing() {
         Consent consent = new Consent(UID, new Nothing());
