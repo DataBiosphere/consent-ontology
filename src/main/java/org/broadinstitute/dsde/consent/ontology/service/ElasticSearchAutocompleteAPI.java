@@ -12,14 +12,14 @@ import java.util.List;
 import java.util.Map;
 
 public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
-    private static String FIELD_ID = "id";
-    private static String FIELD_ONTOLOGY_TYPE = "ontology";
-    private static String FIELD_LABEL = "label";
-    private static String FIELD_DEFINITION = "definition";
-    private static String FIELD_SYNONYM = "synonym";
-    private static String FIELD_USABLE = "usable";
-    private Client client;
-    private String index;
+    private static final String FIELD_ID = "id";
+    private static final String FIELD_ONTOLOGY_TYPE = "ontology";
+    private static final String FIELD_LABEL = "label";
+    private static final String FIELD_DEFINITION = "definition";
+    private static final String FIELD_SYNONYM = "synonym";
+    private static final String FIELD_USABLE = "usable";
+    private final Client client;
+    private final String index;
 
     public ElasticSearchAutocompleteAPI(Client client, String index) {
         this.client = client;

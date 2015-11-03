@@ -26,7 +26,7 @@ public class OntologyMatchingActor extends AbstractActor {
         receive(
             ReceiveBuilder.match(MatchDTO.class, msg -> {
                     log.debug("Replying to message: {}", msg);
-                    sender().tell(matchPurpose(msg.getPurpose(), msg.getPurpose(), msg.getOntologyModel()), self());
+                    sender().tell(matchPurpose(msg.getPurpose(), msg.getConsent(), msg.getOntologyModel()), self());
                 })
                 .build()
         );
