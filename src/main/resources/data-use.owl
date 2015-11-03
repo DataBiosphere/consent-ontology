@@ -68,12 +68,16 @@
     ///////////////////////////////////////////////////////////////////////////////////////
      -->
 
+    <!-- http://www.broadinstitute.org/ontologies/DURPO/research_type -->
 
+    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/research_type"/>
+    
 
     <!-- http://www.broadinstitute.org/ontologies/DURPO/methods_research -->
 
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/methods_research">
         <rdfs:label rdf:datatype="&xsd;string">Methods Research</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/research_type"/>
     </owl:Class>
 
 
@@ -82,6 +86,7 @@
 
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/aggregate_research">
         <rdfs:label rdf:datatype="&xsd;string">Aggregate Research</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/research_type"/>
     </owl:Class>
 
 
@@ -309,12 +314,12 @@
     
 
 
-    <!-- http://www.broadinstitute.org/ontologies/DURPO/men -->
+    <!-- http://www.broadinstitute.org/ontologies/DURPO/male -->
 
-    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/men">
-        <rdfs:label rdf:datatype="&xsd;string">men</rdfs:label>
+    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/male">
+        <rdfs:label rdf:datatype="&xsd;string">male</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/population"/>
-        <owl:disjointWith rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/women"/>
+        <owl:disjointWith rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/female"/>
     </owl:Class>
     
 
@@ -325,10 +330,10 @@
     
 
 
-    <!-- http://www.broadinstitute.org/ontologies/DURPO/women -->
+    <!-- http://www.broadinstitute.org/ontologies/DURPO/female -->
 
-    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/women">
-        <rdfs:label rdf:datatype="&xsd;string">women</rdfs:label>
+    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/female">
+        <rdfs:label rdf:datatype="&xsd;string">female</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/population"/>
     </owl:Class>
     
