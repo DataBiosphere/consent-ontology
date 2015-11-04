@@ -98,31 +98,31 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     // "Samples may only be used for studying men, and Asian-American populations."
-    private String buildPopulationClause(boolean useMay, UseRestriction r) {
+    private String buildPopulationClause(boolean forSampleSet, UseRestriction r) {
         Set<String> labels = findLabeledTypedClasses("population", r);
 
         return labels.isEmpty() ? null
                 : String.format("%s be used for the study of %s",
-                        useMay ? "may only" : "can",
-                        buildOrClause(labels));
+                        forSampleSet ? "may only" : "can",
+                        buildAndClause(labels));
     }
 
     // "Samples may only be used for research at institutions in North America, Europe, or South America."
-    private String buildGeographyClause(boolean useMay, UseRestriction r) {
+    private String buildGeographyClause(boolean forSampleSet, UseRestriction r) {
         Set<String> labels = findLabeledTypedClasses("geography", r);
 
         return labels.isEmpty() ? null
                 : String.format("%s be used for research at institutions in %s",
-                        useMay ? "may only" : "can",
+                        forSampleSet ? "may only" : "can",
                         buildOrClause(labels));
     }
 
     // "Samples may not be used for commercial purposes."
-    private String buildNonProfitClause(boolean useMay, UseRestriction r) {
+    private String buildNonProfitClause(boolean forSampleSet, UseRestriction r) {
         if (hasTypedClass("commercial", r)) {
-            return useMay ? "may not be used for commercial purposes" : null;
+            return forSampleSet ? "may not be used for commercial purposes" : null;
         } else {
-            return useMay ? null : "can be used for commercial purposes";
+            return forSampleSet ? null : "can be used for commercial purposes";
         }
     }
     
@@ -219,7 +219,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
     private String findNamedClassType(Named n) {
 
-        System.out.print("----------------> " + n.getName());
+        System.out.println("----------------> " + n.getType() + " --- " + n.getName() + " <-------------------");
         OntClass cls = model.getOntClass(n.getName());
 
         OntClass disease = model.getOntClass("http://purl.obolibrary.org/obo/DOID_4");
