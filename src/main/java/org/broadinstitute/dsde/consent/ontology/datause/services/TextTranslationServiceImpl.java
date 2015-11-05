@@ -211,61 +211,46 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         if (result == null && !namedClassTypes.containsKey(n.getName())) {
             result = findNamedClassType(n);
             namedClassTypes.put(n.getName(), result);
-            System.out.println("namedClassTypes.put(" + "n.getName()" + ", "+ result + ") ---------------------------------------");
         }
-        System.out.println("getNamedClassType : " + result);
         return result;
     }
 
     private String findNamedClassType(Named n) {
 
-        System.out.println("----------------> " + n.getType() + " --- " + n.getName() + " <-------------------");
         OntClass cls = model.getOntClass(n.getName());
 
         OntClass disease = model.getOntClass("http://purl.obolibrary.org/obo/DOID_4");
         if (cls.hasSuperClass(disease)) {
-            System.out.println(" is a disease ");
             return "disease";
         }
 
         OntClass commercial = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/Commercial_Status");
         if (cls.hasSuperClass(commercial)) {
-            System.out.println(" is a commercial ");
             return "commercial";
         }
 
         OntClass geography = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/geography");
         if (cls.hasSuperClass(geography)) {
-            System.out.println(" is a geography ");
             return "geography";
         }
 
         OntClass population = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/population");
         if (cls.hasSuperClass(population)) {
-            System.out.println(" is a population ");
             return "population";
         }
 
         OntClass research_type = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/research_type");
         if (cls.hasSuperClass(research_type)) {
-            System.out.println(" is a research_type ");
             return "research_type";
         }
-        
-        System.out.println(" is a null ");
         return null;
     }
 
     private Set<String> findLabeledTypedClasses(String type, UseRestriction r) {
-        System.out.println("findLabeledTypedClasses(" + type + ", " + r.toString() + ") --------------------------");
         Set<Named> named = findNamedClasses(new NamedTypePredicate(type), r);
         Set<String> labels = new LinkedHashSet<>();
         named.stream().forEach((n) -> {
             labels.add(getNamedClassLabel(n));
-        });
-        System.out.println("--- findLabeledTypedClasses ---");
-        labels.stream().forEach((label) -> {
-            System.out.println("label: " + label);
         });
         return labels;
     }
