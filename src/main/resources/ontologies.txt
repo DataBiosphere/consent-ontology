@@ -1,2 +1,2 @@
 data-use.owl
-HumanDOr21.obo
+diseases.owl

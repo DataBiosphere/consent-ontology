@@ -57,6 +57,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         String geography = buildGeographyClause(forSampleSet, restriction);
         String population = buildPopulationClause(forSampleSet, restriction);
         String commercial = buildNonProfitClause(forSampleSet, restriction);
+        String research_type = buildResearchTypeClause(forSampleSet, restriction);
 
         if (disease != null) {
             clauses.add(disease);
@@ -69,6 +70,9 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         }
         if (commercial != null) {
             clauses.add(commercial);
+        }
+        if (research_type != null) {
+            clauses.add(research_type);
         }
 
         if (clauses.isEmpty()) {
@@ -94,33 +98,42 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     // "Samples may only be used for studying men, and Asian-American populations."
-    private String buildPopulationClause(boolean useMay, UseRestriction r) {
+    private String buildPopulationClause(boolean forSampleSet, UseRestriction r) {
         Set<String> labels = findLabeledTypedClasses("population", r);
 
         return labels.isEmpty() ? null
                 : String.format("%s be used for the study of %s",
-                        useMay ? "may only" : "can",
-                        buildOrClause(labels));
+                        forSampleSet ? "may only" : "can",
+                        buildAndClause(labels));
     }
 
     // "Samples may only be used for research at institutions in North America, Europe, or South America."
-    private String buildGeographyClause(boolean useMay, UseRestriction r) {
+    private String buildGeographyClause(boolean forSampleSet, UseRestriction r) {
         Set<String> labels = findLabeledTypedClasses("geography", r);
 
         return labels.isEmpty() ? null
                 : String.format("%s be used for research at institutions in %s",
-                        useMay ? "may only" : "can",
+                        forSampleSet ? "may only" : "can",
                         buildOrClause(labels));
     }
 
     // "Samples may not be used for commercial purposes."
-    private String buildNonProfitClause(boolean useMay, UseRestriction r) {
+    private String buildNonProfitClause(boolean forSampleSet, UseRestriction r) {
         if (hasTypedClass("commercial", r)) {
-            return useMay ? "may not be used for commercial purposes" : null;
+            return forSampleSet ? "may not be used for commercial purposes" : null;
         } else {
-            return useMay ? null : "can be used for commercial purposes";
+            return forSampleSet ? null : "can be used for commercial purposes";
         }
     }
+    
+    // "Samples may not be used for commercial purposes."
+    private String buildResearchTypeClause(boolean useMay, UseRestriction r) {
+        if (hasTypedClass("research_type", r)) {
+            return useMay ? "may be used for methods research purposes" : null;
+        } else {
+            return useMay ? null : "can be used for aggregate_research purposes";
+        }
+    }    
 
     // "Samples may only be used for the purpose of studying breast cancer, thyroid cancer, or diabetes."
     private String buildDiseaseClause(boolean useMay, UseRestriction r) {
@@ -226,6 +239,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             return "population";
         }
 
+        OntClass research_type = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/research_type");
+        if (cls.hasSuperClass(research_type)) {
+            return "research_type";
+        }
         return null;
     }
 
@@ -290,11 +307,11 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         this.namedClassTypes = new ConcurrentHashMap<>();
         try {
             model = ontologyList.getModel();
-        } catch (IOException ex) {
-            Logger.getLogger(TextTranslationServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (OWLOntologyCreationException ex) {
+        } catch (IOException | OWLOntologyCreationException ex) {
             Logger.getLogger(TextTranslationServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
+//        ((PelletInfGraph) model.getGraph()).classify();
+        
 //        ((PelletInfGraph) model.getGraph()).classify();
     }
 
