@@ -1,6 +1,6 @@
 # Consent Ontology Services
 
-This repository contains maintains all ontology-related services
+This repository contains all ontology-related services
 
 ## Building and Running
 
@@ -50,7 +50,7 @@ An array of responses:
 ### Example:
 
 ```
-curl -v -k -X GET -H 'Accept: application/json' https://consent-autocomplete-ci.broadinstitute.org/autocomplete?q=heart%20disease
+curl -v -k -X GET -H 'Accept: application/json' https://consent-ontology.dsde-dev.broadinstitute.org/autocomplete?q=heart%20disease
 ```
 
 ### Response:
@@ -99,7 +99,9 @@ POST /translate
 ### Request Parameters:
 
 Request Header: Accept application/json
+
 Request Header: Content-type application/json
+
 Request Body: Use Restriction Resource in json format
 
 ### Query Parameters:
@@ -118,9 +120,9 @@ Request Body: Use Restriction Resource in json format
 ### Response Body:
 Plain text response
 
-### Example:
+### Example (Sampleset):
 ```
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ci.broadinstitute.org/translate?for=sampleset -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ontology.dsde-dev.broadinstitute.org/translate?for=sampleset -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
 ```
 
 ### Response:
@@ -143,9 +145,13 @@ curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/j
 <
 * Connection #0 to host consent-ci.broadinstitute.org left intact
 Samples may only be used for the purpose of studying leukemia.
-Example:
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ci.broadinstitute.org/translate?for=purpose -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
-Response:
+```
+### Example (Purpose):
+```
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ontology.dsde-dev.broadinstitute.org/translate?for=purpose -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
+```
+### Response:
+```
 > POST /translate?for=purpose HTTP/1.1
 > User-Agent: curl/7.30.0
 > Host: consent-ci.broadinstitute.org
@@ -164,6 +170,61 @@ Response:
 <
 * Connection #0 to host consent-ci.broadinstitute.org left intact
 Any sample which can be used for the purpose of studying leukemia. In addition, those samples can be used for commercial purposes.
+```
+
+## Match Service
+
+The Match service will render a response of **true** or **false** between a Consent and a Research Purpose.
+
+### Endpoint:
+```
+POST /match
+```
+
+### Request Parameters:
+
+Request Header: Accept application/json
+
+Request Header: Content-type application/json
+
+Request Body: Consent and Purpose Use Restrictions in json format
+
+
+### Response Messages:
+| HTTP Status | Reason |
+| ----------- | ------ |
+| 200         | Successful matching |
+| 500         | Internal Server Error or malformed purpose/consent |
+
+### Response Body:
+Json response
+
+### Example:
+```
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept:application/json' https://consent-ontology.dsde-dev.broadinstitute.org/match -d '{"purpose":{ "type":"and", "operands":[ {   "type":"named", "name":"http://www.broadinstitute.org/ontologies/DURPO/methods_research"  }, { "type":"named", "name":"http://purl.obolibrary.org/obo/DOID162" }, {   "type":"named",    "name":"http://www.broadinstitute.org/ontologies/DURPO/Non_profit"   }  ] }, "consent":{  "type":"and",  "operands":[ {   "type":"named",  "name":"http://www.broadinstitute.org/ontologies/DURPONon_profit"  } ] }}'
+```
+
+### Response:
+```
+> POST /match HTTP/1.1
+> User-Agent: curl/7.35.0
+> Host: consent-ontology.dsde-dev.broadinstitute.org
+> Content-type: application/json
+> Accept:application/json
+> Content-Length: 441
+> 
+* upload completely sent off: 441 out of 441 bytes
+< HTTP/1.1 200 OK
+< Date: Wed, 09 Dec 2015 17:19:37 GMT
+* Server Apache/2.4.7 (Ubuntu) is not blacklisted
+< Server: Apache/2.4.7 (Ubuntu)
+< Content-Type: application/json
+< Content-Length: 428
+< Access-Control-Allow-Origin: *
+< Access-Control-Allow-Headers: authorization, content-type, accept, origin
+< Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD
+< 
+{"result":false,"matchPair":{"purpose":{"type":"and","operands":[{"type":"named","name":"http://www.broadinstitute.org/ontologies/DURPO/methods_research"},{"type":"named","name":"http://purl.obolibrary.org/obo/DOID162"},{"type":"named","name":"http://www.broadinstitute.org/ontologies/DURPO/Non_profit"}]},"consent":{"type":"and","operands":[{"type":"named","name":"http://www.broadinstitute.org/ontologies/DURPONon_profit"}]}}}
 ```
 
 ## Configuration
