@@ -1,0 +1,19 @@
+{{with $environment := env "ENVIRONMENT"}}{{$keyname := printf "secret/dsde/consent/%s/consent-ontology/consent-ontology.conf" $environment}}{{with vault $keyname}}
+server:
+  adminConnectors:
+    - type: http
+      port: 8181
+  applicationConnectors:
+    - type: http
+      port: 8180
+logging:
+  level: INFO
+elasticSearch:
+  servers: ["{{.Data.es_servers}}"]
+  clusterName: "{{.Data.es_cluster_name}}"
+  index: ontology
+cors:
+  allowedDomains: "{{.Data.cors_allowed_domains}}" 
+
+{{end}}
+{{end}}
