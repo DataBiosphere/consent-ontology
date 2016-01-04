@@ -28,7 +28,8 @@
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
-     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:oboInOwl="http://www.geneontology.org/formats/oboInOwl#">
     <owl:Ontology rdf:about="http://www.broadinstitute.org/ontologies/DURPO">
         <rdfs:label rdf:datatype="&xsd;string">Data-Use Restrictions and Research Purpose Ontology</rdfs:label>
     </owl:Ontology>
@@ -78,6 +79,7 @@
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/methods_research">
         <rdfs:label rdf:datatype="&xsd;string">Methods Research</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/research_type"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000052</oboInOwl:id>        
     </owl:Class>
 
 
@@ -87,6 +89,7 @@
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/aggregate_research">
         <rdfs:label rdf:datatype="&xsd;string">Aggregate Research</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/research_type"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000051</oboInOwl:id>        
     </owl:Class>
 
 
@@ -180,6 +183,7 @@
         <rdfs:label rdf:datatype="&xsd;string">For profit</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/Commercial_Status"/>
         <owl:disjointWith rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/Non_profit"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000042</oboInOwl:id>        
     </owl:Class>
     
 
@@ -216,6 +220,7 @@
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/Non_profit">
         <rdfs:label rdf:datatype="&xsd;string">Nonprofit</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/Commercial_Status"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000041</oboInOwl:id>        
     </owl:Class>
     
 
@@ -280,6 +285,7 @@
         <rdfs:label rdf:datatype="&xsd;string">children</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/population"/>
         <rdfs:comment rdf:datatype="&xsd;string">&apos;children&apos; here means &apos;children under the age of 18&apos;.</rdfs:comment>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000031</oboInOwl:id>        
     </owl:Class>
     
 
@@ -320,6 +326,7 @@
         <rdfs:label rdf:datatype="&xsd;string">male</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/population"/>
         <owl:disjointWith rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/female"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000021</oboInOwl:id>        
     </owl:Class>
     
    <!-- http://www.broadinstitute.org/ontologies/DURPO/boys -->
@@ -327,12 +334,15 @@
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/boys">
         <rdfs:label rdf:datatype="&xsd;string">boys under 18 years old</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/male"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000022</oboInOwl:id>        
     </owl:Class>
 
     <!-- http://www.broadinstitute.org/ontologies/DURPO/population -->
 
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/population"/>
     
+    <!-- http://www.broadinstitute.org/ontologies/DURPO/dataset_usage -->
+    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/dataset_usage"/>
 
 
     <!-- http://www.broadinstitute.org/ontologies/DURPO/female -->
@@ -340,6 +350,7 @@
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/female">
         <rdfs:label rdf:datatype="&xsd;string">female</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/population"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000023</oboInOwl:id>        
     </owl:Class>
     
    <!-- http://www.broadinstitute.org/ontologies/DURPO/girls -->
@@ -347,18 +358,23 @@
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/girls">
         <rdfs:label rdf:datatype="&xsd;string">girls under 18 years old</rdfs:label>
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/female"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000024</oboInOwl:id>        
     </owl:Class>
 
    <!-- http://www.broadinstitute.org/ontologies/DURPO/control -->
 
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/control">
-        <rdfs:label rdf:datatype="&xsd;string">Dataset can be used as a control set</rdfs:label>
+        <rdfs:label rdf:datatype="&xsd;string">be used as a control set</rdfs:label>
+       <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/dataset_usage"/>        
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000012</oboInOwl:id>
     </owl:Class>
 
    <!-- http://www.broadinstitute.org/ontologies/DURPO/population_structure -->
 
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/population_structure">
-        <rdfs:label rdf:datatype="&xsd;string">Dataset can be used to study the genetic structure of a population or characterize the normal variation in the population</rdfs:label>
+        <rdfs:label rdf:datatype="&xsd;string">be used to study the genetic structure of a population or characterize the normal variation in the population</rdfs:label>
+        <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/dataset_usage"/>
+        <oboInOwl:id rdf:datatype="http://www.w3.org/2001/XMLSchema#string">DURPO:000011</oboInOwl:id>
     </owl:Class>
 
 

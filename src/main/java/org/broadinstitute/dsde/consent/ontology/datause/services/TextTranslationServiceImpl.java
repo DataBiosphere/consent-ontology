@@ -54,25 +54,33 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         boolean forSampleSet = translateFor.equals("sampleset");
 
         String disease = buildDiseaseClause(forSampleSet, restriction);
-        String geography = buildGeographyClause(forSampleSet, restriction);
-        String population = buildPopulationClause(forSampleSet, restriction);
-        String commercial = buildNonProfitClause(forSampleSet, restriction);
-        String research_type = buildResearchTypeClause(forSampleSet, restriction);
-
         if (disease != null) {
             clauses.add(disease);
         }
+
+        String geography = buildGeographyClause(forSampleSet, restriction);
         if (geography != null) {
             clauses.add(geography);
         }
+
+        String population = buildPopulationClause(forSampleSet, restriction);
         if (population != null) {
             clauses.add(population);
         }
+
+        String commercial = buildNonProfitClause(forSampleSet, restriction);
         if (commercial != null) {
             clauses.add(commercial);
         }
+
+        String research_type = buildResearchTypeClause(forSampleSet, restriction);
         if (research_type != null) {
             clauses.add(research_type);
+        }
+
+        String dataset_usage = buildDataSetUsageClause(forSampleSet, restriction);
+        if (dataset_usage != null) {
+            clauses.add(dataset_usage);
         }
 
         if (clauses.isEmpty()) {
@@ -125,7 +133,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             return forSampleSet ? null : "can be used for commercial purposes";
         }
     }
-    
+
     // "Samples may not be used for commercial purposes."
     private String buildResearchTypeClause(boolean useMay, UseRestriction r) {
         if (hasTypedClass("research_type", r)) {
@@ -133,11 +141,25 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         } else {
             return useMay ? null : "can be used for aggregate_research purposes";
         }
-    }    
+    }
 
     // "Samples may only be used for the purpose of studying breast cancer, thyroid cancer, or diabetes."
     private String buildDiseaseClause(boolean useMay, UseRestriction r) {
         Set<String> labels = findLabeledTypedClasses("disease", r);
+        String diseaseNames;
+
+        if (labels.isEmpty()) {
+            return null;
+        } else {
+            diseaseNames = buildOrClause(labels);
+        }
+
+        return String.format("%s be used for the purpose of studying %s", useMay ? "may only" : "can", diseaseNames);
+    }
+
+    // "Samples may only be used for the purpose of studying breast cancer, thyroid cancer, or diabetes."
+    private String buildDataSetUsageClause(boolean useMay, UseRestriction r) {
+        Set<String> labels = findLabeledTypedClasses("organization", r);
         String diseaseNames;
 
         if (labels.isEmpty()) {
@@ -243,6 +265,11 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         if (cls.hasSuperClass(research_type)) {
             return "research_type";
         }
+
+        OntClass dataset_usage = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/dataset_usage");
+        if (cls.hasSuperClass(dataset_usage)) {
+            return "dataset_usage";
+        }
         return null;
     }
 
@@ -311,7 +338,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             Logger.getLogger(TextTranslationServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
 //        ((PelletInfGraph) model.getGraph()).classify();
-        
+
 //        ((PelletInfGraph) model.getGraph()).classify();
     }
 
