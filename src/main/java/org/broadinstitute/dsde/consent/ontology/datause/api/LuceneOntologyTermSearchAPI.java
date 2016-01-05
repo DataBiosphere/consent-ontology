@@ -110,9 +110,9 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                     Set<OWLAnnotation> ids = owlClass.getAnnotations(ontology, annotationProperties.get("id"));
                     if (ids.size() == 1) {
                         String id = ids.iterator().next().getValue().accept(visitor);
-                        if (!TextTranslationServiceImpl.isDiseaseClass(id)) {
-                            continue;
-                        }
+//                        if (!TextTranslationServiceImpl.isDiseaseClass(id)) {
+//                            continue;
+//                        }
                     }
 
                     Set<OWLAnnotation> defs = owlClass.getAnnotations(ontology, def);
