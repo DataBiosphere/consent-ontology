@@ -160,15 +160,15 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     // "Samples may only be used for the purpose of studying breast cancer, thyroid cancer, or diabetes."
     private String buildDataSetUsageClause(boolean useMay, UseRestriction r) {
         Set<String> labels = findLabeledTypedClasses("organization", r);
-        String diseaseNames;
+        String usages;
 
         if (labels.isEmpty()) {
             return null;
         } else {
-            diseaseNames = buildOrClause(labels);
+            usages = buildOrClause(labels);
         }
 
-        return String.format("%s be used for the purpose of studying %s", useMay ? "may only" : "can", diseaseNames);
+        return String.format("%s %s", useMay ? "may only" : "can", usages);
     }
 
     private String buildOrClause(Collection<String> labels) {
