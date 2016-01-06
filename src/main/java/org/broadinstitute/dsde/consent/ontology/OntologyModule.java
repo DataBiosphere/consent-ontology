@@ -5,6 +5,7 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import io.dropwizard.setup.Environment;
+import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
@@ -22,7 +23,8 @@ import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
 
 public class OntologyModule extends AbstractModule {
-
+    private static Logger LOG = Logger.getLogger(OntologyModule.class);
+    
     @Override
     protected void configure() {
         bind(OntologyModel.class).to(OntologyList.class).in(Scopes.SINGLETON);
@@ -39,6 +41,7 @@ public class OntologyModule extends AbstractModule {
         TransportClient client = new TransportClient(ImmutableSettings.settingsBuilder()
                 .put("cluster.name", config.clusterName));
         for (String address : config.servers) {
+            LOG.debug("Elastic search server : " + address);
             int colon = address.indexOf(':');
             int port = 9300;
             String server = address;
