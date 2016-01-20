@@ -10,8 +10,6 @@ import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSe
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
-import org.broadinstitute.dsde.consent.ontology.datause.ontology.TranslationHelper;
-import org.broadinstitute.dsde.consent.ontology.datause.ontology.TranslationHelperImpl;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
@@ -30,11 +28,9 @@ public class OntologyModule extends AbstractModule {
         bind(OntologyModel.class).to(OntologyList.class).in(Scopes.SINGLETON);
         bind(OntologyTermSearchAPI.class).to(LuceneOntologyTermSearchAPI.class).in(Scopes.SINGLETON);
         bind(TextTranslationService.class).to(TextTranslationServiceImpl.class).in(Scopes.SINGLETON);
-        bind(TranslationHelper.class).to(TranslationHelperImpl.class).in(Scopes.SINGLETON);
-       
+
         bind(OntologyTermSearchAPI.class).in(Singleton.class);
         bind(TextTranslationService.class).in(Singleton.class);
-        bind(TranslationHelper.class).in(Singleton.class);        
     }
 
     private Client getClient(ElasticSearchConfiguration config) {

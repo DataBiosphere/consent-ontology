@@ -18,7 +18,6 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
-import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 
@@ -32,6 +31,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel
 public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
 
     private static final String FIELD_ID = "id";
+    private static final String FIELD_COMMENT = "comment";
     private static final String FIELD_LABEL = "label";
     private static final String FIELD_DEFINITION = "definition";
     private static final String FIELD_SYNONYM = "synonym";
@@ -39,7 +39,6 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
     private IndexSearcher searcher;
     private Analyzer analyzer;
     private Map<String, OntologyTerm> nameToTerm;
-    private OntologyModel ontologyList;
 
     public LuceneOntologyTermSearchAPI() {
 
@@ -63,13 +62,10 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                 });
 
                 OWLAnnotationProperty hasExactSynonym = annotationProperties.get("hasExactSynonym");
-                //assert hasExactSynonym != null : "Need hasExactSynonym annotation property.";
                 OWLAnnotationProperty label = annotationProperties.get("label");
-                //assert label != null : "Need label annotation property";
+                OWLAnnotationProperty comment = annotationProperties.get("comment");
                 OWLAnnotationProperty def = annotationProperties.get(FIELD_DEFINITION_CLASS);
-                //assert def != null : "Need def annotation property";
                 OWLAnnotationProperty deprecated = annotationProperties.get("deprecated");
-                //assert deprecated != null : "Need deprecated annotation property";
 
                 for (OWLClass owlClass : ontology.getClassesInSignature()) {
                     OWLAnnotationValueVisitorEx<String> visitor = new OWLAnnotationValueVisitorEx<String>() {
@@ -105,14 +101,10 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                         document.add(new TextField(FIELD_LABEL, labels.iterator().next().getValue().accept(visitor), Field.Store.YES));
                     }
 
-                    // Do not index unless this term is a disease. We check to see if it has a field "id" and
-                    // if that id matches the isDiseaseClass() method in TextTranslationServiceImpl
-                    Set<OWLAnnotation> ids = owlClass.getAnnotations(ontology, annotationProperties.get("id"));
-                    if (ids.size() == 1) {
-                        String id = ids.iterator().next().getValue().accept(visitor);
-//                        if (!TextTranslationServiceImpl.isDiseaseClass(id)) {
-//                            continue;
-//                        }
+                    Set<OWLAnnotation> comments = owlClass.getAnnotations(ontology, comment);
+                    assert comments.size() <= 1 : "Exactly 0 or 1 comments allowed per class";
+                    if (comments.size() == 1) {
+                        document.add(new TextField(FIELD_COMMENT, comments.iterator().next().getValue().accept(visitor), Field.Store.YES));
                     }
 
                     Set<OWLAnnotation> defs = owlClass.getAnnotations(ontology, def);
@@ -125,6 +117,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                     nameToTerm.put(document.get(FIELD_ID),
                             new OntologyTerm(
                                     document.get(FIELD_ID),
+                                    document.get(FIELD_COMMENT),
                                     document.get(FIELD_LABEL),
                                     document.get(FIELD_DEFINITION),
                                     document.getValues(FIELD_SYNONYM)));
@@ -164,6 +157,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
     public List<OntologyTerm> searchSimilarTerms(String search, int limit) throws IOException {
         List<Query> queries = new ArrayList<>();
         queries.add(queryFor(FIELD_ID, search, 2.0f));
+        queries.add(queryFor(FIELD_COMMENT, search, 1.5f));
         queries.add(queryFor(FIELD_LABEL, search, 1.5f));
         queries.add(queryFor(FIELD_SYNONYM, search, 0.5f));
         Query orQuery = new DisjunctionMaxQuery(queries, 1.15f);
@@ -175,6 +169,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
 
             terms.add(new OntologyTerm(
                     doc.get(FIELD_ID),
+                    doc.get(FIELD_COMMENT),
                     doc.get(FIELD_LABEL),
                     doc.get(FIELD_DEFINITION),
                     doc.getValues(FIELD_SYNONYM)));
@@ -189,8 +184,6 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
 
     @Inject
     public void setOntologyList(OntologyModel ontologyList) {
-        this.ontologyList = ontologyList;
-
         try {
             Collection<String> resources = ontologyList.getResources();
             Iterator<String> resourceIter = resources.iterator();

@@ -1,9 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology;
 
-import java.io.IOException;
-import org.broadinstitute.dsde.consent.ontology.datause.ontology.TranslationHelper;
+import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 
-public class MockTranslationHelper implements TranslationHelper {
+import java.io.IOException;
+
+public class MockTranslationHelper implements TextTranslationService {
 
     @Override
     public String translateSample(String restrictionStr) throws IOException {
@@ -14,4 +15,5 @@ public class MockTranslationHelper implements TranslationHelper {
     public String translatePurpose(String restrictionStr) throws IOException {
         return "translated purpose";  
     }
+
 }

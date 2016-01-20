@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
+import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
+
+import java.io.IOException;
 
 public class Named extends UseRestriction {
 
@@ -50,4 +53,11 @@ public class Named extends UseRestriction {
     public boolean visitAndContinue(UseRestrictionVisitor visitor) {
         return true;
     }
+
+    @JsonIgnore
+    public String getDescriptiveLabel(OntologyTermSearchAPI api) throws IOException {
+        OntologyTerm term = api.findById(getName());
+        return (term.getComment() == null) ? capitalize(term.getLabel()) : capitalize(term.getComment());
+    }
+
 }
