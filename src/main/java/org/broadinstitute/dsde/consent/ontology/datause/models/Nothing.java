@@ -5,6 +5,9 @@ import com.google.common.base.Objects;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.vocabulary.OWL;
+import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
+
+import java.io.IOException;
 
 public class Nothing extends UseRestriction {
 
@@ -36,4 +39,10 @@ public class Nothing extends UseRestriction {
     public boolean visitAndContinue(UseRestrictionVisitor visitor) {
         return true;
     }
+
+    @JsonIgnore
+    public String getDescriptiveLabel(OntologyTermSearchAPI api) throws IOException {
+        return "Nothing";
+    }
+
 }

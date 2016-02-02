@@ -134,12 +134,12 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         }
     }
 
-    // "Samples may not be used for commercial purposes."
+    // "Samples may not be used for methods research purposes."
     private String buildResearchTypeClause(boolean useMay, UseRestriction r) {
         if (hasTypedClass("research_type", r)) {
             return useMay ? "may be used for methods research purposes" : null;
         } else {
-            return useMay ? null : "can be used for aggregate_research purposes";
+            return useMay ? null : "can be used for methods research purposes";
         }
     }
 
@@ -337,9 +337,6 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         } catch (IOException | OWLOntologyCreationException ex) {
             Logger.getLogger(TextTranslationServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
         }
-//        ((PelletInfGraph) model.getGraph()).classify();
-
-//        ((PelletInfGraph) model.getGraph()).classify();
     }
 
 }

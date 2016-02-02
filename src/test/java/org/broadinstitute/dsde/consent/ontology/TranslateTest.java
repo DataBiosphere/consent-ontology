@@ -1,20 +1,19 @@
 package org.broadinstitute.dsde.consent.ontology;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
-import java.io.IOException;
+import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
+import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import org.broadinstitute.dsde.consent.ontology.datause.ontology.TranslationHelper;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
-import org.mockito.InjectMocks;
 
 public class TranslateTest {
 
@@ -28,7 +27,7 @@ public class TranslateTest {
     
     @BeforeClass
     public static void testInTempFolder() throws IOException {
-        TranslationHelper mockTranslationHelper = new MockTranslationHelper();
+        TextTranslationService mockTranslationHelper = new MockTranslationHelper();
         translateResource.setHelper(mockTranslationHelper);
     }
 
