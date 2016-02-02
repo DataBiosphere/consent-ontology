@@ -15,20 +15,31 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
 
     private UseRestriction darAAC = new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis");
 
-
+    // Combined example from OD-329
     private UseRestriction dulUC1 = new Or(
-        new Named("http://purl.obolibrary.org/obo/DOID_162"),
-        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis")
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
     );
 
+    // Combined example from OD-333
     private UseRestriction dulUC2 = new Or(
-        new Named("http://purl.obolibrary.org/obo/DOID_162"),
-        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis")
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
     );
 
+    // Combined example from OD-333
     private UseRestriction dulUC3 = new Or(
-        new Named("http://purl.obolibrary.org/obo/DOID_162"),
-        new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"))
+        new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis")),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
     );
 
     @Test
