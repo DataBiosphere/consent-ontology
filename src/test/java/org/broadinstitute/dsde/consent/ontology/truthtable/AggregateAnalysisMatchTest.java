@@ -11,24 +11,57 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         new Named("http://purl.obolibrary.org/obo/DOID_162")
     );
 
+    private UseRestriction darDefaultAAA = new And(
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/control")),
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162"),
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/Non_profit"));
+
     private UseRestriction darAAB = new Named("http://purl.obolibrary.org/obo/DOID_162");
+
+    private UseRestriction darDefaultAAB = new And(
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/control")),
+            new Named("http://purl.obolibrary.org/obo/DOID_162"),
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/Non_profit"));
 
     private UseRestriction darAAC = new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis");
 
+    private UseRestriction darDefaultAAC = new And(
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
+            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/control")),
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/Non_profit"));
 
+    // Combined example from OD-329
     private UseRestriction dulUC1 = new Or(
-        new Named("http://purl.obolibrary.org/obo/DOID_162"),
-        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis")
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
     );
 
+    // Combined example from OD-333
     private UseRestriction dulUC2 = new Or(
-        new Named("http://purl.obolibrary.org/obo/DOID_162"),
-        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis")
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
     );
 
+    // Combined example from OD-333
     private UseRestriction dulUC3 = new Or(
-        new Named("http://purl.obolibrary.org/obo/DOID_162"),
-        new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"))
+        new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis")),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
     );
 
     @Test
@@ -40,6 +73,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAA, dulUC1);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+    @Test
+    public void testDefaultAggregateAnalysisA_UC1() {
+
+        // Testing the case where:
+        // DAR is yes aggregate, yes cancer and non profit. Not controls, population and methods
+        // DUL is yes cancer
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAA, dulUC1);
         assertResponse(getResponseFuture(pair), true);
     }
 
@@ -56,6 +101,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
     }
 
     @Test
+    public void testDefaultAggregateAnalysisA_UC2() {
+
+        // Testing the case where:
+        // DAR is yes cancer, yes aggregate  and non profit. Not controls, population and methods
+        // DUL is yes cancer, yes aggregate
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAA, dulUC2);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+    @Test
     public void testAggregateAnalysisA_UC3() {
 
         // Testing the case where:
@@ -64,6 +121,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAA, dulUC3);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+    @Test
+    public void testDefaultAggregateAnalysisA_UC3() {
+
+        // Testing the case where:
+        // DAR is yes cancer, yes aggregate  and non profit. Not controls, population and methods
+        // DUL is yes cancer, no aggregate analysis (i.e., outside of cancer)
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAA, dulUC3);
         assertResponse(getResponseFuture(pair), true);
     }
 
@@ -80,6 +149,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
     }
 
     @Test
+    public void testDefaultAggregateAnalysisB_UC1() {
+
+        // Testing the case where:
+        // DAR is yes cancer and non profit. Not controls, population and methods
+        // DUL is yes cancer
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAB, dulUC1);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+    @Test
     public void testAggregateAnalysisB_UC2() {
 
         // Testing the case where:
@@ -88,6 +169,20 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAB, dulUC2);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+
+
+    @Test
+    public void testDefaultAggregateAnalysisB_UC2() {
+
+        // Testing the case where:
+        // DAR is yes cancer and non profit. Not controls, population and methods
+        // DUL is yes cancer, yes aggregate
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAB, dulUC2);
         assertResponse(getResponseFuture(pair), true);
     }
 
@@ -104,6 +199,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
     }
 
     @Test
+    public void testDefaultAggregateAnalysisB_UC3() {
+
+        // Testing the case where:
+        // DAR is yes cancer and non profit. Not controls, population and methods
+        // DUL is yes cancer, no aggregate analysis (i.e., outside of cancer) and non profit.
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAB, dulUC3);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+    @Test
     public void testAggregateAnalysisC_UC1() {
 
         // Testing the case where:
@@ -112,6 +219,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAC, dulUC1);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+    @Test
+    public void testDefaultAggregateAnalysisC_UC1() {
+
+        // Testing the case where:
+        // DAR is aggregate research and non profit. Not controls, population and methods
+        // DUL is yes cancer
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAC, dulUC1);
         assertResponse(getResponseFuture(pair), true);
     }
 
@@ -128,6 +247,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
     }
 
     @Test
+    public void testDefaultAggregateAnalysisC_UC2() {
+
+        // Testing the case where:
+        // DAR is aggregate research and non profit. Not controls, population and methods
+        // DUL is yes cancer, yes aggregate
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAC, dulUC2);
+        assertResponse(getResponseFuture(pair), true);
+    }
+
+    @Test
     public void testAggregateAnalysisC_UC3() {
 
         // Testing the case where:
@@ -136,6 +267,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAC, dulUC3);
+        assertResponse(getResponseFuture(pair), false);
+    }
+
+    @Test
+    public void testDefaultAggregateAnalysisC_UC3() {
+
+        // Testing the case where:
+        // DAR is aggregate research and non profit. Not controls, population and methods
+        // DUL is yes cancer, no aggregate analysis (i.e., outside of cancer)
+        // Response should be positive
+
+        MatchPair pair = new MatchPair(darDefaultAAC, dulUC3);
         assertResponse(getResponseFuture(pair), false);
     }
 
