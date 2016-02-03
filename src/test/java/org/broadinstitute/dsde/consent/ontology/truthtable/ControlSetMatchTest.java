@@ -18,17 +18,44 @@ public class ControlSetMatchTest extends TruthTableTests {
 
     private UseRestriction darCSC = new Named("http://www.broadinstitute.org/ontologies/DURPO/control");
 
+    // Combined example from OD-329
+    private UseRestriction dulUC1 = new Or(
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
+    );
 
-    private UseRestriction dulUC1 = new Named("http://purl.obolibrary.org/obo/DOID_162");
-
+    // Combined example from OD-335
     private UseRestriction dulUC2 = new Or(
-        new Named("http://purl.obolibrary.org/obo/DOID_162"),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+            new Or(
+                new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+                new Named("http://purl.obolibrary.org/obo/DOID_162")
+            )
+        ),
         new And(
-            new Named("http://purl.obolibrary.org/obo/DOID_162"),
+            new Or(
+                new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+                new Or(
+                    new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+                    new Named("http://purl.obolibrary.org/obo/DOID_162")
+                )
+            ),
             new Named("http://www.broadinstitute.org/ontologies/DURPO/control")
-    ));
+        )
+    );
 
-    private UseRestriction dulUC3 = new Named("http://purl.obolibrary.org/obo/DOID_162");
+    // Combined example from OD-336
+    private UseRestriction dulUC3 = new Or(
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"),
+        new Or(
+            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"),
+            new Named("http://purl.obolibrary.org/obo/DOID_162")
+        )
+    );
 
 
     @Test
