@@ -12,9 +12,11 @@ public class ControlSetMatchTest extends TruthTableTests {
     );
 
     private UseRestriction darDefaultCSA = new And(
-            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
-            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/control"),
+            new And(
+                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
+                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
+                new Named("http://www.broadinstitute.org/ontologies/DURPO/control")
+            ),
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named("http://www.broadinstitute.org/ontologies/DURPO/Non_profit")
 
@@ -23,9 +25,11 @@ public class ControlSetMatchTest extends TruthTableTests {
     private UseRestriction darCSB = new Named("http://purl.obolibrary.org/obo/DOID_162");
 
     private UseRestriction darDefaultCSB = new And(
-            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
-            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
-            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/control")),
+            new And(
+                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
+                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
+                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/control"))
+            ),
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named("http://www.broadinstitute.org/ontologies/DURPO/Non_profit")
     );
@@ -33,9 +37,11 @@ public class ControlSetMatchTest extends TruthTableTests {
     private UseRestriction darCSC = new Named("http://www.broadinstitute.org/ontologies/DURPO/control");
 
     private UseRestriction darDefaultCSC = new And(
-            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
-            new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/control"),
+            new And(
+                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")),
+                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/population")),
+                new Named("http://www.broadinstitute.org/ontologies/DURPO/control")
+            ),
             new Named("http://www.broadinstitute.org/ontologies/DURPO/Non_profit")
     );
 
