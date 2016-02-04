@@ -339,10 +339,6 @@
     <!-- http://www.broadinstitute.org/ontologies/DURPO/population -->
 
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/population"/>
-    
-    <!-- http://www.broadinstitute.org/ontologies/DURPO/dataset_usage -->
-    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/dataset_usage"/>
-
 
     <!-- http://www.broadinstitute.org/ontologies/DURPO/female -->
 
@@ -361,7 +357,10 @@
         <rdfs:subClassOf rdf:resource="http://www.broadinstitute.org/ontologies/DURPO/children"/>
     </owl:Class>
 
-   <!-- http://www.broadinstitute.org/ontologies/DURPO/control -->
+    <!-- http://www.broadinstitute.org/ontologies/DURPO/dataset_usage -->
+    <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/dataset_usage"/>
+
+    <!-- http://www.broadinstitute.org/ontologies/DURPO/control -->
 
     <owl:Class rdf:about="http://www.broadinstitute.org/ontologies/DURPO/control">
         <rdfs:label rdf:datatype="&xsd;string">Control Set</rdfs:label>
