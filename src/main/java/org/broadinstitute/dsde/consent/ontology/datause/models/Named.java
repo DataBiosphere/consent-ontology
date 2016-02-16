@@ -57,7 +57,10 @@ public class Named extends UseRestriction {
     @JsonIgnore
     public String getDescriptiveLabel(OntologyTermSearchAPI api) throws IOException {
         OntologyTerm term = api.findById(getName());
-        return (term.getComment() == null) ? capitalize(term.getLabel()) : capitalize(term.getComment());
+        if (getName().toLowerCase().contains("www.broadinstitute.org")) {
+            return (term.getComment() == null) ? capitalize(term.getLabel()) : capitalize(term.getComment());
+        }
+        return capitalize(term.getLabel());
     }
 
 }
