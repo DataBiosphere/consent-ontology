@@ -50,7 +50,7 @@ An array of responses:
 ### Example:
 
 ```
-curl -v -k -X GET -H 'Accept: application/json' https://consent-ontology.dsde-dev.broadinstitute.org/autocomplete?q=heart%20disease
+curl -v -k -X GET -H 'Accept: application/json' https://consent-ontology.dsde-consent-dev.broadinstitute.org/autocomplete?q=heart%20disease
 ```
 
 ### Response:
@@ -122,7 +122,7 @@ Plain text response
 
 ### Example (Sampleset):
 ```
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ontology.dsde-dev.broadinstitute.org/translate?for=sampleset -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ontology.dsde-consent-dev.broadinstitute.org/translate?for=sampleset -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
 ```
 
 ### Response:
@@ -148,7 +148,7 @@ Samples may only be used for the purpose of studying leukemia.
 ```
 ### Example (Purpose):
 ```
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ontology.dsde-dev.broadinstitute.org/translate?for=purpose -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept: application/json' https://consent-ontology.dsde-consent-dev.broadinstitute.org/translate?for=purpose -d '{"type":"named","name": "http://purl.obolibrary.org/obo/DOID_1240"}'
 ```
 ### Response:
 ```
@@ -201,14 +201,14 @@ Json response
 
 ### Example:
 ```
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept:application/json' https://consent-ontology.dsde-dev.broadinstitute.org/match -d '{"purpose":{ "type":"and", "operands":[ {   "type":"named", "name":"http://www.broadinstitute.org/ontologies/DURPO/methods_research"  }, { "type":"named", "name":"http://purl.obolibrary.org/obo/DOID162" }, {   "type":"named",    "name":"http://www.broadinstitute.org/ontologies/DURPO/Non_profit"   }  ] }, "consent":{  "type":"and",  "operands":[ {   "type":"named",  "name":"http://www.broadinstitute.org/ontologies/DURPONon_profit"  } ] }}'
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept:application/json' https://consent-ontology.dsde-consent-dev.broadinstitute.org/match -d '{"purpose":{ "type":"and", "operands":[ {   "type":"named", "name":"http://www.broadinstitute.org/ontologies/DURPO/methods_research"  }, { "type":"named", "name":"http://purl.obolibrary.org/obo/DOID162" }, {   "type":"named",    "name":"http://www.broadinstitute.org/ontologies/DURPO/Non_profit"   }  ] }, "consent":{  "type":"and",  "operands":[ {   "type":"named",  "name":"http://www.broadinstitute.org/ontologies/DURPONon_profit"  } ] }}'
 ```
 
 ### Response:
 ```
 > POST /match HTTP/1.1
 > User-Agent: curl/7.35.0
-> Host: consent-ontology.dsde-dev.broadinstitute.org
+> Host: consent-ontology.dsde-consent-dev.broadinstitute.org
 > Content-type: application/json
 > Accept:application/json
 > Content-Length: 441

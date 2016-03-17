@@ -4,6 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
+import org.apache.commons.lang3.StringUtils;
+import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
+
+import java.io.IOException;
 
 public class Not extends UseRestriction {
 
@@ -50,4 +54,10 @@ public class Not extends UseRestriction {
     public boolean visitAndContinue(UseRestrictionVisitor visitor) {
         return visitor.visit(operand);
     }
+
+    @JsonIgnore
+    public String getDescriptiveLabel(OntologyTermSearchAPI api) throws IOException {
+        return "None of the following:\n" + operand.getDescriptiveLabel(api);
+    }
+
 }

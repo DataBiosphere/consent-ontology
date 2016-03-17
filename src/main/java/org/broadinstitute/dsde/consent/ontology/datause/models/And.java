@@ -6,8 +6,14 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.RDFList;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.apache.commons.lang3.StringUtils;
+import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class And extends UseRestriction {
 
@@ -64,4 +70,14 @@ public class And extends UseRestriction {
         }
         return true;
     }
+
+    @JsonIgnore
+    public String getDescriptiveLabel(OntologyTermSearchAPI api) throws IOException {
+        List<String> clauses = Arrays.asList(operands).stream().map(o -> {
+            try { return wrapListItem(o.getDescriptiveLabel(api)); }
+            catch(Exception e) { return wrapListItem(o.toString()); }
+        }).collect(Collectors.toList());
+        return "All of the following:" + wrapList(clauses.stream().collect(Collectors.joining("\n")));
+    }
+
 }
