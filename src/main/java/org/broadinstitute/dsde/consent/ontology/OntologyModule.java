@@ -13,6 +13,8 @@ import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
+import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidateAPI;
+import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidateImpl;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
@@ -26,10 +28,12 @@ public class OntologyModule extends AbstractModule {
     @Override
     protected void configure() {
         bind(OntologyModel.class).to(OntologyList.class).in(Scopes.SINGLETON);
+        bind(UseRestrictionValidateAPI.class).to(UseRestrictionValidateImpl.class).in(Scopes.SINGLETON);
         bind(OntologyTermSearchAPI.class).to(LuceneOntologyTermSearchAPI.class).in(Scopes.SINGLETON);
         bind(TextTranslationService.class).to(TextTranslationServiceImpl.class).in(Scopes.SINGLETON);
 
         bind(OntologyTermSearchAPI.class).in(Singleton.class);
+        bind(UseRestrictionValidateAPI.class).in(Singleton.class);
         bind(TextTranslationService.class).in(Singleton.class);
     }
 
