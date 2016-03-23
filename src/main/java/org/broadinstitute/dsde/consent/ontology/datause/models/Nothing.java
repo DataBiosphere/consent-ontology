@@ -8,6 +8,7 @@ import com.hp.hpl.jena.vocabulary.OWL;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 
 import java.io.IOException;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class Nothing extends UseRestriction {
 

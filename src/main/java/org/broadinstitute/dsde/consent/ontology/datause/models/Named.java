@@ -7,6 +7,7 @@ import com.hp.hpl.jena.ontology.OntModel;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 
 import java.io.IOException;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class Named extends UseRestriction {
 

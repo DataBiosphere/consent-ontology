@@ -3,16 +3,20 @@ package org.broadinstitute.dsde.consent.ontology.datause.services;
 import com.google.inject.Inject;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
-import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
-import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestrictionVisitor;
-
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 

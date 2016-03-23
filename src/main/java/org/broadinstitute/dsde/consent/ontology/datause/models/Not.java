@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 
 import java.io.IOException;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class Not extends UseRestriction {
 
