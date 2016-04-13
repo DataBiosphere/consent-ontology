@@ -4,11 +4,13 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.Set;
+import java.util.stream.Stream;
+
 
 public class OntologyLoader {
 
@@ -37,16 +39,18 @@ public class OntologyLoader {
         assert ontology != null : "Ontology shouldn't be null";
 
         HashMap<String, OWLAnnotationProperty> annotationProperties = new HashMap<>();
-        for (OWLAnnotationProperty property: ontology.getAnnotationPropertiesInSignature()) {
-            annotationProperties.put(property.getIRI().getFragment(), property);
-        }
+        Stream<OWLAnnotationProperty> properties = ontology.annotationPropertiesInSignature();
+        properties.forEach(property -> {
+            annotationProperties.put(property.getIRI().getRemainder().get(), property);
+        });
+
 
         OWLAnnotationProperty label = annotationProperties.get("label");
         assert label != null : "Need label annotation property";
 
         OWLAnnotationProperty deprecated = annotationProperties.get("deprecated");
 
-        for (OWLClass owlClass : ontology.getClassesInSignature()) {
+        ontology.classesInSignature().forEach(owlClass -> {
             /*
             OWLAnnotationValueVisitorEx<String> visitor = new OWLAnnotationValueVisitorEx<String>() {
                 @Override
@@ -67,33 +71,32 @@ public class OntologyLoader {
             */
 
             // Do not load deprecated classes.
-            if (deprecated != null && owlClass.getAnnotations(ontology, deprecated).size() != 0) {
-                continue;
-            }
+            if (!(deprecated != null && EntitySearcher.getAnnotations(owlClass, ontology, deprecated).count() > 0)) {
+                String id = owlClass.toStringID();
+                OntClass ontClass = model.createClass(id);
 
-            String id = owlClass.toStringID();
-            OntClass ontClass = model.createClass(id);
-
-            /*
-            String labelString = null;
-            Set<OWLAnnotation> labels = owlClass.getAnnotations(ontology, label);
-            if(labels.size() >= 1) {
-                labelString = labels.iterator().next().getValue().accept(visitor);
-                LOG.info(String.format("%s (%s)", labelString, id));
-            }
-            */
-
-            Set<OWLClassExpression> superClasses = owlClass.getSuperClasses(ontology);
-            for(OWLClassExpression expr : superClasses) {
-
-                if(expr instanceof OWLClass) {
-
-                    OWLClass cexpr = (OWLClass)expr;
-                    // this ignores some obvious restriction / intersection classes.
-                    OntClass superClass = model.createClass(cexpr.toStringID());
-                    ontClass.addSuperClass(superClass);
+                /*
+                String labelString = null;
+                Set<OWLAnnotation> labels = owlClass.getAnnotations(ontology, label);
+                if(labels.size() >= 1) {
+                    labelString = labels.iterator().next().getValue().accept(visitor);
+                    LOG.info(String.format("%s (%s)", labelString, id));
                 }
+                */
+                Stream<OWLClassExpression> superClasses = EntitySearcher.getSuperClasses(owlClass, ontology);
+                superClasses.forEach(expr -> {
+                    if (expr instanceof OWLClass) {
+                        OWLClass cexpr = (OWLClass) expr;
+                        // this ignores some obvious restriction / intersection classes.
+                        OntClass superClass = model.createClass(cexpr.toStringID());
+                        ontClass.addSuperClass(superClass);
+                    }
+                });
             }
-        }
+
+
+        });
     }
+
+
 }
