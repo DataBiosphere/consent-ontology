@@ -2,16 +2,11 @@ package org.broadinstitute.dsde.consent.ontology;
 
 import org.broadinstitute.dsde.consent.ontology.datause.api.ResearchPurposeMatch;
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
+import org.junit.*;
 import java.util.UUID;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
-import org.junit.Ignore;
 
-public class DataUseOwlTest {
+
+public class DataUseOwlTest extends AbstractTest {
 
     private static ResearchPurposeMatch matcher;
 
@@ -28,9 +23,14 @@ public class DataUseOwlTest {
     @BeforeClass
     public static void setUp() throws Exception {
         matcher = new ResearchPurposeMatch();
-        OntologyModel ontologyList = new OntologyList();
-        matcher.setOntologyList(ontologyList);
+        matcher.setOntologyList(getOntologyListMock());
     }
+    @AfterClass
+    public static void after() throws Exception {
+        matcher = null;
+    }
+
+
 
     @Test
     public void testNegativeMethodsAgainstInverse() {

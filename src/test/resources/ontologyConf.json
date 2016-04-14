@@ -1,0 +1,14 @@
+{
+  "file1CloudURI":
+{
+  "fileName":"fileName1",
+  "prefix":"prefix1",
+  "ontologyType":"Disease1"
+},
+  "file2CloudURI":
+  {
+    "fileName":"fileName2",
+    "prefix":"prefix2",
+    "ontologyType":"Disease2"
+  }
+}
