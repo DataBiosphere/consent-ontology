@@ -90,10 +90,12 @@ public class OntologyList implements OntologyModel {
 
     @Override
     public OntModel getModel() throws IOException, OWLOntologyCreationException {
-        if (baseModel == null) {
-            baseModel = loadOntModel();
-        }
-        OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, baseModel);
-        return model;
+//        if (baseModel == null) {
+//            baseModel = loadOntModel();
+//        }
+//        OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, baseModel);
+//        return model;
+        baseModel = loadOntModel();
+        return baseModel;
     }
 }
