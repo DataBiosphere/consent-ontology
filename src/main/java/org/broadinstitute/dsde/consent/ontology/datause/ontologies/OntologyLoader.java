@@ -2,6 +2,10 @@ package org.broadinstitute.dsde.consent.ontology.datause.ontologies;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
+import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.rdf.model.ModelFactory;
+import com.hp.hpl.jena.shared.JenaException;
+import com.hp.hpl.jena.util.FileManager;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
@@ -10,15 +14,18 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.stream.Stream;
-
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.OntologyModule;
+import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 public class OntologyLoader {
 
+    private static final Logger LOG = Logger.getLogger(OntologyModule.class);
+    
     public static void main(String[] args) throws IOException, OWLOntologyCreationException {
 
         OntologyModel list = new OntologyList();
         OntModel model = list.getModel();
-        long size = model.size();
     }
 
     /*
@@ -27,8 +34,7 @@ public class OntologyLoader {
     private static String FIELD_DEFINITION = "definition";
     private static String FIELD_SYNONYM = "synonym";
     private static String FIELD_DEFINITION_CLASS = "IAO_0000115";
-    */
-
+     */
     public static void loadOntology(InputStream reader, OntModel model)
             throws OWLOntologyCreationException, IOException {
 
@@ -43,7 +49,6 @@ public class OntologyLoader {
         properties.forEach(property -> {
             annotationProperties.put(property.getIRI().getRemainder().get(), property);
         });
-
 
         OWLAnnotationProperty label = annotationProperties.get("label");
         assert label != null : "Need label annotation property";
@@ -68,7 +73,7 @@ public class OntologyLoader {
                     return owlLiteral.getLiteral();
                 }
             };
-            */
+             */
 
             // Do not load deprecated classes.
             if (!(deprecated != null && EntitySearcher.getAnnotations(owlClass, ontology, deprecated).count() > 0)) {
@@ -82,7 +87,7 @@ public class OntologyLoader {
                     labelString = labels.iterator().next().getValue().accept(visitor);
                     LOG.info(String.format("%s (%s)", labelString, id));
                 }
-                */
+                 */
                 Stream<OWLClassExpression> superClasses = EntitySearcher.getSuperClasses(owlClass, ontology);
                 superClasses.forEach(expr -> {
                     if (expr instanceof OWLClass) {
@@ -94,9 +99,22 @@ public class OntologyLoader {
                 });
             }
 
-
         });
     }
 
-
+    public static void load(InputStream reader, OntModel model) {
+        OntModel ontoModel = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, null);
+        try {
+            try {
+                ontoModel.read(reader, null);
+            } catch (Exception e) {
+                System.err.println("ERROR1" + e.getMessage());
+                LOG.error("ERROR1", e);
+            }
+        } catch (JenaException je) {
+            System.err.println("ERROR2" + je.getMessage());
+            LOG.error("ERROR2", je);
+        }
+        model = ontoModel;
+    }
 }

@@ -26,7 +26,7 @@ public class OntologyList implements OntologyModel {
      * List of file names, each one being an ontology source file.
      */
     private final List<String> resources = new ArrayList<>();
-    private OntModel model;
+    private OntModel baseModel;
 
     public OntologyList() throws IOException {
         resources.addAll(Resources.readLines(Resources.getResource("ontologies.txt"), Charset.defaultCharset()));
@@ -43,11 +43,14 @@ public class OntologyList implements OntologyModel {
 
     @Override
     public OntModel loadOntModel() throws IOException, OWLOntologyCreationException {
+
         OntModel umodel = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
         for (String resource : getResources()) {
             LOG.info(String.format("LOADING %s", resource));
+            System.out.println(String.format("-----------> LOADING %s ", resource));
             try (InputStream is = Resources.getResource(resource).openStream()) {
                 OntologyLoader.loadOntology(is, umodel);
+//                OntologyLoader.load(is, umodel);                
             }
         }
         ((PelletInfGraph) umodel.getGraph()).classify();
@@ -69,9 +72,10 @@ public class OntologyList implements OntologyModel {
 
     @Override
     public OntModel getModel() throws IOException, OWLOntologyCreationException {
-        if (model == null) {
-            model = loadOntModel();
+        if (baseModel == null) {
+            baseModel = loadOntModel();
         }
+        OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, baseModel);
         return model;
     }
 }
