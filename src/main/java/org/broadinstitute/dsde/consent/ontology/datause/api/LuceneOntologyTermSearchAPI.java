@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause.api;
 
-import com.google.common.io.Resources;
+import com.google.api.client.http.HttpResponse;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.lucene.analysis.Analyzer;
@@ -18,6 +18,7 @@ import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.util.Version;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
+import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 
@@ -39,9 +40,11 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
     private IndexSearcher searcher;
     private Analyzer analyzer;
     private Map<String, OntologyTerm> nameToTerm;
+    private StoreOntologyService storeOntologyService;
 
-    public LuceneOntologyTermSearchAPI() {
-
+    @Inject
+    public LuceneOntologyTermSearchAPI(StoreOntologyService storeOntologyService) {
+        this.storeOntologyService = storeOntologyService;
     }
 
     private void initAPI(Directory indexDirectory, InputStream... streams) throws OWLOntologyCreationException, IOException {
@@ -189,7 +192,8 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
             Iterator<String> resourceIter = resources.iterator();
             InputStream[] ontologies = new InputStream[resources.size()];
             for (int i = 0; i < resources.size() && resourceIter.hasNext(); i++) {
-                ontologies[i] = Resources.getResource(resourceIter.next()).openStream();
+                HttpResponse response = storeOntologyService.retrieveFile(resourceIter.next());
+                ontologies[i] = response.getContent();
             }
             initAPI(new RAMDirectory(), ontologies);
         } catch (OWLOntologyCreationException | IOException e) {

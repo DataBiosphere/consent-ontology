@@ -6,6 +6,7 @@ import akka.actor.Props;
 import akka.dispatch.ExecutionContexts;
 import akka.dispatch.OnComplete;
 import akka.pattern.Patterns;
+import akka.util.Timeout;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import java.util.concurrent.Executors;
@@ -17,8 +18,11 @@ import scala.concurrent.Future;
 import javax.ws.rs.*;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.Response;
+
 import org.broadinstitute.dsde.consent.ontology.actor.OntologyMatchingActor;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
+import scala.concurrent.duration.Duration;
 
 @Path("/match")
 @Consumes("application/json")
@@ -28,7 +32,7 @@ public class MatchResource {
     private final Logger log = LoggerFactory.getLogger(MatchResource.class);
     private static final ActorSystem actorSystem = ActorSystem.create("actorSystem");
     private static final ActorRef ontologyMatchingActor = actorSystem.actorOf(Props.create(OntologyMatchingActor.class), "OntologyMatchingActor");
-//    private ActorRef ontologyMatchingActor;
+   //private ActorRef ontologyMatchingActor;
     private final ExecutionContextExecutorService execCtx = ExecutionContexts.fromExecutorService(Executors.newFixedThreadPool(2));;
     private OntologyModel ontologyList;
         
@@ -38,7 +42,7 @@ public class MatchResource {
     @POST
     public void match(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
         // TODO: Timeout should likely be an application-wide property
-        Long timeout = 10000L;
+        Timeout timeout = new Timeout(Duration.create(15000, "seconds"));
         log.debug("Received the following: " + matchPair.toString());
         final MatchDTO matchDTO = new MatchDTO(matchPair, ontologyList);
         final Future<Object> matchFuture = Patterns.ask(ontologyMatchingActor, matchDTO, timeout);
@@ -47,9 +51,12 @@ public class MatchResource {
                 @Override
                 public void onComplete(Throwable failure, Object result) {
                     if (failure != null) {
-                        System.out.println("Failure: " + failure.getMessage());
+                        log.error("Failure: " + failure.getMessage());
+                          if(failure instanceof InternalError){
+                              response.resume(new WebApplicationException(failure.getMessage(), Response.Status.INTERNAL_SERVER_ERROR));
+                          }
                         response.resume(new WebApplicationException(failure));
-                    } else {
+                    } else{
                         response.resume(ImmutableMap.of("result", result, "matchPair", matchPair));
                     }
                 }

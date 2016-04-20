@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
+import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
@@ -23,7 +24,7 @@ import static org.junit.Assert.fail;
  * See https://docs.google.com/document/d/1xyeYoIKBDFGAsQ_spoK5Ye5esMOXqpRBojd6ijZWJkk
  * for a summary of use cases for which this test class covers.
  */
-public class TruthTableTests {
+public class TruthTableTests extends AbstractTest {
 
     @InjectMocks
     private static MatchResource matchResource = new MatchResource();
@@ -38,8 +39,7 @@ public class TruthTableTests {
 
     @BeforeClass
     public static void setUp() throws Exception {
-        OntologyModel ontologyList = new OntologyList();
-        matchResource.setOntologyList(ontologyList);
+        matchResource.setOntologyList(getOntologyListMock());
     }
 
     protected Future<Response> getResponseFuture(MatchPair pair) {
