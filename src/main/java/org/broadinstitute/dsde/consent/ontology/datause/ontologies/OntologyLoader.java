@@ -24,8 +24,6 @@ public class OntologyLoader {
     
     public static void main(String[] args) throws IOException, OWLOntologyCreationException {
 
-        OntologyModel list = new OntologyList();
-        OntModel model = list.getModel();
     }
 
     /*

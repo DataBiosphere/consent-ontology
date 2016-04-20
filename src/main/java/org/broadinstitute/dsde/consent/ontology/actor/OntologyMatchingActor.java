@@ -7,13 +7,13 @@ import akka.japi.pf.ReceiveBuilder;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.mindswap.pellet.jena.PelletInfGraph;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import java.io.IOException;
 import java.util.UUID;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchDTO;
+import org.mindswap.pellet.jena.PelletInfGraph;
 
 /**
  * TODO: Migrate ontology uses to make use of this actor
@@ -59,7 +59,7 @@ public class OntologyMatchingActor extends AbstractActor {
             OntClass sampleSetClass = model.getOntClass(consentId);
             match = rpClass.hasSuperClass(sampleSetClass);
         } catch (IOException | OWLOntologyCreationException e) {
-            log.error(e, "White match: " + consent + " - " + purpose);
+            log.error(e, "While match: " + consent + " - " + purpose);
         }
         log.debug(String.format("Match = %b\n%s\n%s\nduration: %d milliseconds",
                 match, consent, purpose, (System.currentTimeMillis() - start)));
