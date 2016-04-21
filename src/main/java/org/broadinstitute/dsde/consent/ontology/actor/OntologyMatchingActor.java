@@ -51,13 +51,18 @@ public class OntologyMatchingActor extends AbstractActor {
         Boolean match = false;
         try {
             OntModel model = ontologyList.getModel();
-            addNamedEquivalentClass(model, consentId, consent);
+            OntClass named = addNamedEquivalentClass(model, consentId, consent);
 
             OntClass rpClass = addNamedSubClass(model, purposeId, purpose);
             ((PelletInfGraph) model.getGraph()).classify();
 
             OntClass sampleSetClass = model.getOntClass(consentId);
             match = rpClass.hasSuperClass(sampleSetClass);
+            
+            named.remove();
+            rpClass.remove();
+            sampleSetClass.remove();
+            
         } catch (IOException | OWLOntologyCreationException e) {
             log.error(e, "While match: " + consent + " - " + purpose);
         }

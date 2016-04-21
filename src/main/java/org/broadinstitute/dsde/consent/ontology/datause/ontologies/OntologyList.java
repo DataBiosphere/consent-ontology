@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.rdf.model.ModelChangedListener;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
@@ -71,6 +72,8 @@ public class OntologyList implements OntologyModel {
             }
         }
         ((PelletInfGraph) umodel.getGraph()).classify();
+        ModelChangedListener ml = new OntologyListener();
+        umodel.register(ml);
         return umodel;
     }
 
@@ -90,12 +93,12 @@ public class OntologyList implements OntologyModel {
 
     @Override
     public OntModel getModel() throws IOException, OWLOntologyCreationException {
-//        if (baseModel == null) {
-//            baseModel = loadOntModel();
-//        }
-//        OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, baseModel);
-//        return model;
-        baseModel = loadOntModel();
-        return baseModel;
+        if (baseModel == null) {
+            baseModel = loadOntModel();
+        }
+        OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, baseModel);
+        return model;
+//        baseModel = loadOntModel();
+//        return baseModel;
     }
 }
