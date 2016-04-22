@@ -34,9 +34,9 @@ import java.security.GeneralSecurityException;
 public class OntologyModule   extends AbstractModule {
 
     @Inject
-    private OntologyConfiguration config;
+    private final OntologyConfiguration config;
     @Inject
-    private Environment environment;
+    private final Environment environment;
 
     public OntologyModule(OntologyConfiguration configuration, Environment environment){
         this.config = configuration;

@@ -25,8 +25,12 @@ import org.semanticweb.owlapi.model.*;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import org.apache.lucene.store.RAMDirectory;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
+import org.semanticweb.owlapi.search.EntitySearcher;
 
 @Singleton
 public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
@@ -52,7 +56,6 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
 
         try (IndexWriter indexWriter = new IndexWriter(indexDirectory,
                 new IndexWriterConfig(Version.LUCENE_4_9, analyzer))) {
-
             nameToTerm = new HashMap<>();
 
             for (InputStream stream : streams) {
@@ -60,8 +63,8 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                 OWLOntology ontology = manager.loadOntologyFromOntologyDocument(stream);
                 HashMap<String, OWLAnnotationProperty> annotationProperties = new HashMap<>();
 
-                ontology.getAnnotationPropertiesInSignature().stream().forEach((property) -> {
-                    annotationProperties.put(property.getIRI().getFragment(), property);
+                ontology.annotationPropertiesInSignature().forEach((property) -> {
+                    annotationProperties.put(property.getIRI().getRemainder().get (), property);
                 });
 
                 OWLAnnotationProperty hasExactSynonym = annotationProperties.get("hasExactSynonym");
@@ -70,7 +73,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                 OWLAnnotationProperty def = annotationProperties.get(FIELD_DEFINITION_CLASS);
                 OWLAnnotationProperty deprecated = annotationProperties.get("deprecated");
 
-                for (OWLClass owlClass : ontology.getClassesInSignature()) {
+                ontology.classesInSignature().forEach(owlClass -> {
                     OWLAnnotationValueVisitorEx<String> visitor = new OWLAnnotationValueVisitorEx<String>() {
                         @Override
                         public String visit(IRI iri) {
@@ -89,43 +92,55 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                     };
 
                     // Do not index deprecated classes.
-                    if (!owlClass.getAnnotations(ontology, deprecated).isEmpty()) {
-                        continue;
+                    if (!(deprecated != null && EntitySearcher.getAnnotations(owlClass, ontology, deprecated).count() > 0)) {
+                        Document document = new Document();
+                        if(hasExactSynonym != null){
+                            EntitySearcher.getAnnotations(owlClass, ontology, hasExactSynonym).forEach((synonyms) -> {
+                                document.add(new TextField(FIELD_SYNONYM, synonyms.getValue().accept(visitor), Field.Store.YES));
+                            });
+                        }
+                        if(label != null){
+                            Stream<OWLAnnotation> labels = EntitySearcher.getAnnotations(owlClass, ontology, label);
+                            ArrayList<OWLAnnotation> labelsList = labels.collect(Collectors.toCollection(ArrayList::new));
+                            assert labelsList.size() <= 1 : "Exactly 0 or 1 labels allowed per class";
+                            if (labelsList.size() == 1) {
+                                document.add(new TextField(FIELD_LABEL, labelsList.stream().iterator().next().getValue().accept(visitor), Field.Store.YES));
+                            }
+                        }
+                        if(comment != null){
+                            Stream<OWLAnnotation> comments = EntitySearcher.getAnnotations(owlClass, ontology, comment);
+                            ArrayList<OWLAnnotation> commentsList = comments.collect(Collectors.toCollection(ArrayList::new));
+
+                            assert commentsList.size() <= 1 : "Exactly 0 or 1 comments allowed per class";
+                            if (commentsList.size() == 1) {
+                                document.add(new TextField(FIELD_COMMENT, commentsList.stream().iterator().next().getValue().accept(visitor), Field.Store.YES));
+                            }
+                        }
+                        if(def != null){
+                            Stream<OWLAnnotation> defs = EntitySearcher.getAnnotations(owlClass, ontology, def);
+                            ArrayList<OWLAnnotation> defsList = defs.collect(Collectors.toCollection(ArrayList::new));
+                            assert defsList.size() <= 1 : "Exactly 0 or 1 definitions allowed per class";
+                            if (defsList.size() == 1) {
+                                document.add(new TextField(FIELD_DEFINITION, defsList.stream().iterator().next().getValue().accept(visitor), Field.Store.YES));
+                            }
+                        }
+                        document.add(new TextField(FIELD_ID, owlClass.toStringID(), Field.Store.YES));
+                        nameToTerm.put(document.get(FIELD_ID),
+                                new OntologyTerm(
+                                        document.get(FIELD_ID),
+                                        document.get(FIELD_COMMENT),
+                                        document.get(FIELD_LABEL),
+                                        document.get(FIELD_DEFINITION),
+                                        document.getValues(FIELD_SYNONYM)));
+
+
+                        try {
+                            indexWriter.addDocument(document);
+                        }catch(IOException e){
+                            throw new RuntimeException(e.getMessage());
+                        }
                     }
-
-                    Document document = new Document();
-                    owlClass.getAnnotations(ontology, hasExactSynonym).stream().forEach((synonyms) -> {
-                        document.add(new TextField(FIELD_SYNONYM, synonyms.getValue().accept(visitor), Field.Store.YES));
-                    });
-
-                    Set<OWLAnnotation> labels = owlClass.getAnnotations(ontology, label);
-                    assert labels.size() <= 1 : "Exactly 0 or 1 labels allowed per class";
-                    if (labels.size() == 1) {
-                        document.add(new TextField(FIELD_LABEL, labels.iterator().next().getValue().accept(visitor), Field.Store.YES));
-                    }
-
-                    Set<OWLAnnotation> comments = owlClass.getAnnotations(ontology, comment);
-                    assert comments.size() <= 1 : "Exactly 0 or 1 comments allowed per class";
-                    if (comments.size() == 1) {
-                        document.add(new TextField(FIELD_COMMENT, comments.iterator().next().getValue().accept(visitor), Field.Store.YES));
-                    }
-
-                    Set<OWLAnnotation> defs = owlClass.getAnnotations(ontology, def);
-                    assert defs.size() <= 1 : "Exactly 0 or 1 definitions allowed per class";
-                    if (defs.size() == 1) {
-                        document.add(new TextField(FIELD_DEFINITION, defs.iterator().next().getValue().accept(visitor), Field.Store.YES));
-                    }
-
-                    document.add(new TextField(FIELD_ID, owlClass.toStringID(), Field.Store.YES));
-                    nameToTerm.put(document.get(FIELD_ID),
-                            new OntologyTerm(
-                                    document.get(FIELD_ID),
-                                    document.get(FIELD_COMMENT),
-                                    document.get(FIELD_LABEL),
-                                    document.get(FIELD_DEFINITION),
-                                    document.getValues(FIELD_SYNONYM)));
-                    indexWriter.addDocument(document);
-                }
+                });
             }
         }
 

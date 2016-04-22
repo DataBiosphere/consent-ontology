@@ -7,6 +7,7 @@ import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.ontology.OntModelSpec;
+import com.hp.hpl.jena.rdf.model.ModelChangedListener;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
@@ -22,39 +23,35 @@ import java.util.HashMap;
 import java.util.Map;
 import org.mindswap.pellet.jena.PelletInfGraph;
 
-
 @Singleton
 public class OntologyList implements OntologyModel {
 
-    private static Logger LOG = Logger.getLogger(OntologyList.class);
+    private static final Logger LOG = Logger.getLogger(OntologyList.class);
 
     /**
      * List of file names, each one being an ontology source file.
      */
-    private  List<String> resources = new ArrayList<>();
-    private OntModel model;
-    private StoreOntologyService storeOntologyService;
-
-
-
+    private List<String> resources = new ArrayList<>();
+    private OntModel baseModel;
+    private final StoreOntologyService storeOntologyService;
+    private static final ObjectMapper MAPPER = new ObjectMapper();
+    
     @Inject
     public OntologyList(StoreOntologyService storeOntologyService) throws IOException {
         LOG.info(String.format("LOADING ontology configuration files."));
         String configurationFileString = storeOntologyService.retrieveConfigurationFile();
         Map<String, HashMap> map = parseAsMap(configurationFileString);
-        List list = new ArrayList<String>();
+        List list = new ArrayList<>();
         list.addAll(map.keySet());
         this.storeOntologyService = storeOntologyService;
         this.resources = list;
     }
-    private static final ObjectMapper mapper = new ObjectMapper();
 
     //@TODO; should be removed to CloudStore
     private Map<String, HashMap> parseAsMap(String str) throws IOException {
-        ObjectReader reader = mapper.reader(Map.class);
+        ObjectReader reader = MAPPER.reader(Map.class);
         return reader.readValue(str);
     }
-
 
     @Override
     public Collection<String> getResources() {
@@ -63,15 +60,20 @@ public class OntologyList implements OntologyModel {
 
     @Override
     public OntModel loadOntModel() throws IOException, OWLOntologyCreationException {
+
         OntModel umodel = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
         for (String resource : getResources()) {
             HttpResponse response = storeOntologyService.retrieveFile(resource);
             LOG.info(String.format("LOADING %s", resource));
+            System.out.println(String.format("-----------> LOADING %s ", resource));
             try (InputStream is = response.getContent()) {
                 OntologyLoader.loadOntology(is, umodel);
+//                OntologyLoader.load(is, umodel);                
             }
         }
         ((PelletInfGraph) umodel.getGraph()).classify();
+        ModelChangedListener ml = new OntologyListener();
+        umodel.register(ml);
         return umodel;
     }
 
@@ -91,9 +93,12 @@ public class OntologyList implements OntologyModel {
 
     @Override
     public OntModel getModel() throws IOException, OWLOntologyCreationException {
-        if (model == null) {
-            model = loadOntModel();
+        if (baseModel == null) {
+            baseModel = loadOntModel();
         }
+        OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC, baseModel);
         return model;
+//        baseModel = loadOntModel();
+//        return baseModel;
     }
 }

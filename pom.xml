@@ -10,7 +10,7 @@
     <properties>
         <java.version>1.8</java.version>
         <pellet.version>2.3.6-ansell</pellet.version>
-        <owl.version>3.5.2</owl.version>
+        <owl.version>5.0.1</owl.version>
         <jena.version>2.6.4</jena.version>
         <lucene.version>4.9.0</lucene.version>
         <hsqldb.version>2.3.3</hsqldb.version>
@@ -222,22 +222,13 @@
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-distribution</artifactId>
             <version>${owl.version}</version>
+
         </dependency>
 
         <dependency>
             <groupId>com.github.ansell.pellet</groupId>
             <artifactId>pellet-core</artifactId>
             <version>${pellet.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>msv</groupId>
-                    <artifactId>xsdlib</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
