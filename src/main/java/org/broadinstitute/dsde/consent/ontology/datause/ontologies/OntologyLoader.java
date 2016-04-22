@@ -2,10 +2,8 @@ package org.broadinstitute.dsde.consent.ontology.datause.ontologies;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
-import com.hp.hpl.jena.ontology.OntModelSpec;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import com.hp.hpl.jena.shared.JenaException;
-import com.hp.hpl.jena.util.FileManager;
 import org.semanticweb.owlapi.apibinding.OWLManager;
 import org.semanticweb.owlapi.model.*;
 import org.semanticweb.owlapi.search.EntitySearcher;
@@ -106,11 +104,9 @@ public class OntologyLoader {
             try {
                 ontoModel.read(reader, null);
             } catch (Exception e) {
-                System.err.println("ERROR1" + e.getMessage());
                 LOG.error("ERROR1", e);
             }
         } catch (JenaException je) {
-            System.err.println("ERROR2" + je.getMessage());
             LOG.error("ERROR2", je);
         }
         model = ontoModel;

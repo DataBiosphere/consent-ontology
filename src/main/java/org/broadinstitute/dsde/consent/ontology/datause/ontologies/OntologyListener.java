@@ -5,62 +5,65 @@ import com.hp.hpl.jena.rdf.model.ModelChangedListener;
 import com.hp.hpl.jena.rdf.model.Statement;
 import com.hp.hpl.jena.rdf.model.StmtIterator;
 import java.util.List;
+import org.apache.log4j.Logger;
 
 public class OntologyListener implements ModelChangedListener {
 
+    private static final Logger LOG = Logger.getLogger(OntologyListener.class);
+
     @Override
     public void addedStatement(Statement stmnt) {
-        System.out.println("addedStatement(" + stmnt.asTriple().toString() + ")");
+        LOG.debug("addedStatement(" + stmnt.asTriple().toString() + ")");
     }
 
     @Override
     public void addedStatements(Statement[] stmnts) {
-        System.out.println("addedStatements(" + stmnts.toString() + ")");
+        LOG.debug("addedStatements(" + stmnts.toString() + ")");
     }
 
     @Override
     public void addedStatements(List<Statement> list) {
-       list.stream().forEach(s -> System.out.println("addedStatements(" + s + ")"));
+        list.stream().forEach(s -> LOG.debug("addedStatements(" + s + ")"));
     }
 
     @Override
     public void addedStatements(StmtIterator si) {
-       si.toList().stream().forEach(s -> System.out.println("addedStatements(" + s + ")"));
+        si.toList().stream().forEach(s -> LOG.debug("addedStatements(" + s + ")"));
     }
 
     @Override
     public void addedStatements(Model model) {
-        System.out.println("addedStatements(" + model.toString()+ ")");
+        LOG.debug("addedStatements(" + model.toString() + ")");
     }
 
     @Override
     public void removedStatement(Statement stmnt) {
-        System.out.println("removedStatement(" + stmnt.asTriple().toString() + ")");
+        LOG.debug("removedStatement(" + stmnt.asTriple().toString() + ")");
     }
 
     @Override
     public void removedStatements(Statement[] stmnts) {
-        System.out.println("removedStatements(" + stmnts.toString() + ")");
+        LOG.debug("removedStatements(" + stmnts.toString() + ")");
     }
 
     @Override
     public void removedStatements(List<Statement> list) {
-       list.stream().forEach(s -> System.out.println("removedStatements(" + s + ")"));
+        list.stream().forEach(s -> LOG.debug("removedStatements(" + s + ")"));
     }
 
     @Override
     public void removedStatements(StmtIterator si) {
-       si.toList().stream().forEach(s -> System.out.println("removedStatements(" + s + ")"));
+        si.toList().stream().forEach(s -> LOG.debug("removedStatements(" + s + ")"));
     }
 
     @Override
     public void removedStatements(Model model) {
-        System.out.println("removedStatements(" + model.toString()+ ")");
+        LOG.debug("removedStatements(" + model.toString() + ")");
     }
 
     @Override
     public void notifyEvent(Model model, Object o) {
-        System.out.println("notifyEvent(" + model.toString() + " - " + o.toString() + ")");
+        LOG.debug("notifyEvent(" + model.toString() + " - " + o.toString() + ")");
     }
-    
+
 }
