@@ -10,13 +10,13 @@
     <properties>
         <java.version>1.8</java.version>
         <pellet.version>2.3.6-ansell</pellet.version>
-        <owl.version>3.5.2</owl.version>
+        <owl.version>5.0.1</owl.version>
         <jena.version>2.6.4</jena.version>
         <lucene.version>4.9.0</lucene.version>
         <hsqldb.version>2.3.3</hsqldb.version>
         <mysql.version>5.1.31</mysql.version>
         <liquibase.version>3.1.1</liquibase.version>
-        <dropwizard.version>0.8.1</dropwizard.version>
+        <dropwizard.version>0.9.2</dropwizard.version>
         <akka.version>2.3.12</akka.version>
         <jersey.version>2.19</jersey.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -142,6 +142,18 @@
         </dependency>
 
         <dependency>
+            <groupId>com.google.api-client</groupId>
+            <artifactId>google-api-client</artifactId>
+            <version>1.20.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.apis</groupId>
+            <artifactId>google-api-services-storage</artifactId>
+            <version>v1-rev35-1.20.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.elasticsearch</groupId>
             <artifactId>elasticsearch</artifactId>
             <version>1.3.2</version>
@@ -210,22 +222,13 @@
             <groupId>net.sourceforge.owlapi</groupId>
             <artifactId>owlapi-distribution</artifactId>
             <version>${owl.version}</version>
+
         </dependency>
 
         <dependency>
             <groupId>com.github.ansell.pellet</groupId>
             <artifactId>pellet-core</artifactId>
             <version>${pellet.version}</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>msv</groupId>
-                    <artifactId>xsdlib</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>

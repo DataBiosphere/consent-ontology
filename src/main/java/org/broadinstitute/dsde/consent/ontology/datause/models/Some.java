@@ -12,6 +12,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAP
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.stream.Collectors;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class Some extends UseRestriction {
 

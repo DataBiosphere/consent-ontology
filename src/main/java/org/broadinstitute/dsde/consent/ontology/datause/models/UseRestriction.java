@@ -1,19 +1,20 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.gson.Gson;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import io.dropwizard.jackson.Jackson;
+import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.stream.Collectors;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(

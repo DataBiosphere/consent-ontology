@@ -7,13 +7,13 @@ import akka.japi.pf.ReceiveBuilder;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.mindswap.pellet.jena.PelletInfGraph;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 
 import java.io.IOException;
 import java.util.UUID;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchDTO;
+import org.mindswap.pellet.jena.PelletInfGraph;
 
 /**
  * TODO: Migrate ontology uses to make use of this actor
@@ -45,21 +45,29 @@ public class OntologyMatchingActor extends AbstractActor {
     }
 
     public Boolean matchPurpose(UseRestriction purpose, UseRestriction consent, OntologyModel ontologyList) {
+        long start = System.currentTimeMillis();
         String consentId = UUID.randomUUID().toString();
+        String purposeId = UUID.randomUUID().toString();
         Boolean match = false;
         try {
             OntModel model = ontologyList.getModel();
-            addNamedEquivalentClass(model, consentId, consent);
+            OntClass named = addNamedEquivalentClass(model, consentId, consent);
 
-            String randomId = UUID.randomUUID().toString();
-            OntClass rpClass = addNamedSubClass(model, randomId, purpose);
-//            ((PelletInfGraph) model.getGraph()).classify();
+            OntClass rpClass = addNamedSubClass(model, purposeId, purpose);
+            ((PelletInfGraph) model.getGraph()).classify();
 
             OntClass sampleSetClass = model.getOntClass(consentId);
             match = rpClass.hasSuperClass(sampleSetClass);
+            
+            named.remove();
+            rpClass.remove();
+            sampleSetClass.remove();
+            
         } catch (IOException | OWLOntologyCreationException e) {
-            e.printStackTrace(System.err);
+            log.error(e, "While match: " + consent + " - " + purpose);
         }
+        log.debug(String.format("Match = %b\n%s\n%s\nduration: %d milliseconds",
+                match, consent, purpose, (System.currentTimeMillis() - start)));
         return match;
     }
 

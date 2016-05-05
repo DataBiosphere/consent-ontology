@@ -1,18 +1,20 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
+
+import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
 import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
+import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
-public class TextTranslationServiceImplTest {
+public class TextTranslationServiceImplTest extends AbstractTest {
 
     private static TextTranslationServiceImpl service;
     private static OntologyModel ontologyList;
@@ -21,19 +23,19 @@ public class TextTranslationServiceImplTest {
     public TextTranslationServiceImplTest() {
     }
 
-    @BeforeClass
-    public static void setUpClass() throws IOException {
-        ontologyList = new OntologyList();
-        api = new LuceneOntologyTermSearchAPI();
+    @Before
+    public void setUpClass() throws IOException, GeneralSecurityException {
+        StoreOntologyService storeOntologyServiceMock = getStorageServiceMock();
+        ontologyList = new OntologyList(storeOntologyServiceMock);
+        api = new LuceneOntologyTermSearchAPI(storeOntologyServiceMock);
         ((LuceneOntologyTermSearchAPI)api).setOntologyList(ontologyList);
-
         service = new TextTranslationServiceImpl();
         service.setApi(api);
-        service.setOntologyList(ontologyList);
+        service.setOntologyList(getOntologyListMock());
     }
 
-    @AfterClass
-    public static void tearDownClass() {
+    @After
+    public void tearDownClass() {
         service = null;
         ontologyList = null;
         api = null;
@@ -59,7 +61,7 @@ public class TextTranslationServiceImplTest {
                 + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/children\"},"
                 + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}";
         String expResult = "Samples may only be used for the purpose of studying cancer. "
-                + "In addition, samples may only be used for the study of Children and may not be used for commercial purposes.";
+                + "In addition, samples may only be used for the study of children and may not be used for commercial purposes.";
         String result = service.translateSample(restrictionStr);
         assertEquals(expResult, result);
     }

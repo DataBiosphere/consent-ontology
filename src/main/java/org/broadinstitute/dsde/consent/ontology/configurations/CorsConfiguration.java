@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology;
+package org.broadinstitute.dsde.consent.ontology.configurations;
 
 /**
  * see https://developer.mozilla.org/en-US/docs/Web/HTTP/Access_control_CORS to understand CORS.
