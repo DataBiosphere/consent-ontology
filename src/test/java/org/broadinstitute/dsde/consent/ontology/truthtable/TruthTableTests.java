@@ -7,8 +7,10 @@ import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
 import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.mockito.InjectMocks;
 
 import javax.ws.rs.client.Entity;
@@ -24,25 +26,9 @@ import static org.junit.Assert.fail;
  * See https://docs.google.com/document/d/1xyeYoIKBDFGAsQ_spoK5Ye5esMOXqpRBojd6ijZWJkk
  * for a summary of use cases for which this test class covers.
  */
-public class TruthTableTests extends AbstractTest {
+class TruthTableTests extends AbstractTest {
 
-    @InjectMocks
-    private static MatchResource matchResource = new MatchResource();
-
-    /**
-     * Use GrizzlyTestContainerFactory to process async requests.
-     */
-    @ClassRule
-    public static final ResourceTestRule RULE = ResourceTestRule.builder()
-        .setTestContainerFactory(new GrizzlyWebTestContainerFactory())
-        .addResource(matchResource).build();
-
-    @BeforeClass
-    public static void setUp() throws Exception {
-        matchResource.setOntologyList(getOntologyListMock());
-    }
-
-    protected Future<Response> getResponseFuture(MatchPair pair) {
+    Future<Response> getResponseFuture(ResourceTestRule RULE, MatchPair pair) {
         return RULE.getJerseyTest().target("/match")
             .request(MediaType.APPLICATION_JSON_TYPE)
             .accept(MediaType.APPLICATION_JSON_TYPE)
@@ -50,7 +36,7 @@ public class TruthTableTests extends AbstractTest {
             .post(Entity.json(pair));
     }
 
-    protected void assertResponse(Future<Response> responseFuture, Boolean expected) {
+    void assertResponse(Future<Response> responseFuture, Boolean expected) {
         try {
             Response response = responseFuture.get();
             String responseString = response.readEntity(String.class);
