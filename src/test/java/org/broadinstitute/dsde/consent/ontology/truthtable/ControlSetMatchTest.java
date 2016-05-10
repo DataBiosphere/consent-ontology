@@ -1,11 +1,33 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
+import io.dropwizard.testing.junit.ResourceTestRule;
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
+import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
+import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 
 public class ControlSetMatchTest extends TruthTableTests {
 
+    @InjectMocks
+    private static MatchResource matchResource = new MatchResource();
+
+    /**
+     * Use GrizzlyTestContainerFactory to process async requests.
+     */
+    @ClassRule
+    public static final ResourceTestRule RULE = ResourceTestRule.builder()
+        .setTestContainerFactory(new GrizzlyWebTestContainerFactory())
+        .addResource(matchResource).build();
+
+    @BeforeClass
+    public static void setUp() throws Exception {
+        matchResource.setOntologyList(getOntologyListMock());
+    }
+    
     private UseRestriction darCSA = new And(
         new Named("http://www.broadinstitute.org/ontologies/DURPO/control"),
         new Named("http://purl.obolibrary.org/obo/DOID_162")
@@ -94,7 +116,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darCSA, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -106,7 +128,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultCSA, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -118,7 +140,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darCSA, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -130,7 +152,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultCSA, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -142,7 +164,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darCSA, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -154,7 +176,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultCSA, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -166,7 +188,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darCSB, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
 
@@ -180,7 +202,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultCSB, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -192,7 +214,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darCSB, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -204,7 +226,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultCSB, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -216,7 +238,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darCSB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -228,7 +250,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultCSB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
 
@@ -241,7 +263,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darCSC, dulUC1);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(getResponseFuture(RULE, pair), false);
     }
 
     @Test
@@ -253,7 +275,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darDefaultCSC, dulUC1);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(getResponseFuture(RULE, pair), false);
     }
 
     @Test
@@ -265,7 +287,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darCSC, dulUC2);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(getResponseFuture(RULE, pair), false);
     }
 
     @Test
@@ -277,7 +299,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darDefaultCSC, dulUC2);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(getResponseFuture(RULE, pair), false);
     }
 
     @Test
@@ -289,7 +311,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darCSB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
     @Test
@@ -301,7 +323,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultCSB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(getResponseFuture(RULE, pair), true);
     }
 
 }
