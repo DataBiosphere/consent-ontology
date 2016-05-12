@@ -2,33 +2,34 @@ package org.broadinstitute.dsde.consent.ontology.service.validate;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import java.io.IOException;
-import java.util.Collection;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 
+import java.io.IOException;
+import java.util.Collection;
+
 @Singleton
 public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI{
 
-    private static Logger LOG = Logger.getLogger(UseRestrictionValidateImpl.class);
+    private final Logger log = Logger.getLogger(UseRestrictionValidateImpl.class);
     private OntologyTermSearchAPI ontologyTermSearchAPI;
 
     @Inject
-    public void setOntologyList(OntologyTermSearchAPI ontologyTermSearchAPI) {
+    public void setOntologySearchTermAPI(OntologyTermSearchAPI ontologyTermSearchAPI) {
         this.ontologyTermSearchAPI = ontologyTermSearchAPI;
     }
 
     @Override
     public ValidateResponse validateUseRestriction(String useRestriction) throws Exception {
-        LOG.info("Received use restriction: " + useRestriction);
+        log.debug("Received use restriction: " + useRestriction);
         ValidateResponse isValid = new ValidateResponse(true, useRestriction);
         try {
             UseRestriction restriction = UseRestriction.parse(useRestriction);
             String parsedRest = replaceChars(restriction.toString());
-            if(!parsedRest.toString().equals(replaceChars(useRestriction))){
+            if(!parsedRest.equals(replaceChars(useRestriction))){
                 throw new Exception("There is more than one use restriction to validate. Please, send one each time.");
             }
             NamedVisitor validationVisitor = new NamedVisitor();
@@ -59,5 +60,3 @@ public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI{
     }
 
 }
-
-

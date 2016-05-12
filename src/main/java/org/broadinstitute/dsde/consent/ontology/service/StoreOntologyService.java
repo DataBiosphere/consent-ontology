@@ -1,24 +1,32 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpResponseException;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Created by SantiagoSaucedo on 3/11/2016.
  */
+@SuppressWarnings("FieldCanBeLocal")
 public class StoreOntologyService {
 
+    private final Logger log = LoggerFactory.getLogger(StoreOntologyService.class);
+    private final ObjectMapper MAPPER = new ObjectMapper();
     private final CloudStore store;
     private final String bucketSubdirectory;
     private final String configurationFileName;
     private final String jsonExtension = ".json";
-    protected Logger logger() {
-        return Logger.getLogger("GCSStore");
-    }
-
 
     public StoreOntologyService(CloudStore store, String bucketSubdirectory, String configurationFileName) {
         this.store = store;
@@ -33,25 +41,51 @@ public class StoreOntologyService {
             return response.parseAsString();
         } catch (Exception e) {
             if (e instanceof HttpResponseException && ((HttpResponseException) e).getStatusCode() == 404) {
-                logger().error("Storage service did not find Ontology configuration file: " + suffix);
+                log.error("Storage service did not find Ontology configuration file: " + suffix);
             }else{
-                logger().error("Problem with storage service. "+ e.getMessage());
-            }
-                throw new InternalError("Problem with storage service.");
-        }
-    }
-
-    public HttpResponse retrieveFile(String fileUrl) {
-        try {
-            return  store.getDocument(fileUrl);
-        } catch (Exception e) {
-            if (e instanceof HttpResponseException && ((HttpResponseException) e).getStatusCode() == 404) {
-                logger().error("Storage service did not find Ontology file: " + fileUrl);
-            }else{
-                logger().error("Problem with storage service. "+ e.getMessage());
+                log.error("Problem with storage service. "+ e.getMessage());
             }
             throw new InternalError("Problem with storage service.");
         }
     }
+
+    public Collection<URL> retrieveOntologyURLs() throws IOException {
+        return retrieveConfigurationKeys().
+            stream().
+            map(str -> {
+                try {
+                    return new URL(str);
+                } catch (MalformedURLException e) {
+                    log.error("Unable to convert key name to url: " + str);
+                }
+                return null;
+            }).
+            filter(u -> u != null).
+            collect(Collectors.toList());
+    }
+
+    public Collection<String> retrieveConfigurationKeys() throws IOException {
+        return retrieveConfigurationMap().keySet().stream().collect(Collectors.toList());
+    }
+
+    /**
+     * Parses the configuration file from json in the form of:
+     * {
+     *      "https://{url to storage location}/ontology/organization/data-use.owl":
+     *          {"fileName":"data-use.owl","prefix":"DURPO","ontologyType":"Organization"},
+     *      "https://{url to storage location}/ontology/disease/diseases.owl":
+     *          {"fileName":"diseases.owl","prefix":"DOID","ontologyType":"Disease"},
+     *       "https://{url to storage location}/ontology/disease/data-use.owl":
+     *          {"fileName":"data-use.owl","prefix":"DURPO","ontologyType":"Disease"}
+     *  }
+     *
+     * @return Map of URL location to hash of file name & prefix information
+     * @throws IOException
+     */
+    private Map<String, HashMap> retrieveConfigurationMap() throws IOException {
+        String config = retrieveConfigurationFile();
+        return MAPPER.readerFor(Map.class).readValue(config);
+    }
+
 }
 
