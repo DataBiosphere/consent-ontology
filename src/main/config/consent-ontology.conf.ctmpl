@@ -15,11 +15,9 @@ elasticSearch:
 cors:
   allowedDomains: "{{.Data.cors_allowed_domains}}" 
 googleStore:
-  username: {{.Data.gce_user}}
   password: {{.Data.gce_password}}
   endpoint: {{.Data.gce_endpoint}}
   bucket: {{.Data.gce_bucket}}
-  type: GCS
 storeOntology:
   bucketSubdirectory: {{.Data.storeOntology_bucketSubdirectory}}
   configurationFileName:  {{.Data.storeOntology_configurationFileName}}
