@@ -12,11 +12,9 @@ elasticSearch:
   clusterName: "elasticsearch_ci"
   index: ontology
 googleStore:
-  username:
   password:
   endpoint:
   bucket:
-  type: GCS
 storeOntology:
   bucketSubdirectory:
   configurationFileName:
