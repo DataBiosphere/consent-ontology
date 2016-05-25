@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class HtmlTranslator implements TextTranslationService {
 
-    private final org.slf4j.Logger log = LoggerFactory.getLogger(HtmlTranslator.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(HtmlTranslator.class);
     private OntologyTermSearchAPI api;
 
     @Inject
@@ -17,11 +17,11 @@ public class HtmlTranslator implements TextTranslationService {
         this.api = api;
     }
 
-    public enum TranslateFor {
+    private enum TranslateFor {
         SAMPLE("Samples are restricted for use under the following conditions:"),
         PURPOSE("Any datasets for which the following uses are allowed:");
 
-        TranslateFor(String description) { this.description = description; }
+        TranslateFor(String description) { setDescription(description); }
 
         String description;
         public String getDescription() { return description; }

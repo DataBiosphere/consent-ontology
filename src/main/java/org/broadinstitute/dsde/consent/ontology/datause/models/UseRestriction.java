@@ -12,9 +12,10 @@ import com.hp.hpl.jena.ontology.OntModel;
 import io.dropwizard.jackson.Jackson;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
+import org.slf4j.LoggerFactory;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(
@@ -33,7 +34,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestri
 })
 public abstract class UseRestriction {
 
-    private static Logger LOG = Logger.getLogger(UseRestriction.class);
+    private static final Logger log = LoggerFactory.getLogger(UseRestriction.class);
 
     private static ObjectMapper mapper = Jackson.newObjectMapper();
 
@@ -44,7 +45,7 @@ public abstract class UseRestriction {
             ObjectReader reader = mapper.reader(UseRestriction.class);
             return reader.readValue(str);
         } catch (IOException e) {
-            LOG.error(String.format("Parse exception on \"%s\"", str));
+            log.error(String.format("Parse exception on \"%s\"", str));
             throw e;
         }
     }
@@ -71,17 +72,17 @@ public abstract class UseRestriction {
     public abstract String getDescriptiveLabel(OntologyTermSearchAPI api) throws IOException;
 
     @JsonIgnore
-    protected static String wrapListItem(String item) {
+    String wrapListItem(String item) {
         return "<li>" + item + "</li>";
     }
 
     @JsonIgnore
-    protected static String wrapList(String item) {
+    String wrapList(String item) {
         return "<ul>" + item + "</ul>";
     }
 
     @JsonIgnore
-    protected static String capitalize(String item) {
+    String capitalize(String item) {
         return StringUtils.capitalize(item);
     }
 

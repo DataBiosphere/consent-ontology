@@ -14,9 +14,6 @@ public class MatchPair {
         this.consent = consent;
     }
 
-    public MatchPair() {
-    }
-
     public UseRestriction getPurpose() {
         return purpose;
     }

@@ -4,6 +4,7 @@ import akka.actor.UntypedActor;
 import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.codahale.metrics.annotation.Timed;
+import org.broadinstitute.dsde.consent.ontology.cache.OntModelCache;
 
 @SuppressWarnings("WeakerAccess")
 public class MatchWorkerActor extends UntypedActor {

@@ -3,17 +3,12 @@ package org.broadinstitute.dsde.consent.ontology.datause.api;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.index.Term;
-import org.apache.lucene.search.*;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
 import org.apache.lucene.util.Version;
@@ -29,7 +24,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -42,9 +40,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
     private static final String FIELD_DEFINITION = "definition";
     private static final String FIELD_SYNONYM = "synonym";
     private static final String FIELD_DEFINITION_CLASS = "IAO_0000115";
-    private final Logger log = LoggerFactory.getLogger(LuceneOntologyTermSearchAPI.class);
-    private IndexSearcher searcher;
-    private Analyzer analyzer;
+    private static final Logger log = LoggerFactory.getLogger(LuceneOntologyTermSearchAPI.class);
     private Map<String, OntologyTerm> nameToTerm;
     private StoreOntologyService storeOntologyService;
 
@@ -63,7 +59,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
         Collection<String> resouces = storeOntologyService.retrieveConfigurationKeys();
         Directory indexDirectory = new RAMDirectory();
 
-        analyzer = new StandardAnalyzer(Version.LUCENE_4_9);
+        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_4_9);
 
         try (IndexWriter indexWriter = new IndexWriter(indexDirectory,
                 new IndexWriterConfig(Version.LUCENE_4_9, analyzer))) {
@@ -160,55 +156,6 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
             }
         }
 
-        this.searcher = new IndexSearcher(DirectoryReader.open(indexDirectory));
-    }
-
-    private Query queryFor(String field, String search, float boost) throws IOException {
-        BooleanQuery prefixQuery = new BooleanQuery();
-        BooleanQuery termQuery = new BooleanQuery();
-
-        try (TokenStream stream = analyzer.tokenStream(field, search)) {
-            CharTermAttribute cattr = stream.addAttribute(CharTermAttribute.class);
-
-            stream.reset();
-            while (stream.incrementToken()) {
-                Term term = new Term(field, cattr.toString());
-                prefixQuery.add(new PrefixQuery(term), BooleanClause.Occur.MUST);
-                termQuery.add(new TermQuery(term), BooleanClause.Occur.MUST);
-            }
-            stream.end();
-        }
-
-        termQuery.setBoost(boost * 2.0f);
-        prefixQuery.setBoost(boost);
-        List<Query> queries = new ArrayList<>();
-        queries.add(termQuery);
-        queries.add(prefixQuery);
-        return new DisjunctionMaxQuery(queries, 1.15f);
-    }
-
-    @Override
-    public List<OntologyTerm> searchSimilarTerms(String search, int limit) throws IOException {
-        List<Query> queries = new ArrayList<>();
-        queries.add(queryFor(FIELD_ID, search, 2.0f));
-        queries.add(queryFor(FIELD_COMMENT, search, 1.5f));
-        queries.add(queryFor(FIELD_LABEL, search, 1.5f));
-        queries.add(queryFor(FIELD_SYNONYM, search, 0.5f));
-        Query orQuery = new DisjunctionMaxQuery(queries, 1.15f);
-
-        ArrayList<OntologyTerm> terms = new ArrayList<>(limit);
-        for (ScoreDoc scoreDoc : searcher.search(orQuery, limit).scoreDocs) {
-            Document doc = searcher.doc(scoreDoc.doc);
-            assert doc != null : "Document was null";
-
-            terms.add(new OntologyTerm(
-                    doc.get(FIELD_ID),
-                    doc.get(FIELD_COMMENT),
-                    doc.get(FIELD_LABEL),
-                    doc.get(FIELD_DEFINITION),
-                    doc.getValues(FIELD_SYNONYM)));
-        }
-        return terms;
     }
 
     @Override

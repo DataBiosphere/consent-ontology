@@ -18,10 +18,6 @@ public class OntologyConfiguration extends Configuration {
     @JsonProperty
     private final StoreOntologyConfiguration storeOntology = new StoreOntologyConfiguration();
 
-    @JsonProperty
-    private final CorsConfiguration cors = new CorsConfiguration();
-
-
     public ElasticSearchConfiguration getElasticSearchConfiguration() {
         return elasticSearch;
     }
@@ -30,10 +26,6 @@ public class OntologyConfiguration extends Configuration {
 
     public StoreOntologyConfiguration getStoreOntologyConfiguration() {
         return storeOntology;
-    }
-
-    public CorsConfiguration getCorsConfiguration() {
-        return cors;
     }
 
 }

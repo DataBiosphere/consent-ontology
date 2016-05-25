@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.truthtable;
 
 import com.google.common.io.Resources;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
-import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
+import org.broadinstitute.dsde.consent.ontology.cache.OntModelCache;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.junit.Assert;

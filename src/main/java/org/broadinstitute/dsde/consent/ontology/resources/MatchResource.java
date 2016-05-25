@@ -28,7 +28,7 @@ import java.util.Collection;
 @Produces("application/json")
 public class MatchResource {
 
-    private final Logger log = LoggerFactory.getLogger(MatchResource.class);
+    private static final Logger log = LoggerFactory.getLogger(MatchResource.class);
     private StoreOntologyService storeOntologyService;
 
     private static final ActorSystem actorSystem = ActorSystem.create("actorSystem");

@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("FieldCanBeLocal")
 public class StoreOntologyService {
 
-    private final Logger log = LoggerFactory.getLogger(StoreOntologyService.class);
+    private static final Logger log = LoggerFactory.getLogger(StoreOntologyService.class);
     private final ObjectMapper MAPPER = new ObjectMapper();
     private final CloudStore store;
     private final String bucketSubdirectory;
