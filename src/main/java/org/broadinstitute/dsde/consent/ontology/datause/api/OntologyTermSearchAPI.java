@@ -8,7 +8,7 @@ import java.util.List;
 
 @ImplementedBy(LuceneOntologyTermSearchAPI.class)
 public interface OntologyTermSearchAPI {
-    List<OntologyTerm> searchSimilarTerms(String search, int limit) throws IOException;
 
     OntologyTerm findById(String id) throws IOException;
+
 }

@@ -4,8 +4,9 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.storage.StorageScopes;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -13,14 +14,12 @@ import java.security.GeneralSecurityException;
 import java.util.Collections;
 
 public class GCSStore implements CloudStore {
+
+    private final static Logger log = LoggerFactory.getLogger(GCSStore.class);
     private final static HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
     private StoreConfiguration sConfig;
     private HttpRequestFactory requestFactory;
-
-    protected Logger logger() {
-        return Logger.getLogger("GCSStore");
-    }
 
     public GCSStore(StoreConfiguration config) throws GeneralSecurityException, IOException {
         sConfig = config;
@@ -38,7 +37,7 @@ public class GCSStore implements CloudStore {
                 fromStream(new FileInputStream(sConfig.getPassword())).
                 createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
         } catch (Exception e) {
-            logger().error("Error on GCS Store initialization. Service won't work: " + e);
+            log.error("Error on GCS Store initialization. Service won't work: " + e);
             throw new RuntimeException(e);
         }
         return credential;
@@ -49,14 +48,6 @@ public class GCSStore implements CloudStore {
     public HttpResponse getStorageDocument(String documentSuffix) throws IOException, GeneralSecurityException {
         HttpResponse response;
         HttpRequest request = buildHttpGetRequest(generateURLForDocument(documentSuffix));
-        response = request.execute();
-        return response;
-    }
-
-    @Override
-    public HttpResponse getDocument(String documentUrl) throws GeneralSecurityException, IOException {
-        HttpResponse response;
-        HttpRequest request = buildHttpGetRequest(new GenericUrl(documentUrl));
         response = request.execute();
         return response;
     }

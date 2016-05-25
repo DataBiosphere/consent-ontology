@@ -31,9 +31,6 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         new OntologyApp().run(args);
     }
 
-
-
-
     @Override
     public void run(OntologyConfiguration config, Environment env) {
 

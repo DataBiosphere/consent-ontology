@@ -12,8 +12,6 @@ elasticSearch:
   servers: ["{{.Data.es_servers}}"]
   clusterName: "{{.Data.es_cluster_name}}"
   index: ontology
-cors:
-  allowedDomains: "{{.Data.cors_allowed_domains}}" 
 googleStore:
   password: {{.Data.gce_password}}
   endpoint: {{.Data.gce_endpoint}}

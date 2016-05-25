@@ -1,8 +1,9 @@
-package org.broadinstitute.dsde.consent.ontology.actor;
+package org.broadinstitute.dsde.consent.ontology.cache;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
+import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletInfGraph;
@@ -22,11 +23,10 @@ public enum OntModelCache {
 
     INSTANCE;
 
-    private final Logger log = LoggerFactory.getLogger(OntModelCache.class);
+    private final static Logger log = LoggerFactory.getLogger(OntModelCache.class);
 
     private final Map<Collection<URL>, OntModel> modelCache = new HashMap<>();
 
-    @SuppressWarnings("unused")
     public final Boolean matchPurpose(MatchWorkerMessage message) throws Exception {
         OntModel model = getOntModel(message.getUrlCollection());
         String consentId = UUID.randomUUID().toString();

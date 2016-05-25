@@ -2,11 +2,12 @@ package org.broadinstitute.dsde.consent.ontology.service.validate;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -14,7 +15,7 @@ import java.util.Collection;
 @Singleton
 public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI{
 
-    private final Logger log = Logger.getLogger(UseRestrictionValidateImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(UseRestrictionValidateImpl.class);
     private OntologyTermSearchAPI ontologyTermSearchAPI;
 
     @Inject

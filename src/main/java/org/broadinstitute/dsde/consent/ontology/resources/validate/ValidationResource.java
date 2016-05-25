@@ -17,7 +17,7 @@ import org.slf4j.LoggerFactory;
 @Produces("application/json")
 public class ValidationResource {
 
-    private final Logger LOG = LoggerFactory.getLogger(ValidationResource.class);
+    private static final Logger log = LoggerFactory.getLogger(ValidationResource.class);
     private UseRestrictionValidateAPI validateAPI;
 
     @Inject
@@ -31,6 +31,7 @@ public class ValidationResource {
         try{
             return Response.ok().entity(validateAPI.validateUseRestriction(useRestriction)).build();
         } catch (Exception e){
+            log.error(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse(e.getMessage(), Response.Status.BAD_REQUEST.getStatusCode())).build();
         }
     }

@@ -13,7 +13,7 @@ import java.io.IOException;
 @Path("/translate")
 public class TranslateResource {
 
-    private final org.slf4j.Logger log = LoggerFactory.getLogger(TranslateResource.class);
+    private static final org.slf4j.Logger log = LoggerFactory.getLogger(TranslateResource.class);
     private TextTranslationService helper;
     private HtmlTranslator htmlTranslator;
 
