@@ -3,27 +3,22 @@ package org.broadinstitute.dsde.consent.ontology.datause.services;
 import com.google.inject.Inject;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
-import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
+
+import java.io.IOException;
+import java.net.URL;
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class TextTranslationServiceImpl implements TextTranslationService {
 
     private OntologyTermSearchAPI api;
-    private OntologyModel ontologyList;
+    private OntModelCache ontModelCache = OntModelCache.INSTANCE;
 
     // This is a cache, used to associate a type (element of
     // the set { "disease", "organization", "commercial-status" }) to each named class.
@@ -31,9 +26,19 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     // to cache it here in this class and not use it again if we don't need to.
     private Map<String, String> namedClassTypes;
     private OntModel model;
+    private StoreOntologyService storeOntologyService;
 
-    public TextTranslationServiceImpl() {
 
+    @Inject
+    public TextTranslationServiceImpl(StoreOntologyService storeOntologyService) {
+        this.storeOntologyService = storeOntologyService;
+        this.namedClassTypes = new ConcurrentHashMap<>();
+        try {
+            Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
+            model = ontModelCache.getOntModel(urls);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override
@@ -330,17 +335,6 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     @Inject
     public void setApi(OntologyTermSearchAPI api) {
         this.api = api;
-    }
-
-    @Inject
-    public void setOntologyList(OntologyModel ontologyList) {
-        this.ontologyList = ontologyList;
-        this.namedClassTypes = new ConcurrentHashMap<>();
-        try {
-            model = ontologyList.getModel();
-        } catch (IOException | OWLOntologyCreationException ex) {
-            Logger.getLogger(TextTranslationServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
-        }
     }
 
 }

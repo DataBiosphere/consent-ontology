@@ -1,71 +1,73 @@
 package org.broadinstitute.dsde.consent.ontology;
 
-import org.broadinstitute.dsde.consent.ontology.datause.api.ResearchPurposeMatch;
+import com.google.common.io.Resources;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
+import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
-import org.junit.*;
-import java.util.UUID;
+import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
 
 
 public class DataUseOwlTest extends AbstractTest {
 
-    private static ResearchPurposeMatch matcher;
+    private static final OntModelCache ONT_MODEL_CACHE = OntModelCache.INSTANCE;
+    private static final Collection<URL> resources = Collections.singletonList(Resources.getResource("data-use.owl"));
 
-    private static final String UID = UUID.randomUUID().toString();
+    private static final UseRestriction methodsPurpose =
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research");
 
-    private static final ResearchPurpose methodsPurpose = new ResearchPurpose(
-            UUID.randomUUID().toString(),
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"));
-
-    private static final ResearchPurpose aggregatePurpose = new ResearchPurpose(
-            UUID.randomUUID().toString(),
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"));
+    private static final UseRestriction aggregatePurpose =
+        new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis");
 
     @BeforeClass
     public static void setUp() throws Exception {
-        matcher = new ResearchPurposeMatch();
-        matcher.setOntologyList(getOntologyListMock());
     }
+
     @AfterClass
     public static void after() throws Exception {
-        matcher = null;
     }
 
 
 
     @Test
-    public void testNegativeMethodsAgainstInverse() {
-        Consent consent = new Consent(UID, 
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research")));
-        Boolean b = matcher.matchPurpose(methodsPurpose, consent);
+    public void testNegativeMethodsAgainstInverse() throws Exception {
+        UseRestriction consent = new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/methods_research"));
+        Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(methodsPurpose, consent)));
         Assert.assertFalse(b);
     }
 
     @Test
-    public void testNegativeMethodsAgainstNothing() {
-        Consent consent = new Consent(UID, new Nothing());
-        Boolean b = matcher.matchPurpose(methodsPurpose, consent);
+    public void testNegativeMethodsAgainstNothing() throws Exception {
+        UseRestriction consent = new Nothing();
+        Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(methodsPurpose, consent)));
         Assert.assertFalse(b);
     }
 
-    @Ignore
     @Test
-    public void testPositiveAggregate() {
-        Consent consent = new Consent(UID, new Everything());
-        Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
+    public void testPositiveAggregate() throws Exception {
+        UseRestriction consent = new Everything();
+        Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(aggregatePurpose, consent)));
         Assert.assertTrue(b);
     }
 
     @Test
-    public void testNegativeAggregateAgainstInverse() {
-        Consent consent = new Consent(UID,
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis")));
-        Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
+    public void testNegativeAggregateAgainstInverse() throws Exception {
+        UseRestriction consent = new Not(new Named("http://www.broadinstitute.org/ontologies/DURPO/aggregate_analysis"));
+        Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(aggregatePurpose, consent)));
         Assert.assertFalse(b);
     }
+
     @Test
-    public void testNegativeAggregateAgainstNothing() {
-        Consent consent = new Consent(UID, new Nothing());
-        Boolean b = matcher.matchPurpose(aggregatePurpose, consent);
+    public void testNegativeAggregateAgainstNothing() throws Exception {
+        UseRestriction consent = new Nothing();
+        Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(aggregatePurpose, consent)));
         Assert.assertFalse(b);
     }
 

@@ -1,31 +1,21 @@
 package org.broadinstitute.dsde.consent.ontology;
 
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Scopes;
-import com.google.inject.Singleton;
-import com.google.inject.Provides;
+import com.google.inject.*;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
-import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
-import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidateAPI;
-import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidateImpl;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.client.transport.TransportClient;
 import org.elasticsearch.common.settings.ImmutableSettings;
 import org.elasticsearch.common.transport.InetSocketTransportAddress;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
-import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -47,14 +37,10 @@ public class OntologyModule   extends AbstractModule {
     protected void configure() {
         bind(Configuration.class).toInstance(config);
         bind(Environment.class).toInstance(environment);
-        bind(OntologyModel.class).to(OntologyList.class).in(Scopes.SINGLETON);
-        bind(UseRestrictionValidateAPI.class).to(UseRestrictionValidateImpl.class).in(Scopes.SINGLETON);
-        bind(OntologyTermSearchAPI.class).to(LuceneOntologyTermSearchAPI.class).in(Scopes.SINGLETON);
-        bind(TextTranslationService.class).to(TextTranslationServiceImpl.class).in(Scopes.SINGLETON);
-
-        bind(OntologyTermSearchAPI.class).in(Singleton.class);
-        bind(UseRestrictionValidateAPI.class).in(Singleton.class);
-        bind(TextTranslationService.class).in(Singleton.class);
+        bind(UseRestrictionValidateAPI.class).in(Scopes.SINGLETON);
+        bind(TextTranslationService.class).in(Scopes.SINGLETON);
+        bind(UseRestrictionValidateAPI.class).in(Scopes.SINGLETON);
+        bind(TextTranslationService.class).in(Scopes.SINGLETON);
     }
 
 
