@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class And extends UseRestriction {
 

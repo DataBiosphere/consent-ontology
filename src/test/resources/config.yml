@@ -11,3 +11,11 @@ elasticSearch:
   servers: ["127.0.0.1:9300"]
   clusterName: "elasticsearch_ci"
   index: ontology
+googleStore:
+  password:
+  endpoint:
+  bucket:
+storeOntology:
+  bucketSubdirectory:
+  configurationFileName:
+

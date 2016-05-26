@@ -1,2 +1,0 @@
-data-use.owl
-diseases.owl

@@ -73,7 +73,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAA, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAA, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -97,7 +97,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAA, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -109,7 +109,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAA, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -121,7 +121,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAA, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -133,7 +133,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAA, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -145,7 +145,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAB, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -157,7 +157,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAB, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -169,7 +169,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAB, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
 
@@ -183,7 +183,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAB, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -195,7 +195,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -207,7 +207,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -219,7 +219,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAC, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -231,7 +231,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAC, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -243,7 +243,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAC, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -255,7 +255,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAC, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -267,7 +267,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darAAC, dulUC3);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(pair, false);
     }
 
     @Test
@@ -279,7 +279,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultAAC, dulUC3);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(pair, false);
     }
 
 }

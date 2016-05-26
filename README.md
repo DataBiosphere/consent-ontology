@@ -1,5 +1,7 @@
 # Consent Ontology Services
 
+[![Build Status](https://travis-ci.com/broadinstitute/consent-ontology.svg?token=3ve6QNemvC5zpJzsoKzf&branch=develop)](https://travis-ci.com/broadinstitute/consent-ontology)
+
 This repository contains all ontology-related services
 
 ## Building and Running

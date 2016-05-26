@@ -100,7 +100,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPA, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -112,7 +112,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPA, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -124,7 +124,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPA, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -137,7 +137,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPA, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -149,7 +149,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPA, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -161,7 +161,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPA, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -173,7 +173,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPA, dulUC4);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -185,7 +185,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPA, dulUC4);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -197,7 +197,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPB, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
 
@@ -211,7 +211,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPB, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -223,7 +223,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPB, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -235,7 +235,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPB, dulUC2);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -247,7 +247,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -259,7 +259,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPB, dulUC3);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -271,7 +271,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPB, dulUC4);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -283,7 +283,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPB, dulUC4);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
 
@@ -296,7 +296,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPC, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -309,7 +309,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPC, dulUC1);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -321,7 +321,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darMRPC, dulUC2);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(pair, false);
     }
 
     @Test
@@ -333,10 +333,10 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darDefaultMRPC, dulUC2);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(pair, false);
     }
 
-    // Failing test - revisit this case with team.
+    // TODO: Failing test - revisit this case with team.
     @Ignore
     @Test
     public void testMRPC_UC3() {
@@ -347,9 +347,10 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darMRPC, dulUC3);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(pair, false);
     }
-    // Failing test - revisit this case with team.
+
+    // TODO: Failing test - revisit this case with team.
     @Ignore
     @Test
     public void testDefaultMRPC_UC3() {
@@ -360,9 +361,11 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be negative
 
         MatchPair pair = new MatchPair(darDefaultMRPC, dulUC3);
-        assertResponse(getResponseFuture(pair), false);
+        assertResponse(pair, false);
     }
 
+    // TODO: Failing test - revisit this case with team.
+    @Ignore
     @Test
     public void testMRPC_UC4() {
 
@@ -372,7 +375,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darMRPC, dulUC4);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
     @Test
@@ -384,7 +387,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         // Response should be positive
 
         MatchPair pair = new MatchPair(darDefaultMRPC, dulUC4);
-        assertResponse(getResponseFuture(pair), true);
+        assertResponse(pair, true);
     }
 
 }

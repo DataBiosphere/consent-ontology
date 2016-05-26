@@ -1,65 +1,35 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
-import io.dropwizard.testing.junit.ResourceTestRule;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyList;
-import org.broadinstitute.dsde.consent.ontology.datause.ontologies.OntologyModel;
+import com.google.common.io.Resources;
+import org.broadinstitute.dsde.consent.ontology.AbstractTest;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
+import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
-import org.glassfish.jersey.test.grizzly.GrizzlyWebTestContainerFactory;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.mockito.InjectMocks;
+import org.junit.Assert;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import java.net.URL;
+import java.util.Arrays;
+import java.util.Collection;
 
 /**
  * See https://docs.google.com/document/d/1xyeYoIKBDFGAsQ_spoK5Ye5esMOXqpRBojd6ijZWJkk
  * for a summary of use cases for which this test class covers.
  */
-public class TruthTableTests {
+class TruthTableTests extends AbstractTest {
 
-    @InjectMocks
-    private static MatchResource matchResource = new MatchResource();
+    private Collection<URL> RESOURCES = Arrays.asList(
+        Resources.getResource("diseases.owl"),
+        Resources.getResource("data-use.owl"));
 
-    /**
-     * Use GrizzlyTestContainerFactory to process async requests.
-     */
-    @ClassRule
-    public static final ResourceTestRule RULE = ResourceTestRule.builder()
-        .setTestContainerFactory(new GrizzlyWebTestContainerFactory())
-        .addResource(matchResource).build();
+    private OntModelCache ontModelCache = OntModelCache.INSTANCE;
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        OntologyModel ontologyList = new OntologyList();
-        matchResource.setOntologyList(ontologyList);
-    }
-
-    protected Future<Response> getResponseFuture(MatchPair pair) {
-        return RULE.getJerseyTest().target("/match")
-            .request(MediaType.APPLICATION_JSON_TYPE)
-            .accept(MediaType.APPLICATION_JSON_TYPE)
-            .async()
-            .post(Entity.json(pair));
-    }
-
-    protected void assertResponse(Future<Response> responseFuture, Boolean expected) {
+    void assertResponse(MatchPair pair, Boolean expected) {
+        MatchWorkerMessage message = new MatchWorkerMessage(RESOURCES, pair);
         try {
-            Response response = responseFuture.get();
-            String responseString = response.readEntity(String.class);
-            assertTrue((responseString.contains("\"result\":true")) == expected);
-            assertTrue((response.getStatus() >= 200));
-            assertTrue((response.getStatus() < 300));
-        } catch (InterruptedException | ExecutionException e) {
+            Assert.assertTrue(ontModelCache.matchPurpose(message).equals(expected));
+        } catch (Exception e) {
             e.printStackTrace();
-            fail("Should not have received a failure.");
+            Assert.fail();
         }
     }
 
