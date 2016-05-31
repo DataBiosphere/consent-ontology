@@ -1,5 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.service.validate;
 
+
+import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
@@ -7,12 +9,15 @@ import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAP
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
-
-import java.io.IOException;
+import org.broadinstitute.dsde.consent.ontology.enumerations.UseRestrictionKeys;
+import java.util.HashSet;
 import java.util.Collection;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Singleton
-public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI{
+public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI {
 
     private final Logger log = Logger.getLogger(UseRestrictionValidateImpl.class);
     private OntologyTermSearchAPI ontologyTermSearchAPI;
@@ -29,32 +34,42 @@ public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI{
         try {
             UseRestriction restriction = UseRestriction.parse(useRestriction);
             String parsedRest = replaceChars(restriction.toString());
-            if(!parsedRest.equals(replaceChars(useRestriction))){
-                throw new Exception("There is more than one use restriction to validate. Please, send one each time.");
+            if (!parsedRest.equals(replaceChars(useRestriction))) {
+                throw new IllegalArgumentException("There is more than one use restriction to validate. Please, send one each time.");
             }
             NamedVisitor validationVisitor = new NamedVisitor();
             restriction.visitAndContinue(validationVisitor);
             Collection<String> namedClasses = validationVisitor.getNamedClasses();
-            for(String term: namedClasses){
+            Set<String> invalidTerms = new HashSet<>();
+            for (String term : namedClasses) {
                 OntologyTerm oTerm = ontologyTermSearchAPI.findById(term);
-                if(oTerm == null){
-                    isValid.setValid(false);
-                    isValid.addError("Term not found: "+ term);
+                if (oTerm == null) {
+                    invalidTerms.add(term);
                 }
             }
-        } catch (IOException e) {
+            if(invalidTerms.size() > 0){
+                isValid.setValid(false);
+                isValid.addError("Term not found: " + invalidTerms.stream().collect(Collectors.joining(", ")));
+            }
+        }
+        catch(UnrecognizedPropertyException e){
+            String validValues = Stream.of(UseRestrictionKeys.values()).map(Enum::name).collect(Collectors.joining(", "));
+            isValid.setValid(false);
+            isValid.addError("Could not resolve the following keys: " + e.getPropertyName() + " into a subtype of " + validValues.toLowerCase());
+        }
+        catch (Exception e) {
             isValid.setValid(false);
             isValid.addError(e.getMessage());
         }
         return isValid;
     }
 
-    private String replaceChars(String useRestriction){
+    private String replaceChars(String useRestriction) {
         useRestriction = useRestriction.replaceAll("\\n", "");
         useRestriction = useRestriction.replaceAll("\\r", "");
-        useRestriction = useRestriction.replaceAll("\\s","");
-        if((useRestriction.charAt(useRestriction.length()-1)==',') || (useRestriction.charAt(useRestriction.length()-1)==';')){
-            useRestriction = useRestriction.substring(0, useRestriction.length()-1);
+        useRestriction = useRestriction.replaceAll("\\s", "");
+        if ((useRestriction.charAt(useRestriction.length() - 1) == ',') || (useRestriction.charAt(useRestriction.length() - 1) == ';')) {
+            useRestriction = useRestriction.substring(0, useRestriction.length() - 1);
         }
         return useRestriction;
     }
