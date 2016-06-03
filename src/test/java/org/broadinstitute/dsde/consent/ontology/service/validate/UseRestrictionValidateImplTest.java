@@ -9,6 +9,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 public class UseRestrictionValidateImplTest extends AbstractTest {
 
     private final Logger log = Logger.getLogger(UseRestrictionValidateImplTest.class);
@@ -45,5 +47,21 @@ public class UseRestrictionValidateImplTest extends AbstractTest {
             + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}";
         ValidateResponse result = service.validateUseRestriction(invalidRestriction);
         Assert.assertEquals(false, result.isValid());
+    }
+
+    @Test
+    public void testValidateUseRestrictionInvalidTerm()  throws Exception {
+        String invalidRestriction = "{\"type\":\"named\",\"name\": \"http://purl.obolibrary.org/obo/BLURB\"}";
+        ValidateResponse result = service.validateUseRestriction(invalidRestriction);
+        Assert.assertEquals(false, result.isValid());
+        Assert.assertEquals("Term not found: http://purl.obolibrary.org/obo/BLURB", ((ArrayList) result.getErrors()).get(0));
+    }
+
+    @Test
+    public void testValidateUseRestrictionErrorMessage() throws Exception {
+        String invalidRestriction =  "{\"type\":\"named\",\"weird\": \"http://purl.obolibrary.org/obo/BLURB\"}";
+        ValidateResponse result = service.validateUseRestriction(invalidRestriction);
+        Assert.assertEquals(false, result.isValid());
+        Assert.assertEquals("Could not resolve the following keys: weird into a subtype of type, operands, operand, name", ((ArrayList) result.getErrors()).get(0));
     }
 }

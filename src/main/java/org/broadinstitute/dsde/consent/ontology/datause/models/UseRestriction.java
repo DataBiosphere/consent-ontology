@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonIgnoreProperties(ignoreUnknown = false)
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
