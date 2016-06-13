@@ -26,8 +26,8 @@ public class OnlyTest {
     public void setUp() {
         UseRestriction and = new And(
                 new Named("http://purl.obolibrary.org/obo/DOID_162"),
-                new Named("http://www.broadinstitute.org/ontologies/DURPO/female"),
-                new Named("http://www.broadinstitute.org/ontologies/DURPO/men")
+                new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
+                new Named("http://www.broadinstitute.org/ontologies/DUOS/men")
         );
         property = "Test";
         useRestriction = and;

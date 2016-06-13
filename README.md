@@ -203,7 +203,7 @@ Json response
 
 ### Example:
 ```
-curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept:application/json' https://consent-ontology.dsde-consent-dev.broadinstitute.org/match -d '{"purpose":{ "type":"and", "operands":[ {   "type":"named", "name":"http://www.broadinstitute.org/ontologies/DURPO/methods_research"  }, { "type":"named", "name":"http://purl.obolibrary.org/obo/DOID162" }, {   "type":"named",    "name":"http://www.broadinstitute.org/ontologies/DURPO/Non_profit"   }  ] }, "consent":{  "type":"and",  "operands":[ {   "type":"named",  "name":"http://www.broadinstitute.org/ontologies/DURPONon_profit"  } ] }}'
+curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept:application/json' https://consent-ontology.dsde-consent-dev.broadinstitute.org/match -d '{"purpose":{ "type":"and", "operands":[ {   "type":"named", "name":"http://www.broadinstitute.org/ontologies/DUOS/methods_research"  }, { "type":"named", "name":"http://purl.obolibrary.org/obo/DOID162" }, {   "type":"named",    "name":"http://www.broadinstitute.org/ontologies/DUOS/Non_profit"   }  ] }, "consent":{  "type":"and",  "operands":[ {   "type":"named",  "name":"http://www.broadinstitute.org/ontologies/DUOSNon_profit"  } ] }}'
 ```
 
 ### Response:
@@ -226,7 +226,7 @@ curl -v -k -X POST -H 'Content-type: application/json' -H 'Accept:application/js
 < Access-Control-Allow-Headers: authorization, content-type, accept, origin
 < Access-Control-Allow-Methods: GET,POST,PUT,PATCH,DELETE,OPTIONS,HEAD
 < 
-{"result":false,"matchPair":{"purpose":{"type":"and","operands":[{"type":"named","name":"http://www.broadinstitute.org/ontologies/DURPO/methods_research"},{"type":"named","name":"http://purl.obolibrary.org/obo/DOID162"},{"type":"named","name":"http://www.broadinstitute.org/ontologies/DURPO/Non_profit"}]},"consent":{"type":"and","operands":[{"type":"named","name":"http://www.broadinstitute.org/ontologies/DURPONon_profit"}]}}}
+{"result":false,"matchPair":{"purpose":{"type":"and","operands":[{"type":"named","name":"http://www.broadinstitute.org/ontologies/DUOS/methods_research"},{"type":"named","name":"http://purl.obolibrary.org/obo/DOID162"},{"type":"named","name":"http://www.broadinstitute.org/ontologies/DUOS/Non_profit"}]},"consent":{"type":"and","operands":[{"type":"named","name":"http://www.broadinstitute.org/ontologies/DUOSNon_profit"}]}}}
 ```
 
 ## Configuration

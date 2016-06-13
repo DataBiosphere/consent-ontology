@@ -32,8 +32,8 @@ public class StoreOntologyServiceTest {
     @Mock
     MockLowLevelHttpResponse response;
 
-    private static final String content = "{\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/methods_research\"}";
-    private static final String urls = "{\"http://www.broadinstitute.org/ontologies/DURPO/research_type\":\"http://www.broadinstitute.org/ontologies/DURPO/methods_research\"}";
+    private static final String content = "{\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/methods_research\"}";
+    private static final String urls = "{\"http://www.broadinstitute.org/ontologies/DUOS/research_type\":\"http://www.broadinstitute.org/ontologies/DUOS/methods_research\"}";
     private static final String error = "{\"error:\":\"Not Found\"}";
 
     @Before
