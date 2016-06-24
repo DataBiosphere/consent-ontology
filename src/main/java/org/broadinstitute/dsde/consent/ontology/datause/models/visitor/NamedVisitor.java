@@ -19,6 +19,10 @@ public class NamedVisitor implements UseRestrictionVisitor {
 
     }
 
+    public void addNamed(Named useRestriction){
+        namedClasses.add(useRestriction.getName());
+    }
+
     @Override
     public boolean visit(UseRestriction r) {
         if(r instanceof Named){

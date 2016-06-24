@@ -7,6 +7,8 @@ import com.hp.hpl.jena.ontology.OntModel;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 
 import java.io.IOException;
+
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class Named extends UseRestriction {
@@ -52,6 +54,9 @@ public class Named extends UseRestriction {
     }
 
     public boolean visitAndContinue(UseRestrictionVisitor visitor) {
+        if(visitor instanceof NamedVisitor){
+            ((NamedVisitor) visitor).addNamed(this);
+        }
         return true;
     }
 
