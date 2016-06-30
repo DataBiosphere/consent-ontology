@@ -7,6 +7,9 @@ server:
       port: 8180
 logging:
   level: INFO
+    # logger specific levels
+  loggers:
+    "org.semanticweb": ERROR
 elasticSearch:
   servers: ["127.0.0.1:9300"]
   clusterName: "elasticsearch_ci"
