@@ -6,11 +6,10 @@ import java.io.IOException;
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 
-
 public class ConsentTest extends Consent {
 
     @Test
-    public void testObjetInstanceOf(){
+    public void testObjectInstanceOf(){
         Consent consent = new Consent();
         boolean result = equals(consent);
         Assert.assertTrue(result);
