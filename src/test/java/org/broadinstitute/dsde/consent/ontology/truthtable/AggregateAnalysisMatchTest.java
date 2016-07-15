@@ -7,7 +7,7 @@ import org.junit.Test;
 public class AggregateAnalysisMatchTest extends TruthTableTests {
 
     private UseRestriction darAAA = new And(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
         new Named("http://purl.obolibrary.org/obo/DOID_162")
     );
 
@@ -15,7 +15,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
             new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research")),
             new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/population")),
             new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/control")),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+            new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit"));
 
@@ -28,18 +28,18 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit"));
 
-    private UseRestriction darAAC = new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis");
+    private UseRestriction darAAC = new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research");
 
     private UseRestriction darDefaultAAC = new And(
             new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research")),
             new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/population")),
             new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/control")),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+            new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
             new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit"));
 
     // Combined example from OD-329
     private UseRestriction dulUC1 = new Or(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
         new Or(
             new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
             new Named("http://purl.obolibrary.org/obo/DOID_162")
@@ -48,7 +48,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
 
     // Combined example from OD-333
     private UseRestriction dulUC2 = new Or(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
         new Or(
             new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
             new Named("http://purl.obolibrary.org/obo/DOID_162")
@@ -57,7 +57,7 @@ public class AggregateAnalysisMatchTest extends TruthTableTests {
 
     // Combined example from OD-333
     private UseRestriction dulUC3 = new Or(
-        new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis")),
+        new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research")),
         new Or(
             new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
             new Named("http://purl.obolibrary.org/obo/DOID_162")

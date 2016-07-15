@@ -24,7 +24,7 @@ public class DataUseOwlTest extends AbstractTest {
         new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research");
 
     private static final UseRestriction aggregatePurpose =
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis");
+        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research");
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -59,7 +59,7 @@ public class DataUseOwlTest extends AbstractTest {
 
     @Test
     public void testNegativeAggregateAgainstInverse() throws Exception {
-        UseRestriction consent = new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"));
+        UseRestriction consent = new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"));
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(aggregatePurpose, consent)));
         Assert.assertFalse(b);
     }

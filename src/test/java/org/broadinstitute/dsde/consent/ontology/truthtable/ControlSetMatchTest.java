@@ -47,7 +47,7 @@ public class ControlSetMatchTest extends TruthTableTests {
 
     // Combined example from OD-329
     private UseRestriction dulUC1 = new Or(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
         new Or(
             new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
             new Named("http://purl.obolibrary.org/obo/DOID_162")
@@ -57,7 +57,7 @@ public class ControlSetMatchTest extends TruthTableTests {
     // Combined example from OD-335
     private UseRestriction dulUC2 = new Or(
         new Or(
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+            new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
             new Or(
                 new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
                 new Named("http://purl.obolibrary.org/obo/DOID_162")
@@ -65,7 +65,7 @@ public class ControlSetMatchTest extends TruthTableTests {
         ),
         new And(
             new Or(
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+                new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
                 new Or(
                     new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
                     new Named("http://purl.obolibrary.org/obo/DOID_162")
@@ -77,7 +77,7 @@ public class ControlSetMatchTest extends TruthTableTests {
 
     // Combined example from OD-336
     private UseRestriction dulUC3 = new Or(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_analysis"),
+        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
         new Or(
             new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
             new Named("http://purl.obolibrary.org/obo/DOID_162")
