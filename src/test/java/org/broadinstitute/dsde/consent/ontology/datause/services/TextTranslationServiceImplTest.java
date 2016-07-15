@@ -55,8 +55,8 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     public void testTranslateSample() throws Exception {
         log.debug("translateSample");
         String restrictionStr = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"},"
-                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/children\"},"
-                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}";
+                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/children\"},"
+                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
         String expResult = "Samples may only be used for the purpose of studying cancer. "
                 + "In addition, samples may only be used for the study of children and may not be used for commercial purposes.";
         String result = service.translateSample(restrictionStr);
@@ -72,8 +72,8 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     @Test
     public void testTranslatePurpose() throws Exception {
         log.debug("translatePurpose");
-        String restrictionStr = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Broad\"},"
-                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}";
+        String restrictionStr = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Broad\"},"
+                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
         String expResult = "Any sample which can be used for research at institutions in The Broad Institute.";
         String result = service.translatePurpose(restrictionStr);
         assertEquals(expResult, result);

@@ -39,8 +39,8 @@ public class ConsentTest extends Consent {
         assertNotNull(getId());
         UseRestriction and = new And(
                 new Named("http://purl.obolibrary.org/obo/DOID_162"),
-                new Named("http://www.broadinstitute.org/ontologies/DURPO/female"),
-                new Named("http://www.broadinstitute.org/ontologies/DURPO/children")
+                new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
+                new Named("http://www.broadinstitute.org/ontologies/DUOS/children")
         );
         setRestriction(and);
         assertNotNull(getRestriction());

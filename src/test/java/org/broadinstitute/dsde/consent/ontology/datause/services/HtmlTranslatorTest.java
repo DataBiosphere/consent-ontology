@@ -40,13 +40,13 @@ public class HtmlTranslatorTest extends AbstractTest{
     public void testTranslateSample() throws Exception {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/female"),
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/children")
+            new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
+            new Named("http://www.broadinstitute.org/ontologies/DUOS/children")
         );
 
         UseRestriction or = new Or(
             new Named("http://purl.obolibrary.org/obo/DOID_6741"),
-            new Named("http://www.broadinstitute.org/ontologies/DURPO/Non_profit")
+            new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit")
         );
 
         UseRestriction andOrEd = new And(and, or);

@@ -33,8 +33,8 @@ public class UseRestrictionValidateImplTest extends AbstractTest {
     public void testValidateUseRestrictionValid() throws Exception {
         log.debug("validateUseRestriction");
         String validRestriction = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"},"
-            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/children\"},"
-            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}";
+            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/children\"},"
+            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
         ValidateResponse result = service.validateUseRestriction(validRestriction);
         Assert.assertEquals(true, result.isValid());
     }
@@ -43,8 +43,8 @@ public class UseRestrictionValidateImplTest extends AbstractTest {
     public void testValidateUseRestrictionFail() throws Exception {
         log.debug("validateUseRestriction");
         String invalidRestriction = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_X162\"},"
-            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/choldren\"},"
-            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/Non_profit\"}]}";
+            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/choldren\"},"
+            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
         ValidateResponse result = service.validateUseRestriction(invalidRestriction);
         Assert.assertEquals(false, result.isValid());
     }
