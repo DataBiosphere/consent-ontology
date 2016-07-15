@@ -255,27 +255,27 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             return "disease";
         }
 
-        OntClass commercial = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/Commercial_Status");
+        OntClass commercial = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/Commercial_Status");
         if (cls.hasSuperClass(commercial)) {
             return "commercial";
         }
 
-        OntClass geography = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/geography");
+        OntClass geography = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/geography");
         if (cls.hasSuperClass(geography)) {
             return "geography";
         }
 
-        OntClass population = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/population");
+        OntClass population = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/population");
         if (cls.hasSuperClass(population)) {
             return "population";
         }
 
-        OntClass research_type = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/research_type");
+        OntClass research_type = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/research_type");
         if (cls.hasSuperClass(research_type)) {
             return "research_type";
         }
 
-        OntClass dataset_usage = model.getOntClass("http://www.broadinstitute.org/ontologies/DURPO/dataset_usage");
+        OntClass dataset_usage = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/dataset_usage");
         if (cls.hasSuperClass(dataset_usage)) {
             return "dataset_usage";
         }

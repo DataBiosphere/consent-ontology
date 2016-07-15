@@ -32,8 +32,8 @@ public class StoreOntologyServiceTest {
     @Mock
     MockLowLevelHttpResponse response;
 
-    private static final String content = "{\"name\":\"http://www.broadinstitute.org/ontologies/DURPO/methods_research\"}";
-    private static final String urls = "{\"http://www.broadinstitute.org/ontologies/DURPO/research_type\":\"http://www.broadinstitute.org/ontologies/DURPO/methods_research\"}";
+    private static final String content = "{\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/methods_research\"}";
+    private static final String urls = "{\"http://www.broadinstitute.org/ontologies/DUOS/research_type\":\"http://www.broadinstitute.org/ontologies/DUOS/methods_research\"}";
     private static final String error = "{\"error:\":\"Not Found\"}";
 
     @Before
@@ -60,8 +60,9 @@ public class StoreOntologyServiceTest {
     public void testRetrieveOntologyURLs() throws Exception {
         HttpResponse httpResponse = getHttpResponse(urls);
         when(store.getStorageDocument(Mockito.anyString())).thenReturn(httpResponse);
-        List<URL> urls = (ArrayList)storeOntologyService.retrieveOntologyURLs();
-        urls.get(0).equals(new URL("http://www.broadinstitute.org/ontologies/DURPO/research_type"));
+        List<URL> urls = new ArrayList<>(storeOntologyService.retrieveOntologyURLs());
+        assertThat(!urls.isEmpty());
+        assertThat(urls.get(0).equals(new URL("http://www.broadinstitute.org/ontologies/DUOS/research_type")));
     }
 
     @Test

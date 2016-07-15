@@ -30,8 +30,8 @@ public class SomeTest {
         property = "name";
         useRestriction = new Or(
                 new Named("http://purl.obolibrary.org/obo/DOID_162"),
-                new Named("http://www.broadinstitute.org/ontologies/DURPO/female"),
-                new Named("http://www.broadinstitute.org/ontologies/DURPO/children")
+                new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
+                new Named("http://www.broadinstitute.org/ontologies/DUOS/children")
         );
 
        some = new Some(property, useRestriction);

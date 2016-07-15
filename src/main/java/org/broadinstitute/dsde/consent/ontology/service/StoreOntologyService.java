@@ -72,11 +72,11 @@ public class StoreOntologyService {
      * Parses the configuration file from json in the form of:
      * {
      *      "https://{url to storage location}/ontology/organization/data-use.owl":
-     *          {"fileName":"data-use.owl","prefix":"DURPO","ontologyType":"Organization"},
+     *          {"fileName":"data-use.owl","prefix":"DUOS","ontologyType":"Organization"},
      *      "https://{url to storage location}/ontology/disease/diseases.owl":
      *          {"fileName":"diseases.owl","prefix":"DOID","ontologyType":"Disease"},
      *       "https://{url to storage location}/ontology/disease/data-use.owl":
-     *          {"fileName":"data-use.owl","prefix":"DURPO","ontologyType":"Disease"}
+     *          {"fileName":"data-use.owl","prefix":"DUOS","ontologyType":"Disease"}
      *  }
      *
      * @return Map of URL location to hash of file name & prefix information
