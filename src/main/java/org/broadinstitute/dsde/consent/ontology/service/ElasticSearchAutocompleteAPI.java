@@ -30,6 +30,10 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         return QueryBuilders.multiMatchQuery(term, String.format("%s^4", FIELD_ID), String.format("%s^2", FIELD_LABEL), FIELD_SYNONYM).type(MultiMatchQueryBuilder.Type.PHRASE_PREFIX);
     }
 
+    private QueryBuilder buildQueryById(String term) {
+        return QueryBuilders.matchQuery(FIELD_ID, term);
+    }
+
     private List<TermResource> executeSearch(QueryBuilder qb, int limit) {
         List<TermResource> termList = new ArrayList<>();
         SearchHits hits = client.prepareSearch(index).setQuery(qb).setSize(limit).execute().actionGet().getHits();
@@ -64,5 +68,10 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         );
         QueryBuilder queryBuilder = buildQuery(query);
         return executeSearch(QueryBuilders.filteredQuery(queryBuilder, filter), limit);
+    }
+
+    @Override
+    public List<TermResource> lookupById(String query) {
+        return executeSearch(buildQueryById(query), 1);
     }
 }
