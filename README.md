@@ -18,6 +18,8 @@ Ontologies can be queried based on term, type, and count. This provides an easy 
 
 ###Endpoint:
 
+https://consent-ontology.dsde-consent-dev.broadinstitute.org/ [Update with Prod URL]
+
 ```
 GET /autocomplete
 ```
