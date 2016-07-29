@@ -56,7 +56,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
 
     @Override
     public void initialize(Bootstrap<OntologyConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/assets/", "/site"));
+        bootstrap.addBundle(new AssetsBundle("/swagger", "/swagger", "index.html"));
     }
 
 }
