@@ -62,3 +62,11 @@ crashlytics-build.properties
 hs_err_pid*
 
 /target/
+src/main/resources/assets/css/
+src/main/resources/assets/fonts/
+src/main/resources/assets/images/
+src/main/resources/assets/lang/
+src/main/resources/assets/lib/
+src/main/resources/assets/o2c.html
+src/main/resources/assets/swagger-ui.js
+src/main/resources/assets/swagger-ui.min.js
