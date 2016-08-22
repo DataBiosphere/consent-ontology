@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Objects;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
-import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 
 import java.io.IOException;

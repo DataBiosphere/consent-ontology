@@ -76,7 +76,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                     HashMap<String, OWLAnnotationProperty> annotationProperties = new HashMap<>();
 
                     ontology.annotationPropertiesInSignature().forEach((property) -> {
-                        annotationProperties.put(property.getIRI().getRemainder().get (), property);
+                        annotationProperties.put(property.getIRI().getRemainder().get(), property);
                     });
 
                     OWLAnnotationProperty hasExactSynonym = annotationProperties.get("hasExactSynonym");
