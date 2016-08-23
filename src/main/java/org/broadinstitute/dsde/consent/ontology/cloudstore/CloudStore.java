@@ -6,8 +6,6 @@ import java.security.GeneralSecurityException;
 
 public interface CloudStore {
 
-    HttpResponse getDocument(String fileUrl) throws IOException, GeneralSecurityException;
-
     HttpResponse getStorageDocument(String documentSuffix) throws IOException, GeneralSecurityException;
 
 }

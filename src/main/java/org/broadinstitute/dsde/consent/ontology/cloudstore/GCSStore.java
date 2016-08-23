@@ -53,14 +53,6 @@ public class GCSStore implements CloudStore {
         return response;
     }
 
-    @Override
-    public HttpResponse getDocument(String documentUrl) throws GeneralSecurityException, IOException {
-        HttpResponse response;
-        HttpRequest request = buildHttpGetRequest(new GenericUrl(documentUrl));
-        response = request.execute();
-        return response;
-    }
-
     private HttpRequest buildHttpGetRequest(GenericUrl url) throws IOException, GeneralSecurityException {
         return requestFactory.buildGetRequest(url);
     }
