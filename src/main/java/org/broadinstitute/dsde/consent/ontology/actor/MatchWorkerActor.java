@@ -5,7 +5,6 @@ import akka.event.Logging;
 import akka.event.LoggingAdapter;
 import com.codahale.metrics.annotation.Timed;
 
-@SuppressWarnings("WeakerAccess")
 public class MatchWorkerActor extends UntypedActor {
 
     private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
