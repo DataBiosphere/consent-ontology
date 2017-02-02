@@ -11,9 +11,10 @@ Check out repository:
 git clone git@github.com:broadinstitute/consent-ontology.git
 ```
 
-Render Configs:
+Build and render Configs:
 ```bash
 cd consent-ontology
+mvn clean package
 APP_NAME=consent-ontology ENV=local OUTPUT_DIR=config ./configure.rb
 ```
 
@@ -29,5 +30,5 @@ Port 5005 is open in the configured docker compose.
 Set up a remote debug configuration pointing to `local.broadinstitute.org`
 and the defaults should be correct.
 
-Execute the `fizzed-watcher:run` command to enable hot reloading of
-class and resource files.
+Execute the `fizzed-watcher:run` maven task (under consent plugins) 
+to enable hot reloading of class and resource files.
