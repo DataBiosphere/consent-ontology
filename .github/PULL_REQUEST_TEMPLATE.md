@@ -1,12 +1,12 @@
 
-
+---
 - [ ] **Submitter**: Rebase to develop. DO NOT SQUASH
 - [ ] **Submitter**: Make sure Swagger is updated if API changes
 - [ ] **Submitter**: Make sure documentation for code is complete
 - [ ] **Submitter**: Review code comments; remove done TODOs, create stories for remaining TODOs
 - [ ] **Submitter**: Include the JIRA issue number in the PR description
 - [ ] **Submitter**: Add description or comments on the PR explaining the hows/whys (if not obvious)
-- [ ] Tell @rushtong or @dags that the PR exists
+- [ ] Tell tech lead that the PR exists
 - [ ] Anoint a lead reviewer (LR). **Assign PR to LR**
 - [ ] **LR**: Initial review by LR and others.
 - [ ] Comment / review / update cycle:
@@ -15,7 +15,7 @@
   * Submitter updates documentation as needed
   * Submitter rebases to develop again if necessary
   * Submitter makes further commits. DO NOT SQUASH. **Reassign to LR** for further feedback
-- [ ] @rushtong or @dags sign off
+- [ ] **TL** sign off
 - [ ] **LR** sign off
 - [ ] **Assign to submitter** to finalize
 - [ ] **Submitter**: Squash commits, rebase if necessary
