@@ -14,7 +14,7 @@ git clone git@github.com:broadinstitute/consent-ontology.git
 Build and render Configs:
 ```bash
 cd consent-ontology
-mvn clean package
+mvn clean compile
 APP_NAME=consent-ontology ENV=local OUTPUT_DIR=config ./configure.rb
 ```
 
