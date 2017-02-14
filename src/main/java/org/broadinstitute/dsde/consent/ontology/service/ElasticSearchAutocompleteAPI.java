@@ -57,15 +57,18 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
 
     @Override
     public List<TermResource> lookup(String query, int limit) {
-        return executeSearch(buildQuery(query), limit);
+        return lookup(new String[0], query, limit);
     }
 
     @Override
     public List<TermResource> lookup(String[] tags, String query, int limit) {
-        FilterBuilder filter = FilterBuilders.andFilter(
-                FilterBuilders.termFilter(FIELD_USABLE, true),
-                FilterBuilders.termsFilter(FIELD_ONTOLOGY_TYPE, tags)
-        );
+        FilterBuilder deprecationFilter = FilterBuilders.termFilter(FIELD_USABLE, true);
+        FilterBuilder filter;
+        if (tags.length > 0) {
+            filter = FilterBuilders.andFilter(deprecationFilter, FilterBuilders.termsFilter(FIELD_ONTOLOGY_TYPE, tags));
+        } else {
+            filter = deprecationFilter;
+        }
         QueryBuilder queryBuilder = buildQuery(query);
         return executeSearch(QueryBuilders.filteredQuery(queryBuilder, filter), limit);
     }
