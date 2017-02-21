@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
+import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 
 import javax.ws.rs.*;

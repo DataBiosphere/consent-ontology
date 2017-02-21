@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 import org.junit.Before;
 import org.junit.Test;
