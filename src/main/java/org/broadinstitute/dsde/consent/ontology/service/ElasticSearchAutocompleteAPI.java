@@ -19,7 +19,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
     private static final String FIELD_ID = "id";
     private static final String FIELD_ONTOLOGY_TYPE = "ontology";
     private static final String FIELD_LABEL = "label";
-    private static final String FIELD_SYNONYM = "synonym";
+    private static final String FIELD_SYNONYM = "synonyms";
     private static final String FIELD_USABLE = "usable";
     private final Client client;
     private final String index;
@@ -37,7 +37,16 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         return QueryBuilders.matchQuery(FIELD_ID, term);
     }
 
-    private List<TermResource> executeSearch(QueryBuilder qb, int limit) {
+    /**
+     * Basic search execution method that queries ES and returns results.
+     *
+     * @param qb QueryBuilder
+     * @param limit How many to limit the results to
+     * @param thinFilter When true, we provide the minimal amount of information to keep the API responses thin. When
+     *                   false, we provide the fully populated object.
+     * @return List of TermResources that match the query
+     */
+    private List<TermResource> executeSearch(QueryBuilder qb, int limit, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
         SearchHits hits = client.prepareSearch(index).setQuery(qb).setSize(limit).execute().actionGet().getHits();
         ObjectMapper mapper = new ObjectMapper();
@@ -45,6 +54,11 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
             String jsonString = hit.getSourceAsString();
             try {
                 TermResource resource = mapper.readValue(jsonString, TermResource.class);
+                if (thinFilter) {
+                    resource.setUsable(null);
+                    resource.setOntology(null);
+                    resource.setParents(null);
+                }
                 termList.add(resource);
             } catch (IOException e) {
                 logger.error("Exception mapping value: '" + jsonString + "' to TermResource: " + e.getMessage());
@@ -68,11 +82,11 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
             filter = deprecationFilter;
         }
         QueryBuilder queryBuilder = buildQuery(query);
-        return executeSearch(QueryBuilders.filteredQuery(queryBuilder, filter), limit);
+        return executeSearch(QueryBuilders.filteredQuery(queryBuilder, filter), limit, true);
     }
 
     @Override
     public List<TermResource> lookupById(String query) {
-        return executeSearch(buildQueryById(query), 1);
+        return executeSearch(buildQueryById(query), 1, false);
     }
 }
