@@ -1,8 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.module.SimpleModule;
-import org.broadinstitute.dsde.consent.ontology.resources.model.TermResourceMinimalDeserializer;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
@@ -52,15 +50,15 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         List<TermResource> termList = new ArrayList<>();
         SearchHits hits = client.prepareSearch(index).setQuery(qb).setSize(limit).execute().actionGet().getHits();
         ObjectMapper mapper = new ObjectMapper();
-        if (thinFilter) {
-            SimpleModule module = new SimpleModule();
-            module.addDeserializer(TermResource.class, new TermResourceMinimalDeserializer());
-            mapper.registerModule(module);
-        }
         for (SearchHit hit : hits.getHits()) {
             String jsonString = hit.getSourceAsString();
             try {
                 TermResource resource = mapper.readValue(jsonString, TermResource.class);
+                if (thinFilter) {
+                    resource.setOntology(null);
+                    resource.setUsable(null);
+                    resource.setParents(null);
+                }
                 termList.add(resource);
             } catch (IOException e) {
                 logger.error("Exception mapping value: '" + jsonString + "' to TermResource: " + e.getMessage());
