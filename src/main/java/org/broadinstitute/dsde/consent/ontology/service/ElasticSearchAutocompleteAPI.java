@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.elasticsearch.client.Client;
 import org.elasticsearch.index.query.*;
@@ -11,7 +12,10 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
 
@@ -87,6 +91,32 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
 
     @Override
     public List<TermResource> lookupById(String query) {
-        return executeSearch(buildQueryById(query), 1, false);
+        List<TermResource> terms = executeSearch(buildQueryById(query), 1, false);
+
+        Collection<String> parentIds = terms.stream().
+            flatMap(p -> p.getParents().stream()).
+            map(TermParent::getId).
+            collect(Collectors.toList());
+
+        Collection<TermResource> parentTerms = parentIds.stream().
+            flatMap(t -> executeSearch(buildQueryById(t), 1, true).stream()).
+            collect(Collectors.toList());
+
+        // Populate each of the parent nodes with more complete information
+        for (TermResource term : terms) {
+            for (TermParent p : term.getParents()) {
+                Optional<TermResource> parentTermResource = parentTerms.stream().
+                    filter(x -> x.getId().equals(p.getId())).
+                    findFirst();
+                if (parentTermResource.isPresent()) {
+                    p.setLabel(parentTermResource.get().getLabel());
+                    p.setSynonyms(parentTermResource.get().getSynonyms());
+                    p.setDefinition(parentTermResource.get().getDefinition());
+                }
+            }
+        }
+
+        return terms;
     }
+
 }
