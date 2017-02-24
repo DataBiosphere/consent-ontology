@@ -15,7 +15,7 @@ Build and render Configs:
 ```bash
 cd consent-ontology
 mvn clean compile
-APP_NAME=consent-ontology ENV=local OUTPUT_DIR=config ./configure.rb
+APP_NAME=consent-ontology ENV=local OUTPUT_DIR=config ../firecloud-develop/configure.rb
 ```
 
 Spin up application:

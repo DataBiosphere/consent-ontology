@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import org.broadinstitute.dsde.consent.ontology.resources.TermResource;
+import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.elasticsearch.action.ListenableActionFuture;
 import org.elasticsearch.action.index.IndexRequest;
 import org.elasticsearch.action.search.SearchRequestBuilder;
