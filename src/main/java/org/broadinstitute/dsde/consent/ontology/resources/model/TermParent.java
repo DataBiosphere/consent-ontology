@@ -16,12 +16,28 @@ public class TermParent {
     public TermParent() {
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
     public String getId() {
         return this.id;
+    }
+
+    public Integer getOrder() {
+        return order;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getDefinition() {
+        return definition;
+    }
+
+    public List<String> getSynonyms() {
+        return synonyms;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setOrder(Integer order) {
@@ -39,5 +55,5 @@ public class TermParent {
     public void setSynonyms(List<String> synonyms) {
         this.synonyms = synonyms;
     }
-    
+
 }
