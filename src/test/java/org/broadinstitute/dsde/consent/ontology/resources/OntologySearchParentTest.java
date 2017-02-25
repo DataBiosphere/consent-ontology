@@ -45,10 +45,6 @@ public class OntologySearchParentTest {
         api = new ElasticSearchAutocompleteAPI(client, index);
         resource = new OntologySearchResource(api);
 
-        // These are the nodes that belong to a child.
-        TermParent childParent1 = new TermParent();
-        TermParent childParent2 = new TermParent();
-
         parent1.setId("parent1");
         parent1.setLabel("parent1 label");
         parent1.setDefinition("parent1 definition");
@@ -59,6 +55,9 @@ public class OntologySearchParentTest {
         parent2.setDefinition("parent2 definition");
         parent2.setSynonyms(new ArrayList<>(Arrays.asList("parent 2", "parent 02")));
 
+        // These are the parents for the child - each one refers to a full parent node.
+        TermParent childParent1 = new TermParent();
+        TermParent childParent2 = new TermParent();
         childParent1.setId(parent1.getId());
         childParent1.setOrder(1);
         childParent2.setId(parent2.getId());
