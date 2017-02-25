@@ -88,6 +88,7 @@ public class OntologySearchParentTest {
     @AfterClass
     public static void tearDown() throws Exception {
         node.stop();
+        // The in-memory ES creates a "data" directory for indexes. Clean that up after tests.
         FileUtils.deleteDirectory(new File("data"));
     }
     
