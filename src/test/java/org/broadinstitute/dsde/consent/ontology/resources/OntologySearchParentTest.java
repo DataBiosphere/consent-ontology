@@ -73,6 +73,8 @@ public class OntologySearchParentTest {
 
         // Push the terms to the in-memory ES index
         BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
+        // prevents a race condition where the data isn't available when it's queried.
+        bulkRequestBuilder.setRefresh(true);
         for (TermResource term : Arrays.asList(child, parent1, parent2)) {
             bulkRequestBuilder.add(client.prepareIndex(index, "ontology_term")
                 .setSource(buildDocument(term))
@@ -80,9 +82,6 @@ public class OntologySearchParentTest {
             );
         }
         bulkRequestBuilder.execute().actionGet();
-
-        // Without this sleep, there seems to be a timing problem accessing the index.
-        Thread.sleep(2000);
     }
 
     @AfterClass
