@@ -27,6 +27,26 @@ public class TermResource {
     public TermResource() {
     }
 
+    public String getId() {
+        return id;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public String getDefinition() {
+        return definition;
+    }
+
+    public List<String> getSynonyms() {
+        return synonyms;
+    }
+
+    public List<TermParent> getParents() {
+        return parents;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
