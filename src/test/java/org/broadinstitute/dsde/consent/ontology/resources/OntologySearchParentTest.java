@@ -19,8 +19,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class OntologySearchParentTest {
@@ -104,22 +106,19 @@ public class OntologySearchParentTest {
         assertTrue(child.getDefinition().equals(term.getDefinition()));
         assertTrue(child.getSynonyms().equals(term.getSynonyms()));
 
-        for (TermParent p : term.getParents()) {
-            boolean parentChecked = false;
-            if (p.getId().equals(parent1.getId())) {
-                assertTrue(p.getLabel().equals(parent1.getLabel()));
-                assertTrue(p.getDefinition().equals(parent1.getDefinition()));
-                assertTrue(p.getSynonyms().equals(parent1.getSynonyms()));
-                parentChecked = true;
-            } else if (p.getId().equals(parent2.getId())) {
-                assertTrue(p.getLabel().equals(parent2.getLabel()));
-                assertTrue(p.getDefinition().equals(parent2.getDefinition()));
-                assertTrue(p.getSynonyms().equals(parent2.getSynonyms()));
-                parentChecked = true;
-            }
-            // Check that the current parent was actually tested.
-            assertTrue(parentChecked);
-        }
+        assertEquals("Expected two parents", 2, term.getParents().size());
+        term.getParents().sort(Comparator.comparingInt(TermParent::getOrder));
+
+        TermParent actualParent1 = term.getParents().get(0);
+        TermParent actualParent2 = term.getParents().get(1);
+
+        assertTrue(actualParent1.getLabel().equals(parent1.getLabel()));
+        assertTrue(actualParent1.getDefinition().equals(parent1.getDefinition()));
+        assertTrue(actualParent1.getSynonyms().equals(parent1.getSynonyms()));
+
+        assertTrue(actualParent2.getLabel().equals(parent2.getLabel()));
+        assertTrue(actualParent2.getDefinition().equals(parent2.getDefinition()));
+        assertTrue(actualParent2.getSynonyms().equals(parent2.getSynonyms()));
 
     }
 
