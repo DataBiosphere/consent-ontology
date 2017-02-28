@@ -12,6 +12,39 @@ schemes:
   
 paths:
 
+  /schemas:
+    get:
+      summary: Data Use Schema
+      description: The Data Use Schema for use in defining structured data use restrictions and data access requests.
+      tags:
+        - Schema
+      responses:
+        200:
+          description: The schema
+        default:
+          description: Unexpected error
+
+  /schemas/translate:
+    post:
+      summary: Translate Data Use Schema
+      description: Translate a Data Use Schema to a Use Restriction
+      tags:
+        - Schema
+      parameters:
+        - name: schemaString
+          in: body
+          description: JSON formatted Data Use Schema object
+          required: true
+          schema:
+            $ref: '#/definitions/DataUseSchema'
+      responses:
+        200:
+          description: The use restriction
+        400:
+          description: invalid data use schema format
+        default:
+          description: Unexpected error
+
   '/translate':
   
     post:
@@ -171,3 +204,17 @@ definitions:
             items:
               type: string
               description: Array of ontologies.
+  DataUseSchema:
+    type: object
+    description: JSON-standard packet of a data use description as defined by the Data Use Schema
+    example: |
+      {
+        "generalUse": false,
+        "hmbResearch": true,
+        "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602", "http://purl.obolibrary.org/obo/DOID_162"],
+        "gender": "Male",
+        ...
+        additional JSON-standard fields as
+        defined by the Data Use schema
+        ...
+      }

@@ -1,0 +1,107 @@
+{
+  "id": "https://consent-ontology.dsde-prod.broadinstitute.org/schemas",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Data Use Schema",
+  "version": 1,
+  "type": "object",
+
+  "properties": {
+    "generalUse": {
+      "type": "boolean"
+    },
+    "hmbResearch": {
+      "type": "boolean"
+    },
+    "diseaseRestrictions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "uniqueItems": true
+      }
+    },
+    "populationOriginsAncestry": {
+      "type": "boolean"
+    },
+    "commercialUseExcluded": {
+      "type": "boolean"
+    },
+    "methodsResearchExcluded": {
+      "type": "boolean"
+    },
+    "aggregateResearchResponse": {
+      "type": "string",
+      "oneOf": ["Yes", "No", "Unspecified"]
+    },
+    "gender": {
+      "type": "string",
+      "oneOf": ["Male", "Female"]
+    },
+    "controlSetExcluded": {
+      "type": "boolean"
+    },
+    "controlSetOption": {
+      "type": "string",
+      "oneOf": ["Yes", "No", "Unknown"]
+    },
+    "populationRestrictions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "uniqueItems": true
+      }
+    },
+    "pediatricLimited": {
+      "type": "boolean"
+    },
+    "dateRestriction": {
+      "type": "string"
+    },
+    "recontactingDataSubjects": {
+      "type": "boolean"
+    },
+    "recontactMay": {
+      "type": "string"
+    },
+    "recontactMust": {
+      "type": "string"
+    },
+    "genomicPhenotypicData": {
+      "type": "string",
+      "oneOf": ["Yes", "No", "Unspecified"]
+    },
+    "otherRestrictions": {
+      "type": "boolean"
+    },
+    "cloudStorage": {
+      "type": "string",
+      "oneOf": ["Yes", "No", "Unspecified"]
+    },
+    "geographicalRestrictions": {
+      "type": "string"
+    },
+    "other": {
+      "type": "string"
+    },
+    "illegalBehavior": {
+      "type": "boolean"
+    },
+    "addiction": {
+      "type": "boolean"
+    },
+    "sexualDiseases": {
+      "type": "boolean"
+    },
+    "stigmatizeDiseases": {
+      "type": "boolean"
+    },
+    "vulnerablePopulations": {
+      "type": "boolean"
+    },
+    "psychologicalTraits": {
+      "type": "boolean"
+    },
+    "nonBiomedical": {
+      "type": "boolean"
+    }
+  }
+}
