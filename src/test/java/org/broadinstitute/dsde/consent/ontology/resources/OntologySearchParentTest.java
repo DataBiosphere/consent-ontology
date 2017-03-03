@@ -92,13 +92,17 @@ public class OntologySearchParentTest {
         // The in-memory ES creates a "data" directory for indexes. Clean that up after tests.
         FileUtils.deleteDirectory(new File("data"));
     }
-    
+
+    @Test
+    public void testGetNodeWithNoParents() throws Exception {
+        Response response = resource.getOntologyById(parent1.getId());
+        assertOKstatusAndTermSize(response);
+    }
+
     @Test
     public void testGetChildWithParents() throws Exception {
         Response response = resource.getOntologyById(child.getId());
-        assertTrue(response.getStatus() == 200);
-        List<TermResource> terms = (List<TermResource>) response.getEntity();
-        assertTrue(terms.size() == 1);
+        List<TermResource> terms = assertOKstatusAndTermSize(response);
 
         TermResource term = terms.get(0);
         assertTrue(child.getId().equals(term.getId()));
@@ -120,6 +124,14 @@ public class OntologySearchParentTest {
         assertTrue(actualParent2.getDefinition().equals(parent2.getDefinition()));
         assertTrue(actualParent2.getSynonyms().equals(parent2.getSynonyms()));
 
+    }
+
+    @SuppressWarnings("unchecked")
+    private List<TermResource> assertOKstatusAndTermSize(Response response) {
+        assertTrue(response.getStatus() == 200);
+        List<TermResource> terms = (List<TermResource>) response.getEntity();
+        assertTrue(terms.size() == 1);
+        return terms;
     }
 
     private static XContentBuilder buildDocument(TermResource term) throws IOException {
