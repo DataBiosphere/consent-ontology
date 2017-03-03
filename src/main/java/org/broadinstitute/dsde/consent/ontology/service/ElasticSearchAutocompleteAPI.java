@@ -11,10 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
@@ -94,7 +91,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         List<TermResource> terms = executeSearch(buildQueryById(query), 1, false);
 
         Collection<String> parentIds = terms.stream().
-            flatMap(p -> p.getParents().stream()).
+            flatMap(p -> Optional.ofNullable(p.getParents()).orElse(new ArrayList<>()).stream()).
             map(TermParent::getId).
             collect(Collectors.toList());
 
@@ -104,7 +101,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
 
         // Populate each of the parent nodes with more complete information
         for (TermResource term : terms) {
-            for (TermParent p : term.getParents()) {
+            for (TermParent p : Optional.ofNullable(term.getParents()).orElse(new ArrayList<>())) {
                 Optional<TermResource> parentTermResource = parentTerms.stream().
                     filter(x -> x.getId().equals(p.getId())).
                     findFirst();
