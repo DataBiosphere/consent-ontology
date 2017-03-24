@@ -13,7 +13,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
-@Path("/schemas")
+@Path("/schema")
 public class SchemaResource {
 
     Logger log = LoggerFactory.getLogger(SchemaResource.class);

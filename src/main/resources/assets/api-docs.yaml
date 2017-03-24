@@ -12,7 +12,7 @@ schemes:
   
 paths:
 
-  /schemas:
+  /schema:
     get:
       summary: Data Use Schema
       description: The Data Use Schema for use in defining structured data use restrictions and data access requests.
@@ -24,7 +24,7 @@ paths:
         default:
           description: Unexpected error
 
-  /schemas/translate:
+  /schema/translate:
     post:
       summary: Translate Data Use Schema
       description: Translate a Data Use Schema to a Use Restriction

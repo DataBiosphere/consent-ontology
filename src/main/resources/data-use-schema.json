@@ -1,5 +1,5 @@
 {
-  "id": "https://consent-ontology.dsde-prod.broadinstitute.org/schemas",
+  "id": "https://consent-ontology.dsde-prod.broadinstitute.org/schema",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Data Use Schema",
   "version": 1,
