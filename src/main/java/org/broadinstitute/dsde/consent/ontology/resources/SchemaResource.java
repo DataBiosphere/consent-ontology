@@ -53,6 +53,7 @@ public class SchemaResource {
     /**
      * TODO: Flesh this out in a utility that will generate appropriate UseRestrictions for all of
      * the possible cases of DataUseSchema options.
+     * See https://broadinstitute.atlassian.net/browse/GAWB-1555
      *
      * @param schema The DataUseSchema
      * @return Translated UseRestriction
