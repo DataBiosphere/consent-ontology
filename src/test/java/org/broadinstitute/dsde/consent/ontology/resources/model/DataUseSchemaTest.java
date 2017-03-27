@@ -205,4 +205,11 @@ public class DataUseSchemaTest {
         assertTrue(schema.getNonBiomedical());
     }
 
+    @Test
+    public void ethicsApprovalRequired() throws Exception {
+        String json = "{ \"ethicsApprovalRequired\": true }";
+        DataUseSchema schema = mapper.readValue(json, DataUseSchema.class);
+        assertTrue(schema.getEthicsApprovalRequired());
+    }
+
 }

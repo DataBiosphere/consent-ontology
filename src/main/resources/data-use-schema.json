@@ -32,10 +32,6 @@
       "type": "string",
       "oneOf": ["Yes", "No", "Unspecified"]
     },
-    "gender": {
-      "type": "string",
-      "oneOf": ["Male", "Female"]
-    },
     "controlSetExcluded": {
       "type": "boolean"
     },
@@ -43,15 +39,19 @@
       "type": "string",
       "oneOf": ["Yes", "No", "Unknown"]
     },
+    "gender": {
+      "type": "string",
+      "oneOf": ["Male", "Female"]
+    },
+    "pediatricLimited": {
+      "type": "boolean"
+    },
     "populationRestrictions": {
       "type": "array",
       "items": {
         "type": "string",
         "uniqueItems": true
       }
-    },
-    "pediatricLimited": {
-      "type": "boolean"
     },
     "dateRestriction": {
       "type": "string"
@@ -75,6 +75,9 @@
     "cloudStorage": {
       "type": "string",
       "oneOf": ["Yes", "No", "Unspecified"]
+    },
+    "ethicsApprovalRequired": {
+      "type": "boolean"
     },
     "geographicalRestrictions": {
       "type": "string"

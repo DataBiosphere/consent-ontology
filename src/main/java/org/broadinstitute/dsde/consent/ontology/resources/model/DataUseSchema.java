@@ -108,6 +108,8 @@ public class DataUseSchema {
     private Boolean psychologicalTraits;
     @JsonProperty("nonBiomedical")
     private Boolean nonBiomedical;
+    @JsonProperty("ethicsApprovalRequired")
+    private Boolean ethicsApprovalRequired;
 
     @JsonProperty("generalUse")
     public Boolean getGeneralUse() {
@@ -387,6 +389,14 @@ public class DataUseSchema {
     @JsonProperty("nonBiomedical")
     public void setNonBiomedical(Boolean nonBiomedical) {
         this.nonBiomedical = nonBiomedical;
+    }
+
+    @JsonProperty("ethicsApprovalRequired")
+    public Boolean getEthicsApprovalRequired() { return ethicsApprovalRequired; }
+
+    @JsonProperty("ethicsApprovalRequired")
+    public void setEthicsApprovalRequired(Boolean ethicsApprovalRequired) {
+        this.ethicsApprovalRequired = ethicsApprovalRequired;
     }
 
     @Override
