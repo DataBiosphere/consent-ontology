@@ -28,8 +28,7 @@ public class DataUseResource {
 
     /**
      * This method will take any valid form of json string that models DataUse.
-     * With that schema, it generates a UseRestriction according to current business rules
-     * as specified in a series of truth tables:
+     * With that object, it generates a UseRestriction using current business rules as specified in:
      * https://docs.google.com/document/d/1z4yXkWRrg2ngyIX2otxG2lV_fJE_fYSs4VxmVjyp_pU/edit#heading=h.qifwhouc9pi5
      *
      * @param jsonString String that will conform to DataUse
