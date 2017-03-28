@@ -12,31 +12,31 @@ schemes:
   
 paths:
 
-  /schema:
+  /schemas/data-use:
     get:
-      summary: Data Use Schema
-      description: The Data Use Schema for use in defining structured data use restrictions and data access requests.
+      summary: Data Use Questions and Answers
+      description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
       tags:
-        - Schema
+        - Data Use
       responses:
         200:
-          description: The schema
+          description: The json representation for all data use questions + answers
         default:
           description: Unexpected error
 
-  /schema/translate:
+  /schemas/data-use/translate:
     post:
-      summary: Translate Data Use Schema
-      description: Translate a Data Use Schema to a Use Restriction
+      summary: Translate Data Use JSON into a Use Restriction
+      description: Translate a Data Use JSON to a Use Restriction
       tags:
-        - Schema
+        - Data Use
       parameters:
-        - name: schemaString
+        - name: jsonString
           in: body
-          description: JSON formatted Data Use Schema object
+          description: JSON formatted Data Use object
           required: true
           schema:
-            $ref: '#/definitions/DataUseSchema'
+            $ref: '#/definitions/DataUse'
       responses:
         200:
           description: The use restriction
@@ -204,9 +204,9 @@ definitions:
             items:
               type: string
               description: Array of ontologies.
-  DataUseSchema:
+  DataUse:
     type: object
-    description: JSON-standard packet of a data use description as defined by the Data Use Schema
+    description: JSON model of a set of data use questions and answers
     example: |
       {
         "generalUse": false,

@@ -236,6 +236,13 @@
 
     <dependencies>
 
+        <!-- https://github.com/everit-org/json-schema -->
+        <dependency>
+            <groupId>org.everit.json</groupId>
+            <artifactId>org.everit.json.schema</artifactId>
+            <version>1.5.1</version>
+        </dependency>
+
         <!-- https://mvnrepository.com/artifact/org.parboiled/parboiled-java -->
         <dependency>
             <groupId>org.parboiled</groupId>

@@ -12,27 +12,27 @@ import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-public class SchemaResourceTest {
+public class DataUseResourceTest {
 
-    SchemaResource schemaResource;
+    DataUseResource dataUseResource;
     String generalUse = "{ \"generalUse\": true }";
 
     @Before
     public void setUp() throws Exception {
-        schemaResource = new SchemaResource();
+        dataUseResource = new DataUseResource();
     }
 
     @Test
     public void testIndex() {
-        Response response = schemaResource.getSchema();
+        Response response = dataUseResource.getSchema();
         assertStatusAndHeader(response, Response.Status.OK, MediaType.APPLICATION_JSON);
         String content = response.getEntity().toString().trim();
-        Assert.assertTrue(content.contains("Data Use Schema"));
+        Assert.assertTrue(content.contains("Data Use"));
     }
 
     @Test
     public void testTranslateGeneralUse() {
-        Response response = schemaResource.translate(generalUse);
+        Response response = dataUseResource.translate(generalUse);
         UseRestriction restriction = (UseRestriction) response.getEntity();
         assertNotNull(restriction);
         assertTrue(restriction.equals(new Everything()));

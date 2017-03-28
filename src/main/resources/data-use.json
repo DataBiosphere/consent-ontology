@@ -1,10 +1,9 @@
 {
-  "id": "https://consent-ontology.dsde-prod.broadinstitute.org/schema",
+  "id": "https://consent-ontology.dsde-prod.broadinstitute.org/schemas/data-use",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Data Use Schema",
   "version": 1,
   "type": "object",
-
   "properties": {
     "generalUse": {
       "type": "boolean"
@@ -30,18 +29,18 @@
     },
     "aggregateResearchResponse": {
       "type": "string",
-      "oneOf": ["Yes", "No", "Unspecified"]
+      "enum": ["Yes", "No", "Unspecified"]
     },
     "controlSetExcluded": {
       "type": "boolean"
     },
     "controlSetOption": {
       "type": "string",
-      "oneOf": ["Yes", "No", "Unknown"]
+      "enum": ["Yes", "No", "Unknown"]
     },
     "gender": {
       "type": "string",
-      "oneOf": ["Male", "Female"]
+      "enum": ["Female", "Male"]
     },
     "pediatricLimited": {
       "type": "boolean"
@@ -67,14 +66,14 @@
     },
     "genomicPhenotypicData": {
       "type": "string",
-      "oneOf": ["Yes", "No", "Unspecified"]
+      "enum": ["Yes", "No", "Unspecified"]
     },
     "otherRestrictions": {
       "type": "boolean"
     },
     "cloudStorage": {
       "type": "string",
-      "oneOf": ["Yes", "No", "Unspecified"]
+      "enum": ["Yes", "No", "Unspecified"]
     },
     "ethicsApprovalRequired": {
       "type": "boolean"

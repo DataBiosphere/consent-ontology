@@ -38,7 +38,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(TranslateResource.class));
         env.jersey().register(injector.getInstance(ValidationResource.class));
         env.jersey().register(injector.getInstance(OntologySearchResource.class));
-        env.jersey().register(injector.getInstance(SchemaResource.class));
+        env.jersey().register(injector.getInstance(DataUseResource.class));
         FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
         corsFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, env.getApplicationContext().getContextPath() + "/autocomplete");
         corsFilter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,OPTIONS");
