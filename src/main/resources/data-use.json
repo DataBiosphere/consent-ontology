@@ -4,6 +4,39 @@
   "title": "Data Use Schema",
   "version": 1,
   "type": "object",
+  "oneOf": [
+    {"required": ["generalUse"]},
+    {"anyOf": [
+      {"required": ["hmbResearch"]},
+      {"required": ["diseaseRestrictions"]},
+      {"required": ["populationOriginsAncestry"]},
+      {"required": ["commercialUseExcluded"]},
+      {"required": ["methodsResearchExcluded"]},
+      {"required": ["aggregateResearchResponse"]},
+      {"required": ["controlSetExcluded"]},
+      {"required": ["controlSetOption"]},
+      {"required": ["gender"]},
+      {"required": ["pediatricLimited"]},
+      {"required": ["populationRestrictions"]},
+      {"required": ["dateRestriction"]},
+      {"required": ["recontactingDataSubjects"]},
+      {"required": ["recontactMay"]},
+      {"required": ["recontactMust"]},
+      {"required": ["genomicPhenotypicData"]},
+      {"required": ["other"]},
+      {"required": ["otherRestrictions"]},
+      {"required": ["cloudStorage"]},
+      {"required": ["ethicsApprovalRequired"]},
+      {"required": ["geographicalRestrictions"]},
+      {"required": ["illegalBehavior"]},
+      {"required": ["addiction"]},
+      {"required": ["sexualDiseases"]},
+      {"required": ["stigmatizeDiseases"]},
+      {"required": ["vulnerablePopulations"]},
+      {"required": ["psychologicalTraits"]},
+      {"required": ["nonBiomedical"]}
+    ]}
+  ],
   "properties": {
     "generalUse": {
       "type": "boolean"
@@ -68,6 +101,9 @@
       "type": "string",
       "enum": ["Yes", "No", "Unspecified"]
     },
+    "other": {
+      "type": "string"
+    },
     "otherRestrictions": {
       "type": "boolean"
     },
@@ -79,9 +115,6 @@
       "type": "boolean"
     },
     "geographicalRestrictions": {
-      "type": "string"
-    },
-    "other": {
       "type": "string"
     },
     "illegalBehavior": {

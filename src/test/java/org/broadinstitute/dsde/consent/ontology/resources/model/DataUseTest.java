@@ -43,16 +43,6 @@ public class DataUseTest {
         DU_SCHEMA = LOADER.load().build();
     }
 
-    @Test
-    public void validateDataUseJsonFile() throws ValidationException, IOException {
-        try (InputStream schemaStream = new URL("http://json-schema.org/draft-04/schema").openStream()) {
-            String schemaString = FileUtils.readAllText(schemaStream);
-            JSONObject rawSchema = new JSONObject(new JSONTokener(schemaString));
-            Schema schema = SchemaLoader.load(rawSchema);
-            schema.validate(new JSONObject(DU_CONTENT)); // throws a ValidationException if this object is invalid
-        }
-    }
-
     private void assertInvalidJson(String snippet) {
         boolean thrown = false;
         try {
@@ -67,6 +57,44 @@ public class DataUseTest {
         DU_SCHEMA.validate(new JSONObject(snippet));
         assertTrue(true);
     }
+
+
+    /*
+     * General schema validation tests
+     */
+
+    /**
+     * General Use should not be used in combination with diseases.
+     * TODO: Need to figure out how to further narrow the 'oneOf' 'required' clause such that
+     * 'generalUse = false' will work in the following test. Currently, that will fail.
+     */
+    @Test
+    public void generalUseWithDiseaseFailure() throws Exception {
+        String json = "{ \"generalUse\": true, \"diseaseRestrictions\": [\"one\", \"two\"]}";
+        assertInvalidJson(json);
+    }
+
+    @Test
+    public void multipleFieldsSuccess() throws Exception {
+        String json = "{ \"hmbResearch\": true, \"diseaseRestrictions\": [\"one\", \"two\"] }";
+        assertValidJson(json);
+    }
+
+    @Test
+    public void validateDataUseJsonFile() throws ValidationException, IOException {
+        try (InputStream schemaStream = new URL("http://json-schema.org/draft-04/schema").openStream()) {
+            String schemaString = FileUtils.readAllText(schemaStream);
+            JSONObject rawSchema = new JSONObject(new JSONTokener(schemaString));
+            Schema schema = SchemaLoader.load(rawSchema);
+            schema.validate(new JSONObject(DU_CONTENT)); // throws a ValidationException if this object is invalid
+        }
+    }
+
+
+
+    /*
+     *  Tests that look at individual fields in DataUse
+     */
 
     @Test
     public void generalUse() throws Exception {
