@@ -27,13 +27,13 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
     "hmbResearch",
     "diseaseRestrictions",
     "populationOriginsAncestry",
-    "commercialUseExcluded",
-    "methodsResearchExcluded",
-    "aggregateResearchResponse",
-    "controlSetExcluded",
+    "commercialUse",
+    "methodsResearch",
+    "aggregateResearch",
+    "controlSet",
     "controlSetOption",
     "gender",
-    "pediatricLimited",
+    "pediatric",
     "populationRestrictions",
     "dateRestriction",
     "recontactingDataSubjects",
@@ -63,20 +63,20 @@ public class DataUse {
     private List<String> diseaseRestrictions = new ArrayList<>();
     @JsonProperty("populationOriginsAncestry")
     private Boolean populationOriginsAncestry;
-    @JsonProperty("commercialUseExcluded")
-    private Boolean commercialUseExcluded;
-    @JsonProperty("methodsResearchExcluded")
-    private Boolean methodsResearchExcluded;
-    @JsonProperty("aggregateResearchResponse")
-    private String aggregateResearchResponse;
-    @JsonProperty("controlSetExcluded")
-    private Boolean controlSetExcluded;
+    @JsonProperty("commercialUse")
+    private Boolean commercialUse;
+    @JsonProperty("methodsResearch")
+    private Boolean methodsResearch;
+    @JsonProperty("aggregateResearch")
+    private String aggregateResearch;
+    @JsonProperty("controlSet")
+    private Boolean controlSet;
     @JsonProperty("controlSetOption")
     private String controlSetOption;
     @JsonProperty("gender")
     private String gender;
-    @JsonProperty("pediatricLimited")
-    private Boolean pediatricLimited;
+    @JsonProperty("pediatric")
+    private Boolean pediatric;
     @JsonProperty("populationRestrictions")
     private List<String> populationRestrictions = new ArrayList<>();
     @JsonProperty("dateRestriction")
@@ -154,44 +154,44 @@ public class DataUse {
         this.populationOriginsAncestry = populationOriginsAncestry;
     }
 
-    @JsonProperty("commercialUseExcluded")
-    public Boolean getCommercialUseExcluded() {
-        return commercialUseExcluded;
+    @JsonProperty("commercialUse")
+    public Boolean getCommercialUse() {
+        return commercialUse;
     }
 
-    @JsonProperty("commercialUseExcluded")
-    public void setCommercialUseExcluded(Boolean commercialUseExcluded) {
-        this.commercialUseExcluded = commercialUseExcluded;
+    @JsonProperty("commercialUse")
+    public void setCommercialUse(Boolean commercialUse) {
+        this.commercialUse = commercialUse;
     }
 
-    @JsonProperty("methodsResearchExcluded")
-    public Boolean getMethodsResearchExcluded() {
-        return methodsResearchExcluded;
+    @JsonProperty("methodsResearch")
+    public Boolean getMethodsResearch() {
+        return methodsResearch;
     }
 
-    @JsonProperty("methodsResearchExcluded")
-    public void setMethodsResearchExcluded(Boolean methodsResearchExcluded) {
-        this.methodsResearchExcluded = methodsResearchExcluded;
+    @JsonProperty("methodsResearch")
+    public void setMethodsResearch(Boolean methodsResearch) {
+        this.methodsResearch = methodsResearch;
     }
 
-    @JsonProperty("aggregateResearchResponse")
-    public String getAggregateResearchResponse() {
-        return aggregateResearchResponse;
+    @JsonProperty("aggregateResearch")
+    public String getAggregateResearch() {
+        return aggregateResearch;
     }
 
-    @JsonProperty("aggregateResearchResponse")
-    public void setAggregateResearchResponse(String aggregateResearchResponse) {
-        this.aggregateResearchResponse = aggregateResearchResponse;
+    @JsonProperty("aggregateResearch")
+    public void setAggregateResearch(String aggregateResearch) {
+        this.aggregateResearch = aggregateResearch;
     }
 
-    @JsonProperty("controlSetExcluded")
-    public Boolean getControlSetExcluded() {
-        return controlSetExcluded;
+    @JsonProperty("controlSet")
+    public Boolean getControlSet() {
+        return controlSet;
     }
 
-    @JsonProperty("controlSetExcluded")
-    public void setControlSetExcluded(Boolean controlSetExcluded) {
-        this.controlSetExcluded = controlSetExcluded;
+    @JsonProperty("controlSet")
+    public void setControlSet(Boolean controlSet) {
+        this.controlSet = controlSet;
     }
 
     @JsonProperty("controlSetOption")
@@ -214,14 +214,14 @@ public class DataUse {
         this.gender = gender;
     }
 
-    @JsonProperty("pediatricLimited")
-    public Boolean getPediatricLimited() {
-        return pediatricLimited;
+    @JsonProperty("pediatric")
+    public Boolean getPediatric() {
+        return pediatric;
     }
 
-    @JsonProperty("pediatricLimited")
-    public void setPediatricLimited(Boolean pediatricLimited) {
-        this.pediatricLimited = pediatricLimited;
+    @JsonProperty("pediatric")
+    public void setPediatric(Boolean pediatric) {
+        this.pediatric = pediatric;
     }
 
     @JsonProperty("populationRestrictions")
@@ -411,7 +411,7 @@ public class DataUse {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(generalUse).append(hmbResearch).append(diseaseRestrictions).append(populationOriginsAncestry).append(commercialUseExcluded).append(methodsResearchExcluded).append(aggregateResearchResponse).append(controlSetExcluded).append(controlSetOption).append(gender).append(pediatricLimited).append(populationRestrictions).append(dateRestriction).append(recontactingDataSubjects).append(recontactMay).append(recontactMust).append(genomicPhenotypicData).append(otherRestrictions).append(cloudStorage).append(ethicsApprovalRequired).append(geographicalRestrictions).append(other).append(illegalBehavior).append(addiction).append(sexualDiseases).append(stigmatizeDiseases).append(vulnerablePopulations).append(psychologicalTraits).append(nonBiomedical).toHashCode();
+        return new HashCodeBuilder().append(generalUse).append(hmbResearch).append(diseaseRestrictions).append(populationOriginsAncestry).append(commercialUse).append(methodsResearch).append(aggregateResearch).append(controlSet).append(controlSetOption).append(gender).append(pediatric).append(populationRestrictions).append(dateRestriction).append(recontactingDataSubjects).append(recontactMay).append(recontactMust).append(genomicPhenotypicData).append(otherRestrictions).append(cloudStorage).append(ethicsApprovalRequired).append(geographicalRestrictions).append(other).append(illegalBehavior).append(addiction).append(sexualDiseases).append(stigmatizeDiseases).append(vulnerablePopulations).append(psychologicalTraits).append(nonBiomedical).toHashCode();
     }
 
     @Override
@@ -423,7 +423,7 @@ public class DataUse {
             return false;
         }
         DataUse rhs = ((DataUse) other);
-        return new EqualsBuilder().append(generalUse, rhs.generalUse).append(hmbResearch, rhs.hmbResearch).append(diseaseRestrictions, rhs.diseaseRestrictions).append(populationOriginsAncestry, rhs.populationOriginsAncestry).append(commercialUseExcluded, rhs.commercialUseExcluded).append(methodsResearchExcluded, rhs.methodsResearchExcluded).append(aggregateResearchResponse, rhs.aggregateResearchResponse).append(controlSetExcluded, rhs.controlSetExcluded).append(controlSetOption, rhs.controlSetOption).append(gender, rhs.gender).append(pediatricLimited, rhs.pediatricLimited).append(populationRestrictions, rhs.populationRestrictions).append(dateRestriction, rhs.dateRestriction).append(recontactingDataSubjects, rhs.recontactingDataSubjects).append(recontactMay, rhs.recontactMay).append(recontactMust, rhs.recontactMust).append(genomicPhenotypicData, rhs.genomicPhenotypicData).append(otherRestrictions, rhs.otherRestrictions).append(cloudStorage, rhs.cloudStorage).append(ethicsApprovalRequired, rhs.ethicsApprovalRequired).append(geographicalRestrictions, rhs.geographicalRestrictions).append(other, rhs.other).append(illegalBehavior, rhs.illegalBehavior).append(addiction, rhs.addiction).append(sexualDiseases, rhs.sexualDiseases).append(stigmatizeDiseases, rhs.stigmatizeDiseases).append(vulnerablePopulations, rhs.vulnerablePopulations).append(psychologicalTraits, rhs.psychologicalTraits).append(nonBiomedical, rhs.nonBiomedical).isEquals();
+        return new EqualsBuilder().append(generalUse, rhs.generalUse).append(hmbResearch, rhs.hmbResearch).append(diseaseRestrictions, rhs.diseaseRestrictions).append(populationOriginsAncestry, rhs.populationOriginsAncestry).append(commercialUse, rhs.commercialUse).append(methodsResearch, rhs.methodsResearch).append(aggregateResearch, rhs.aggregateResearch).append(controlSet, rhs.controlSet).append(controlSetOption, rhs.controlSetOption).append(gender, rhs.gender).append(pediatric, rhs.pediatric).append(populationRestrictions, rhs.populationRestrictions).append(dateRestriction, rhs.dateRestriction).append(recontactingDataSubjects, rhs.recontactingDataSubjects).append(recontactMay, rhs.recontactMay).append(recontactMust, rhs.recontactMust).append(genomicPhenotypicData, rhs.genomicPhenotypicData).append(otherRestrictions, rhs.otherRestrictions).append(cloudStorage, rhs.cloudStorage).append(ethicsApprovalRequired, rhs.ethicsApprovalRequired).append(geographicalRestrictions, rhs.geographicalRestrictions).append(other, rhs.other).append(illegalBehavior, rhs.illegalBehavior).append(addiction, rhs.addiction).append(sexualDiseases, rhs.sexualDiseases).append(stigmatizeDiseases, rhs.stigmatizeDiseases).append(vulnerablePopulations, rhs.vulnerablePopulations).append(psychologicalTraits, rhs.psychologicalTraits).append(nonBiomedical, rhs.nonBiomedical).isEquals();
     }
 
 }

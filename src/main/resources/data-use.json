@@ -10,13 +10,13 @@
       {"required": ["hmbResearch"]},
       {"required": ["diseaseRestrictions"]},
       {"required": ["populationOriginsAncestry"]},
-      {"required": ["commercialUseExcluded"]},
-      {"required": ["methodsResearchExcluded"]},
-      {"required": ["aggregateResearchResponse"]},
-      {"required": ["controlSetExcluded"]},
+      {"required": ["commercialUse"]},
+      {"required": ["methodsResearch"]},
+      {"required": ["aggregateResearch"]},
+      {"required": ["controlSet"]},
       {"required": ["controlSetOption"]},
       {"required": ["gender"]},
-      {"required": ["pediatricLimited"]},
+      {"required": ["pediatric"]},
       {"required": ["populationRestrictions"]},
       {"required": ["dateRestriction"]},
       {"required": ["recontactingDataSubjects"]},
@@ -54,17 +54,17 @@
     "populationOriginsAncestry": {
       "type": "boolean"
     },
-    "commercialUseExcluded": {
+    "commercialUse": {
       "type": "boolean"
     },
-    "methodsResearchExcluded": {
+    "methodsResearch": {
       "type": "boolean"
     },
-    "aggregateResearchResponse": {
+    "aggregateResearch": {
       "type": "string",
       "enum": ["Yes", "No", "Unspecified"]
     },
-    "controlSetExcluded": {
+    "controlSet": {
       "type": "boolean"
     },
     "controlSetOption": {
@@ -75,7 +75,7 @@
       "type": "string",
       "enum": ["Female", "Male"]
     },
-    "pediatricLimited": {
+    "pediatric": {
       "type": "boolean"
     },
     "populationRestrictions": {

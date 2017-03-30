@@ -133,30 +133,30 @@ public class DataUseTest {
     }
 
     @Test
-    public void commercialUseExcluded() throws Exception {
-        String json = "{ \"commercialUseExcluded\": true }";
+    public void commercialUse() throws Exception {
+        String json = "{ \"commercialUse\": true }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue(dataUse.getCommercialUseExcluded());
+        assertTrue(dataUse.getCommercialUse());
         assertValidJson(json);
-        assertInvalidJson("{ \"commercialUseExcluded\": \"string\" }");
+        assertInvalidJson("{ \"commercialUse\": \"string\" }");
     }
 
     @Test
-    public void methodsResearchExcluded() throws Exception {
-        String json = "{ \"methodsResearchExcluded\": true }";
+    public void methodsResearch() throws Exception {
+        String json = "{ \"methodsResearch\": true }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue(dataUse.getMethodsResearchExcluded());
+        assertTrue(dataUse.getMethodsResearch());
         assertValidJson(json);
-        assertInvalidJson("{ \"methodsResearchExcluded\": \"string\" }");
+        assertInvalidJson("{ \"methodsResearch\": \"string\" }");
     }
 
     @Test
-    public void aggregateResearchResponse() throws Exception {
-        String json = "{ \"aggregateResearchResponse\": \"Yes\" }";
+    public void aggregateResearch() throws Exception {
+        String json = "{ \"aggregateResearch\": \"Yes\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue(dataUse.getAggregateResearchResponse().equals("Yes"));
+        assertTrue(dataUse.getAggregateResearch().equals("Yes"));
         assertValidJson(json);
-        assertInvalidJson("{ \"aggregateResearchResponse\": \"string\" }");
+        assertInvalidJson("{ \"aggregateResearch\": \"string\" }");
     }
 
     @Test
@@ -169,12 +169,12 @@ public class DataUseTest {
     }
 
     @Test
-    public void controlSetExcluded() throws Exception {
-        String json = "{ \"controlSetExcluded\": true }";
+    public void controlSet() throws Exception {
+        String json = "{ \"controlSet\": true }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue(dataUse.getControlSetExcluded());
+        assertTrue(dataUse.getControlSet());
         assertValidJson(json);
-        assertInvalidJson("{ \"controlSetExcluded\": \"string\" }");
+        assertInvalidJson("{ \"controlSet\": \"string\" }");
     }
 
     @Test
@@ -196,10 +196,10 @@ public class DataUseTest {
     }
 
     @Test
-    public void pediatricLimited() throws Exception {
-        String json = "{ \"pediatricLimited\": true }";
+    public void pediatric() throws Exception {
+        String json = "{ \"pediatric\": true }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue(dataUse.getPediatricLimited());
+        assertTrue(dataUse.getPediatric());
         assertValidJson(json);
         assertInvalidJson("{ \"pediatricLimited\": \"string\" }");
     }
