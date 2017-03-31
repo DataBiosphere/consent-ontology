@@ -30,7 +30,6 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
     "commercialUse",
     "methodsResearch",
     "aggregateResearch",
-    "controlSet",
     "controlSetOption",
     "gender",
     "pediatric",
@@ -69,8 +68,6 @@ public class DataUse {
     private Boolean methodsResearch;
     @JsonProperty("aggregateResearch")
     private String aggregateResearch;
-    @JsonProperty("controlSet")
-    private Boolean controlSet;
     @JsonProperty("controlSetOption")
     private String controlSetOption;
     @JsonProperty("gender")
@@ -182,16 +179,6 @@ public class DataUse {
     @JsonProperty("aggregateResearch")
     public void setAggregateResearch(String aggregateResearch) {
         this.aggregateResearch = aggregateResearch;
-    }
-
-    @JsonProperty("controlSet")
-    public Boolean getControlSet() {
-        return controlSet;
-    }
-
-    @JsonProperty("controlSet")
-    public void setControlSet(Boolean controlSet) {
-        this.controlSet = controlSet;
     }
 
     @JsonProperty("controlSetOption")
@@ -411,7 +398,7 @@ public class DataUse {
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(generalUse).append(hmbResearch).append(diseaseRestrictions).append(populationOriginsAncestry).append(commercialUse).append(methodsResearch).append(aggregateResearch).append(controlSet).append(controlSetOption).append(gender).append(pediatric).append(populationRestrictions).append(dateRestriction).append(recontactingDataSubjects).append(recontactMay).append(recontactMust).append(genomicPhenotypicData).append(otherRestrictions).append(cloudStorage).append(ethicsApprovalRequired).append(geographicalRestrictions).append(other).append(illegalBehavior).append(addiction).append(sexualDiseases).append(stigmatizeDiseases).append(vulnerablePopulations).append(psychologicalTraits).append(nonBiomedical).toHashCode();
+        return new HashCodeBuilder().append(generalUse).append(hmbResearch).append(diseaseRestrictions).append(populationOriginsAncestry).append(commercialUse).append(methodsResearch).append(aggregateResearch).append(controlSetOption).append(gender).append(pediatric).append(populationRestrictions).append(dateRestriction).append(recontactingDataSubjects).append(recontactMay).append(recontactMust).append(genomicPhenotypicData).append(otherRestrictions).append(cloudStorage).append(ethicsApprovalRequired).append(geographicalRestrictions).append(other).append(illegalBehavior).append(addiction).append(sexualDiseases).append(stigmatizeDiseases).append(vulnerablePopulations).append(psychologicalTraits).append(nonBiomedical).toHashCode();
     }
 
     @Override
@@ -423,7 +410,7 @@ public class DataUse {
             return false;
         }
         DataUse rhs = ((DataUse) other);
-        return new EqualsBuilder().append(generalUse, rhs.generalUse).append(hmbResearch, rhs.hmbResearch).append(diseaseRestrictions, rhs.diseaseRestrictions).append(populationOriginsAncestry, rhs.populationOriginsAncestry).append(commercialUse, rhs.commercialUse).append(methodsResearch, rhs.methodsResearch).append(aggregateResearch, rhs.aggregateResearch).append(controlSet, rhs.controlSet).append(controlSetOption, rhs.controlSetOption).append(gender, rhs.gender).append(pediatric, rhs.pediatric).append(populationRestrictions, rhs.populationRestrictions).append(dateRestriction, rhs.dateRestriction).append(recontactingDataSubjects, rhs.recontactingDataSubjects).append(recontactMay, rhs.recontactMay).append(recontactMust, rhs.recontactMust).append(genomicPhenotypicData, rhs.genomicPhenotypicData).append(otherRestrictions, rhs.otherRestrictions).append(cloudStorage, rhs.cloudStorage).append(ethicsApprovalRequired, rhs.ethicsApprovalRequired).append(geographicalRestrictions, rhs.geographicalRestrictions).append(other, rhs.other).append(illegalBehavior, rhs.illegalBehavior).append(addiction, rhs.addiction).append(sexualDiseases, rhs.sexualDiseases).append(stigmatizeDiseases, rhs.stigmatizeDiseases).append(vulnerablePopulations, rhs.vulnerablePopulations).append(psychologicalTraits, rhs.psychologicalTraits).append(nonBiomedical, rhs.nonBiomedical).isEquals();
+        return new EqualsBuilder().append(generalUse, rhs.generalUse).append(hmbResearch, rhs.hmbResearch).append(diseaseRestrictions, rhs.diseaseRestrictions).append(populationOriginsAncestry, rhs.populationOriginsAncestry).append(commercialUse, rhs.commercialUse).append(methodsResearch, rhs.methodsResearch).append(aggregateResearch, rhs.aggregateResearch).append(controlSetOption, rhs.controlSetOption).append(gender, rhs.gender).append(pediatric, rhs.pediatric).append(populationRestrictions, rhs.populationRestrictions).append(dateRestriction, rhs.dateRestriction).append(recontactingDataSubjects, rhs.recontactingDataSubjects).append(recontactMay, rhs.recontactMay).append(recontactMust, rhs.recontactMust).append(genomicPhenotypicData, rhs.genomicPhenotypicData).append(otherRestrictions, rhs.otherRestrictions).append(cloudStorage, rhs.cloudStorage).append(ethicsApprovalRequired, rhs.ethicsApprovalRequired).append(geographicalRestrictions, rhs.geographicalRestrictions).append(other, rhs.other).append(illegalBehavior, rhs.illegalBehavior).append(addiction, rhs.addiction).append(sexualDiseases, rhs.sexualDiseases).append(stigmatizeDiseases, rhs.stigmatizeDiseases).append(vulnerablePopulations, rhs.vulnerablePopulations).append(psychologicalTraits, rhs.psychologicalTraits).append(nonBiomedical, rhs.nonBiomedical).isEquals();
     }
 
 }

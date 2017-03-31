@@ -2,6 +2,8 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -11,6 +13,7 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class DataUseResourceTest {
 
@@ -28,6 +31,11 @@ public class DataUseResourceTest {
         assertStatusAndHeader(response, Response.Status.OK, MediaType.APPLICATION_JSON);
         String content = response.getEntity().toString().trim();
         Assert.assertTrue(content.contains("Data Use"));
+        try {
+            new JSONObject(content);
+        } catch (JSONException e) {
+            fail("The response entity is not valid json");
+        }
     }
 
     @Test

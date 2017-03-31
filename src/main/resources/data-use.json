@@ -13,7 +13,6 @@
       {"required": ["commercialUse"]},
       {"required": ["methodsResearch"]},
       {"required": ["aggregateResearch"]},
-      {"required": ["controlSet"]},
       {"required": ["controlSetOption"]},
       {"required": ["gender"]},
       {"required": ["pediatric"]},
@@ -63,9 +62,6 @@
     "aggregateResearch": {
       "type": "string",
       "enum": ["Yes", "No", "Unspecified"]
-    },
-    "controlSet": {
-      "type": "boolean"
     },
     "controlSetOption": {
       "type": "string",
