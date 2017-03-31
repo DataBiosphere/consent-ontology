@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseValidator;
 import org.parboiled.common.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +13,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.stream.Collectors;
 
 @Path("/schemas")
 public class DataUseResource {
@@ -41,9 +43,17 @@ public class DataUseResource {
     public Response translate(String jsonString) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            DataUse schema = mapper.readValue(jsonString, DataUse.class);
-            UseRestriction restriction = translateSchema(schema);
-            return Response.ok().entity(restriction).type(MediaType.APPLICATION_JSON).build();
+            DataUse dataUse = mapper.readValue(jsonString, DataUse.class);
+            DataUseValidator validator = new DataUseValidator(dataUse);
+            if (validator.getIsValid()) {
+                UseRestriction restriction = translateSchema(dataUse);
+                return Response.ok().entity(restriction).type(MediaType.APPLICATION_JSON).build();
+            } else {
+                String message = "Data Use does not meet validation rules:\n" +
+                    validator.getValidationErrors().stream().collect(Collectors.joining("\n"));
+                log.error(message);
+                return Response.status(Response.Status.BAD_REQUEST).entity(message).type(MediaType.APPLICATION_JSON).build();
+            }
         } catch (IOException e) {
             log.error(e.getMessage());
             return Response.status(Response.Status.BAD_REQUEST).entity(e).type(MediaType.APPLICATION_JSON).build();
