@@ -47,9 +47,9 @@ public class DataUseTest {
     private void assertInvalidJson(String snippet) {
         try {
             DU_SCHEMA.validate(new JSONObject(snippet));
-            fail("Snippet <" + snippet + "> should not have been able to pass validation");
+            fail("Snippet <" + snippet + "> should not have been able to pass schema validation");
         } catch (ValidationException e) {
-            assertTrue(true);
+            assertTrue("Snippet <" + snippet + "> correctly failed schema validation", true);
         }
     }
 
@@ -65,23 +65,6 @@ public class DataUseTest {
     /*
      * General schema validation tests
      */
-
-    /**
-     * General Use should not be used in combination with diseases.
-     * TODO: Need to figure out how to further narrow the 'oneOf' 'required' clause such that
-     * 'generalUse = false' will work in the following test. Currently, that will fail.
-     */
-    @Test
-    public void generalUseWithDiseaseFailure() throws Exception {
-        String json = "{ \"generalUse\": true, \"diseaseRestrictions\": [\"one\", \"two\"]}";
-        assertInvalidJson(json);
-    }
-
-    @Test
-    public void multipleFieldsSuccess() throws Exception {
-        String json = "{ \"hmbResearch\": true, \"diseaseRestrictions\": [\"one\", \"two\"] }";
-        assertValidJson(json);
-    }
 
     @Test
     public void validateDataUseJsonFile() throws ValidationException, IOException {
@@ -195,7 +178,7 @@ public class DataUseTest {
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
         assertTrue("DU should specify a pediatric usage", dataUse.getPediatric());
         assertValidJson(json);
-        assertInvalidJson("{ \"pediatricLimited\": \"string\" }");
+        assertInvalidJson("{ \"pediatric\": \"string\" }");
     }
 
     @Test
@@ -208,12 +191,24 @@ public class DataUseTest {
     }
 
     @Test
-    public void recontactingDataSubjects() throws Exception {
-        String json = "{ \"recontactingDataSubjects\": true }";
+    public void recontacting() throws Exception {
+        String json = "{ \"recontactingDataSubjects\": true, \"recontactMay\": \"may\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
         assertTrue("DU should specify whether recontacting subjects is allowed", dataUse.getRecontactingDataSubjects());
         assertValidJson(json);
+
+
+        json = "{ \"recontactingDataSubjects\": true, \"recontactMust\": \"must\" }";
+        dataUse = MAPPER.readValue(json, DataUse.class);
+        assertTrue("DU should specify whether recontacting subjects is allowed", dataUse.getRecontactingDataSubjects());
+        assertValidJson(json);
+
         assertInvalidJson("{ \"recontactingDataSubjects\": \"string\" }");
+        assertInvalidJson("{ \"recontactingDataSubjects\": true }");
+        assertInvalidJson("{ \"recontactingDataSubjects\": true, \"dateRestriction\": \"date\" }");
+        assertInvalidJson("{ \"recontactingDataSubjects\": true, \"recontactMay\": true }");
+        assertInvalidJson("{ \"recontactingDataSubjects\": true, \"recontactMust\": true }");
+
     }
 
     @Test
@@ -245,7 +240,7 @@ public class DataUseTest {
 
     @Test
     public void otherRestrictions() throws Exception {
-        String json = "{ \"otherRestrictions\": true }";
+        String json = "{ \"otherRestrictions\": true, \"other\": \"other\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
         assertTrue("DU should specify if there are other conditions", dataUse.getOtherRestrictions());
         assertValidJson(json);

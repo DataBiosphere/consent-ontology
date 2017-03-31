@@ -4,38 +4,15 @@
   "title": "Data Use Schema",
   "version": 1,
   "type": "object",
-  "oneOf": [
-    {"required": ["generalUse"]},
-    {"anyOf": [
-      {"required": ["hmbResearch"]},
-      {"required": ["diseaseRestrictions"]},
-      {"required": ["populationOriginsAncestry"]},
-      {"required": ["commercialUse"]},
-      {"required": ["methodsResearch"]},
-      {"required": ["aggregateResearch"]},
-      {"required": ["controlSetOption"]},
-      {"required": ["gender"]},
-      {"required": ["pediatric"]},
-      {"required": ["populationRestrictions"]},
-      {"required": ["dateRestriction"]},
-      {"required": ["recontactingDataSubjects"]},
-      {"required": ["recontactMay"]},
-      {"required": ["recontactMust"]},
-      {"required": ["genomicPhenotypicData"]},
-      {"required": ["other"]},
-      {"required": ["otherRestrictions"]},
-      {"required": ["cloudStorage"]},
-      {"required": ["ethicsApprovalRequired"]},
-      {"required": ["geographicalRestrictions"]},
-      {"required": ["illegalBehavior"]},
-      {"required": ["addiction"]},
-      {"required": ["sexualDiseases"]},
-      {"required": ["stigmatizeDiseases"]},
-      {"required": ["vulnerablePopulations"]},
-      {"required": ["psychologicalTraits"]},
-      {"required": ["nonBiomedical"]}
-    ]}
-  ],
+  "dependencies": {
+    "recontactingDataSubjects": {
+      "oneOf": [
+        {"required": ["recontactMay"]},
+        {"required": ["recontactMust"]}
+      ]
+    },
+    "otherRestrictions": ["other"]
+  },
   "properties": {
     "generalUse": {
       "type": "boolean"
@@ -97,11 +74,11 @@
       "type": "string",
       "enum": ["Yes", "No", "Unspecified"]
     },
-    "other": {
-      "type": "string"
-    },
     "otherRestrictions": {
       "type": "boolean"
+    },
+    "other": {
+      "type": "string"
     },
     "cloudStorage": {
       "type": "string",
