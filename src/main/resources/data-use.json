@@ -12,7 +12,7 @@
       ]
     },
     "otherRestrictions": {
-      "oneOf": [
+      "anyOf": [
         {"required": ["cloudStorage"]},
         {"required": ["ethicsApprovalRequired"]},
         {"required": ["geographicalRestrictions"]},

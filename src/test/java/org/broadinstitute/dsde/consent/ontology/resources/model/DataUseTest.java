@@ -253,6 +253,10 @@ public class DataUseTest {
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
         assertTrue("DU should specify if there are other conditions", dataUse.getOtherRestrictions());
         assertValidJson(json);
+        assertValidJson("{ \"otherRestrictions\": true, \"other\": \"other\", \"ethicsApprovalRequired\": true }");
+        assertValidJson("{ \"otherRestrictions\": true, \"other\": \"other\", \"geographicalRestrictions\": \"US\" }");
+        assertValidJson("{ \"otherRestrictions\": true, \"other\": \"other\", \"cloudStorage\": \"Yes\" }");
+        assertValidJson("{ \"otherRestrictions\": true, \"other\": \"other\", \"cloudStorage\": \"Yes\", \"ethicsApprovalRequired\": true }");
         assertInvalidJson("{ \"otherRestrictions\": \"string\" }");
     }
 
