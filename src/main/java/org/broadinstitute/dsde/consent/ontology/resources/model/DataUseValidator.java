@@ -12,16 +12,15 @@ public class DataUseValidator {
 
     private DataUse dataUse = null;
     private List<String> validationErrors = null;
-    private Boolean isValid = null;
 
     public DataUseValidator(DataUse dataUse) {
         this.dataUse = dataUse;
         this.validationErrors = new ArrayList<>();
-        this.isValid = validate();
+        validate();
     }
 
     public Boolean getIsValid() {
-        return isValid;
+        return validationErrors.isEmpty();
     }
 
     public List<String> getValidationErrors() {
@@ -30,28 +29,21 @@ public class DataUseValidator {
 
     /**
      * Internal validation method called when validator is instantiated.
-     * @return Valid or not
      */
-    private Boolean validate() {
-        boolean valid = true;
+    private void validate() {
         if (dataUse == null) {
             validationErrors.add("Data Use cannot be null");
-            valid = false;
         } else {
             if (!validateGeneralUse(dataUse)) {
                 validationErrors.add("General Use cannot have other restrictions");
-                valid = false;
             }
             if (!validateRecontact(dataUse)) {
                 validationErrors.add("Recontacting Data Subjects requires conditions");
-                valid = false;
             }
             if (!validateOther(dataUse)) {
                 validationErrors.add("'Other' restrictions require an explanation");
-                valid = false;
             }
         }
-        return valid;
     }
 
     private Boolean getOrElseFalse(Boolean nullable) {
