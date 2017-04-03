@@ -22,7 +22,7 @@ public class DataUseResource {
 
     @GET
     @Path("/data-use")
-    @Produces("application/json")
+    @Produces(MediaType.APPLICATION_JSON)
     public Response getSchema() {
         String content = FileUtils.readAllTextFromResource("data-use.json");
         return Response.ok().entity(content).type(MediaType.APPLICATION_JSON).build();
@@ -37,7 +37,7 @@ public class DataUseResource {
      * @return Response
      */
     @POST
-    @Path("/translate")
+    @Path("/data-use/translate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response translate(String jsonString) {
