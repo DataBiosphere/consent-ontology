@@ -27,6 +27,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
     "hmbResearch",
     "diseaseRestrictions",
     "populationOriginsAncestry",
+    "populationStructure",
     "commercialUse",
     "methodsResearch",
     "aggregateResearch",
@@ -62,6 +63,8 @@ public class DataUse {
     private List<String> diseaseRestrictions = new ArrayList<>();
     @JsonProperty("populationOriginsAncestry")
     private Boolean populationOriginsAncestry;
+    @JsonProperty("populationStructure")
+    private Boolean populationStructure;
     @JsonProperty("commercialUse")
     private Boolean commercialUse;
     @JsonProperty("methodsResearch")
@@ -149,6 +152,16 @@ public class DataUse {
     @JsonProperty("populationOriginsAncestry")
     public void setPopulationOriginsAncestry(Boolean populationOriginsAncestry) {
         this.populationOriginsAncestry = populationOriginsAncestry;
+    }
+
+    @JsonProperty("populationStructure")
+    public Boolean getPopulationStructure() {
+        return populationStructure;
+    }
+
+    @JsonProperty("populationStructure")
+    public void setPopulationStructure(Boolean populationStructure) {
+        this.populationStructure = populationStructure;
     }
 
     @JsonProperty("commercialUse")

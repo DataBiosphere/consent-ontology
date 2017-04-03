@@ -119,6 +119,15 @@ public class DataUseTest {
     }
 
     @Test
+    public void populationStructure() throws Exception {
+        String json = "{ \"populationStructure\": true }";
+        DataUse dataUse = MAPPER.readValue(json, DataUse.class);
+        assertTrue("DU should specify population structure research", dataUse.getPopulationStructure());
+        assertValidJson(json);
+        assertInvalidJson("{ \"populationStructure\": \"string\" }");
+    }
+
+    @Test
     public void commercialUse() throws Exception {
         String json = "{ \"commercialUse\": true }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);

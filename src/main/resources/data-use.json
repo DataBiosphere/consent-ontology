@@ -37,6 +37,9 @@
     "populationOriginsAncestry": {
       "type": "boolean"
     },
+    "populationStructure": {
+      "type": "boolean"
+    },
     "commercialUse": {
       "type": "boolean"
     },
