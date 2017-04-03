@@ -257,6 +257,7 @@ public class DataUseTest {
         assertValidJson("{ \"otherRestrictions\": true, \"other\": \"other\", \"geographicalRestrictions\": \"US\" }");
         assertValidJson("{ \"otherRestrictions\": true, \"other\": \"other\", \"cloudStorage\": \"Yes\" }");
         assertValidJson("{ \"otherRestrictions\": true, \"other\": \"other\", \"cloudStorage\": \"Yes\", \"ethicsApprovalRequired\": true }");
+        assertInvalidJson("{ \"otherRestrictions\": true }");
         assertInvalidJson("{ \"otherRestrictions\": \"string\" }");
     }
 
