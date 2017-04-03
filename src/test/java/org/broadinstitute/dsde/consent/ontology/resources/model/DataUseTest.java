@@ -131,7 +131,7 @@ public class DataUseTest {
     public void methodsResearch() throws Exception {
         String json = "{ \"methodsResearch\": true }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify population methods research use", dataUse.getMethodsResearch());
+        assertTrue("DU should specify methods research use", dataUse.getMethodsResearch());
         assertValidJson(json);
         assertInvalidJson("{ \"methodsResearch\": \"string\" }");
     }
