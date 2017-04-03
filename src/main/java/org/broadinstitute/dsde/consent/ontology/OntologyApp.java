@@ -8,10 +8,7 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-import org.broadinstitute.dsde.consent.ontology.resources.AllTermsResource;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
-import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource;
-import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
+import org.broadinstitute.dsde.consent.ontology.resources.*;
 import org.broadinstitute.dsde.consent.ontology.resources.validate.ValidationResource;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
@@ -32,9 +29,6 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         new OntologyApp().run(args);
     }
 
-
-
-
     @Override
     public void run(OntologyConfiguration config, Environment env) {
 
@@ -44,7 +38,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(TranslateResource.class));
         env.jersey().register(injector.getInstance(ValidationResource.class));
         env.jersey().register(injector.getInstance(OntologySearchResource.class));
-
+        env.jersey().register(injector.getInstance(DataUseResource.class));
         FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
         corsFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, env.getApplicationContext().getContextPath() + "/autocomplete");
         corsFilter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,OPTIONS");

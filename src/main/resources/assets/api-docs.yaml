@@ -12,6 +12,39 @@ schemes:
   
 paths:
 
+  /schemas/data-use:
+    get:
+      summary: Data Use Questions and Answers
+      description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
+      tags:
+        - Data Use
+      responses:
+        200:
+          description: The json representation for all data use questions + answers
+        default:
+          description: Unexpected error
+
+  /schemas/data-use/translate:
+    post:
+      summary: Translate Data Use JSON into a Use Restriction
+      description: Translate a Data Use JSON to a Use Restriction
+      tags:
+        - Data Use
+      parameters:
+        - name: jsonString
+          in: body
+          description: JSON formatted Data Use object
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
+      responses:
+        200:
+          description: The use restriction
+        400:
+          description: invalid data use schema format
+        default:
+          description: Unexpected error
+
   '/translate':
   
     post:
@@ -171,3 +204,17 @@ definitions:
             items:
               type: string
               description: Array of ontologies.
+  DataUse:
+    type: object
+    description: JSON model of a set of data use questions and answers
+    example: |
+      {
+        "generalUse": false,
+        "hmbResearch": true,
+        "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602", "http://purl.obolibrary.org/obo/DOID_162"],
+        "gender": "Male",
+        ...
+        additional JSON-standard fields as
+        defined by the Data Use schema
+        ...
+      }
