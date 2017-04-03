@@ -11,7 +11,14 @@
         {"required": ["recontactMust"]}
       ]
     },
-    "otherRestrictions": ["other"]
+    "otherRestrictions": {
+      "oneOf": [
+        {"required": ["cloudStorage"]},
+        {"required": ["ethicsApprovalRequired"]},
+        {"required": ["geographicalRestrictions"]},
+        {"required": ["other"]}
+      ]
+    }
   },
   "properties": {
     "generalUse": {

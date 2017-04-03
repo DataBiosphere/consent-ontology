@@ -67,14 +67,19 @@ public class DataUseValidator {
 
     /**
      * Other use is enforced in json-schema. Here for an OO approach.
-     * If other is specified, we need "other" conditions.
+     * If other is specified, we need one of the sub-conditions to be present as well.
      *
      * @param dataUse The data use to check
      * @return Boolean: valid or not
      */
+    @SuppressWarnings("SimplifiableIfStatement")
     private Boolean validateOther(DataUse dataUse) {
         if (getOrElseFalse(dataUse.getOtherRestrictions())) {
-            return getOrElseFalse(dataUse.getOther());
+            return
+                getOrElseFalse(dataUse.getCloudStorage()) ||
+                getOrElseFalse(dataUse.getEthicsApprovalRequired()) ||
+                getOrElseFalse(dataUse.getGeographicalRestrictions()) ||
+                getOrElseFalse(dataUse.getOther());
         }
         return true;
     }

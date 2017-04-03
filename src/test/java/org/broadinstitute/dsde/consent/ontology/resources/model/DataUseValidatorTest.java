@@ -58,6 +58,24 @@ public class DataUseValidatorTest {
 
         dataUse = new DataUse();
         dataUse.setOtherRestrictions(true);
+        dataUse.setCloudStorage("Yes");
+        validator = new DataUseValidator(dataUse);
+        assertTrue(validator.getIsValid());
+
+        dataUse = new DataUse();
+        dataUse.setOtherRestrictions(true);
+        dataUse.setEthicsApprovalRequired(true);
+        validator = new DataUseValidator(dataUse);
+        assertTrue(validator.getIsValid());
+
+        dataUse = new DataUse();
+        dataUse.setOtherRestrictions(true);
+        dataUse.setGeographicalRestrictions("US");
+        validator = new DataUseValidator(dataUse);
+        assertTrue(validator.getIsValid());
+
+        dataUse = new DataUse();
+        dataUse.setOtherRestrictions(true);
         validator = new DataUseValidator(dataUse);
         assertFalse(validator.getIsValid());
     }
