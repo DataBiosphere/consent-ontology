@@ -6,6 +6,7 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.RDFList;
 import com.hp.hpl.jena.rdf.model.RDFNode;
+import org.apache.commons.collections4.CollectionUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 
 import java.io.IOException;
@@ -48,7 +49,10 @@ public class And extends UseRestriction {
     @Override
     public boolean equals(Object o) {
         return o instanceof And &&
-                Arrays.deepEquals(this.operands, ((And) o).operands);
+            CollectionUtils.containsAll(
+                Arrays.asList(this.operands),
+                Arrays.asList(((And) o).operands)) &&
+            this.operands.length == (((And) o).operands).length;
     }
 
     @Override

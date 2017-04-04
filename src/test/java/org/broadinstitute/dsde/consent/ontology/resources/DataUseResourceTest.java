@@ -11,9 +11,7 @@ import org.junit.Test;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class DataUseResourceTest {
 
@@ -39,8 +37,17 @@ public class DataUseResourceTest {
     }
 
     @Test
-    public void testTranslateGeneralUse() {
-        Response response = dataUseResource.translate(generalUse);
+    public void testConsent() {
+        Response response = dataUseResource.translateConsent(generalUse);
+        UseRestriction restriction = (UseRestriction) response.getEntity();
+        assertNotNull(restriction);
+        assertTrue(restriction.equals(new Everything()));
+        assertStatusAndHeader(response, Response.Status.OK, MediaType.APPLICATION_JSON);
+    }
+
+    @Test
+    public void testDAR() {
+        Response response = dataUseResource.translateDAR(generalUse);
         UseRestriction restriction = (UseRestriction) response.getEntity();
         assertNotNull(restriction);
         assertTrue(restriction.equals(new Everything()));

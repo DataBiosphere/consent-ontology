@@ -1,10 +1,11 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
+import org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentRestrictionBuilder;
+import org.broadinstitute.dsde.consent.ontology.datause.builder.DARRestrictionBuilder;
+import org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilder;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseValidator;
 import org.parboiled.common.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.stream.Collectors;
 
 @Path("/schemas")
 public class DataUseResource {
@@ -29,50 +28,45 @@ public class DataUseResource {
     }
 
     /**
-     * This method will take any valid form of json string that models DataUse.
-     * With that object, it generates a UseRestriction using current business rules as specified in:
-     * https://docs.google.com/document/d/1z4yXkWRrg2ngyIX2otxG2lV_fJE_fYSs4VxmVjyp_pU/edit#heading=h.qifwhouc9pi5
+     * This endpoint will take any valid form of json string that models DataUse and generate a Consent
+     * UseRestriction using current business rules.
      *
      * @param jsonString String that will conform to DataUse
      * @return Response
      */
     @POST
-    @Path("/data-use/translate")
+    @Path("/data-use/consent/translate")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response translate(String jsonString) {
-        try {
-            ObjectMapper mapper = new ObjectMapper();
-            DataUse dataUse = mapper.readValue(jsonString, DataUse.class);
-            DataUseValidator validator = new DataUseValidator(dataUse);
-            if (validator.getIsValid()) {
-                UseRestriction restriction = translateSchema(dataUse);
-                return Response.ok().entity(restriction).type(MediaType.APPLICATION_JSON).build();
-            } else {
-                String message = "Data Use does not meet validation rules:\n" +
-                    validator.getValidationErrors().stream().collect(Collectors.joining("\n"));
-                log.error(message);
-                return Response.status(Response.Status.BAD_REQUEST).entity(message).type(MediaType.APPLICATION_JSON).build();
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage());
-            return Response.status(Response.Status.BAD_REQUEST).entity(e).type(MediaType.APPLICATION_JSON).build();
-        }
+    public Response translateConsent(String jsonString) {
+        return buildTranslatedResponse(jsonString, new ConsentRestrictionBuilder());
     }
 
     /**
-     * TODO: Flesh this out in a utility that will generate appropriate UseRestrictions for all of
-     * the possible cases of DataUse options.
-     * See https://broadinstitute.atlassian.net/browse/GAWB-1555
+     * This endpoint will take any valid form of json string that models DataUse and generate a Data Access Request
+     * UseRestriction using current business rules.
      *
-     * @param schema The DataUse
-     * @return Translated UseRestriction
+     * @param jsonString String that will conform to DataUse
+     * @return Response
      */
-    private UseRestriction translateSchema(DataUse schema) {
-        if (schema.getGeneralUse()) {
-            return new Everything();
+    @POST
+    @Path("/data-use/dar/translate")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response translateDAR(String jsonString) {
+        return buildTranslatedResponse(jsonString, new DARRestrictionBuilder());
+    }
+
+    private Response buildTranslatedResponse(String jsonString, UseRestrictionBuilder builder) {
+        try {
+            ObjectMapper mapper = new ObjectMapper();
+            DataUse schema = mapper.readValue(jsonString, DataUse.class);
+            UseRestriction restriction = builder.buildUseRestriction(schema);
+            return Response.ok().entity(restriction).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            log.error(e.getMessage());
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).type(MediaType.APPLICATION_JSON).build();
         }
-        return null;
     }
 
 }
