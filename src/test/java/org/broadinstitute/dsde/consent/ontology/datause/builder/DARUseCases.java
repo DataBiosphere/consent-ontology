@@ -7,15 +7,13 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 
 public class DARUseCases {
 
-    private static final String CANCER = "http://purl.obolibrary.org/obo/DOID_162";
-
     public static UseRestriction darDefaultMRPA = new And(
         new And(
             new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH),
             new Not(new Named(UseRestrictionBuilderSupport.POPULATION_STRUCTURE)),
             new Not(new Named(UseRestrictionBuilderSupport.CONTROL))
         ),
-        new Named(CANCER),
+        new Named(ConsentUseCases.CANCER),
         new Named(UseRestrictionBuilderSupport.NON_PROFIT)
     );
 
@@ -25,7 +23,7 @@ public class DARUseCases {
             new Not(new Named(UseRestrictionBuilderSupport.POPULATION_STRUCTURE)),
             new Not(new Named(UseRestrictionBuilderSupport.CONTROL))
         ),
-        new Named(CANCER),
+        new Named(ConsentUseCases.CANCER),
         new Named(UseRestrictionBuilderSupport.NON_PROFIT));
 
     public static UseRestriction darDefaultMRPC = new And(
@@ -42,7 +40,7 @@ public class DARUseCases {
             new Not(new Named(UseRestrictionBuilderSupport.POPULATION_STRUCTURE)),
             new Named(UseRestrictionBuilderSupport.CONTROL)
         ),
-        new Named(CANCER),
+        new Named(ConsentUseCases.CANCER),
         new Named(UseRestrictionBuilderSupport.NON_PROFIT)
 
     );
@@ -53,7 +51,7 @@ public class DARUseCases {
             new Not(new Named(UseRestrictionBuilderSupport.POPULATION_STRUCTURE)),
             new Not(new Named(UseRestrictionBuilderSupport.CONTROL))
         ),
-        new Named(CANCER),
+        new Named(ConsentUseCases.CANCER),
         new Named(UseRestrictionBuilderSupport.NON_PROFIT)
     );
     
