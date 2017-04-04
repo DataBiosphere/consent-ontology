@@ -4,7 +4,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.*;
 
 public class ConsentUseCases {
 
-    public static final String CANCER = "http://purl.obolibrary.org/obo/DOID_162";
+    private static final String CANCER = "http://purl.obolibrary.org/obo/DOID_162";
 
     // Combined example from OD-329
     public static UseRestriction MRPdulUC1 = new Or(

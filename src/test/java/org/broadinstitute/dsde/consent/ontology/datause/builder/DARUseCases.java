@@ -7,7 +7,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 
 public class DARUseCases {
 
-    public static final String CANCER = "http://purl.obolibrary.org/obo/DOID_162";
+    private static final String CANCER = "http://purl.obolibrary.org/obo/DOID_162";
 
     public static UseRestriction darDefaultMRPA = new And(
         new And(
