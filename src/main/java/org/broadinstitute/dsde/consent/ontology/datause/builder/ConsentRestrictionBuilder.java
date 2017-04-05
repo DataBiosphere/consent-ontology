@@ -76,7 +76,7 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
         }
 
         // Apply Control Set Logic
-        if (isPresent(dataUse.getControlSetOption()) && dataUse.getControlSetOption().equalsIgnoreCase("Yes")) {
+        if (isPresent(dataUse.getControlSetOption()) && dataUse.getControlSetOption().equalsIgnoreCase("No")) {
             restriction = new Or(
                 restriction,
                 new And(restriction, new Named(CONTROL))

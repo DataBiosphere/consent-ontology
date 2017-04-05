@@ -66,7 +66,7 @@ public class ConsentRestrictionBuilderTest {
     public void testCSdulUC2() {
         DataUse dataUse = new DataUse();
         dataUse.setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER));
-        dataUse.setControlSetOption("Yes");
+        dataUse.setControlSetOption("No");
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
         Assert.assertTrue(restriction.equals(ConsentUseCases.CSdulUC2));
     }
@@ -75,7 +75,7 @@ public class ConsentRestrictionBuilderTest {
     public void testCSdulUC3() {
         DataUse dataUse = new DataUse();
         dataUse.setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER));
-        dataUse.setControlSetOption("No");
+        dataUse.setControlSetOption("Yes");
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
         Assert.assertTrue(restriction.equals(ConsentUseCases.CSdulUC3));
     }

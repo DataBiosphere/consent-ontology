@@ -5,6 +5,13 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 
+/**
+ * See TruthTableTests for the source of many of these tests. In most cases, the corresponding TT test will need to
+ * be rewritten to accommodate future business rule development. New Data Access Request test cases should be defined
+ * here and current ones in TT should be removed.
+ *
+ * Note that the current differences involve aggregate research which is not currently being used in restrictions.
+ */
 public class DARUseCases {
 
     public static UseRestriction darDefaultMRPA = new And(
