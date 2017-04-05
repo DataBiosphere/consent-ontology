@@ -60,21 +60,21 @@ public class UseRestrictionBuilderSupport {
      * @param ontologyClasses List of ontology terms
      * @return UseRestriction
      */
-    public static UseRestriction buildORRestrictionFromClasses(List<String> ontologyClasses) {
+    public static UseRestriction buildORRestrictionFromClasses(List<String> ontologyClasses) throws IllegalArgumentException {
         List<String> validClasses = ontologyClasses.stream().
             filter(s -> !s.isEmpty()).
             collect(Collectors.toList());
-        if (validClasses != null && validClasses.size() == 1) {
-            return new Named(validClasses.get(0));
+        if (CollectionUtils.isNotEmpty(validClasses)) {
+            if (validClasses.size() == 1) {
+                return new Named(validClasses.get(0));
+            }
+            else if (validClasses.size() > 1) {
+                Named[] named = validClasses.stream().map(Named::new).
+                    toArray(size -> new Named[validClasses.size()]);
+                return new Or(named);
+            }
         }
-        else if (validClasses != null && validClasses.size() > 1) {
-            Named[] named = validClasses.stream().map(Named::new).
-                toArray(size -> new Named[validClasses.size()]);
-            return new Or(named);
-        }
-        else {
-            return null;
-        }
+        throw new IllegalArgumentException("Ontology Classes cannot be empty");
     }
 
     /**
@@ -83,7 +83,7 @@ public class UseRestrictionBuilderSupport {
      * @param useRestrictions List of UseRestrictions
      * @return And UseRestriction
      */
-    static UseRestriction buildAndRestriction(List<UseRestriction> useRestrictions) {
+    static UseRestriction buildAndRestriction(List<UseRestriction> useRestrictions) throws IllegalArgumentException {
         if (CollectionUtils.isNotEmpty(useRestrictions)) {
             if (useRestrictions.size() == 1) {
                 return useRestrictions.get(0);
@@ -93,7 +93,7 @@ public class UseRestrictionBuilderSupport {
                 return new And(ands);
             }
         }
-        return null;
+        throw new IllegalArgumentException("Use Restrictions cannot be empty");
     }
 
 }
