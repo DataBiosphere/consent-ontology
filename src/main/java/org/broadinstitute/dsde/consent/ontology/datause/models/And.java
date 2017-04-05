@@ -8,12 +8,12 @@ import com.hp.hpl.jena.rdf.model.RDFList;
 import com.hp.hpl.jena.rdf.model.RDFNode;
 import org.apache.commons.collections4.CollectionUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
+import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class And extends UseRestriction {
 
@@ -52,6 +52,9 @@ public class And extends UseRestriction {
             CollectionUtils.containsAll(
                 Arrays.asList(this.operands),
                 Arrays.asList(((And) o).operands)) &&
+            CollectionUtils.containsAll(
+                Arrays.asList(((And) o).operands),
+                Arrays.asList(this.operands)) &&
             this.operands.length == (((And) o).operands).length;
     }
 
