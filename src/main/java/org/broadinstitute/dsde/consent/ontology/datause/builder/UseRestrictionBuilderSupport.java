@@ -67,8 +67,7 @@ public class UseRestrictionBuilderSupport {
         if (CollectionUtils.isNotEmpty(validClasses)) {
             if (validClasses.size() == 1) {
                 return new Named(validClasses.get(0));
-            }
-            else if (validClasses.size() > 1) {
+            } else {
                 Named[] named = validClasses.stream().map(Named::new).
                     toArray(size -> new Named[validClasses.size()]);
                 return new Or(named);
