@@ -14,7 +14,12 @@ import java.util.Collection;
 /**
  * See https://docs.google.com/document/d/1xyeYoIKBDFGAsQ_spoK5Ye5esMOXqpRBojd6ijZWJkk
  * for a summary of use cases for which this test class covers.
+ *
+ * See org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentUseCases and
+ * org.broadinstitute.dsde.consent.ontology.datause.builder.DARUseCases
+ * for test cases.
  */
+@Deprecated
 class TruthTableTests extends AbstractTest {
 
     private Collection<URL> RESOURCES = Arrays.asList(
