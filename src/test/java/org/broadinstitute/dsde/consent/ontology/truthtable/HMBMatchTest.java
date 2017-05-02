@@ -13,13 +13,6 @@ import org.junit.runners.Parameterized;
 import java.util.Arrays;
 import java.util.Collection;
 
-/**
- * Created by davidan on 5/1/17.
- *
- * HMB == Health/Medical/Biomedical research.
- *
- */
-
 @RunWith(Parameterized.class)
 public class HMBMatchTest extends TruthTableTests {
     
@@ -67,9 +60,9 @@ public class HMBMatchTest extends TruthTableTests {
                 
             { Fixtures.HMB.mrpc, Fixtures.HMB.uc1, true, "MRPC vs. UC1" },
             { Fixtures.HMB.mrpc, Fixtures.HMB.uc1_1, true, "MRPC vs. UC1_1" },
-            // { Fixtures.HMB.mrpc, Fixtures.HMB.uc2, false, "MRPC vs. UC2" },
+            // { Fixtures.HMB.mrpc, Fixtures.HMB.uc2, false, "MRPC vs. UC2" }, // TODO: fix test. Doc says match should fail.
             { Fixtures.HMB.mrpc, Fixtures.HMB.uc2_1, false, "MRPC vs. UC2_1" },
-            // { Fixtures.HMB.mrpc, Fixtures.HMB.uc3, false, "MRPC vs. UC3" },
+            // { Fixtures.HMB.mrpc, Fixtures.HMB.uc3, false, "MRPC vs. UC3" }, // TODO: fix test. Doc says match should fail.
             { Fixtures.HMB.mrpc, Fixtures.HMB.uc4, true, "MRPC vs. UC4" },
             { Fixtures.HMB.mrpc, Fixtures.HMB.uc4_1, true, "MRPC vs. UC4_1" }
         });
