@@ -20,7 +20,7 @@ import java.util.Collection;
  * for test cases.
  */
 @Deprecated
-class TruthTableTests extends AbstractTest {
+public class TruthTableTests extends AbstractTest {
 
     private Collection<URL> RESOURCES = Arrays.asList(
         Resources.getResource("diseases.owl"),
@@ -28,7 +28,7 @@ class TruthTableTests extends AbstractTest {
 
     private OntModelCache ontModelCache = OntModelCache.INSTANCE;
 
-    void assertResponse(MatchPair pair, Boolean expected) {
+    public void assertResponse(MatchPair pair, Boolean expected) {
         MatchWorkerMessage message = new MatchWorkerMessage(RESOURCES, pair);
         try {
             Assert.assertTrue(ontModelCache.matchPurpose(message).equals(expected));
