@@ -4,6 +4,7 @@ package org.broadinstitute.dsde.consent.ontology;
 import com.google.inject.*;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
@@ -80,6 +81,9 @@ public class OntologyModule   extends AbstractModule {
             } catch (GeneralSecurityException | IOException e) {
                 throw new IllegalStateException(e);
             }
+
+            System.out.println(config.getCloudStoreConfiguration().getPassword());
+            environment.healthChecks().register("google-cloud-storage", new GCSHealthCheck(googleStore));
             return new StoreOntologyService(googleStore,
                     config.getStoreOntologyConfiguration().getBucketSubdirectory(),
                     config.getStoreOntologyConfiguration().getConfigurationFileName());
