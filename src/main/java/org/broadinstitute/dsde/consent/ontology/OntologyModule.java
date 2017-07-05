@@ -82,7 +82,6 @@ public class OntologyModule   extends AbstractModule {
                 throw new IllegalStateException(e);
             }
 
-            System.out.println(config.getCloudStoreConfiguration().getPassword());
             environment.healthChecks().register("google-cloud-storage", new GCSHealthCheck(googleStore));
             return new StoreOntologyService(googleStore,
                     config.getStoreOntologyConfiguration().getBucketSubdirectory(),
