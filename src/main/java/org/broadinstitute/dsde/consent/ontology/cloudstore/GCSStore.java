@@ -67,7 +67,7 @@ public class GCSStore implements CloudStore {
         Storage client = StorageFactory.getService(sConfig.getPassword());
 
         // com.google.api.services.storage.Storage.Buckets.get()
-        return client.buckets().get(sConfig.getBucket() + "a").execute();
+        return client.buckets().get(sConfig.getBucket()).execute();
     }
 
 }
