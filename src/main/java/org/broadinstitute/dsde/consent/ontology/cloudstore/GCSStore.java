@@ -3,7 +3,9 @@ package org.broadinstitute.dsde.consent.ontology.cloudstore;
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
 import com.google.api.client.http.*;
 import com.google.api.client.http.javanet.NetHttpTransport;
+import com.google.api.services.storage.Storage;
 import com.google.api.services.storage.StorageScopes;
+import com.google.api.services.storage.model.Bucket;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguration;
 
@@ -59,6 +61,13 @@ public class GCSStore implements CloudStore {
 
     private GenericUrl generateURLForDocument(String urlSuffix) {
         return new GenericUrl(sConfig.getEndpoint() + sConfig.getBucket() + "/"+urlSuffix);
+    }
+
+    public Bucket getBucketMetadata() throws IOException, GeneralSecurityException {
+        Storage client = StorageFactory.getService(sConfig.getPassword());
+
+        // com.google.api.services.storage.Storage.Buckets.get()
+        return client.buckets().get(sConfig.getBucket()).execute();
     }
 
 }
