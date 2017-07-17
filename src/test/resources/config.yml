@@ -12,7 +12,6 @@ logging:
 elasticSearch:
   servers:
     - localhost
-  clusterName: consent-elasticsearch
   index: ontology
 googleStore:
   password:

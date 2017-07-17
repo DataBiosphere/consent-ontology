@@ -6,6 +6,7 @@ import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
+import java.io.IOException;
 import java.util.List;
 
 @Path("/search")
@@ -22,7 +23,7 @@ public class OntologySearchResource {
 
     @GET
     @Produces("application/json")
-    public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) {
+    public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) throws IOException {
         if (!queryTerm.isEmpty()) {
             List<TermResource> result = api.lookupById(queryTerm);
             if(!result.isEmpty()){
