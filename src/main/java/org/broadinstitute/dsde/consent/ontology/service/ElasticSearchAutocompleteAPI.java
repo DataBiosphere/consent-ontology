@@ -5,6 +5,7 @@ import com.google.common.collect.Multimap;
 import com.google.gson.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
@@ -50,16 +51,19 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         ).collect(Collectors.toList());
         return "{\n" +
             "  \"query\": {\n" +
-            "    \"multi_match\" : {\n" +
-            "      \"query\": \"" + term + "\", \n" +
-            "      \"fields\": [ \"id\", \"label\" ] \n" +
-            "    },\n" +
-            "    \"filter\": [" + StringUtils.join(filterStrings, ", ") +
-            "    ]" +
+            "    \"bool\": {\n" +
+            "      \"must\": {\n" +
+            "        \"multi_match\" : {\n" +
+            "          \"query\": \"" + term + "\", \n" +
+            "          \"fields\": [ \"id\", \"label\" ] \n" +
+            "        }\n" +
+            "      },\n" +
+            "      \"filter\": [" + StringUtils.join(filterStrings, ", ") + "]" +
+            "    }\n" +
             "  }\n" +
             "}";
-
     }
+
 
     /**
      * Basic search execution method that queries ES and returns results.
@@ -80,16 +84,17 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
                     "GET",
                     ElasticSearchSupport.getSearchPath(configuration.getIndex()),
                     params,
-                    new NStringEntity(query));
+                    new NStringEntity(query, ContentType.APPLICATION_JSON));
                 if (esResponse.getStatusLine().getStatusCode() != 200) {
                     logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
                     throw new InternalServerErrorException();
                 }
                 String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
                 JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
-                JsonArray hits = jsonResponse.getAsJsonArray("hits.hits");
+                JsonArray hits = jsonResponse.getAsJsonObject("hits").getAsJsonArray("hits");
                 for (JsonElement hit : hits) {
-                    TermResource resource = gson.fromJson(hit, TermResource.class);
+                    JsonElement data = hit.getAsJsonObject().getAsJsonObject("_source");
+                    TermResource resource = gson.fromJson(data, TermResource.class);
                     if (thinFilter) {
                         resource.setOntology(null);
                         resource.setUsable(null);
