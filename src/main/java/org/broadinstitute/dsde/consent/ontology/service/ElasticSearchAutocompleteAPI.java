@@ -33,29 +33,30 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         this.configuration = configuration;
     }
 
-    // TODO: Test that this works
     private String buildQueryById(String term) {
-        return "{\n" +
+        return
+            "{\n" +
             "  \"query\": {\n" +
             "    \"match\" : {\n" +
-            "      \"id\": \"" + term + "\", \n" +
+            "      \"id\": \"" + term + "\" \n" +
             "    }\n" +
             "  }\n" +
             "}";
     }
 
-    // TODO: Test that this works
     private String filterQuery(String term, Multimap<String, String> filters) {
         List<String> filterStrings = filters.entries().stream().map(entry ->
             "{ \"term\": { \"" + entry.getKey() + "\": \"" + entry.getValue() + "\" } } "
         ).collect(Collectors.toList());
-        return "{\n" +
+        return
+            "{\n" +
             "  \"query\": {\n" +
             "    \"bool\": {\n" +
             "      \"must\": {\n" +
             "        \"multi_match\" : {\n" +
             "          \"query\": \"" + term + "\", \n" +
-            "          \"fields\": [ \"id\", \"label\" ] \n" +
+            "          \"type\": \"phrase_prefix\", \n" +
+            "          \"fields\": [ \"id^3\", \"label^2\", \"synonyms\", \"definition\" ] \n" +
             "        }\n" +
             "      },\n" +
             "      \"filter\": [" + StringUtils.join(filterStrings, ", ") + "]" +
@@ -84,7 +85,8 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
                     "GET",
                     ElasticSearchSupport.getSearchPath(configuration.getIndex()),
                     params,
-                    new NStringEntity(query, ContentType.APPLICATION_JSON));
+                    new NStringEntity(query, ContentType.APPLICATION_JSON),
+                    ElasticSearchSupport.jsonHeader);
                 if (esResponse.getStatusLine().getStatusCode() != 200) {
                     logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
                     throw new InternalServerErrorException();
@@ -104,6 +106,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
                 }
             }
         } catch (IOException e) {
+            logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
             throw new RuntimeException(e);
         }
         return termList;
@@ -134,7 +137,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
             collect(Collectors.toList());
 
         Collection<TermResource> parentTerms = parentIds.stream().
-            flatMap(t -> executeSearch(buildQueryById(query), 1, true).stream()).
+            flatMap(t -> executeSearch(buildQueryById(t), 1, true).stream()).
             collect(Collectors.toList());
 
         // Populate each of the parent nodes with more complete information
