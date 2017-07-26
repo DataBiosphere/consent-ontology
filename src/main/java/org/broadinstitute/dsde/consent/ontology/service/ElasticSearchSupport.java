@@ -120,7 +120,7 @@ public class ElasticSearchSupport {
     public static final String[] searchFields = {"id^3", "label^2", "synonyms", "definition"};
 
     /**
-     * Check to see if the index exists and create it otherwise.
+     * Check to see if the index exists
      *
      * @throws InternalServerErrorException The exception
      */
