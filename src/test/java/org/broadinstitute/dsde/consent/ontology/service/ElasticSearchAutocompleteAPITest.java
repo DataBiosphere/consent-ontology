@@ -2,7 +2,6 @@ package org.broadinstitute.dsde.consent.ontology.service;
 
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.elasticsearch.client.RestClient;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -17,13 +16,11 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class ElasticSearchAutocompleteAPITest {
 
     private ElasticSearchAutocompleteAPI autocompleteAPI;
     private static final String INDEX_NAME = "local-ontology";
     private ClientAndServer server;
-    private RestClient client;
 
     @Before
     public void setUp() throws Exception {
@@ -31,7 +28,6 @@ public class ElasticSearchAutocompleteAPITest {
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList("localhost"));
         autocompleteAPI = new ElasticSearchAutocompleteAPI(configuration);
-        client = ElasticSearchSupport.getRestClient(configuration);
         server = startClientAndServer(9200);
     }
 
@@ -45,16 +41,6 @@ public class ElasticSearchAutocompleteAPITest {
     private void mockResponse(HttpResponse response) {
         server.reset();
         server.when(request()).respond(response);
-    }
-
-    @Test
-    public void testValidateIndexExists() {
-        mockResponse(response().withStatusCode(200).withBody(indexJson));
-        try {
-            autocompleteAPI.validateIndexExists(client, INDEX_NAME);
-        } catch (Exception e) {
-            Assert.fail(e.getMessage());
-        }
     }
 
     @Test
@@ -80,94 +66,6 @@ public class ElasticSearchAutocompleteAPITest {
         Assert.assertTrue(termResource.size() == 1);
         Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
-
-    private static String indexJson = "{\n" +
-        "  \"local-ontology\": {\n" +
-        "    \"aliases\": {},\n" +
-        "    \"mappings\": {\n" +
-        "      \"ontology_term\": {\n" +
-        "        \"properties\": {\n" +
-        "          \"definition\": {\n" +
-        "            \"type\": \"text\",\n" +
-        "            \"fields\": {\n" +
-        "              \"keyword\": {\n" +
-        "                \"type\": \"keyword\",\n" +
-        "                \"ignore_above\": 256\n" +
-        "              }\n" +
-        "            }\n" +
-        "          },\n" +
-        "          \"id\": {\n" +
-        "            \"type\": \"text\",\n" +
-        "            \"fields\": {\n" +
-        "              \"keyword\": {\n" +
-        "                \"type\": \"keyword\",\n" +
-        "                \"ignore_above\": 256\n" +
-        "              }\n" +
-        "            }\n" +
-        "          },\n" +
-        "          \"label\": {\n" +
-        "            \"type\": \"text\",\n" +
-        "            \"fields\": {\n" +
-        "              \"keyword\": {\n" +
-        "                \"type\": \"keyword\",\n" +
-        "                \"ignore_above\": 256\n" +
-        "              }\n" +
-        "            }\n" +
-        "          },\n" +
-        "          \"ontology\": {\n" +
-        "            \"type\": \"text\",\n" +
-        "            \"fields\": {\n" +
-        "              \"keyword\": {\n" +
-        "                \"type\": \"keyword\",\n" +
-        "                \"ignore_above\": 256\n" +
-        "              }\n" +
-        "            }\n" +
-        "          },\n" +
-        "          \"parents\": {\n" +
-        "            \"properties\": {\n" +
-        "              \"id\": {\n" +
-        "                \"type\": \"text\",\n" +
-        "                \"fields\": {\n" +
-        "                  \"keyword\": {\n" +
-        "                    \"type\": \"keyword\",\n" +
-        "                    \"ignore_above\": 256\n" +
-        "                  }\n" +
-        "                }\n" +
-        "              },\n" +
-        "              \"order\": {\n" +
-        "                \"type\": \"long\"\n" +
-        "              }\n" +
-        "            }\n" +
-        "          },\n" +
-        "          \"synonyms\": {\n" +
-        "            \"type\": \"text\",\n" +
-        "            \"fields\": {\n" +
-        "              \"keyword\": {\n" +
-        "                \"type\": \"keyword\",\n" +
-        "                \"ignore_above\": 256\n" +
-        "              }\n" +
-        "            }\n" +
-        "          },\n" +
-        "          \"usable\": {\n" +
-        "            \"type\": \"boolean\"\n" +
-        "          }\n" +
-        "        }\n" +
-        "      }\n" +
-        "    },\n" +
-        "    \"settings\": {\n" +
-        "      \"index\": {\n" +
-        "        \"creation_date\": \"1500914949437\",\n" +
-        "        \"number_of_shards\": \"5\",\n" +
-        "        \"number_of_replicas\": \"2\",\n" +
-        "        \"uuid\": \"xF4Zsd1ZS66yYsKgFgMDew\",\n" +
-        "        \"version\": {\n" +
-        "          \"created\": \"5050099\"\n" +
-        "        },\n" +
-        "        \"provided_name\": \"local-ontology\"\n" +
-        "      }\n" +
-        "    }\n" +
-        "  }\n" +
-        "}";
 
     private static String cancerJson = "{\n" +
         "  \"took\": 15,\n" +
@@ -212,4 +110,5 @@ public class ElasticSearchAutocompleteAPITest {
         "    ]\n" +
         "  }\n" +
         "}";
+
 }

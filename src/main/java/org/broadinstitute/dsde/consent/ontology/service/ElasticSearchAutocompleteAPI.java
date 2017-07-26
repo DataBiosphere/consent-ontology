@@ -33,25 +33,6 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
     }
 
     /**
-     * TODO: Move this to ElasticSearchSupport? It doesn't really belong in an Autocomplete class.
-     * Check to see if the index exists and create it otherwise.
-     *
-     * @throws InternalServerErrorException The exception
-     */
-    public void validateIndexExists(RestClient client, String indexName) throws InternalServerErrorException {
-        try {
-            Response esResponse = client.performRequest("GET", ElasticSearchSupport.getIndexPath(indexName), ElasticSearchSupport.jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid index request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException(esResponse.getStatusLine().getReasonPhrase());
-            }
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new InternalServerErrorException(e.getMessage());
-        }
-    }
-
-    /**
      * Basic search execution method that queries ES and returns results.
      *
      * @param query      Query string in the form of an ES json query object
@@ -62,9 +43,9 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
      */
     private List<TermResource> executeSearch(String query, int limit, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
+        ElasticSearchSupport.validateIndexExists(configuration);
         try {
             try (RestClient client = ElasticSearchSupport.getRestClient(configuration)) {
-                validateIndexExists(client, configuration.getIndex());
                 Map<String, String> params = new HashMap<>();
                 params.put("size", String.valueOf(limit));
                 Response esResponse = client.performRequest(
