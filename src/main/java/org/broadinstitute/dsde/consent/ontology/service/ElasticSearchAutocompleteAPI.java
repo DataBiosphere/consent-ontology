@@ -4,7 +4,6 @@ import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import com.google.gson.*;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
@@ -33,38 +32,24 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         this.configuration = configuration;
     }
 
-    private String buildQueryById(String term) {
-        return
-            "{\n" +
-            "  \"query\": {\n" +
-            "    \"match\" : {\n" +
-            "      \"id\": \"" + term + "\" \n" +
-            "    }\n" +
-            "  }\n" +
-            "}";
+    /**
+     * TODO: Move this to ElasticSearchSupport? It doesn't really belong in an Autocomplete class.
+     * Check to see if the index exists and create it otherwise.
+     *
+     * @throws InternalServerErrorException The exception
+     */
+    public void validateIndexExists(RestClient client, String indexName) throws InternalServerErrorException {
+        try {
+            Response esResponse = client.performRequest("GET", ElasticSearchSupport.getIndexPath(indexName), ElasticSearchSupport.jsonHeader);
+            if (esResponse.getStatusLine().getStatusCode() != 200) {
+                logger.error("Invalid index request: " + esResponse.getStatusLine().getReasonPhrase());
+                throw new InternalServerErrorException(esResponse.getStatusLine().getReasonPhrase());
+            }
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+            throw new InternalServerErrorException(e.getMessage());
+        }
     }
-
-    private String filterQuery(String term, Multimap<String, String> filters) {
-        List<String> filterStrings = filters.entries().stream().map(entry ->
-            "{ \"term\": { \"" + entry.getKey() + "\": \"" + entry.getValue() + "\" } } "
-        ).collect(Collectors.toList());
-        return
-            "{\n" +
-            "  \"query\": {\n" +
-            "    \"bool\": {\n" +
-            "      \"must\": {\n" +
-            "        \"multi_match\" : {\n" +
-            "          \"query\": \"" + term + "\", \n" +
-            "          \"type\": \"phrase_prefix\", \n" +
-            "          \"fields\": [ \"id^3\", \"label^2\", \"synonyms\", \"definition\" ] \n" +
-            "        }\n" +
-            "      },\n" +
-            "      \"filter\": [" + StringUtils.join(filterStrings, ", ") + "]" +
-            "    }\n" +
-            "  }\n" +
-            "}";
-    }
-
 
     /**
      * Basic search execution method that queries ES and returns results.
@@ -79,6 +64,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         List<TermResource> termList = new ArrayList<>();
         try {
             try (RestClient client = ElasticSearchSupport.getRestClient(configuration)) {
+                validateIndexExists(client, configuration.getIndex());
                 Map<String, String> params = new HashMap<>();
                 params.put("size", String.valueOf(limit));
                 Response esResponse = client.performRequest(
@@ -124,12 +110,12 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
         for (String tag : tags) {
             filters.put(FIELD_ONTOLOGY_TYPE, tag);
         }
-        return executeSearch(filterQuery(query, filters), limit, true);
+        return executeSearch(ElasticSearchSupport.buildFilterQuery(query, filters), limit, true);
     }
 
     @Override
     public List<TermResource> lookupById(String query) throws IOException {
-        List<TermResource> terms = executeSearch(buildQueryById(query), 1, false);
+        List<TermResource> terms = executeSearch(ElasticSearchSupport.buildIdQuery(query), 1, false);
 
         Collection<String> parentIds = terms.stream().
             flatMap(p -> Optional.ofNullable(p.getParents()).orElse(new ArrayList<>()).stream()).
@@ -137,7 +123,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
             collect(Collectors.toList());
 
         Collection<TermResource> parentTerms = parentIds.stream().
-            flatMap(t -> executeSearch(buildQueryById(t), 1, true).stream()).
+            flatMap(t -> executeSearch(ElasticSearchSupport.buildIdQuery(t), 1, true).stream()).
             collect(Collectors.toList());
 
         // Populate each of the parent nodes with more complete information
