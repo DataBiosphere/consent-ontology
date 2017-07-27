@@ -5,6 +5,7 @@ import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 
 import javax.ws.rs.*;
+import java.util.Arrays;
 import java.util.List;
 
 @Path("/autocomplete")
@@ -27,7 +28,7 @@ public class AllTermsResource {
         if (ontologyNames == null || ontologyNames.isEmpty()) {
             return api.lookup(queryTerm, limit);
         } else {
-            return api.lookup(ontologyNames.split(","), queryTerm, limit);
+            return api.lookup(Arrays.asList(ontologyNames.split(",")), queryTerm, limit);
         }
     }
 

@@ -54,7 +54,7 @@ public class ElasticSearchAutocompleteAPITest {
     @Test
     public void testLookupWithTags() throws Exception {
         mockResponse(response().withStatusCode(200).withBody(cancerJson));
-        List<TermResource> termResource = autocompleteAPI.lookup(new String[]{"tag"}, "cancer", 1);
+        List<TermResource> termResource = autocompleteAPI.lookup(Collections.singletonList("tag"), "cancer", 1);
         Assert.assertTrue(termResource.size() == 1);
         Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }

@@ -1,7 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -13,9 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.model.HttpResponse;
-import org.openjena.atlas.lib.MultiMap;
 
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
@@ -82,9 +81,7 @@ public class ElasticSearchSupportTest {
     @Test
     public void testBuildFilterQuery() {
         String termId = "term_id";
-        Multimap<String, String> filters = HashMultimap.create();
-        filters.put("usable", "true");
-        filters.put("ontology", "Disease");
+        List<String> filters = Arrays.asList("Disease", "Organization");
         String query = ElasticSearchSupport.buildFilterQuery(termId, filters);
 
         JsonParser parser = new JsonParser();

@@ -1,7 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import com.google.common.collect.HashMultimap;
-import com.google.common.collect.Multimap;
 import com.google.gson.*;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
@@ -22,8 +20,6 @@ import java.util.stream.Collectors;
 public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchAutocompleteAPI.class);
-    private static final String FIELD_ONTOLOGY_TYPE = "ontology";
-    private static final String FIELD_USABLE = "usable";
     private final ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
     private Gson gson = new GsonBuilder().create();
@@ -81,17 +77,12 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
 
     @Override
     public List<TermResource> lookup(String query, int limit) {
-        return lookup(new String[0], query, limit);
+        return lookup(Collections.emptyList(), query, limit);
     }
 
     @Override
-    public List<TermResource> lookup(String[] tags, String query, int limit) {
-        Multimap<String, String> filters = HashMultimap.create();
-        filters.put(FIELD_USABLE, "true");
-        for (String tag : tags) {
-            filters.put(FIELD_ONTOLOGY_TYPE, tag);
-        }
-        return executeSearch(ElasticSearchSupport.buildFilterQuery(query, filters), limit, true);
+    public List<TermResource> lookup(Collection<String> tags, String query, int limit) {
+        return executeSearch(ElasticSearchSupport.buildFilterQuery(query, tags), limit, true);
     }
 
     @Override

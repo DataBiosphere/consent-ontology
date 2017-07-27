@@ -1,6 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import com.google.common.collect.Multimap;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.http.Header;
@@ -79,23 +78,32 @@ public class ElasticSearchSupport {
                  },
                  "filter": [
                      { "term": { "usable": "true" } },
-                     { "term": { "ontology": "organization" } }
+                     { "terms": { "ontology": ["organization", "disease"] } }
                  ]
              }
          }
      }
      * @param term Query term string
-     * @param filters List of filter terms that should be applied.
+     * @param tags List of ontology type filter tags that should be applied. Filter of `usable=true` is always applied
      * @return Json formatted string suitable for using as an Elastic Search query object.
      */
-    public static String buildFilterQuery(String term, Multimap<String, String> filters) {
-        List<Map<String, Object>> termList = new ArrayList<>();
-        for (Map.Entry<String, String> entry: filters.entries()) {
-            Map<String, String> ft = new HashMap<>();
-            ft.put(entry.getKey(), entry.getValue().toLowerCase());
+    public static String buildFilterQuery(String term, Collection<String> tags) {
+        List<Map<String, Object>> filterList = new ArrayList<>();
+        Map<String, Object> usable = new HashMap<>();
+        usable.put("usable", "true");
+        Map<String, Object> usableTerm = new HashMap<>();
+        usableTerm.put("term", usable);
+        filterList.add(usableTerm);
+        if (!tags.isEmpty()) {
+            Collection<String> lowerCasedTags = tags.
+                stream().
+                map(tag -> tag.toLowerCase().trim()).
+                collect(Collectors.toList());
             Map<String, Object> tl = new HashMap<>();
-            tl.put("term", ft);
-            termList.add(tl);
+            Map<String, Object> ontologyTypes = new HashMap<>();
+            ontologyTypes.put("ontology", lowerCasedTags);
+            tl.put("terms", ontologyTypes);
+            filterList.add(tl);
         }
         Map<String, Object> jsonQuery = new HashMap<>();
         Map<String, Object> query = new HashMap<>();
@@ -108,7 +116,7 @@ public class ElasticSearchSupport {
         multiMatch.put("fields", searchFields);
         must.put("multi_match", multiMatch);
         bool.put("must", must);
-        bool.put("filter", termList);
+        bool.put("filter", filterList);
         query.put("bool", bool);
         jsonQuery.put("query", query);
         return gson.toJson(jsonQuery);
