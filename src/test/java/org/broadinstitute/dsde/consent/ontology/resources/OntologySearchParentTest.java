@@ -1,17 +1,15 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import org.apache.commons.io.FileUtils;
-import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Ignore;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import javax.ws.rs.core.Response;
-import java.io.File;
 import java.util.*;
 
 import static org.junit.Assert.assertEquals;
@@ -19,20 +17,19 @@ import static org.junit.Assert.assertTrue;
 
 public class OntologySearchParentTest {
 
-    static ElasticSearchAutocompleteAPI api;
-    static OntologySearchResource resource;
+    @Mock
+    AutocompleteAPI api;
+
+    OntologySearchResource resource;
 
     // Construction of children and parents.
     static TermResource child = new TermResource();
     static TermResource parent1 = new TermResource();
     static TermResource parent2 = new TermResource();
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
-        configuration.setIndex("test-index");
-        configuration.setServers(Collections.singletonList("localhost"));
-        api = new ElasticSearchAutocompleteAPI(configuration);
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         resource = new OntologySearchResource(api);
 
         parent1.setId("parent1");
@@ -61,37 +58,17 @@ public class OntologySearchParentTest {
         child.getParents().add(childParent1);
         child.getParents().add(childParent2);
 
-        // TODO: Mock this out so we can test
-//        // Push the terms to the in-memory ES index
-//        BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
-//        // prevents a race condition where the data isn't available when it's queried.
-//        bulkRequestBuilder.setRefresh(true);
-//        for (TermResource term : Arrays.asList(child, parent1, parent2)) {
-//            bulkRequestBuilder.add(client.prepareIndex(index, "ontology_term")
-//                .setSource(buildDocument(term))
-//                .setId(term.getId())
-//            );
-//        }
-//        bulkRequestBuilder.execute().actionGet();
+        Mockito.when(api.lookupById(child.getId())).thenReturn(Collections.singletonList(child));
+        Mockito.when(api.lookupById(parent1.getId())).thenReturn(Collections.singletonList(parent1));
+
     }
 
-//    @AfterClass
-//    public static void tearDown() throws Exception {
-//        node.stop();
-//        // The in-memory ES creates a "data" directory for indexes. Clean that up after tests.
-//        FileUtils.deleteDirectory(new File("data"));
-//    }
-
-    // TODO: Fix tests
-    @Ignore
     @Test
     public void testGetNodeWithNoParents() throws Exception {
         Response response = resource.getOntologyById(parent1.getId());
         assertOKstatusAndTermSize(response);
     }
 
-    // TODO: Fix tests
-    @Ignore
     @Test
     public void testGetChildWithParents() throws Exception {
         Response response = resource.getOntologyById(child.getId());
@@ -109,14 +86,8 @@ public class OntologySearchParentTest {
         TermParent actualParent1 = term.getParents().get(0);
         TermParent actualParent2 = term.getParents().get(1);
 
-        assertTrue(actualParent1.getLabel().equals(parent1.getLabel()));
-        assertTrue(actualParent1.getDefinition().equals(parent1.getDefinition()));
-        assertTrue(actualParent1.getSynonyms().equals(parent1.getSynonyms()));
-
-        assertTrue(actualParent2.getLabel().equals(parent2.getLabel()));
-        assertTrue(actualParent2.getDefinition().equals(parent2.getDefinition()));
-        assertTrue(actualParent2.getSynonyms().equals(parent2.getSynonyms()));
-
+        assertTrue(actualParent1.getId().equals(parent1.getId()));
+        assertTrue(actualParent2.getId().equals(parent2.getId()));
     }
 
     @SuppressWarnings("unchecked")
