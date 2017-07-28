@@ -39,7 +39,6 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
      */
     private List<TermResource> executeSearch(String query, int limit, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
-        ElasticSearchSupport.validateIndexExists(configuration);
         try {
             try (RestClient client = ElasticSearchSupport.getRestClient(configuration)) {
                 Map<String, String> params = new HashMap<>();

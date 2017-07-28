@@ -6,19 +6,12 @@ import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.InternalServerErrorException;
-import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class ElasticSearchSupport {
-
-    private static final Logger logger = LoggerFactory.getLogger(ElasticSearchSupport.class);
 
     public static RestClient getRestClient(ElasticSearchConfiguration configuration) {
         HttpHost[] hosts = configuration.
@@ -126,24 +119,6 @@ public class ElasticSearchSupport {
      * Preferred search fields are boosted by default, e.g., '^3' triples a field's weight.
      */
     public static final String[] searchFields = {"id^3", "label^2", "synonyms", "definition"};
-
-    /**
-     * Check to see if the index exists
-     *
-     * @throws InternalServerErrorException The exception
-     */
-    public static void validateIndexExists(ElasticSearchConfiguration configuration) throws InternalServerErrorException {
-        try(RestClient client = getRestClient(configuration)) {
-            Response esResponse = client.performRequest("GET", getIndexPath(configuration.getIndex()), jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid index request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException(esResponse.getStatusLine().getReasonPhrase());
-            }
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-            throw new InternalServerErrorException(e.getMessage());
-        }
-    }
 
 
 }
