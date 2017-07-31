@@ -5,11 +5,9 @@ import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
-import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
-import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidateAPI;
 
@@ -41,9 +39,7 @@ public class OntologyModule extends AbstractModule {
     @Provides
     @Singleton
     public AutocompleteAPI providesAPI() {
-        ElasticSearchConfiguration esConfig = config.getElasticSearchConfiguration();
-        environment.healthChecks().register("elastic-search", new ElasticSearchHealthCheck(esConfig));
-        return new ElasticSearchAutocompleteAPI(esConfig);
+        return new ElasticSearchAutocompleteAPI(config.getElasticSearchConfiguration());
     }
 
     @Provides

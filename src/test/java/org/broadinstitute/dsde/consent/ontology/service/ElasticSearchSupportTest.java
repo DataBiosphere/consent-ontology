@@ -26,7 +26,7 @@ public class ElasticSearchSupportTest {
 
     @Test
     public void testGetRestClient() {
-        RestClient client = ElasticSearchSupport.getRestClient(configuration);
+        RestClient client = ElasticSearchSupport.createRestClient(configuration);
         Assert.assertNotNull(client);
     }
 

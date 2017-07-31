@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.google.gson.*;
+import io.dropwizard.lifecycle.Managed;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
@@ -17,15 +18,27 @@ import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
+public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchAutocompleteAPI.class);
     private final ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
     private Gson gson = new GsonBuilder().create();
+    private RestClient client;
+
+    @Override
+    public void start() throws Exception { }
+
+    @Override
+    public void stop() throws Exception {
+        if (client != null) {
+            client.close();
+        }
+    }
 
     public ElasticSearchAutocompleteAPI(ElasticSearchConfiguration configuration) {
         this.configuration = configuration;
+        this.client = ElasticSearchSupport.createRestClient(configuration);
     }
 
     /**
@@ -40,32 +53,30 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI {
     private List<TermResource> executeSearch(String query, int limit, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
         try {
-            try (RestClient client = ElasticSearchSupport.getRestClient(configuration)) {
-                Map<String, String> params = new HashMap<>();
-                params.put("size", String.valueOf(limit));
-                Response esResponse = client.performRequest(
-                    "GET",
-                    ElasticSearchSupport.getSearchPath(configuration.getIndex()),
-                    params,
-                    new NStringEntity(query, ContentType.APPLICATION_JSON),
-                    ElasticSearchSupport.jsonHeader);
-                if (esResponse.getStatusLine().getStatusCode() != 200) {
-                    logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
-                    throw new InternalServerErrorException();
+            Map<String, String> params = new HashMap<>();
+            params.put("size", String.valueOf(limit));
+            Response esResponse = client.performRequest(
+                "GET",
+                ElasticSearchSupport.getSearchPath(configuration.getIndex()),
+                params,
+                new NStringEntity(query, ContentType.APPLICATION_JSON),
+                ElasticSearchSupport.jsonHeader);
+            if (esResponse.getStatusLine().getStatusCode() != 200) {
+                logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
+                throw new InternalServerErrorException();
+            }
+            String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
+            JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
+            JsonArray hits = jsonResponse.getAsJsonObject("hits").getAsJsonArray("hits");
+            for (JsonElement hit : hits) {
+                JsonElement data = hit.getAsJsonObject().getAsJsonObject("_source");
+                TermResource resource = gson.fromJson(data, TermResource.class);
+                if (thinFilter) {
+                    resource.setOntology(null);
+                    resource.setUsable(null);
+                    resource.setParents(null);
                 }
-                String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
-                JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
-                JsonArray hits = jsonResponse.getAsJsonObject("hits").getAsJsonArray("hits");
-                for (JsonElement hit : hits) {
-                    JsonElement data = hit.getAsJsonObject().getAsJsonObject("_source");
-                    TermResource resource = gson.fromJson(data, TermResource.class);
-                    if (thinFilter) {
-                        resource.setOntology(null);
-                        resource.setUsable(null);
-                        resource.setParents(null);
-                    }
-                    termList.add(resource);
-                }
+                termList.add(resource);
             }
         } catch (IOException e) {
             logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
