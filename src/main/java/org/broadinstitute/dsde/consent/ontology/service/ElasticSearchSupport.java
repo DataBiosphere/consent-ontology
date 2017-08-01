@@ -17,7 +17,7 @@ public class ElasticSearchSupport {
         HttpHost[] hosts = configuration.
             getServers().
             stream().
-            map(server -> new HttpHost(server, 9200, "https")).
+            map(server -> new HttpHost(server, 9200, "http")).
             collect(Collectors.toList()).toArray(new HttpHost[configuration.getServers().size()]);
         return RestClient.builder(hosts).build();
     }
