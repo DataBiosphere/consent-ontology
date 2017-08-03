@@ -1,10 +1,10 @@
 server:
-  adminConnectors:
-    - type: http
-      port: 8181
-  applicationConnectors:
-    - type: http
-      port: 8180
+  type: simple
+  applicationContextPath: /
+  adminContextPath: /admin
+  connector:
+    type: http
+    port: 8180
 logging:
   level: INFO
   loggers:
@@ -12,7 +12,6 @@ logging:
 elasticSearch:
   servers:
     - localhost
-  clusterName: consent-elasticsearch
   index: ontology
 googleStore:
   password:

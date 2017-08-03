@@ -66,8 +66,7 @@ paths:
         default:
           description: Unexpected error
 
-  '/translate':
-  
+  /translate:
     post:
       summary: translate
       description: The Translate service will render an English-language version of a consent or research purpose.
@@ -95,8 +94,7 @@ paths:
         default:
           description: Unexpected error
 
-  '/match':
-  
+  /match:
     post:
       summary: match
       description: The Match service will render a response of true or false between a Consent and a Research Purpose.
@@ -118,8 +116,7 @@ paths:
           description: Unexpected error
           
             
-  '/validate/userestriction':
-
+  /validate/userestriction:
       post:
         summary: validate
         description: The Validate service will check If the posted Use Restriction has the correct format and content.
@@ -140,8 +137,7 @@ paths:
           default:
             description: Unexpected error
 
-  '/autocomplete':
-  
+  /autocomplete:
     get:
       summary: autocomplete
       description: Ontologies can be queried based on term; type and count. This provides an easy filtering mechanism that allows users to select ontology terms that are applicable to consents or research purposes.
@@ -169,8 +165,7 @@ paths:
         default:
           description: Unexpected error
 
-  '/search':
-  
+  /search:
     get:
       summary: search
       description: Find ontologies based on the id.
@@ -188,6 +183,15 @@ paths:
         default:
           description: Unexpected error
 
+  /status:
+    get:
+      summary: System Health Status
+      description: A detailed description of the various subsystem statuses that Ontology relies upon.
+      tags:
+        - Status
+      responses:
+        200: All systems are OK
+        500: Some number of subsystems are not OK.
 
 definitions:
   Restriction:

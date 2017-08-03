@@ -30,7 +30,7 @@ public class OntologySearchResourceTest {
     List<TermResource> emptyTermList = new ArrayList<>();
 
     @Before
-    public void setUp(){
+    public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
         resource = new OntologySearchResource(apiMockUp);
 
@@ -45,7 +45,7 @@ public class OntologySearchResourceTest {
     }
 
     @Test
-    public void testGetByIdBadRequest(){
+    public void testGetByIdBadRequest() throws Exception {
         Response response = resource.getOntologyById("");
         assertTrue(response.getStatus() == 400);
         ErrorResponse error = (ErrorResponse) response.getEntity();
@@ -54,7 +54,7 @@ public class OntologySearchResourceTest {
     }
 
     @Test
-    public void testGetByIdNotFound(){
+    public void testGetByIdNotFound() throws Exception {
         Response response = resource.getOntologyById("DOID_404");
         assertTrue(response.getStatus() == 404);
         ErrorResponse error = (ErrorResponse) response.getEntity();
@@ -63,7 +63,7 @@ public class OntologySearchResourceTest {
     }
 
     @Test
-    public void testGetById(){
+    public void testGetById() throws Exception {
         Response response = resource.getOntologyById("DOID_4");
         assertTrue(response.getStatus() == 200);
         List<TermResource> terms = (List<TermResource>) response.getEntity();
