@@ -13,9 +13,6 @@
         <owl.version>5.0.1</owl.version>
         <jena.version>2.6.4</jena.version>
         <lucene.version>4.9.0</lucene.version>
-        <hsqldb.version>2.3.3</hsqldb.version>
-        <mysql.version>5.1.31</mysql.version>
-        <liquibase.version>3.1.1</liquibase.version>
         <dropwizard.version>1.0.0</dropwizard.version>
         <metrics.version>3.1.0</metrics.version>
         <akka.version>2.4.4</akka.version>
@@ -442,12 +439,6 @@
         </dependency>
 
         <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>${mysql.version}</version>
-        </dependency>
-
-        <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.11</version>
@@ -695,13 +686,6 @@
                     <artifactId>junit</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>org.hsqldb</groupId>
-            <artifactId>hsqldb</artifactId>
-            <version>${hsqldb.version}</version>
-            <scope>test</scope>
         </dependency>
 
         <dependency>
