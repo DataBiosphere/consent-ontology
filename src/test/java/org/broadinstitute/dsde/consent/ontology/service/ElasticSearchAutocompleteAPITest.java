@@ -16,6 +16,7 @@ import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
+// TODO: Migrate all of the ES integration-like tests.
 public class ElasticSearchAutocompleteAPITest {
 
     private ElasticSearchAutocompleteAPI autocompleteAPI;
