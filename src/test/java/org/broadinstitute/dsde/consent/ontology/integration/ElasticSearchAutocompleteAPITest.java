@@ -3,8 +3,6 @@ package org.broadinstitute.dsde.consent.ontology.integration;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
-import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchSupport;
-import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 import org.junit.After;
 import org.junit.Assert;
@@ -18,6 +16,11 @@ import java.util.Collections;
 import java.util.List;
 
 // TODO: Migrate all of the ES integration-like tests to this framework.
+
+/**
+ * Integration test classes require the maven integration framework to start up
+ * required elastic search instance.
+ */
 @Category(IntegrationTest.class)
 public class ElasticSearchAutocompleteAPITest {
 
@@ -25,19 +28,15 @@ public class ElasticSearchAutocompleteAPITest {
     private static final String INDEX_NAME = "ontology-integration";
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchAutocompleteAPITest.class);
 
-    // TODO: Move index setup/population to a test-support class
     @Before
     public void setUp() throws Exception {
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList("localhost"));
         this.autocompleteAPI = new ElasticSearchAutocompleteAPI(configuration);
-        RestClient client = ElasticSearchSupport.createRestClient(configuration);
-        Response esResponse = client.performRequest(
-            "PUT",
-            ElasticSearchSupport.getIndexPath(INDEX_NAME),
-            ElasticSearchSupport.jsonHeader);
-        logger.info(esResponse.toString());
+        RestClient client = org.broadinstitute.dsde.consent.ontology.service.ElasticSearchSupport.createRestClient(configuration);
+        IndexSupport.createIndex(client, INDEX_NAME);
+        IndexSupport.populateIndex(client, INDEX_NAME);
     }
 
     @After
@@ -52,7 +51,7 @@ public class ElasticSearchAutocompleteAPITest {
     @Test
     public void  testLookupById() throws Exception {
         List<TermResource> termResource = autocompleteAPI.lookupById("DOID_162");
-        Assert.assertTrue(true);
+        Assert.assertNotNull(termResource);
     }
 
 }
