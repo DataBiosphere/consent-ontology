@@ -56,8 +56,8 @@ public class IndexSupport {
     }
 
     public static void populateIndex(RestClient client, String index) throws Exception {
-        uploadFile(client, index, Resources.getResource("data-use.owl"), "DUOS");
-        uploadFile(client, index, Resources.getResource("diseases.owl"), "DOID");
+        uploadFile(client, index, Resources.getResource("data-use.owl"), "Organization");
+        uploadFile(client, index, Resources.getResource("diseases.owl"), "Disease");
     }
 
 
@@ -81,9 +81,7 @@ public class IndexSupport {
         logger.debug("Successful upload?: " + uploaded);
     }
 
-    private static Term generateTerm(OWLClass owlClass, String ontologyType, OWLOntology ontology,
-                             OWLReasoner reasoner) {
-
+    private static Term generateTerm(OWLClass owlClass, String ontologyType, OWLOntology ontology, OWLReasoner reasoner) {
         Term term = new Term(owlClass.toStringID(), ontologyType);
         Set<OWLAnnotation> classAnnotations = EntitySearcher.getAnnotations(owlClass, ontology).collect(Collectors.toSet());
 

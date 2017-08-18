@@ -21,6 +21,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skip.unit.tests>false</skip.unit.tests>
+        <skip.integration.tests>false</skip.integration.tests>
     </properties>
 
     <build>
@@ -81,6 +82,7 @@
                         <include>**/*.java</include>
                     </includes>
                     <groups>org.broadinstitute.dsde.consent.ontology.integration.IntegrationTest</groups>
+                    <skipITs>${skip.integration.tests}</skipITs>
                 </configuration>
                 <executions>
                     <execution>
@@ -103,6 +105,7 @@
                             <alias>elastic_search</alias>
                             <name>docker.elastic.co/elasticsearch/elasticsearch:5.5.0</name>
                             <run>
+                                <namingStrategy>alias</namingStrategy>
                                 <ports>
                                     <port>9200:9200</port>
                                 </ports>
