@@ -127,7 +127,7 @@
                 </configuration>
                 <executions>
                     <execution>
-                        <id>start-es</id>
+                        <id>start</id>
                         <phase>pre-integration-test</phase>
                         <goals>
                             <goal>start</goal>
@@ -137,7 +137,7 @@
                         </configuration>
                     </execution>
                     <execution>
-                        <id>stop-es</id>
+                        <id>stop</id>
                         <phase>post-integration-test</phase>
                         <goals>
                             <goal>stop</goal>
@@ -726,7 +726,6 @@
             <version>1.10.19</version>
         </dependency>
 
-        <!-- TODO: Deprecate the mock ES in favor of functional integration tests -->
         <!-- Required for mocking ontology and elastic search responses -->
         <dependency>
             <groupId>org.mock-server</groupId>

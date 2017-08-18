@@ -9,6 +9,7 @@ import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConf
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.elasticsearch.client.Response;
+import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,15 +56,17 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
         try {
             Map<String, String> params = new HashMap<>();
             params.put("size", String.valueOf(limit));
-            Response esResponse = client.performRequest(
-                "GET",
-                ElasticSearchSupport.getSearchPath(configuration.getIndex()),
-                params,
-                new NStringEntity(query, ContentType.APPLICATION_JSON),
-                ElasticSearchSupport.jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException();
+            Response esResponse;
+            try {
+                esResponse = client.performRequest(
+                    "GET",
+                    ElasticSearchSupport.getSearchPath(configuration.getIndex()),
+                    params,
+                    new NStringEntity(query, ContentType.APPLICATION_JSON),
+                    ElasticSearchSupport.jsonHeader);
+            } catch (ResponseException e) {
+                logger.error("Invalid elastic search response: " + e.getResponse().getStatusLine().getReasonPhrase() + "for query term: " + query);
+                throw new InternalServerErrorException(e);
             }
             String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
@@ -80,7 +83,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
             }
         } catch (IOException e) {
             logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
-            throw new RuntimeException(e);
+            throw new InternalServerErrorException(e);
         }
         return termList;
     }
