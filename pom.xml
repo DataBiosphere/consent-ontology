@@ -20,9 +20,7 @@
         <swagger.ui.version>2.1.4</swagger.ui.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <skip.unit.tests>false</skip.unit.tests>
-        <!-- Integration tests are not run by default - travis doesn't know how to skip them on maven install -->
-        <skip.integration.tests>true</skip.integration.tests>
+        <skipITs>true</skipITs>
     </properties>
 
     <build>
@@ -70,7 +68,6 @@
                         <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
                     </systemPropertyVariables>
                     <excludedGroups>org.broadinstitute.dsde.consent.ontology.integration.IntegrationTest</excludedGroups>
-                    <skipTests>${skip.unit.tests}</skipTests>
                 </configuration>
             </plugin>
 
@@ -83,7 +80,7 @@
                         <include>**/*.java</include>
                     </includes>
                     <groups>org.broadinstitute.dsde.consent.ontology.integration.IntegrationTest</groups>
-                    <skipITs>${skip.integration.tests}</skipITs>
+                    <skipITs>${skipITs}</skipITs>
                 </configuration>
                 <executions>
                     <execution>
@@ -91,6 +88,9 @@
                             <goal>integration-test</goal>
                             <goal>verify</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipITs}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -132,6 +132,9 @@
                         <goals>
                             <goal>start</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipITs}</skip>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>stop-es</id>
@@ -139,6 +142,9 @@
                         <goals>
                             <goal>stop</goal>
                         </goals>
+                        <configuration>
+                            <skip>${skipITs}</skip>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>

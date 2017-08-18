@@ -21,7 +21,7 @@ Ensure that your test environment supports that.
 
 ## Integration Testing
 ```bash
-mvn integration-test -Dskip.integration.tests=false -Dskip.unit.tests=true
+mvn integration-test -DskipITs=false -DskipTests=true
 ``` 
 
 Integration tests spin up a local docker elastic search instance. The test harness will 
