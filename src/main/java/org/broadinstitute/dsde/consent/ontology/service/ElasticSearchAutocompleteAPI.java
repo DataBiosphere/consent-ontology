@@ -66,7 +66,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
                     ElasticSearchSupport.jsonHeader);
             } catch (ResponseException e) {
                 logger.error("Invalid elastic search response: " + e.getResponse().getStatusLine().getReasonPhrase() + "for query term: " + query);
-                throw new InternalServerErrorException(e);
+                throw new InternalServerErrorException(e.getResponse().getStatusLine().getReasonPhrase());
             }
             String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
