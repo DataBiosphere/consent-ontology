@@ -7,6 +7,7 @@ import io.dropwizard.lifecycle.Managed;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.elasticsearch.client.Response;
+import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
 
 import javax.ws.rs.InternalServerErrorException;
@@ -38,12 +39,14 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     @Override
     protected Result check() throws Exception {
         try {
-            Response esResponse = client.performRequest("GET",
-                ElasticSearchSupport.getClusterHealthPath(configuration.getIndex()),
-                ElasticSearchSupport.jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid health check request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException(esResponse.getStatusLine().getReasonPhrase());
+            Response esResponse;
+            try {
+                esResponse = client.performRequest("GET",
+                    ElasticSearchSupport.getClusterHealthPath(configuration.getIndex()),
+                    ElasticSearchSupport.jsonHeader);
+            } catch (ResponseException e) {
+                logger.error("Invalid health check request: " + e.getResponse().getStatusLine().getReasonPhrase());
+                throw new InternalServerErrorException(e.getResponse().getStatusLine().getReasonPhrase());
             }
             String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
