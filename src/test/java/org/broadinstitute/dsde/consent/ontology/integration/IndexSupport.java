@@ -7,7 +7,9 @@ import org.apache.http.HttpEntity;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.nio.entity.NStringEntity;
+import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchSupport;
 import org.elasticsearch.client.Response;
+import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.ResponseListener;
 import org.elasticsearch.client.RestClient;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -36,7 +38,7 @@ import java.util.stream.Stream;
  * Note that most of this class is copied from Consent which is the artifact that
  * handles bulk uploads to Elastic Search. For integration testing, we need to
  * do the same thing. Ontology has upgraded to OWL API version 5, while Consent is
- * still using version 3. The v5 code is a lot cleaner than 3, so this can serve as
+ * still using version 3. The v5 code is a lot cleaner than v3, so this can serve as
  * a model for upgrading Consent.
  */
 public class IndexSupport {
@@ -48,11 +50,20 @@ public class IndexSupport {
     static final String FIELD_DEPRECATED_PROPERTY = "deprecated";
 
     public static void createIndex(RestClient client, String index) throws Exception {
-        Response esResponse = client.performRequest(
-            "PUT",
-            org.broadinstitute.dsde.consent.ontology.service.ElasticSearchSupport.getIndexPath(index),
-            org.broadinstitute.dsde.consent.ontology.service.ElasticSearchSupport.jsonHeader);
-        logger.debug(esResponse.toString());
+        try {
+            // Check for the index first:
+            client.performRequest(
+                "GET",
+                ElasticSearchSupport.getIndexPath(index),
+                ElasticSearchSupport.jsonHeader);
+        } catch (ResponseException e) {
+            logger.debug(e.getResponse().toString());
+            Response createResponse = client.performRequest(
+                "PUT",
+                ElasticSearchSupport.getIndexPath(index),
+                ElasticSearchSupport.jsonHeader);
+            logger.debug(createResponse.toString());
+        }
     }
 
     public static void populateIndex(RestClient client, String index) throws Exception {
@@ -62,11 +73,10 @@ public class IndexSupport {
 
 
     /*
-     * The following are pure utility methods to facilitate iterating over an owl file and pushing it to ES.
+     * The following are utility methods to facilitate iterating over an owl file and pushing it to ES.
      */
 
 
-    @SuppressWarnings("SameParameterValue")
     private static void uploadFile(RestClient client, String index, URL fileUrl, String ontologyType) throws Exception {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new FileInputStream(new File(fileUrl.toURI())));

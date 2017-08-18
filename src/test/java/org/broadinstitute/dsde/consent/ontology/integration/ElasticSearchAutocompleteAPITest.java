@@ -20,12 +20,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Integration test classes use the maven integration framework to start up
- * a required elastic search instance. Tests can be run locally if a local docker
- * es instance is manually started up:
- *
+ * Integration test classes use the maven integration framework to start up an elastic search instance.
+ * Tests can be run locally if a local docker es instance is manually started up:
  * docker run -p 9200:9200 -e "xpack.security.enabled=false" -e "http.host=0.0.0.0" -e "transport.host=127.0.0.1" docker.elastic.co/elasticsearch/elasticsearch:5.5.0
- *
  */
 @Category(IntegrationTest.class)
 public class ElasticSearchAutocompleteAPITest {
@@ -84,7 +81,7 @@ public class ElasticSearchAutocompleteAPITest {
 
     @Test
     public void  testLookupById() throws Exception {
-        List<TermResource> termResource = autocompleteAPI.lookupById("DOID_162");
+        List<TermResource> termResource = autocompleteAPI.lookupById("http://purl.obolibrary.org/obo/DOID_162");
         logTerms("testLookupById", termResource);
         Assert.assertNotNull(termResource);
     }

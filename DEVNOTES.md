@@ -21,12 +21,12 @@ Ensure that your test environment supports that.
 
 ## Integration Testing
 ```bash
-mvn integration-test -Dskip.unit.tests=true
+mvn integration-test -Dskip.integration.tests=false -Dskip.unit.tests=true
 ``` 
 
 Integration tests spin up a local docker elastic search instance. The test harness will 
-create, populate, and destroy any test indices used. Integration tests will run normally 
-with `mvn test` but if you want to run them separately from unit tests, run the command above. 
+create, populate, and destroy any test indices used. Integration tests are configured not to run 
+with `mvn test`. If you want to run them separately from unit tests, run the command above. 
 
 ### Render Configs 
 Specific to internal Broad systems:

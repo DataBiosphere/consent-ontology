@@ -21,7 +21,8 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <skip.unit.tests>false</skip.unit.tests>
-        <skip.integration.tests>false</skip.integration.tests>
+        <!-- Integration tests are not run by default - travis doesn't know how to skip them on maven install -->
+        <skip.integration.tests>true</skip.integration.tests>
     </properties>
 
     <build>
