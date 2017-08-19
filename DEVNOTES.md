@@ -12,7 +12,7 @@ git clone git@github.com:broadinstitute/consent-ontology.git
 ### Build, test
 ```bash
 cd consent-ontology
-mvn clean compile
+mvn clean verify
 APP_NAME=consent-ontology ENV=local OUTPUT_DIR=config ../firecloud-develop/configure.rb
 ```
 
@@ -21,12 +21,13 @@ Ensure that your test environment supports that.
 
 ## Integration Testing
 ```bash
-mvn integration-test -DskipITs=false -DskipTests=true
+mvn clean verify -Dskip.unit=true -Dskip.integration=false 
 ``` 
 
 Integration tests spin up a local docker elastic search instance. The test harness will 
-create, populate, and destroy any test indices used. Integration tests are configured not to run 
-with `mvn test`. If you want to run them separately from unit tests, run the command above. 
+create, populate, and destroy any test indices used. Integration tests are not configured to run 
+with `mvn test` or `mvn verify`. If you want to run integration tests separately from unit tests, 
+run the above `-D` arguments. 
 
 ### Render Configs 
 Specific to internal Broad systems:

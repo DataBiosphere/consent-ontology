@@ -1,6 +1,6 @@
 language: java
 jdk:
     - oraclejdk8
-script: mvn clean test
+script: mvn clean verify -Dskip.integration=false
 after_success:
   - mvn clean cobertura:cobertura coveralls:report
