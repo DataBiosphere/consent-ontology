@@ -4,7 +4,6 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.elasticsearch.client.RestClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -25,24 +24,39 @@ public class ElasticSearchSupportTest {
     }
 
     @Test
-    public void testGetRestClient() {
-        RestClient client = ElasticSearchSupport.createRestClient(configuration);
-        Assert.assertNotNull(client);
-    }
-
-    @Test
     public void testGetIndexPath() {
-        String path = ElasticSearchSupport.getIndexPath(configuration.getIndex());
+        String path = ElasticSearchSupport.getIndexPath(configuration);
         Assert.assertNotNull(path);
         Assert.assertTrue(path.contains(configuration.getIndex()));
     }
 
     @Test
     public void testGetClusterHealthPath() {
-        String path = ElasticSearchSupport.getClusterHealthPath(configuration.getIndex());
+        String path = ElasticSearchSupport.getClusterHealthPath(configuration);
         Assert.assertNotNull(path);
         Assert.assertTrue(path.contains(configuration.getIndex()));
         Assert.assertTrue(path.contains("health"));
+    }
+
+    @Test
+    public void testTermIdPath() throws Exception {
+        String path = ElasticSearchSupport.getTermIdPath(configuration, "DOID_162");
+        Assert.assertNotNull(path);
+        Assert.assertTrue(path.contains("DOID_162"));
+    }
+
+    @Test
+    public void testBaseIndexUrl() throws Exception {
+        String path = ElasticSearchSupport.baseIndexUrl(configuration);
+        Assert.assertNotNull(path);
+        Assert.assertTrue(path.contains(configuration.getIndex()));
+    }
+
+    @Test
+    public void testBaseServerUrl() throws Exception {
+        String path = ElasticSearchSupport.baseServerUrl(configuration);
+        Assert.assertNotNull(path);
+        Assert.assertTrue(path.contains(configuration.getServers().get(0)));
     }
 
     @Test

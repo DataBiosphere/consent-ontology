@@ -5,12 +5,16 @@ import com.google.gson.GsonBuilder;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
-import org.elasticsearch.client.RestClient;
-import org.junit.*;
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -33,10 +37,10 @@ public class ElasticSearchAutocompleteAPITest {
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList("localhost"));
-        autocompleteAPI = new ElasticSearchAutocompleteAPI(configuration);
-        RestClient client = org.broadinstitute.dsde.consent.ontology.service.ElasticSearchSupport.createRestClient(configuration);
-        IndexSupport.createIndex(client, INDEX_NAME);
-        IndexSupport.populateIndex(client, INDEX_NAME);
+        final Client client = ClientBuilder.newClient();
+        autocompleteAPI = new ElasticSearchAutocompleteAPI(configuration, client);
+        IndexSupport.createIndex(client, configuration);
+        IndexSupport.populateIndex(configuration);
     }
 
     @After

@@ -4,21 +4,18 @@ import com.codahale.metrics.health.HealthCheck;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.dropwizard.lifecycle.Managed;
-import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.ResponseException;
-import org.elasticsearch.client.RestClient;
 
 import javax.ws.rs.InternalServerErrorException;
-import java.io.IOException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.core.MediaType;
 
 public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
 
     private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ElasticSearchHealthCheck.class);
     private ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
-    private RestClient client;
+    private Client client;
 
 
     @Override
@@ -31,24 +28,25 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
         }
     }
 
-    public ElasticSearchHealthCheck(ElasticSearchConfiguration config) {
+    public ElasticSearchHealthCheck(ElasticSearchConfiguration config, Client client) {
         this.configuration = config;
-        this.client = ElasticSearchSupport.createRestClient(this.configuration);
+        this.client = client;
     }
 
     @Override
     protected Result check() throws Exception {
         try {
-            Response esResponse;
+            String stringResponse;
             try {
-                esResponse = client.performRequest("GET",
-                    ElasticSearchSupport.getClusterHealthPath(configuration.getIndex()),
-                    ElasticSearchSupport.jsonHeader);
-            } catch (ResponseException e) {
-                logger.error("Invalid health check request: " + e.getResponse().getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException(e.getResponse().getStatusLine().getReasonPhrase());
+                stringResponse = client.
+                    target(ElasticSearchSupport.getClusterHealthPath(configuration)).
+                    request(MediaType.APPLICATION_JSON).
+                    get().
+                    readEntity(String.class);
+            } catch (Exception e) {
+                logger.error("Invalid health check request: " + e.getMessage());
+                throw new InternalServerErrorException(e.getMessage());
             }
-            String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
             Boolean timeout = jsonResponse.get("timed_out").getAsBoolean();
             String status = jsonResponse.get("status").getAsString();
@@ -61,7 +59,7 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
             if (status.equalsIgnoreCase("yellow")) {
                 return Result.unhealthy("ClusterHealth is YELLOW\n" + jsonResponse.toString());
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error(e.getMessage());
             throw new InternalServerErrorException();
         }

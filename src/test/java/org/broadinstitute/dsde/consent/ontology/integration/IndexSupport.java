@@ -4,12 +4,12 @@ import com.google.common.collect.Lists;
 import com.google.common.io.Resources;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
+import org.apache.http.HttpHost;
 import org.apache.http.entity.ContentType;
 import org.apache.http.message.BasicHeader;
 import org.apache.http.nio.entity.NStringEntity;
+import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchSupport;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.ResponseListener;
 import org.elasticsearch.client.RestClient;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -24,6 +24,10 @@ import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.UnsupportedEncodingException;
@@ -49,26 +53,28 @@ public class IndexSupport {
     static final String FIELD_LABEL_PROPERTY = "label";
     static final String FIELD_DEPRECATED_PROPERTY = "deprecated";
 
-    public static void createIndex(RestClient client, String index) throws Exception {
-        try {
-            // Check for the index first:
-            client.performRequest(
-                "GET",
-                ElasticSearchSupport.getIndexPath(index),
-                ElasticSearchSupport.jsonHeader);
-        } catch (ResponseException e) {
-            logger.debug(e.getResponse().toString());
-            Response createResponse = client.performRequest(
-                "PUT",
-                ElasticSearchSupport.getIndexPath(index),
-                ElasticSearchSupport.jsonHeader);
+    public static void createIndex(Client client, ElasticSearchConfiguration config) throws Exception {
+        // Check for the index first:
+        Response getResponse = client.
+            target(ElasticSearchSupport.getIndexPath(config)).
+            request(MediaType.APPLICATION_JSON).
+            get();
+        logger.debug(getResponse.toString());
+        if (getResponse.getStatus() != 200) {
+            Response createResponse = client.
+                target(ElasticSearchSupport.getIndexPath(config)).
+                request(MediaType.APPLICATION_JSON).
+                put(Entity.json(""));
             logger.debug(createResponse.toString());
+            if (createResponse.getStatus() != 200) {
+                throw new Exception("Unable to create index: " + createResponse.toString());
+            }
         }
     }
 
-    public static void populateIndex(RestClient client, String index) throws Exception {
-        uploadFile(client, index, Resources.getResource("data-use.owl"), "Organization");
-        uploadFile(client, index, Resources.getResource("diseases.owl"), "Disease");
+    public static void populateIndex(ElasticSearchConfiguration config) throws Exception {
+        uploadFile(config, Resources.getResource("data-use.owl"), "Organization");
+        uploadFile(config, Resources.getResource("diseases.owl"), "Disease");
     }
 
 
@@ -77,7 +83,7 @@ public class IndexSupport {
      */
 
 
-    private static void uploadFile(RestClient client, String index, URL fileUrl, String ontologyType) throws Exception {
+    private static void uploadFile(ElasticSearchConfiguration config, URL fileUrl, String ontologyType) throws Exception {
         OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
         OWLOntology ontology = manager.loadOntologyFromOntologyDocument(new FileInputStream(new File(fileUrl.toURI())));
         OWLReasonerFactory reasonerFactory = new StructuralReasonerFactory();
@@ -87,8 +93,8 @@ public class IndexSupport {
             stream().
             map(o -> generateTerm(o, ontologyType, ontology, reasoner)).
             collect(Collectors.toList());
-        Boolean uploaded = bulkUploadTerms(client, index, terms);
-        logger.debug("Successful upload?: " + uploaded);
+        Boolean uploaded = bulkUploadTerms(config, terms);
+        logger.info("Successful upload?: " + uploaded);
     }
 
     private static Term generateTerm(OWLClass owlClass, String ontologyType, OWLOntology ontology, OWLReasoner reasoner) {
@@ -178,7 +184,17 @@ public class IndexSupport {
             !owlClass.isOWLNothing();
     }
 
-    private static Boolean bulkUploadTerms(RestClient client, String indexName, Collection<Term> terms) throws Exception {
+    /**
+     * Had trouble with the jersey client and bulk uploads. The ES RestClient does a good job of this.
+     */
+    private static Boolean bulkUploadTerms(ElasticSearchConfiguration config, Collection<Term> terms) throws Exception {
+        HttpHost[] hosts = config.
+            getServers().
+            stream().
+            map(server -> new HttpHost(server, 9200, "http")).
+            collect(Collectors.toList()).toArray(new HttpHost[config.getServers().size()]);
+        RestClient client = RestClient.builder(hosts).build();
+
         // Set the partition relatively small so we can fail fast for incremental uploads
         List<List<Term>> termLists = Lists.partition(new ArrayList<>(terms), 100);
         for (List<Term> termList: termLists) {
@@ -190,7 +206,7 @@ public class IndexSupport {
                     term.toString(),
                     ContentType.APPLICATION_JSON);
                 client.performRequestAsync("PUT",
-                    IndexSupport.getTermIdPath(indexName, term.getId()),
+                    getTermIdPath(config.getIndex(), term.getId()),
                     Collections.emptyMap(),
                     entity,
                     listener,
@@ -198,13 +214,14 @@ public class IndexSupport {
             }
             latch.await();
         }
+        client.close();
         return true;
     }
 
     private static ResponseListener createResponseListener(CountDownLatch latch) {
         return new ResponseListener() {
             @Override
-            public void onSuccess(Response response) {
+            public void onSuccess(org.elasticsearch.client.Response response) {
                 logger.debug("Response Listener Success: " + response.toString());
                 latch.countDown();
             }

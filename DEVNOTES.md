@@ -9,25 +9,29 @@
 git clone git@github.com:broadinstitute/consent-ontology.git
 ```
 
-### Build, test
+# Testing
+
+Tests spin up an embedded http server that run against localhost. 
+Ensure that your test environment supports that.
+
+Integration tests spin up a local docker elastic search instance. The test harness will 
+create, populate, and destroy any test indices used. Integration tests are not configured to run 
+with `mvn test` or `mvn verify`. If you want to run integration tests separately from unit tests, 
+run with the `-D` arguments shown below. 
+
+### Unit Tests
 ```bash
 cd consent-ontology
 mvn clean verify
 APP_NAME=consent-ontology ENV=local OUTPUT_DIR=config ../firecloud-develop/configure.rb
 ```
 
-Tests spin up an embedded http server that run against localhost. 
-Ensure that your test environment supports that.
-
-## Integration Testing
+## Integration Tests
 ```bash
 mvn clean verify -Dskip.unit=true -Dskip.integration=false 
 ``` 
 
-Integration tests spin up a local docker elastic search instance. The test harness will 
-create, populate, and destroy any test indices used. Integration tests are not configured to run 
-with `mvn test` or `mvn verify`. If you want to run integration tests separately from unit tests, 
-run the above `-D` arguments. 
+# Running
 
 ### Render Configs 
 Specific to internal Broad systems:
