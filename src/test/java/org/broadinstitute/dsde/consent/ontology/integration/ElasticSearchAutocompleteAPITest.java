@@ -48,7 +48,7 @@ public class ElasticSearchAutocompleteAPITest {
     }
 
     @Test
-    public void testOrchestrationReIndex() throws Exception {
+    public void testConcurrentLookups() throws Exception {
         String[] terms = new String[] {
             "http://purl.obolibrary.org/obo/DOID_0050524",
             "http://purl.obolibrary.org/obo/DOID_0050700",
@@ -118,7 +118,7 @@ public class ElasticSearchAutocompleteAPITest {
             flatMap(List::stream).
             distinct().
             collect(Collectors.toSet());
-        logTerms("testOrchestrationReIndex", termResources);
+        logTerms("testConcurrentLookups", termResources);
         Assert.assertTrue(!termResources.isEmpty());
         Assert.assertTrue(errors.isEmpty());
     }
