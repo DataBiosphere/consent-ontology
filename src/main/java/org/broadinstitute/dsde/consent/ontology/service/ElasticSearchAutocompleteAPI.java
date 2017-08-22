@@ -2,18 +2,16 @@ package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.google.gson.*;
 import io.dropwizard.lifecycle.Managed;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.entity.ContentType;
-import org.apache.http.nio.entity.NStringEntity;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -24,7 +22,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
     private final ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
     private Gson gson = new GsonBuilder().create();
-    private RestClient client;
+    private Client client;
 
     @Override
     public void start() throws Exception { }
@@ -36,9 +34,9 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
         }
     }
 
-    public ElasticSearchAutocompleteAPI(ElasticSearchConfiguration configuration) {
+    public ElasticSearchAutocompleteAPI(ElasticSearchConfiguration configuration, Client client) {
         this.configuration = configuration;
-        this.client = ElasticSearchSupport.createRestClient(configuration);
+        this.client = client;
     }
 
     /**
@@ -53,19 +51,18 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
     private List<TermResource> executeSearch(String query, int limit, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
         try {
-            Map<String, String> params = new HashMap<>();
-            params.put("size", String.valueOf(limit));
-            Response esResponse = client.performRequest(
-                "GET",
-                ElasticSearchSupport.getSearchPath(configuration.getIndex()),
-                params,
-                new NStringEntity(query, ContentType.APPLICATION_JSON),
-                ElasticSearchSupport.jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException();
+            String stringResponse;
+            try {
+                stringResponse = client.
+                    target(ElasticSearchSupport.getSearchPath(configuration)).
+                    queryParam("size", String.valueOf(limit)).
+                    request(MediaType.APPLICATION_JSON).
+                    post(Entity.entity(query, MediaType.APPLICATION_JSON)).
+                    readEntity(String.class);
+            } catch (Exception e) {
+                logger.error("Invalid query request: " + e.getMessage());
+                throw new InternalServerErrorException(e.getMessage());
             }
-            String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
             JsonArray hits = jsonResponse.getAsJsonObject("hits").getAsJsonArray("hits");
             for (JsonElement hit : hits) {
@@ -78,9 +75,9 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
                 }
                 termList.add(resource);
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
-            throw new RuntimeException(e);
+            throw new InternalServerErrorException(e);
         }
         return termList;
     }

@@ -2,39 +2,45 @@ package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.message.BasicHeader;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.elasticsearch.client.RestClient;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.*;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 public class ElasticSearchSupport {
 
-    public static RestClient createRestClient(ElasticSearchConfiguration configuration) {
-        HttpHost[] hosts = configuration.
-            getServers().
-            stream().
-            map(server -> new HttpHost(server, 9200, "http")).
-            collect(Collectors.toList()).toArray(new HttpHost[configuration.getServers().size()]);
-        return RestClient.builder(hosts).build();
+    public static String getIndexPath(ElasticSearchConfiguration config) {
+        return baseIndexUrl(config);
     }
 
-    public static String getIndexPath(String index) {
-        return "/" + index;
+    public static String getSearchPath(ElasticSearchConfiguration config) {
+        return baseIndexUrl(config) + "/ontology_term/_search";
     }
 
-    public static String getSearchPath(String index) {
-        return "/" + index + "/ontology_term/_search";
+    public static String getClusterHealthPath(ElasticSearchConfiguration config) {
+        return baseServerUrl(config) + "_cluster/health/" + config.getIndex();
     }
 
-    public static String getClusterHealthPath(String index) {
-        return "/_cluster/health/" + index;
+    public static String getTermIdPath(ElasticSearchConfiguration config, String termId) throws UnsupportedEncodingException {
+        return baseIndexUrl(config) + "/ontology_term/" + URLEncoder.encode(termId, "UTF-8");
     }
 
-    public static Header jsonHeader = new BasicHeader("Content-Type", "application/json");
+    public static String chooseRandomServer(ElasticSearchConfiguration config) {
+        int next = ThreadLocalRandom.current().nextInt(config.getServers().size());
+        return config.getServers().get(next);
+    }
+
+    public static String baseIndexUrl(ElasticSearchConfiguration config) {
+        return baseServerUrl(config) + config.getIndex();
+    }
+
+    public static String baseServerUrl(ElasticSearchConfiguration config) {
+        String server = ElasticSearchSupport.chooseRandomServer(config);
+        return "http://" + server + ":9200/";
+    }
 
     private static Gson gson = new GsonBuilder().create();
 

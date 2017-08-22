@@ -11,6 +11,7 @@ import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplet
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidateAPI;
 
+import javax.ws.rs.client.Client;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
@@ -20,10 +21,13 @@ public class OntologyModule extends AbstractModule {
     private final OntologyConfiguration config;
     @Inject
     private final Environment environment;
+    @Inject
+    private final Client client;
 
-    public OntologyModule(OntologyConfiguration configuration, Environment environment){
+    public OntologyModule(OntologyConfiguration configuration, Environment environment, Client client){
         this.config = configuration;
         this.environment = environment;
+        this.client = client;
     }
 
     @Override
@@ -39,7 +43,7 @@ public class OntologyModule extends AbstractModule {
     @Provides
     @Singleton
     public AutocompleteAPI providesAPI() {
-        return new ElasticSearchAutocompleteAPI(config.getElasticSearchConfiguration());
+        return new ElasticSearchAutocompleteAPI(config.getElasticSearchConfiguration(), client);
     }
 
     @Provides

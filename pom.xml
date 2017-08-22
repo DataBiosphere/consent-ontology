@@ -20,6 +20,8 @@
         <swagger.ui.version>2.1.4</swagger.ui.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <skip.unit>false</skip.unit>
+        <skip.integration>true</skip.integration>
     </properties>
 
     <build>
@@ -66,7 +68,78 @@
                     <systemPropertyVariables>
                         <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
                     </systemPropertyVariables>
+                    <excludedGroups>org.broadinstitute.dsde.consent.ontology.integration.IntegrationTest</excludedGroups>
+                    <skipTests>${skip.unit}</skipTests>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>2.20</version>
+                <configuration>
+                    <includes>
+                        <include>**/*.java</include>
+                    </includes>
+                    <groups>org.broadinstitute.dsde.consent.ontology.integration.IntegrationTest</groups>
+                    <skipITs>${skip.integration}</skipITs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.21.0</version>
+                <extensions>true</extensions>
+                <configuration>
+                    <images>
+                        <image>
+                            <alias>elastic_search</alias>
+                            <name>docker.elastic.co/elasticsearch/elasticsearch:5.5.0</name>
+                            <run>
+                                <namingStrategy>alias</namingStrategy>
+                                <ports>
+                                    <port>9200:9200</port>
+                                </ports>
+                                <env>
+                                    <http.host>0.0.0.0</http.host>
+                                    <transport.host>127.0.0.1</transport.host>
+                                    <xpack.security.enabled>false</xpack.security.enabled>
+                                </env>
+                                <wait>
+                                    <http>
+                                        <url>http://localhost:9200</url>
+                                    </http>
+                                    <time>120000</time>
+                                </wait>
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>stop</id>
+                        <phase>post-integration-test</phase>
+                        <goals>
+                            <goal>stop</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>

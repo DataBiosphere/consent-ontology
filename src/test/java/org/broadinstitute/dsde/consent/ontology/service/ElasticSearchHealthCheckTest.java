@@ -7,6 +7,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockserver.integration.ClientAndServer;
 
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
 import java.util.Collections;
 
 import static org.junit.Assert.assertFalse;
@@ -25,7 +27,8 @@ public class ElasticSearchHealthCheckTest {
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex("test-ontology");
         configuration.setServers(Collections.singletonList("localhost"));
-        elasticSearchHealthCheck = new ElasticSearchHealthCheck(configuration);
+        final Client client = ClientBuilder.newClient();
+        elasticSearchHealthCheck = new ElasticSearchHealthCheck(configuration, client);
         server = startClientAndServer(9200);
     }
 
