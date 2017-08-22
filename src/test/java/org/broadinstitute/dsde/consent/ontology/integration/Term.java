@@ -6,6 +6,15 @@ import com.google.gson.GsonBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This model class is only used for integration testing. It is very similar to
+ *   org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm
+ * and
+ *   org.broadinstitute.dsde.consent.ontology.resources.model.TermResource
+ * but would require changes to either of those runtime classes to support testing,
+ * so we have created this dedicated class.
+ *
+ */
 public class Term {
 
     String id;
