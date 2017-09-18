@@ -21,20 +21,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.*;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.RESEARCH_TYPE;
+import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StoreOntologyServiceTest {
 
-    private StoreOntologyService storeOntologyService;
+    private static final String content = "{\"name\":\"" + METHODS_RESEARCH + "\"}";
+    private static final String urls = "{\"" + RESEARCH_TYPE + "\":\"" + METHODS_RESEARCH + "\"}";
+    private static final String error = "{\"error:\":\"Not Found\"}";
+
     @Mock
     CloudStore store;
-    @Mock
-    MockLowLevelHttpResponse response;
-
-    private static final String content = "{\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/methods_research\"}";
-    private static final String urls = "{\"http://www.broadinstitute.org/ontologies/DUOS/research_type\":\"http://www.broadinstitute.org/ontologies/DUOS/methods_research\"}";
-    private static final String error = "{\"error:\":\"Not Found\"}";
+    private StoreOntologyService storeOntologyService;
 
     @Before
     public void setUpClass() {
@@ -62,7 +62,7 @@ public class StoreOntologyServiceTest {
         when(store.getStorageDocument(Mockito.anyString())).thenReturn(httpResponse);
         List<URL> urls = new ArrayList<>(storeOntologyService.retrieveOntologyURLs());
         assertThat(!urls.isEmpty());
-        assertThat(urls.get(0).equals(new URL("http://www.broadinstitute.org/ontologies/DUOS/research_type")));
+        assertThat(urls.get(0).equals(new URL(RESEARCH_TYPE)));
     }
 
     @Test
@@ -72,7 +72,6 @@ public class StoreOntologyServiceTest {
         assertThat(storeOntologyService.retrieveOntologyURLs() == null);
 
     }
-
 
     private HttpResponse getHttpResponse(String content) throws IOException {
         HttpTransport transport = new MockHttpTransport() {
@@ -93,8 +92,5 @@ public class StoreOntologyServiceTest {
         HttpRequest request = transport.createRequestFactory().buildGetRequest(HttpTesting.SIMPLE_GENERIC_URL);
         return request.execute();
     }
-
-
-
 
 }

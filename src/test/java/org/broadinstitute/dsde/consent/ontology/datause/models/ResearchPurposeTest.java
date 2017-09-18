@@ -2,27 +2,31 @@ package org.broadinstitute.dsde.consent.ontology.datause.models;
 
 import org.junit.Assert;
 import org.junit.Test;
+
 import java.io.IOException;
+
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CHILDREN;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 
-public class ResearchPurposeTest extends ResearchPurpose{
+public class ResearchPurposeTest extends ResearchPurpose {
 
     @Test
-    public void testNullConstructor(){
+    public void testNullConstructor() {
         assertNull(getId());
         assertNull(getPurpose());
     }
 
     @Test
-    public void testEqualsFalseInstanceOf(){
+    public void testEqualsFalseInstanceOf() {
         String test = "test";
         boolean result = equals(test);
         Assert.assertFalse(result);
     }
 
     @Test
-    public void testEqualsInstanceOf(){
+    public void testEqualsInstanceOf() {
         ResearchPurpose researchPurpose = new ResearchPurpose();
         boolean result = equals(researchPurpose);
         Assert.assertTrue(result);
@@ -33,9 +37,9 @@ public class ResearchPurposeTest extends ResearchPurpose{
         setId("Id Test");
         assertNotNull(getId());
         UseRestriction and = new And(
-                new Named("http://purl.obolibrary.org/obo/DOID_162"),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/children")
+            new Named("http://purl.obolibrary.org/obo/DOID_162"),
+            new Named(FEMALE),
+            new Named(CHILDREN)
         );
         setPurpose(and);
         assertNotNull(getPurpose());
