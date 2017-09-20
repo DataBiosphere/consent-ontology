@@ -11,8 +11,8 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CHILDREN;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
 
 public class UseRestrictionValidateImplTest extends AbstractTest {
 
@@ -35,7 +35,7 @@ public class UseRestrictionValidateImplTest extends AbstractTest {
     public void testValidateUseRestrictionValid() throws Exception {
         log.debug("validateUseRestriction");
         String validRestriction = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"},"
-            + "{\"type\":\"named\",\"name\":\"" + CHILDREN + "\"},"
+            + "{\"type\":\"named\",\"name\":\"" + PEDIATRIC + "\"},"
             + "{\"type\":\"named\",\"name\":\"" + NON_PROFIT + "\"}]}";
         ValidateResponse result = service.validateUseRestriction(validRestriction);
         Assert.assertEquals(true, result.isValid());

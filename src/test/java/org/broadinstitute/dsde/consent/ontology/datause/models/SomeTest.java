@@ -11,8 +11,8 @@ import org.junit.Test;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 import static junit.framework.TestCase.assertNotNull;
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CHILDREN;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -30,7 +30,7 @@ public class SomeTest {
         useRestriction = new Or(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named(FEMALE),
-            new Named(CHILDREN)
+            new Named(PEDIATRIC)
         );
 
         some = new Some(property, useRestriction);

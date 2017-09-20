@@ -14,8 +14,8 @@ import javax.ws.rs.core.Response;
 import java.io.IOException;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CHILDREN;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
 
 public class TranslateTest {
 
@@ -37,7 +37,7 @@ public class TranslateTest {
     public void testPediatricCancerSample() {
         translate(
             "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"}," +
-                "{\"type\":\"named\",\"name\":\"" + CHILDREN + "\"}," +
+                "{\"type\":\"named\",\"name\":\"" + PEDIATRIC + "\"}," +
                 "{\"type\":\"named\",\"name\":\"" + NON_PROFIT + "\"}]}"
         );
     }

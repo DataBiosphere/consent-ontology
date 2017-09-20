@@ -25,7 +25,7 @@ public class OrTest {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named(FEMALE),
-            new Named(CHILDREN)
+            new Named(PEDIATRIC)
         );
         UseRestriction or = new Or(
             new Named("http://purl.obolibrary.org/obo/DOID_0060058"),

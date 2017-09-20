@@ -42,7 +42,7 @@ public class HtmlTranslatorTest extends AbstractTest {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named(FEMALE),
-            new Named(CHILDREN)
+            new Named(PEDIATRIC)
         );
 
         UseRestriction or = new Or(

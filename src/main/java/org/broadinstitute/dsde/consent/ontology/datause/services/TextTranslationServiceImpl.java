@@ -260,18 +260,20 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             return "disease";
         }
 
-        OntClass commercial = model.getOntClass(COMMERCIAL_STATUS);
-        if (cls.hasSuperClass(commercial)) {
+        OntClass duoDUR = model.getOntClass(DUO_DATA_USE_REQUIREMENTS);
+        if (cls.hasSuperClass(duoDUR)) {
             return "commercial";
         }
 
-        OntClass research_type = model.getOntClass(RESEARCH_TYPE);
-        if (cls.hasSuperClass(research_type)) {
+        OntClass researchType = model.getOntClass(RESEARCH_TYPE);
+        OntClass duoSecondary = model.getOntClass(DUO_SECONDARY_CATEGORY);
+        if (cls.hasSuperClass(researchType) || cls.hasSuperClass(duoSecondary)) {
             return "research_type";
         }
 
-        OntClass dataset_usage = model.getOntClass(DATASET_USAGE);
-        if (cls.hasSuperClass(dataset_usage)) {
+        OntClass datasetUsage = model.getOntClass(DATASET_USAGE);
+        OntClass duoPrimary = model.getOntClass(DUO_PRIMARY_CATEGORY);
+        if (cls.hasSuperClass(datasetUsage) || cls.hasSuperClass(duoPrimary)) {
             return "dataset_usage";
         }
 

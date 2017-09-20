@@ -7,8 +7,8 @@ import java.io.IOException;
 
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CHILDREN;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
 
 public class ConsentTest extends Consent {
 
@@ -44,7 +44,7 @@ public class ConsentTest extends Consent {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
             new Named(FEMALE),
-            new Named(CHILDREN)
+            new Named(PEDIATRIC)
         );
         setRestriction(and);
         assertNotNull(getRestriction());
