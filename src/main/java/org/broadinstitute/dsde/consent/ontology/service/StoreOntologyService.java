@@ -10,9 +10,7 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -42,11 +40,11 @@ public class StoreOntologyService {
         } catch (Exception e) {
             if (e instanceof HttpResponseException && ((HttpResponseException) e).getStatusCode() == 404) {
                 log.error("Storage service did not find Ontology configuration file: " + suffix);
-            }else{
-                log.error("Problem with storage service. "+ e.getMessage());
+            } else {
+                log.error("Problem with storage service. " + e.getMessage());
             }
-            throw new InternalError("Problem with storage service.");
         }
+        return "";
     }
 
     public Collection<URL> retrieveOntologyURLs() throws IOException {
@@ -60,12 +58,12 @@ public class StoreOntologyService {
                 }
                 return null;
             }).
-            filter(u -> u != null).
+            filter(Objects::nonNull).
             collect(Collectors.toList());
     }
 
     public Collection<String> retrieveConfigurationKeys() throws IOException {
-        return retrieveConfigurationMap().keySet().stream().collect(Collectors.toList());
+        return new ArrayList<>(retrieveConfigurationMap().keySet());
     }
 
     /**
@@ -84,7 +82,11 @@ public class StoreOntologyService {
      */
     private Map<String, HashMap> retrieveConfigurationMap() throws IOException {
         String config = retrieveConfigurationFile();
-        return MAPPER.readerFor(Map.class).readValue(config);
+        if (!config.isEmpty()) {
+            return MAPPER.readerFor(Map.class).readValue(config);
+        } else {
+            return new HashMap<>();
+        }
     }
 
 }
