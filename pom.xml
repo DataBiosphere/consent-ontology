@@ -10,7 +10,7 @@
     <properties>
         <java.version>1.8</java.version>
         <pellet.version>2.3.6-ansell</pellet.version>
-        <owl.version>5.0.1</owl.version>
+        <owl.version>5.0.5</owl.version>
         <jena.version>2.6.4</jena.version>
         <lucene.version>4.9.0</lucene.version>
         <dropwizard.version>1.0.0</dropwizard.version>
