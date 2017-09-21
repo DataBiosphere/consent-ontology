@@ -50,10 +50,11 @@ public class StoreOntologyServiceTest {
         assertThat(result.contains(content));
     }
 
-    @Test(expected = InternalError.class)
+    @Test
     public void testRetrieveConfigurationFileWithNullResponse() throws Exception {
         when(store.getStorageDocument(Mockito.anyString())).thenReturn(null);
-        storeOntologyService.retrieveConfigurationFile();
+        String result = storeOntologyService.retrieveConfigurationFile();
+        assertThat(result.isEmpty());
     }
 
     @Test
