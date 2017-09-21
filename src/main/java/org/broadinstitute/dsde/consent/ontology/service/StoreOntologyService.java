@@ -63,7 +63,7 @@ public class StoreOntologyService {
     }
 
     public Collection<String> retrieveConfigurationKeys() throws IOException {
-        return new ArrayList<>(retrieveConfigurationMap().keySet());
+        return retrieveConfigurationMap().keySet();
     }
 
     /**
