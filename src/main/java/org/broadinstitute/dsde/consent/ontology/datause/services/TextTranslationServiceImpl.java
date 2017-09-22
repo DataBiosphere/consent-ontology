@@ -17,11 +17,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
 
-interface RestrictionPredicate {
-
-    boolean accepts(UseRestriction r);
-}
-
 public class TextTranslationServiceImpl implements TextTranslationService {
 
     private OntologyTermSearchAPI api;
@@ -305,11 +300,6 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         return visitor.isFound();
     }
 
-    @Inject
-    public void setApi(OntologyTermSearchAPI api) {
-        this.api = api;
-    }
-
     private class NamedTypePredicate implements RestrictionPredicate {
 
         private final String type;
@@ -325,6 +315,16 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         }
     }
 
+    @Inject
+    public void setApi(OntologyTermSearchAPI api) {
+        this.api = api;
+    }
+
+}
+
+interface RestrictionPredicate {
+
+    boolean accepts(UseRestriction r);
 }
 
 abstract class SimpleUseRestrictionVisitor implements UseRestrictionVisitor {
