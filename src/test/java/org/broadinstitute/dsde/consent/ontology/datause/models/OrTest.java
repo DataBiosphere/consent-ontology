@@ -10,27 +10,26 @@ import org.junit.Test;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 import static junit.framework.TestCase.assertTrue;
-import static org.junit.Assert.*;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
-public class OrTest{
+public class OrTest {
 
-    private boolean result;
-
+    UseRestriction[] operands = new UseRestriction[2];
+    UseRestrictionVisitor visitor;
     private Or or;
 
-    UseRestriction[] operands =  new UseRestriction[2];
-    UseRestrictionVisitor visitor;
-
     @Before
-    public void setUp(){
+    public void setUp() {
         UseRestriction and = new And(
-                new Named("http://purl.obolibrary.org/obo/DOID_162"),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/children")
+            new Named("http://purl.obolibrary.org/obo/DOID_162"),
+            new Named(FEMALE),
+            new Named(PEDIATRIC)
         );
         UseRestriction or = new Or(
-                new Named("http://purl.obolibrary.org/obo/DOID_0060058"),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/men")
+            new Named("http://purl.obolibrary.org/obo/DOID_0060058"),
+            new Named(MALE)
         );
         operands[0] = and;
         operands[1] = or;
@@ -38,33 +37,31 @@ public class OrTest{
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void testOperands(){
+    public void testOperands() {
         new Or(operands[0]);
     }
 
     @Test
-    public void testOrEqualsFalse(){
-        String testObj = "test";
-        result = or.equals(testObj);
-        assertFalse(result);
+    public void testOrEqualsFalse() {
+        Or newOr = new Or(new Everything(), new Nothing());
+        assertFalse(or.equals(newOr));
     }
 
     @Test
-    public void testOrEqualsTrue(){
+    public void testOrEqualsTrue() {
         Or testObj = new Or(operands);
-        result = or.equals(testObj);
-        assertTrue(result);
+        assertTrue(or.equals(testObj));
     }
 
     @Test
-    public void testCreateOntologicalRestriction(){
+    public void testCreateOntologicalRestriction() {
         OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
         OntClass ontClass = or.createOntologicalRestriction(model);
-        assertNotNull(ontClass != null);
+        assertNotNull(ontClass);
     }
 
     @Test
-    public void testVisitAndContinue(){
+    public void testVisitAndContinue() {
         visitor = new NamedVisitor();
         assertTrue(or.visitAndContinue(visitor));
     }

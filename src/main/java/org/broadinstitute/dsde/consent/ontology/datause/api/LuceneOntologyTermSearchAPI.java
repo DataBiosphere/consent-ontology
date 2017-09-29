@@ -41,7 +41,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
     private static final String FIELD_SYNONYM = "synonym";
     private static final String FIELD_DEFINITION_CLASS = "IAO_0000115";
     private final Logger log = LoggerFactory.getLogger(LuceneOntologyTermSearchAPI.class);
-    private Map<String, OntologyTerm> nameToTerm;
+    private Map<String, OntologyTerm> nameToTerm = new HashMap<>();
     private StoreOntologyService storeOntologyService;
 
     @Inject
@@ -63,8 +63,6 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
 
         try (IndexWriter indexWriter = new IndexWriter(indexDirectory,
                 new IndexWriterConfig(Version.LUCENE_4_9, analyzer))) {
-            nameToTerm = new HashMap<>();
-
             for (String resource: resources)  {
                 try(InputStream stream = new URL(resource).openStream()) {
                     OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
@@ -159,6 +157,15 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
 
     @Override
     public OntologyTerm findById(String id) throws IOException {
+        // initAPI could be a no-op if configuration files are non-existent during app startup.
+        // Double check when looking up an ID and re-init if the term map is empty.
+        if (nameToTerm.isEmpty()) {
+            try {
+                initAPI();
+            } catch (OWLOntologyCreationException | IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return nameToTerm.get(id);
     }
 

@@ -12,17 +12,36 @@ import java.util.stream.Collectors;
 
 public class UseRestrictionBuilderSupport {
 
-    public static final String BOYS = "http://www.broadinstitute.org/ontologies/DUOS/boys";
-    public static final String CHILDREN = "http://www.broadinstitute.org/ontologies/DUOS/children";
-    public static final String CONTROL = "http://www.broadinstitute.org/ontologies/DUOS/control";
+    public static final String PEDIATRIC = "http://www.broadinstitute.org/ontologies/DUOS/pediatric";
     public static final String FEMALE = "http://www.broadinstitute.org/ontologies/DUOS/female";
-    public static final String FOR_PROFIT = "http://www.broadinstitute.org/ontologies/DUOS/For_profit";
-    public static final String GIRLS = "http://www.broadinstitute.org/ontologies/DUOS/girls";
     public static final String MALE = "http://www.broadinstitute.org/ontologies/DUOS/male";
-    public static final String METHODS_RESEARCH = "http://www.broadinstitute.org/ontologies/DUOS/methods_research";
-    public static final String NON_PROFIT = "http://www.broadinstitute.org/ontologies/DUOS/Non_profit";
-    public static final String PEDIATRIC = "http://www.broadinstitute.org/ontologies/DUOS/children";
-    public static final String POPULATION_STRUCTURE = "http://www.broadinstitute.org/ontologies/DUOS/population_structure";
+    public static final String GIRLS = "http://www.broadinstitute.org/ontologies/DUOS/girls";
+    public static final String BOYS = "http://www.broadinstitute.org/ontologies/DUOS/boys";
+
+
+    /* Non-profit is subclass of DUO Data Use Requirements */
+    public static final String DUO_DATA_USE_REQUIREMENTS = "http://purl.obolibrary.org/obo/DUO_0000017";
+    public static final String NON_PROFIT = "http://purl.obolibrary.org/obo/DUO_0000018";
+
+    /* Control are subclasses of Dataset Usage */
+    public static final String DATASET_USAGE = "http://www.broadinstitute.org/ontologies/DUOS/dataset_usage";
+    public static final String CONTROL = "http://www.broadinstitute.org/ontologies/DUOS/control";
+
+    /* Population Structure is a subclass of DUO Primary Category*/
+    public static final String DUO_PRIMARY_CATEGORY = "http://purl.obolibrary.org/obo/DUO_0000002";
+    public static final String POPULATION_STRUCTURE = "http://purl.obolibrary.org/obo/DUO_0000011";
+
+    /* Aggregate Research is a subclass of Research Type */
+    public static final String RESEARCH_TYPE = "http://www.broadinstitute.org/ontologies/DUOS/research_type";
+
+    /* Methods Research is a subclass of DUO Secondary Category */
+    public static final String DUO_SECONDARY_CATEGORY = "http://purl.obolibrary.org/obo/DUO_0000003";
+    public static final String METHODS_RESEARCH = "http://purl.obolibrary.org/obo/DUO_0000015";
+    /*
+     * Note that aggregate research is not used to build a DUR, but there are existing consents that were created
+     * with it so we still need to test for it.
+     */
+    public static final String AGGREGATE_RESEARCH = "http://www.broadinstitute.org/ontologies/DUOS/aggregate_research";
 
     /**
      * Convenience method for dealing with the many nullable fields of DataUseSchema

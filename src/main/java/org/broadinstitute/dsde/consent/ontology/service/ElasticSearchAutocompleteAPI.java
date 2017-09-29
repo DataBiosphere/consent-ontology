@@ -67,16 +67,21 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
             }
             String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
-            JsonArray hits = jsonResponse.getAsJsonObject("hits").getAsJsonArray("hits");
-            for (JsonElement hit : hits) {
-                JsonElement data = hit.getAsJsonObject().getAsJsonObject("_source");
-                TermResource resource = gson.fromJson(data, TermResource.class);
-                if (thinFilter) {
-                    resource.setOntology(null);
-                    resource.setUsable(null);
-                    resource.setParents(null);
+            JsonObject hitsSummary = jsonResponse.getAsJsonObject("hits");
+            if (hitsSummary != null) {
+                JsonArray hits = hitsSummary.getAsJsonArray("hits");
+                for (JsonElement hit : hits) {
+                    JsonElement data = hit.getAsJsonObject().getAsJsonObject("_source");
+                    TermResource resource = gson.fromJson(data, TermResource.class);
+                    if (thinFilter) {
+                        resource.setOntology(null);
+                        resource.setUsable(null);
+                        resource.setParents(null);
+                    }
+                    termList.add(resource);
                 }
-                termList.add(resource);
+            } else {
+                logger.error("Unable to parse 'hits' from: " + stringResponse);
             }
         } catch (IOException e) {
             logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());

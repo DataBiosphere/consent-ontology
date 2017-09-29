@@ -1,8 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.common.io.Resources;
-import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.junit.AfterClass;
@@ -14,17 +14,16 @@ import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
+
 
 public class DataUseOwlTest extends AbstractTest {
 
     private static final OntModelCache ONT_MODEL_CACHE = OntModelCache.INSTANCE;
     private static final Collection<URL> resources = Collections.singletonList(Resources.getResource("data-use.owl"));
-
-    private static final UseRestriction methodsPurpose =
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research");
-
-    private static final UseRestriction aggregatePurpose =
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research");
+    private static final UseRestriction methodsPurpose = new Named(METHODS_RESEARCH);
+    private static final UseRestriction aggregatePurpose = new Named(AGGREGATE_RESEARCH);
 
     @BeforeClass
     public static void setUp() throws Exception {
@@ -35,10 +34,9 @@ public class DataUseOwlTest extends AbstractTest {
     }
 
 
-
     @Test
     public void testNegativeMethodsAgainstInverse() throws Exception {
-        UseRestriction consent = new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"));
+        UseRestriction consent = new Not(new Named(METHODS_RESEARCH));
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(methodsPurpose, consent)));
         Assert.assertFalse(b);
     }
@@ -59,7 +57,7 @@ public class DataUseOwlTest extends AbstractTest {
 
     @Test
     public void testNegativeAggregateAgainstInverse() throws Exception {
-        UseRestriction consent = new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"));
+        UseRestriction consent = new Not(new Named(AGGREGATE_RESEARCH));
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchWorkerMessage(resources, new MatchPair(aggregatePurpose, consent)));
         Assert.assertFalse(b);
     }

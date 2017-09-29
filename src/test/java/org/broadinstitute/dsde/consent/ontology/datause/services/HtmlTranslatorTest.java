@@ -15,9 +15,10 @@ import org.junit.Test;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
 import static org.junit.Assert.assertTrue;
 
-public class HtmlTranslatorTest extends AbstractTest{
+public class HtmlTranslatorTest extends AbstractTest {
 
     private static HtmlTranslator service;
     private static OntologyTermSearchAPI api;
@@ -40,13 +41,13 @@ public class HtmlTranslatorTest extends AbstractTest{
     public void testTranslateSample() throws Exception {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/children")
+            new Named(FEMALE),
+            new Named(PEDIATRIC)
         );
 
         UseRestriction or = new Or(
             new Named("http://purl.obolibrary.org/obo/DOID_6741"),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit")
+            new Named(NON_PROFIT)
         );
 
         UseRestriction andOrEd = new And(and, or);

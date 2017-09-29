@@ -70,7 +70,7 @@ public class DARRestrictionBuilder implements UseRestrictionBuilder {
         }
 
         if (getOrElseFalse(dataUse.getCommercialUse())) {
-            purposesList.add(new Named(FOR_PROFIT));
+            purposesList.add(new Not(new Named(NON_PROFIT)));
         } else {
             purposesList.add(new Named(NON_PROFIT));
         }

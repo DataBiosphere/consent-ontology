@@ -22,6 +22,7 @@ public class AbstractTest {
         URL urlOntologyConfiguration = Resources.getResource("ontologyConf.json");
         Collection<URL> ontologyUrls = Arrays.asList(
             Resources.getResource("diseases.owl"),
+            Resources.getResource("duo.owl"),
             Resources.getResource("data-use.owl"));
         Collection<String> ontologyStrings = ontologyUrls.stream().map(URL::toString).collect(Collectors.toList());
 

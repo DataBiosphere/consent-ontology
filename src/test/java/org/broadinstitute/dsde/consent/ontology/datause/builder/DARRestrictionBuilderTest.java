@@ -46,7 +46,7 @@ public class DARRestrictionBuilderTest {
                 ),
                 new And(
                     new Named(UseRestrictionBuilderSupport.FEMALE),
-                    new Named(UseRestrictionBuilderSupport.FOR_PROFIT)
+                    new Not(new Named(UseRestrictionBuilderSupport.NON_PROFIT))
                 )
             )
         ));
@@ -80,7 +80,7 @@ public class DARRestrictionBuilderTest {
                 ),
                 new And(
                     new Named(UseRestrictionBuilderSupport.MALE),
-                    new Named(UseRestrictionBuilderSupport.FOR_PROFIT)
+                    new Not(new Named(UseRestrictionBuilderSupport.NON_PROFIT))
                 )
             )
         ));
@@ -114,8 +114,8 @@ public class DARRestrictionBuilderTest {
                 ),
                 new And(
                     new Named(UseRestrictionBuilderSupport.MALE),
-                    new Named(UseRestrictionBuilderSupport.CHILDREN),
-                    new Named(UseRestrictionBuilderSupport.FOR_PROFIT)
+                    new Named(UseRestrictionBuilderSupport.PEDIATRIC),
+                    new Not(new Named(UseRestrictionBuilderSupport.NON_PROFIT))
                 )
             )
         ));
@@ -148,8 +148,8 @@ public class DARRestrictionBuilderTest {
                 ),
                 new And(
                     new Named(UseRestrictionBuilderSupport.FEMALE),
-                    new Named(UseRestrictionBuilderSupport.CHILDREN),
-                    new Named(UseRestrictionBuilderSupport.FOR_PROFIT)
+                    new Named(UseRestrictionBuilderSupport.PEDIATRIC),
+                    new Not(new Named(UseRestrictionBuilderSupport.NON_PROFIT))
                 )
             )
         ));
@@ -181,8 +181,8 @@ public class DARRestrictionBuilderTest {
                     new Not(new Named(UseRestrictionBuilderSupport.CONTROL))
                 ),
                 new And(
-                    new Named(UseRestrictionBuilderSupport.CHILDREN),
-                    new Named(UseRestrictionBuilderSupport.FOR_PROFIT)
+                    new Named(UseRestrictionBuilderSupport.PEDIATRIC),
+                    new Not(new Named(UseRestrictionBuilderSupport.NON_PROFIT))
                 )
             )
         ));
@@ -222,7 +222,7 @@ public class DARRestrictionBuilderTest {
                     new Named("http://purl.obolibrary.org/obo/DOID_0050738")
 
                 ),
-                new Named(UseRestrictionBuilderSupport.FOR_PROFIT))
+                new Not(new Named(UseRestrictionBuilderSupport.NON_PROFIT)))
             )
         );
     }

@@ -15,10 +15,11 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
+
 public class TextTranslationServiceImpl implements TextTranslationService {
 
     private OntologyTermSearchAPI api;
-    private OntModelCache ontModelCache = OntModelCache.INSTANCE;
 
     // This is a cache, used to associate a type (element of
     // the set { "disease", "organization", "commercial-status" }) to each named class.
@@ -26,15 +27,14 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     // to cache it here in this class and not use it again if we don't need to.
     private Map<String, String> namedClassTypes;
     private OntModel model;
-    private StoreOntologyService storeOntologyService;
 
 
     @Inject
     public TextTranslationServiceImpl(StoreOntologyService storeOntologyService) {
-        this.storeOntologyService = storeOntologyService;
         this.namedClassTypes = new ConcurrentHashMap<>();
         try {
             Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
+            OntModelCache ontModelCache = OntModelCache.INSTANCE;
             model = ontModelCache.getOntModel(urls);
         } catch (Exception e) {
             throw new RuntimeException(e);
@@ -94,21 +94,21 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
         if (clauses.isEmpty()) {
             return forSampleSet
-                    ? "No restrictions."
-                    : "Any sample which has no restrictions.";
+                ? "No restrictions."
+                : "Any sample which has no restrictions.";
         }
 
         String first = String.format(
-                forSampleSet
-                        ? "Samples %s."
-                        : "Any sample which %s.", clauses.remove(0));
+            forSampleSet
+                ? "Samples %s."
+                : "Any sample which %s.", clauses.remove(0));
 
         String rest = "";
         if (!clauses.isEmpty()) {
             rest = String.format(
-                    forSampleSet
-                            ? " In addition, samples %s."
-                            : " In addition, those samples %s.", buildAndClause(clauses));
+                forSampleSet
+                    ? " In addition, samples %s."
+                    : " In addition, those samples %s.", buildAndClause(clauses));
         }
 
         return String.format("%s%s", first, rest);
@@ -119,9 +119,9 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         Set<String> labels = findLabeledTypedClasses("population", r);
 
         return labels.isEmpty() ? null
-                : String.format("%s be used for the study of %s",
-                        forSampleSet ? "may only" : "can",
-                        buildAndClause(labels));
+            : String.format("%s be used for the study of %s",
+            forSampleSet ? "may only" : "can",
+            buildAndClause(labels));
     }
 
     // "Samples may only be used for research at institutions in North America, Europe, or South America."
@@ -129,9 +129,9 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         Set<String> labels = findLabeledTypedClasses("geography", r);
 
         return labels.isEmpty() ? null
-                : String.format("%s be used for research at institutions in %s",
-                        forSampleSet ? "may only" : "can",
-                        buildOrClause(labels));
+            : String.format("%s be used for research at institutions in %s",
+            forSampleSet ? "may only" : "can",
+            buildOrClause(labels));
     }
 
     // "Samples may not be used for commercial purposes."
@@ -255,39 +255,30 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             return "disease";
         }
 
-        OntClass commercial = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/Commercial_Status");
-        if (cls.hasSuperClass(commercial)) {
+        OntClass duoDUR = model.getOntClass(DUO_DATA_USE_REQUIREMENTS);
+        if (cls.hasSuperClass(duoDUR)) {
             return "commercial";
         }
 
-        OntClass geography = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/geography");
-        if (cls.hasSuperClass(geography)) {
-            return "geography";
-        }
-
-        OntClass population = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/population");
-        if (cls.hasSuperClass(population)) {
-            return "population";
-        }
-
-        OntClass research_type = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/research_type");
-        if (cls.hasSuperClass(research_type)) {
+        OntClass researchType = model.getOntClass(RESEARCH_TYPE);
+        OntClass duoSecondary = model.getOntClass(DUO_SECONDARY_CATEGORY);
+        if (cls.hasSuperClass(researchType) || cls.hasSuperClass(duoSecondary)) {
             return "research_type";
         }
 
-        OntClass dataset_usage = model.getOntClass("http://www.broadinstitute.org/ontologies/DUOS/dataset_usage");
-        if (cls.hasSuperClass(dataset_usage)) {
+        OntClass datasetUsage = model.getOntClass(DATASET_USAGE);
+        OntClass duoPrimary = model.getOntClass(DUO_PRIMARY_CATEGORY);
+        if (cls.hasSuperClass(datasetUsage) || cls.hasSuperClass(duoPrimary)) {
             return "dataset_usage";
         }
-        return null;
+
+        return "other";
     }
 
     private Set<String> findLabeledTypedClasses(String type, UseRestriction r) {
         Set<Named> named = findNamedClasses(new NamedTypePredicate(type), r);
         Set<String> labels = new LinkedHashSet<>();
-        named.stream().forEach((n) -> {
-            labels.add(getNamedClassLabel(n));
-        });
+        named.forEach((n) -> { labels.add(getNamedClassLabel(n)); });
         return labels;
     }
 
@@ -295,9 +286,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         FilterVisitor visitor = new FilterVisitor(pred);
         r.visit(visitor);
         Set<Named> named = new HashSet<>();
-        visitor.getMatched().stream().forEach((n) -> {
-            named.add(((Named) n));
-        });
+        visitor.getMatched().forEach((n) -> named.add(((Named) n)));
         return named;
     }
 
@@ -322,14 +311,8 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         @Override
         public boolean accepts(UseRestriction r) {
             return (r instanceof Named)
-                    && getNamedClassType((Named) r).equals(type);
+                && getNamedClassType((Named) r).equals(type);
         }
-    }
-
-    // TODO: remove/move this static method; we don't like statics
-    // TODO: a more precise means of testing if this term is a disease or not
-    public static boolean isDiseaseClass(String s) {
-        return s.contains("DOID"); // || s.contains("SYMP");
     }
 
     @Inject

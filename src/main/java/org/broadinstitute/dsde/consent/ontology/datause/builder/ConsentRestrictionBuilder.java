@@ -34,7 +34,7 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
         }
 
         if (getOrElseFalse(dataUse.getCommercialUse())) {
-            categoryRestrictions.add(new Named(FOR_PROFIT));
+            categoryRestrictions.add(new Not(new Named(NON_PROFIT)));
         }
 
         if (isPresent(dataUse.getGender()) &&
