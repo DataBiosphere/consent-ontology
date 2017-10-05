@@ -28,8 +28,11 @@ import java.util.EnumSet;
 public class OntologyApp extends Application<OntologyConfiguration> {
 
     public static void main(String[] args) throws Exception {
-        RavenBootstrap.bootstrap(System.getProperties().getProperty("sentry.dsn"));
-        Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
+        String dsn = System.getProperties().getProperty("sentry.dsn");
+        if (null != dsn && !dsn.isEmpty()) {
+            RavenBootstrap.bootstrap(System.getProperties().getProperty("sentry.dsn"));
+            Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
+        }
         new OntologyApp().run(args);
     }
 
