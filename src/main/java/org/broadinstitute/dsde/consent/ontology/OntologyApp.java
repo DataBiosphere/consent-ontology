@@ -2,12 +2,12 @@ package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-
+import com.tradier.raven.logging.RavenBootstrap;
+import com.tradier.raven.logging.UncaughtExceptionHandlers;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.*;
 import org.broadinstitute.dsde.consent.ontology.resources.validate.ValidationResource;
@@ -28,6 +28,8 @@ import java.util.EnumSet;
 public class OntologyApp extends Application<OntologyConfiguration> {
 
     public static void main(String[] args) throws Exception {
+        RavenBootstrap.bootstrap(System.getProperties().getProperty("sentry.dsn"));
+        Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
         new OntologyApp().run(args);
     }
 
