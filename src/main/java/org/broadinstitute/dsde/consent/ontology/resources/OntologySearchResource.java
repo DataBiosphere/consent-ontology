@@ -24,20 +24,26 @@ public class OntologySearchResource {
     @GET
     @Produces("application/json")
     public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) throws IOException {
-        if (!queryTerm.isEmpty()) {
+        if (queryTerm.isEmpty()) {
+            return Response
+                .status(Response.Status.BAD_REQUEST)
+                .entity(new ErrorResponse(" Ontology ID term cannot be empty. ", Response.Status.BAD_REQUEST.getStatusCode()))
+                .build();
+        }
+        try {
             List<TermResource> result = api.lookupById(queryTerm);
             if(!result.isEmpty()){
                 return Response.ok().entity(result).build();
             } else {
                 return Response.status(Response.Status.NOT_FOUND)
-                        .entity(new ErrorResponse(" Supplied ID doesn't match any known ontology. ", Response.Status.NOT_FOUND.getStatusCode()))
-                        .build();
-            }
-        } else {
-            return Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse(" Ontology ID term cannot be empty. ", Response.Status.BAD_REQUEST.getStatusCode()))
+                    .entity(new ErrorResponse(" Supplied ID doesn't match any known ontology term. ", Response.Status.NOT_FOUND.getStatusCode()))
                     .build();
+            }
+        } catch (Exception e) {
+            return Response
+                .status(Response.Status.INTERNAL_SERVER_ERROR)
+                .entity(new ErrorResponse(e.getMessage(), Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
+                .build();
         }
     }
 }

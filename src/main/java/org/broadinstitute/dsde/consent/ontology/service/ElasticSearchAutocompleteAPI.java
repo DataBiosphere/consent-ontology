@@ -84,7 +84,14 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
                 logger.error("Unable to parse 'hits' from: " + stringResponse);
             }
         } catch (IOException e) {
-            logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
+            // Trap non-fatal "Connection reset..." errors
+            String message = "Unable to parse query response for " + query + "\n" + e.getMessage();
+            if (e.getMessage().contains("Connection reset by peer")) {
+                logger.warn(message);
+                return termList;
+            } else {
+                logger.error(message);
+            }
             throw new RuntimeException(e);
         }
         return termList;
