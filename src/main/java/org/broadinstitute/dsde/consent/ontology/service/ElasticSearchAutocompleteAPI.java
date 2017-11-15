@@ -9,6 +9,7 @@ import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConf
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.elasticsearch.client.Response;
+import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -90,6 +91,50 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
         return termList;
     }
 
+    /**
+     * Retrieve a single document from ES by its exact id.
+     *
+     * @param query      id of the document to return
+     * @param thinFilter When true, we provide the minimal amount of information to keep the API responses thin. When
+     *                   false, we provide the fully populated object.
+     * @return List of TermResources that match the query. Will have either zero or one result.
+     */
+    private List<TermResource> executeGet(String query, Boolean thinFilter) {
+        List<TermResource> termList = new ArrayList<>();
+        try {
+            Response esResponse = client.performRequest(
+                    "GET",
+                    ElasticSearchSupport.getTermPath(configuration.getIndex()) + "/" + java.net.URLEncoder.encode(query, "UTF-8"),
+                    ElasticSearchSupport.jsonHeader);
+            if (esResponse.getStatusLine().getStatusCode() != 200) {
+                logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
+                throw new InternalServerErrorException();
+            }
+            String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
+            JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
+            JsonElement data = jsonResponse.getAsJsonObject("_source");
+            TermResource resource = gson.fromJson(data, TermResource.class);
+            if (thinFilter) {
+                resource.setOntology(null);
+                resource.setUsable(null);
+                resource.setParents(null);
+            }
+            termList.add(resource);
+        } catch (ResponseException re) {
+            if (re.getResponse().getStatusLine().getStatusCode() == 404) {
+                // 404 is an expected case from ES, indicating the ID was not found
+                return termList;
+            } else {
+                logger.error("Unable to parse query response for " + query + "\n" + re.getMessage());
+                throw new RuntimeException(re);
+            }
+        } catch (IOException e) {
+            logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
+            throw new RuntimeException(e);
+        }
+        return termList;
+    }
+
     @Override
     public List<TermResource> lookup(String query, int limit) {
         return lookup(Collections.emptyList(), query, limit);
@@ -102,7 +147,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
 
     @Override
     public List<TermResource> lookupById(String query) throws IOException {
-        List<TermResource> terms = executeSearch(ElasticSearchSupport.buildIdQuery(query), 1, false);
+        List<TermResource> terms = executeGet(query, false);
 
         Collection<String> parentIds = terms.stream().
             flatMap(p -> Optional.ofNullable(p.getParents()).orElse(new ArrayList<>()).stream()).
@@ -110,7 +155,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
             collect(Collectors.toList());
 
         Collection<TermResource> parentTerms = parentIds.stream().
-            flatMap(t -> executeSearch(ElasticSearchSupport.buildIdQuery(t), 1, true).stream()).
+            flatMap(t -> executeGet(t,true).stream()).
             collect(Collectors.toList());
 
         // Populate each of the parent nodes with more complete information

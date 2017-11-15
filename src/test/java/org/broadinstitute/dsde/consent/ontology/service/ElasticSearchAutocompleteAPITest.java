@@ -61,12 +61,13 @@ public class ElasticSearchAutocompleteAPITest {
 
     @Test
     public void  testLookupById() throws Exception {
-        mockResponse(response().withStatusCode(200).withBody(cancerJson));
-        List<TermResource> termResource = autocompleteAPI.lookupById("DOID_162");
+        mockResponse(response().withStatusCode(200).withBody(cancerGetJson));
+        List<TermResource> termResource = autocompleteAPI.lookupById("http://purl.obolibrary.org/obo/DOID_162");
         Assert.assertTrue(termResource.size() == 1);
         Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
+    // mock response for a search
     private static String cancerJson = "{\n" +
         "  \"took\": 15,\n" +
         "  \"timed_out\": false,\n" +
@@ -110,5 +111,36 @@ public class ElasticSearchAutocompleteAPITest {
         "    ]\n" +
         "  }\n" +
         "}";
+
+    // mock response for a document get-by-id
+    private static String cancerGetJson = "{\n" +
+            "  \"_index\": \"ontology\",\n" +
+            "  \"_type\": \"ontology_term\",\n" +
+            "  \"_id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
+            "  \"_version\": 32,\n" +
+            "  \"found\": true,\n" +
+            "  \"_source\": {\n" +
+            "    \"id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
+            "    \"ontology\": \"Disease\",\n" +
+            "    \"synonyms\": [\n" +
+            "      \"primary cancer\",\n" +
+            "      \"malignant tumor \",\n" +
+            "      \"malignant neoplasm\"\n" +
+            "    ],\n" +
+            "    \"label\": \"cancer\",\n" +
+            "    \"definition\": \"A disease of cellular proliferation that is malignant and primary, characterized by uncontrolled cellular proliferation, local cell invasion and metastasis.\",\n" +
+            "    \"usable\": true,\n" +
+            "    \"parents\": [\n" +
+            "      {\n" +
+            "        \"id\": \"http://purl.obolibrary.org/obo/DOID_14566\",\n" +
+            "        \"order\": 1\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"id\": \"http://purl.obolibrary.org/obo/DOID_4\",\n" +
+            "        \"order\": 2\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
 
 }

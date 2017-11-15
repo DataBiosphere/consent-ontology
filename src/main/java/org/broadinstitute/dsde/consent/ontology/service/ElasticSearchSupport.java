@@ -26,8 +26,12 @@ public class ElasticSearchSupport {
         return "/" + index;
     }
 
+    public static String getTermPath(String index) {
+        return getIndexPath(index) + "/ontology_term";
+    }
+
     public static String getSearchPath(String index) {
-        return "/" + index + "/ontology_term/_search";
+        return getTermPath(index) + "/_search";
     }
 
     public static String getClusterHealthPath(String index) {
@@ -37,24 +41,6 @@ public class ElasticSearchSupport {
     public static Header jsonHeader = new BasicHeader("Content-Type", "application/json");
 
     private static Gson gson = new GsonBuilder().create();
-
-    /**
-     * Builds a json object in the form of:
-     *
-     * { "query" : { "match" : { "id": "DOID_162" } } }
-     *
-     * @param termId Query term string
-     * @return Json formatted string suitable for using as an Elastic Search query object.
-     */
-    public static String buildIdQuery(String termId) {
-        Map<String, Object> jsonQuery = new HashMap<>();
-        Map<String, Object> query = new HashMap<>();
-        Map<String, String> match = new HashMap<>();
-        match.put("id", termId);
-        query.put("match", match);
-        jsonQuery.put("query", query);
-        return gson.toJson(jsonQuery);
-    }
 
     /**
      * Builds a json object in the form of:
