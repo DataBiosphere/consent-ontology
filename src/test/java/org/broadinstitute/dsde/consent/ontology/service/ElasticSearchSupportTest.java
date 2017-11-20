@@ -46,18 +46,6 @@ public class ElasticSearchSupportTest {
     }
 
     @Test
-    public void testBuildIdQuery() {
-        String termId = "term_id";
-        String query = ElasticSearchSupport.buildIdQuery(termId);
-        JsonParser parser = new JsonParser();
-        JsonObject jsonQuery = parser.parse(query).getAsJsonObject();
-        Assert.assertTrue(jsonQuery.has("query"));
-        Assert.assertTrue(jsonQuery.getAsJsonObject("query").has("match"));
-        Assert.assertTrue(jsonQuery.getAsJsonObject("query").getAsJsonObject("match").has("id"));
-        Assert.assertTrue(jsonQuery.getAsJsonObject("query").getAsJsonObject("match").get("id").getAsString().equals(termId));
-    }
-
-    @Test
     public void testBuildFilterQuery() {
         String termId = "term_id";
         List<String> filters = Arrays.asList("Disease", "Organization");
