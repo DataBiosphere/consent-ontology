@@ -26,6 +26,7 @@ function docker_cmd() {
 PROJECT=consent-ontology
 BRANCH=${BRANCH:-$(git rev-parse --abbrev-ref HEAD)}
 REPO=broadinstitute/$PROJECT
+ENV=${ENV:=""}
 
 while [ "$1" != "" ]; do
     case $1 in
