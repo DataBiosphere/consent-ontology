@@ -19,6 +19,20 @@ APP_NAME=consent-ontology ENV=local OUTPUT_DIR=config ../firecloud-develop/confi
 Tests spin up an embedded http server that run against localhost. 
 Ensure that your test environment supports that. 
 
+#### Docker
+
+Consent-Ontology is packaged into a docker image that is stored in the cloud in the [Consent-Ontology Dockerhub Repo](https://hub.docker.com/r/broadinstitute/consent-ontology).
+```
+# to build the image
+./build.sh -d build
+
+# to build the image and push to dockerhub
+./build.sh -d push
+
+# to pull the image from dockerhub
+docker pull broadinstitute/consent-ontology
+```
+
 ### Render Configs 
 Specific to internal Broad systems:
 ```bash
