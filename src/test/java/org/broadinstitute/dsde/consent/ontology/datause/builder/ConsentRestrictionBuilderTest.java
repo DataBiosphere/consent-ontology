@@ -21,6 +21,15 @@ public class ConsentRestrictionBuilderTest {
     }
 
     @Test
+    public void testMixedGeneralUse() {
+        DataUse dataUse = new DataUse();
+        dataUse.setGeneralUse(true);
+        dataUse.setHmbResearch(true);
+        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
+        Assert.assertFalse(restriction.equals(new Everything()));
+    }
+
+    @Test
     public void testMRdulUC1() {
         DataUse dataUse = new DataUse();
         dataUse.setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER));

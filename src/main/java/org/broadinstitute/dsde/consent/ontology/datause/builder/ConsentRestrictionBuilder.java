@@ -17,7 +17,7 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
         List<UseRestriction> categoryRestrictions = new ArrayList<>();
         UseRestriction restriction;
 
-        if (isPresent(dataUse.getGeneralUse()) && dataUse.getGeneralUse()) {
+        if (isOnlyGeneralUse(dataUse)) {
             return new Everything();
         }
 
