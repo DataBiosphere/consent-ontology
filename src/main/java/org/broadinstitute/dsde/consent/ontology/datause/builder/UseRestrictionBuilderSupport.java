@@ -5,6 +5,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.And;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 
 import java.util.List;
 import java.util.Optional;
@@ -49,8 +50,54 @@ public class UseRestrictionBuilderSupport {
      * @param nullableThing Nullable Object
      * @return present or not
      */
-    public static Boolean isPresent(Object nullableThing) {
+    static Boolean isPresent(Object nullableThing) {
         return Optional.ofNullable(nullableThing).isPresent();
+    }
+
+    @SuppressWarnings("SimplifiableIfStatement")
+    static Boolean isOnlyGeneralUse(DataUse dataUse) {
+        if (getOrElseFalse(dataUse.getHmbResearch()) ||
+                !dataUse.getDiseaseRestrictions().isEmpty() ||
+                getOrElseFalse(dataUse.getPopulationOriginsAncestry()) ||
+                getOrElseFalse(dataUse.getPopulationStructure()) ||
+                getOrElseFalse(dataUse.getCommercialUse()) ||
+                getOrElseFalse(dataUse.getMethodsResearch()) ||
+                getOrElseFalse(dataUse.getAggregateResearch()) ||
+                getOrElseFalse(dataUse.getControlSetOption()) ||
+                getOrElseFalse(dataUse.getGender()) ||
+                getOrElseFalse(dataUse.getPediatric()) ||
+                !dataUse.getPopulationRestrictions().isEmpty() ||
+                getOrElseFalse(dataUse.getDateRestriction()) ||
+                getOrElseFalse(dataUse.getRecontactingDataSubjects()) ||
+                getOrElseFalse(dataUse.getRecontactMay()) ||
+                getOrElseFalse(dataUse.getRecontactMust()) ||
+                getOrElseFalse(dataUse.getGenomicPhenotypicData()) ||
+                getOrElseFalse(dataUse.getOtherRestrictions()) ||
+                getOrElseFalse(dataUse.getCloudStorage()) ||
+                getOrElseFalse(dataUse.getEthicsApprovalRequired()) ||
+                getOrElseFalse(dataUse.getGeographicalRestrictions()) ||
+                getOrElseFalse(dataUse.getOther()) ||
+                getOrElseFalse(dataUse.getIllegalBehavior()) ||
+                getOrElseFalse(dataUse.getAddiction()) ||
+                getOrElseFalse(dataUse.getSexualDiseases()) ||
+                getOrElseFalse(dataUse.getStigmatizeDiseases()) ||
+                getOrElseFalse(dataUse.getVulnerablePopulations()) ||
+                getOrElseFalse(dataUse.getPsychologicalTraits()) ||
+                getOrElseFalse(dataUse.getNonBiomedical())
+                ) {
+            return false;
+        }
+        return isPresent(dataUse.getGeneralUse()) && dataUse.getGeneralUse();
+    }
+
+    /**
+     * Convenience method for dealing with the many nullable fields of DataUseSchema
+     *
+     * @param nullableString Nullable String object
+     * @return True for non-empty strings
+     */
+    private static Boolean getOrElseFalse(String nullableString) {
+        return !Optional.ofNullable(nullableString).orElse("").isEmpty();
     }
 
     /**
@@ -59,7 +106,7 @@ public class UseRestrictionBuilderSupport {
      * @param nullableBoolean Nullable Boolean object
      * @return Boolean or false
      */
-    public static Boolean getOrElseFalse(Boolean nullableBoolean) {
+    static Boolean getOrElseFalse(Boolean nullableBoolean) {
         return Optional.ofNullable(nullableBoolean).orElse(false);
     }
 
@@ -69,7 +116,7 @@ public class UseRestrictionBuilderSupport {
      * @param nullableBoolean Nullable Boolean object
      * @return Boolean or true
      */
-    public static Boolean getOrElseTrue(Boolean nullableBoolean) {
+    static Boolean getOrElseTrue(Boolean nullableBoolean) {
         return Optional.ofNullable(nullableBoolean).orElse(true);
     }
 
@@ -79,7 +126,7 @@ public class UseRestrictionBuilderSupport {
      * @param ontologyClasses List of ontology terms
      * @return UseRestriction
      */
-    public static UseRestriction buildORRestrictionFromClasses(List<String> ontologyClasses) throws IllegalArgumentException {
+    static UseRestriction buildORRestrictionFromClasses(List<String> ontologyClasses) throws IllegalArgumentException {
         List<String> validClasses = ontologyClasses.stream().
             filter(s -> !s.isEmpty()).
             collect(Collectors.toList());
