@@ -1,6 +1,7 @@
 # Consent Ontology Services
 
 [![Build Status](https://travis-ci.org/DataBiosphere/consent-ontology.svg?branch=develop)](https://travis-ci.org/DataBiosphere/consent-ontology)
+[![codecov](https://codecov.io/gh/DataBiosphere/consent-ontology/branch/develop/graph/badge.svg)](https://codecov.io/gh/DataBiosphere/consent-ontology)
 
 The primary Ontology Service API layer for the Data Use Oversight System [DUOS](https://github.com/broadinstitute/consent-ui)
 
