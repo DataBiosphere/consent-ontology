@@ -49,6 +49,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
 
         ElasticSearchConfiguration esConfig = config.getElasticSearchConfiguration();
         env.healthChecks().register("elastic-search", new ElasticSearchHealthCheck(esConfig));
+        env.jersey().register(new StatusResource(env.healthChecks()));
 
         FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
         corsFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false, env.getApplicationContext().getContextPath() + "/autocomplete");
