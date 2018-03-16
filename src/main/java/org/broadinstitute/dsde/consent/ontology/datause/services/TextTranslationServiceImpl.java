@@ -29,17 +29,12 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     // It's an expensive operation (we're going to have to use a reasoner!) so we want
     // to cache it here in this class and not use it again if we don't need to.
     private Map<String, String> namedClassTypes;
-    private Collection<URL> urls = new ArrayList<>();
-    private OntModel model = null;
+    private StoreOntologyService storeOntologyService;
 
     @Inject
     public TextTranslationServiceImpl(StoreOntologyService storeOntologyService) {
         this.namedClassTypes = new ConcurrentHashMap<>();
-        try {
-            this.urls.addAll(storeOntologyService.retrieveOntologyURLs());
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        this.storeOntologyService = storeOntologyService;
     }
 
     @Override
@@ -247,23 +242,30 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         return result;
     }
 
-    private OntModel getModel() {
-        if (model == null) {
-            try {
-                OntModelCache ontModelCache = OntModelCache.INSTANCE;
-                model = ontModelCache.getOntModel(urls);
-            } catch (Exception e) {
-                StringBuilder builder = new StringBuilder("Unable to instantiate the required ontologies: ").
-                        append(e.getMessage()).
-                        append("\n for ontology urls: ");
-                for (URL url: urls) {
-                    builder.append("\n URL:").append(url.toString());
-                }
-                logger.error(builder.toString());
-                throw new RuntimeException(builder.toString());
-            }
+    private Collection<URL> getOntologyUrls() {
+        try {
+            return storeOntologyService.retrieveOntologyURLs();
+        } catch (IOException e) {
+            logger.error("Unable to retrieve ontology URLs from the ontology storage service: " + e.getMessage());
+            throw new RuntimeException(e);
         }
-        return model;
+    }
+
+    private OntModel getModel() {
+        Collection<URL> urls = getOntologyUrls();
+        try {
+            OntModelCache ontModelCache = OntModelCache.INSTANCE;
+            return ontModelCache.getOntModel(urls);
+        } catch (Exception e) {
+            StringBuilder builder = new StringBuilder("Unable to instantiate the required ontologies: ").
+                    append(e.getMessage()).
+                    append("\n for ontology urls: ");
+            for (URL url: urls) {
+                builder.append("\n URL:").append(url.toString());
+            }
+            logger.error(builder.toString());
+            throw new RuntimeException(builder.toString());
+        }
     }
 
     private String findNamedClassType(Named n) {
