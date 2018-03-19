@@ -9,6 +9,8 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,25 +22,19 @@ import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestri
 public class TextTranslationServiceImpl implements TextTranslationService {
 
     private OntologyTermSearchAPI api;
+    private static final Logger logger = LoggerFactory.getLogger(TextTranslationServiceImpl.class);
 
     // This is a cache, used to associate a type (element of
     // the set { "disease", "organization", "commercial-status" }) to each named class.
     // It's an expensive operation (we're going to have to use a reasoner!) so we want
     // to cache it here in this class and not use it again if we don't need to.
     private Map<String, String> namedClassTypes;
-    private OntModel model;
-
+    private StoreOntologyService storeOntologyService;
 
     @Inject
     public TextTranslationServiceImpl(StoreOntologyService storeOntologyService) {
         this.namedClassTypes = new ConcurrentHashMap<>();
-        try {
-            Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
-            OntModelCache ontModelCache = OntModelCache.INSTANCE;
-            model = ontModelCache.getOntModel(urls);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        this.storeOntologyService = storeOntologyService;
     }
 
     @Override
@@ -246,28 +242,54 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         return result;
     }
 
+    private Collection<URL> getOntologyUrls() {
+        try {
+            return storeOntologyService.retrieveOntologyURLs();
+        } catch (IOException e) {
+            logger.error("Unable to retrieve ontology URLs from the ontology storage service: " + e.getMessage());
+            throw new RuntimeException(e);
+        }
+    }
+
+    private OntModel getModel() {
+        Collection<URL> urls = getOntologyUrls();
+        try {
+            OntModelCache ontModelCache = OntModelCache.INSTANCE;
+            return ontModelCache.getOntModel(urls);
+        } catch (Exception e) {
+            StringBuilder builder = new StringBuilder("Unable to instantiate the required ontologies: ").
+                    append(e.getMessage()).
+                    append("\n for ontology urls: ");
+            for (URL url: urls) {
+                builder.append("\n URL:").append(url.toString());
+            }
+            logger.error(builder.toString());
+            throw new RuntimeException(builder.toString());
+        }
+    }
+
     private String findNamedClassType(Named n) {
 
-        OntClass cls = model.getOntClass(n.getName());
+        OntClass cls = getModel().getOntClass(n.getName());
 
-        OntClass disease = model.getOntClass("http://purl.obolibrary.org/obo/DOID_4");
+        OntClass disease = getModel().getOntClass("http://purl.obolibrary.org/obo/DOID_4");
         if (cls.hasSuperClass(disease)) {
             return "disease";
         }
 
-        OntClass duoDUR = model.getOntClass(DUO_DATA_USE_REQUIREMENTS);
+        OntClass duoDUR = getModel().getOntClass(DUO_DATA_USE_REQUIREMENTS);
         if (cls.hasSuperClass(duoDUR)) {
             return "commercial";
         }
 
-        OntClass researchType = model.getOntClass(RESEARCH_TYPE);
-        OntClass duoSecondary = model.getOntClass(DUO_SECONDARY_CATEGORY);
+        OntClass researchType = getModel().getOntClass(RESEARCH_TYPE);
+        OntClass duoSecondary = getModel().getOntClass(DUO_SECONDARY_CATEGORY);
         if (cls.hasSuperClass(researchType) || cls.hasSuperClass(duoSecondary)) {
             return "research_type";
         }
 
-        OntClass datasetUsage = model.getOntClass(DATASET_USAGE);
-        OntClass duoPrimary = model.getOntClass(DUO_PRIMARY_CATEGORY);
+        OntClass datasetUsage = getModel().getOntClass(DATASET_USAGE);
+        OntClass duoPrimary = getModel().getOntClass(DUO_PRIMARY_CATEGORY);
         if (cls.hasSuperClass(datasetUsage) || cls.hasSuperClass(duoPrimary)) {
             return "dataset_usage";
         }
