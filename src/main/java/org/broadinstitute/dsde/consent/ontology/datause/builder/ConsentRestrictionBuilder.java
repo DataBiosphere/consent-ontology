@@ -60,7 +60,7 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
             );
         }
 
-        // TRUE: Future commercial use is prohibited
+        // FALSE: Future commercial use is prohibited
         if (getOrElseFalse(dataUse.getCommercialUse())) {
             categoryRestrictions.add(new Not(new Named(NON_PROFIT)));
         }
