@@ -105,7 +105,7 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
 
         // Apply Methods Research Logic
         // TRUE: Future use for methods research (analytic/software/technology development) is prohibited
-        if (isMethodsResearchProhibited(dataUse)) {
+        if (getOrElseTrue(dataUse.getMethodsResearch())) {
             restriction = new Or(new Named(METHODS_RESEARCH), restriction);
         } else {
             restriction = new Or(
