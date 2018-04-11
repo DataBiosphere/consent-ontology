@@ -29,71 +29,99 @@ public class ConsentRestrictionBuilderTest {
     @Test
     public void testGeneralUseMixedCase1() {
         DataUse dataUse = new DataUseBuilder().
+                setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
+                build();
+        DataUse mc1 = new DataUseBuilder().
                 setGeneralUse(true).
                 setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
                 build();
-        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertNotEquals(restriction, everything);
+        Assert.assertEquals(
+                restrictionBuilder.buildUseRestriction(dataUse),
+                restrictionBuilder.buildUseRestriction(mc1));
     }
 
     @Test
     public void testGeneralUseMixedCase2() {
         DataUse dataUse = new DataUseBuilder().
+                setPopulationRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
+                build();
+        DataUse mc2 = new DataUseBuilder().
                 setGeneralUse(true).
                 setPopulationRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
                 build();
-        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertNotEquals(restriction, everything);
+        Assert.assertEquals(
+                restrictionBuilder.buildUseRestriction(dataUse),
+                restrictionBuilder.buildUseRestriction(mc2));
     }
 
     @Test
     public void testGeneralUseMixedCase3() {
         DataUse dataUse = new DataUseBuilder().
+                setCommercialUse(true).
+                build();
+        DataUse mc3 = new DataUseBuilder().
                 setGeneralUse(true).
                 setCommercialUse(true).
                 build();
-        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertNotEquals(restriction, everything);
+        Assert.assertEquals(
+                restrictionBuilder.buildUseRestriction(dataUse),
+                restrictionBuilder.buildUseRestriction(mc3));
     }
 
     @Test
     public void testGeneralUseMixedCase4() {
         DataUse dataUse = new DataUseBuilder().
+                setGender("Male").
+                build();
+        DataUse mc4 = new DataUseBuilder().
                 setGeneralUse(true).
                 setGender("Male").
                 build();
-        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertNotEquals(restriction, everything);
+        Assert.assertEquals(
+                restrictionBuilder.buildUseRestriction(dataUse),
+                restrictionBuilder.buildUseRestriction(mc4));
     }
 
     @Test
     public void testGeneralUseMixedCase5() {
         DataUse dataUse = new DataUseBuilder().
+                setPediatric(true).
+                build();
+        DataUse mc5 = new DataUseBuilder().
                 setGeneralUse(true).
                 setPediatric(true).
                 build();
-        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertNotEquals(restriction, everything);
+        Assert.assertEquals(
+                restrictionBuilder.buildUseRestriction(dataUse),
+                restrictionBuilder.buildUseRestriction(mc5));
     }
 
     @Test
     public void testGeneralUseMixedCase6() {
         DataUse dataUse = new DataUseBuilder().
+                setMethodsResearch(true).
+                build();
+        DataUse mc6 = new DataUseBuilder().
                 setGeneralUse(true).
                 setMethodsResearch(true).
                 build();
-        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertNotEquals(restriction, everything);
+        Assert.assertEquals(
+                restrictionBuilder.buildUseRestriction(dataUse),
+                restrictionBuilder.buildUseRestriction(mc6));
     }
 
     @Test
     public void testGeneralUseMixedCase7() {
         DataUse dataUse = new DataUseBuilder().
+                setControlSetOption("Yes").
+                build();
+        DataUse mc7 = new DataUseBuilder().
                 setGeneralUse(true).
                 setControlSetOption("Yes").
                 build();
-        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertNotEquals(restriction, everything);
+        Assert.assertEquals(
+                restrictionBuilder.buildUseRestriction(dataUse),
+                restrictionBuilder.buildUseRestriction(mc7));
     }
 
     @Test
