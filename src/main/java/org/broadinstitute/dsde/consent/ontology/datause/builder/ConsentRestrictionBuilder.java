@@ -89,8 +89,8 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
         // ignore GRU and apply those other restrictions instead.
         if ((isPresent(dataUse.getGeneralUse()) && dataUse.getGeneralUse())
                 && categoryRestrictions.isEmpty()
-                && !isMethodsResearchProhibited(dataUse)
-                && !isControlSetUsageProhibited(dataUse)) {
+                && !isPresent(dataUse.getMethodsResearch())
+                && !isPresent(dataUse.getControlSetOption())) {
             return new Everything();
         }
 
@@ -115,8 +115,7 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
         }
 
         // Apply Control Set Logic
-        // YES: Future as a control set for diseases other than those specified is prohibited
-        if (isControlSetUsageProhibited(dataUse)) {
+        if (isPresent(dataUse.getControlSetOption()) && dataUse.getControlSetOption().equalsIgnoreCase("Yes")) {
             restriction = new Or(
                 restriction,
                 new And(restriction, new Named(CONTROL))
@@ -124,17 +123,6 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
         }
 
         return restriction;
-    }
-
-    private Boolean isMethodsResearchProhibited(DataUse dataUse) {
-        if (isPresent(dataUse.getMethodsResearch()))
-            return dataUse.getMethodsResearch();
-        return false;
-    }
-
-    private Boolean isControlSetUsageProhibited(DataUse dataUse) {
-        return isPresent(dataUse.getControlSetOption()) &&
-                dataUse.getControlSetOption().equalsIgnoreCase("Yes");
     }
 
 }
