@@ -2,8 +2,6 @@ package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import com.tradier.raven.logging.RavenBootstrap;
-import com.tradier.raven.logging.UncaughtExceptionHandlers;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
@@ -12,6 +10,8 @@ import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConf
 import org.broadinstitute.dsde.consent.ontology.resources.*;
 import org.broadinstitute.dsde.consent.ontology.resources.validate.ValidationResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
+import org.dhatim.dropwizard.sentry.logging.SentryBootstrap;
+import org.dhatim.dropwizard.sentry.logging.UncaughtExceptionHandlers;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 import javax.servlet.DispatcherType;
@@ -30,7 +30,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     public static void main(String[] args) throws Exception {
         String dsn = System.getProperties().getProperty("sentry.dsn");
         if (null != dsn && !dsn.isEmpty()) {
-            RavenBootstrap.bootstrap(System.getProperties().getProperty("sentry.dsn"));
+            SentryBootstrap.bootstrap(dsn);
             Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
         }
         new OntologyApp().run(args);
