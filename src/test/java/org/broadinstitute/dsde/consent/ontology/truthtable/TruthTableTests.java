@@ -14,8 +14,13 @@ import java.util.Collection;
 /**
  * See https://docs.google.com/document/d/1xyeYoIKBDFGAsQ_spoK5Ye5esMOXqpRBojd6ijZWJkk
  * for a summary of use cases for which this test class covers.
+ *
+ * See org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentUseCases and
+ * org.broadinstitute.dsde.consent.ontology.datause.builder.DARUseCases
+ * for test cases.
  */
-class TruthTableTests extends AbstractTest {
+@Deprecated
+public class TruthTableTests extends AbstractTest {
 
     private Collection<URL> RESOURCES = Arrays.asList(
         Resources.getResource("diseases.owl"),
@@ -23,7 +28,7 @@ class TruthTableTests extends AbstractTest {
 
     private OntModelCache ontModelCache = OntModelCache.INSTANCE;
 
-    void assertResponse(MatchPair pair, Boolean expected) {
+    public void assertResponse(MatchPair pair, Boolean expected) {
         MatchWorkerMessage message = new MatchWorkerMessage(RESOURCES, pair);
         try {
             Assert.assertTrue(ontModelCache.matchPurpose(message).equals(expected));

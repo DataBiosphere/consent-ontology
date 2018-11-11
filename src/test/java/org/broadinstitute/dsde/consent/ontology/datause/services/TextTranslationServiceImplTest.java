@@ -7,19 +7,19 @@ import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAP
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
 import static org.junit.Assert.assertEquals;
 
 public class TextTranslationServiceImplTest extends AbstractTest {
 
-    private final Logger log = Logger.getLogger(TextTranslationServiceImplTest.class);
     private static TextTranslationServiceImpl service;
     private static OntologyTermSearchAPI api;
+    private final Logger log = Logger.getLogger(TextTranslationServiceImplTest.class);
 
     public TextTranslationServiceImplTest() {
     }
@@ -38,44 +38,19 @@ public class TextTranslationServiceImplTest extends AbstractTest {
         api = null;
     }
 
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     /**
      * Test of translateSample method, of class TextTranslationServiceImpl.
      *
-     * @throws java.lang.Exception
+     * @throws Exception The Exception
      */
     @Test
     public void testTranslateSample() throws Exception {
         log.debug("translateSample");
         String restrictionStr = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"},"
-                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/children\"},"
-                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
+            + "{\"type\":\"named\",\"name\":\"" + NON_PROFIT + "\"}]}";
         String expResult = "Samples may only be used for the purpose of studying cancer. "
-                + "In addition, samples may only be used for the study of children and may not be used for commercial purposes.";
+            + "In addition, samples may not be used for commercial purposes.";
         String result = service.translateSample(restrictionStr);
-        assertEquals(expResult, result);
-    }
-
-    /**
-     * Test of translatePurpose method, of class TextTranslationServiceImpl.
-     *
-     * @throws java.lang.Exception
-     */
-    @Ignore
-    @Test
-    public void testTranslatePurpose() throws Exception {
-        log.debug("translatePurpose");
-        String restrictionStr = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Broad\"},"
-                + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
-        String expResult = "Any sample which can be used for research at institutions in The Broad Institute.";
-        String result = service.translatePurpose(restrictionStr);
         assertEquals(expResult, result);
     }
 

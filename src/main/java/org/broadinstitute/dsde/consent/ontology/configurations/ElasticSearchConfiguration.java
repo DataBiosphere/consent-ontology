@@ -9,9 +9,6 @@ public class ElasticSearchConfiguration {
     public List<String> servers;
 
     @NotNull
-    public String clusterName;
-
-    @NotNull
     public String index;
 
     public List<String> getServers() {
@@ -20,14 +17,6 @@ public class ElasticSearchConfiguration {
 
     public void setServers(List<String> servers) {
         this.servers = servers;
-    }
-
-    public String getClusterName() {
-        return clusterName;
-    }
-
-    public void setClusterName(String clusterName) {
-        this.clusterName = clusterName;
     }
 
     public String getIndex() {

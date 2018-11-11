@@ -1,99 +1,146 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.elasticsearch.action.ListenableActionFuture;
-import org.elasticsearch.action.index.IndexRequest;
-import org.elasticsearch.action.search.SearchRequestBuilder;
-import org.elasticsearch.action.search.SearchResponse;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.text.StringText;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.elasticsearch.search.SearchHit;
-import org.elasticsearch.search.SearchHits;
-import org.elasticsearch.search.internal.InternalSearchHit;
+import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockserver.integration.ClientAndServer;
+import org.mockserver.model.HttpResponse;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.List;
-import java.util.Map;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.when;
+import static org.mockserver.integration.ClientAndServer.startClientAndServer;
+import static org.mockserver.model.HttpRequest.request;
+import static org.mockserver.model.HttpResponse.response;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ElasticSearchAutocompleteAPITest {
 
-    private ElasticSearchAutocompleteAPI elasticSearchAutocompleteAPI;
-
-    @Mock
-    private Client client;
-
-    @Mock
-    private SearchRequestBuilder queryBuilder;
-
-    @Mock
-    private ListenableActionFuture listenableActionFuture;
-
-    @Mock
-    private SearchResponse searchResponse;
-
-    @Mock
-    private SearchHits hits;
-
-    private final String INDEX = "ontology";
-
-    private final String QUERY = "name=test";
+    private ElasticSearchAutocompleteAPI autocompleteAPI;
+    private static final String INDEX_NAME = "local-ontology";
+    private ClientAndServer server;
 
     @Before
-    public void setUpClass() {
-        MockitoAnnotations.initMocks(this);
-        elasticSearchAutocompleteAPI = new ElasticSearchAutocompleteAPI(client, INDEX);
-        when(client.prepareSearch(INDEX)).thenReturn(queryBuilder);
-        when(queryBuilder.execute()).thenReturn(listenableActionFuture);
-        when(queryBuilder.setSize(any(Integer.class))).thenReturn(queryBuilder);
-        when(queryBuilder.setQuery(any(QueryBuilder.class))).thenReturn(queryBuilder);
-        when(listenableActionFuture.actionGet()).thenReturn(searchResponse);
-        when(searchResponse.getHits()).thenReturn(hits);
+    public void setUp() throws Exception {
+        ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
+        configuration.setIndex(INDEX_NAME);
+        configuration.setServers(Collections.singletonList("localhost"));
+        autocompleteAPI = new ElasticSearchAutocompleteAPI(configuration);
+        server = startClientAndServer(9200);
+    }
+
+    @After
+    public void shutDown() throws Exception {
+        if (server != null && server.isRunning()) {
+            server.stop();
+        }
+    }
+
+    private void mockResponse(HttpResponse response) {
+        server.reset();
+        server.when(request()).respond(response);
     }
 
     @Test
-    public void testLookup() {
-        InternalSearchHit hit = new InternalSearchHit(23, "test", new StringText("test"), null);
-        IndexRequest r = new IndexRequest();
-        Map<String, String> test = new HashMap<>();
-        test.put("definition", "test");
-        r.source(test);
-        hit.sourceRef(r.source());
-        SearchHit[] hitsResult = {hit};
-        when(hits.getHits()).thenReturn(hitsResult);
-        List<TermResource> termResource = elasticSearchAutocompleteAPI.lookup(QUERY, 1);
-        assertThat(termResource.size() == 1);
-        assertThat(termResource.get(0).definition.equals("test"));
+    public void testLookup() throws Exception {
+        mockResponse(response().withStatusCode(200).withBody(cancerJson));
+        List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
+        Assert.assertTrue(termResource.size() == 1);
+        Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
-    public void testLookupWithEmptyResult() {
-        SearchHit[] hitsResult = {};
-        when(hits.getHits()).thenReturn(hitsResult);
-        List<TermResource> termResource = elasticSearchAutocompleteAPI.lookup(QUERY, 1);
-        assertThat(termResource.size() == 0);
+    public void testLookupWithTags() throws Exception {
+        mockResponse(response().withStatusCode(200).withBody(cancerJson));
+        List<TermResource> termResource = autocompleteAPI.lookup(Collections.singletonList("tag"), "cancer", 1);
+        Assert.assertTrue(termResource.size() == 1);
+        Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
-    public void  testLookupWithTags(){
-        SearchHit[] hitsResult = {};
-        when(hits.getHits()).thenReturn(hitsResult);
-        String[] tags = {"test"};
-        List<TermResource> termResource = elasticSearchAutocompleteAPI.lookup(tags, QUERY, 1);
-        assertThat(termResource.size() == 0);
+    public void  testLookupById() throws Exception {
+        mockResponse(response().withStatusCode(200).withBody(cancerGetJson));
+        List<TermResource> termResource = autocompleteAPI.lookupById("http://purl.obolibrary.org/obo/DOID_162");
+        Assert.assertTrue(termResource.size() == 1);
+        Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
+    // mock response for a search
+    private static String cancerJson = "{\n" +
+        "  \"took\": 15,\n" +
+        "  \"timed_out\": false,\n" +
+        "  \"_shards\": {\n" +
+        "    \"total\": 5,\n" +
+        "    \"successful\": 5,\n" +
+        "    \"failed\": 0\n" +
+        "  },\n" +
+        "  \"hits\": {\n" +
+        "    \"total\": 1,\n" +
+        "    \"max_score\": 100,\n" +
+        "    \"hits\": [\n" +
+        "      {\n" +
+        "        \"_index\": \"local-ontology\",\n" +
+        "        \"_type\": \"ontology_term\",\n" +
+        "        \"_id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
+        "        \"_score\": 21.416782,\n" +
+        "        \"_source\": {\n" +
+        "          \"id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
+        "          \"ontology\": \"Disease\",\n" +
+        "          \"synonyms\": [\n" +
+        "            \"primary cancer\",\n" +
+        "            \"malignant tumor \",\n" +
+        "            \"malignant neoplasm\"\n" +
+        "          ],\n" +
+        "          \"label\": \"cancer\",\n" +
+        "          \"definition\": \"A disease of cellular proliferation that is malignant and primary, characterized by uncontrolled cellular proliferation, local cell invasion and metastasis.\",\n" +
+        "          \"usable\": true,\n" +
+        "          \"parents\": [\n" +
+        "            {\n" +
+        "              \"id\": \"http://purl.obolibrary.org/obo/DOID_14566\",\n" +
+        "              \"order\": 1\n" +
+        "            },\n" +
+        "            {\n" +
+        "              \"id\": \"http://purl.obolibrary.org/obo/DOID_4\",\n" +
+        "              \"order\": 2\n" +
+        "            }\n" +
+        "          ]\n" +
+        "        }\n" +
+        "      }\n" +
+        "    ]\n" +
+        "  }\n" +
+        "}";
 
+    // mock response for a document get-by-id
+    private static String cancerGetJson = "{\n" +
+            "  \"_index\": \"ontology\",\n" +
+            "  \"_type\": \"ontology_term\",\n" +
+            "  \"_id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
+            "  \"_version\": 32,\n" +
+            "  \"found\": true,\n" +
+            "  \"_source\": {\n" +
+            "    \"id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
+            "    \"ontology\": \"Disease\",\n" +
+            "    \"synonyms\": [\n" +
+            "      \"primary cancer\",\n" +
+            "      \"malignant tumor \",\n" +
+            "      \"malignant neoplasm\"\n" +
+            "    ],\n" +
+            "    \"label\": \"cancer\",\n" +
+            "    \"definition\": \"A disease of cellular proliferation that is malignant and primary, characterized by uncontrolled cellular proliferation, local cell invasion and metastasis.\",\n" +
+            "    \"usable\": true,\n" +
+            "    \"parents\": [\n" +
+            "      {\n" +
+            "        \"id\": \"http://purl.obolibrary.org/obo/DOID_14566\",\n" +
+            "        \"order\": 1\n" +
+            "      },\n" +
+            "      {\n" +
+            "        \"id\": \"http://purl.obolibrary.org/obo/DOID_4\",\n" +
+            "        \"order\": 2\n" +
+            "      }\n" +
+            "    ]\n" +
+            "  }\n" +
+            "}";
 
 }

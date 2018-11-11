@@ -12,8 +12,61 @@ schemes:
   
 paths:
 
-  '/translate':
-  
+  /schemas/data-use:
+    get:
+      summary: Data Use Questions and Answers
+      description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
+      tags:
+        - Data Use
+      responses:
+        200:
+          description: The json representation for all data use questions + answers
+        default:
+          description: Unexpected error
+
+  /schemas/data-use/consent/translate:
+    post:
+      summary: Translate Data Use JSON into a 'Consent' Use Restriction
+      description: Translate a Data Use JSON to a 'Consent' Use Restriction
+      tags:
+        - Data Use
+      parameters:
+        - name: jsonString
+          in: body
+          description: JSON formatted Data Use object
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
+      responses:
+        200:
+          description: The use restriction in consent format
+        400:
+          description: invalid data use schema format
+        default:
+          description: Unexpected error
+
+  /schemas/data-use/dar/translate:
+    post:
+      summary: Translate Data Use JSON into a 'Data Access Request' Use Restriction
+      description: Translate a Data Use JSON to a 'Data Access Request' Use Restriction
+      tags:
+        - Data Use
+      parameters:
+        - name: jsonString
+          in: body
+          description: JSON formatted Data Use object
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
+      responses:
+        200:
+          description: The use restriction in data access request format
+        400:
+          description: invalid data use schema format
+        default:
+          description: Unexpected error
+
+  /translate:
     post:
       summary: translate
       description: The Translate service will render an English-language version of a consent or research purpose.
@@ -41,8 +94,7 @@ paths:
         default:
           description: Unexpected error
 
-  '/match':
-  
+  /match:
     post:
       summary: match
       description: The Match service will render a response of true or false between a Consent and a Research Purpose.
@@ -64,8 +116,7 @@ paths:
           description: Unexpected error
           
             
-  '/validate/userestriction':
-
+  /validate/userestriction:
       post:
         summary: validate
         description: The Validate service will check If the posted Use Restriction has the correct format and content.
@@ -86,8 +137,7 @@ paths:
           default:
             description: Unexpected error
 
-  '/autocomplete':
-  
+  /autocomplete:
     get:
       summary: autocomplete
       description: Ontologies can be queried based on term; type and count. This provides an easy filtering mechanism that allows users to select ontology terms that are applicable to consents or research purposes.
@@ -115,8 +165,7 @@ paths:
         default:
           description: Unexpected error
 
-  '/search':
-  
+  /search:
     get:
       summary: search
       description: Find ontologies based on the id.
@@ -134,6 +183,15 @@ paths:
         default:
           description: Unexpected error
 
+  /status:
+    get:
+      summary: System Health Status
+      description: A detailed description of the various subsystem statuses that Ontology relies upon.
+      tags:
+        - Status
+      responses:
+        200: All systems are OK
+        500: Some number of subsystems are not OK.
 
 definitions:
   Restriction:
@@ -171,3 +229,17 @@ definitions:
             items:
               type: string
               description: Array of ontologies.
+  DataUse:
+    type: object
+    description: JSON model of a set of data use questions and answers
+    example: |
+      {
+        "generalUse": false,
+        "hmbResearch": true,
+        "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602", "http://purl.obolibrary.org/obo/DOID_162"],
+        "gender": "Male",
+        ...
+        additional JSON-standard fields as
+        defined by the Data Use schema
+        ...
+      }

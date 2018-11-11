@@ -11,11 +11,13 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
+
 public class UseRestrictionValidateImplTest extends AbstractTest {
 
-    private final Logger log = Logger.getLogger(UseRestrictionValidateImplTest.class);
-
     private static UseRestrictionValidateImpl service;
+    private final Logger log = Logger.getLogger(UseRestrictionValidateImplTest.class);
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -33,8 +35,8 @@ public class UseRestrictionValidateImplTest extends AbstractTest {
     public void testValidateUseRestrictionValid() throws Exception {
         log.debug("validateUseRestriction");
         String validRestriction = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_162\"},"
-            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/children\"},"
-            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
+            + "{\"type\":\"named\",\"name\":\"" + PEDIATRIC + "\"},"
+            + "{\"type\":\"named\",\"name\":\"" + NON_PROFIT + "\"}]}";
         ValidateResponse result = service.validateUseRestriction(validRestriction);
         Assert.assertEquals(true, result.isValid());
     }
@@ -44,13 +46,13 @@ public class UseRestrictionValidateImplTest extends AbstractTest {
         log.debug("validateUseRestriction");
         String invalidRestriction = "{\"type\":\"and\",\"operands\":[{\"type\":\"named\",\"name\":\"http://purl.obolibrary.org/obo/DOID_X162\"},"
             + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/choldren\"},"
-            + "{\"type\":\"named\",\"name\":\"http://www.broadinstitute.org/ontologies/DUOS/Non_profit\"}]}";
+            + "{\"type\":\"named\",\"name\":\"" + NON_PROFIT + "\"}]}";
         ValidateResponse result = service.validateUseRestriction(invalidRestriction);
         Assert.assertEquals(false, result.isValid());
     }
 
     @Test
-    public void testValidateUseRestrictionInvalidTerm()  throws Exception {
+    public void testValidateUseRestrictionInvalidTerm() throws Exception {
         String invalidRestriction = "{\"type\":\"named\",\"name\": \"http://purl.obolibrary.org/obo/BLURB\"}";
         ValidateResponse result = service.validateUseRestriction(invalidRestriction);
         Assert.assertEquals(false, result.isValid());
@@ -59,7 +61,7 @@ public class UseRestrictionValidateImplTest extends AbstractTest {
 
     @Test
     public void testValidateUseRestrictionErrorMessage() throws Exception {
-        String invalidRestriction =  "{\"type\":\"named\",\"weird\": \"http://purl.obolibrary.org/obo/BLURB\"}";
+        String invalidRestriction = "{\"type\":\"named\",\"weird\": \"http://purl.obolibrary.org/obo/BLURB\"}";
         ValidateResponse result = service.validateUseRestriction(invalidRestriction);
         Assert.assertEquals(false, result.isValid());
         Assert.assertEquals("Could not resolve the following keys: weird into a subtype of type, operands, operand, name", ((ArrayList) result.getErrors()).get(0));

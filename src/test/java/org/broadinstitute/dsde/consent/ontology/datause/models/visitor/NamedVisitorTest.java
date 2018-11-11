@@ -5,31 +5,29 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.junit.Before;
 import org.junit.Test;
-import java.util.ArrayList;
-import java.util.Collection;
 
 import static junit.framework.TestCase.assertTrue;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.MALE;
 
 public class NamedVisitorTest {
 
     NamedVisitor namedVisitor;
     UseRestriction name;
-    private Collection<String> namedClasses = new ArrayList<>();
 
     @Before
     public void setUp() {
-        UseRestriction and = new And(
-                new Named("http://purl.obolibrary.org/obo/DOID_162"),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/female"),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/men")
+        name = new And(
+            new Named("http://purl.obolibrary.org/obo/DOID_162"),
+            new Named(FEMALE),
+            new Named(MALE)
         );
-        name = and;
         namedVisitor = new NamedVisitor();
     }
 
     @Test
-    public void testVisitTrue(){
+    public void testVisitTrue() {
         assertTrue(namedVisitor.visit(name));
     }
-    
+
 }

@@ -1,50 +1,35 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import org.apache.commons.io.FileUtils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocompleteAPI;
-import org.elasticsearch.action.bulk.BulkRequestBuilder;
-import org.elasticsearch.client.Client;
-import org.elasticsearch.common.xcontent.XContentBuilder;
-import org.elasticsearch.common.xcontent.XContentFactory;
-import org.elasticsearch.node.Node;
-import org.elasticsearch.node.NodeBuilder;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 
 import javax.ws.rs.core.Response;
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 public class OntologySearchParentTest {
 
-    static ElasticSearchAutocompleteAPI api;
-    static OntologySearchResource resource;
-    static Node node;
-    static String index = "test-index";
+    @Mock
+    AutocompleteAPI api;
+
+    OntologySearchResource resource;
 
     // Construction of children and parents.
     static TermResource child = new TermResource();
     static TermResource parent1 = new TermResource();
     static TermResource parent2 = new TermResource();
 
-    @BeforeClass
-    public static void setUp() throws Exception {
-        // Mocks an in-memory elastic-search node
-        node = NodeBuilder.nodeBuilder().node();
-        Runtime.getRuntime().addShutdownHook(new Thread(node::close));
-        node.start();
-        Client client = node.client();
-        api = new ElasticSearchAutocompleteAPI(client, index);
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
         resource = new OntologySearchResource(api);
 
         parent1.setId("parent1");
@@ -73,24 +58,9 @@ public class OntologySearchParentTest {
         child.getParents().add(childParent1);
         child.getParents().add(childParent2);
 
-        // Push the terms to the in-memory ES index
-        BulkRequestBuilder bulkRequestBuilder = client.prepareBulk();
-        // prevents a race condition where the data isn't available when it's queried.
-        bulkRequestBuilder.setRefresh(true);
-        for (TermResource term : Arrays.asList(child, parent1, parent2)) {
-            bulkRequestBuilder.add(client.prepareIndex(index, "ontology_term")
-                .setSource(buildDocument(term))
-                .setId(term.getId())
-            );
-        }
-        bulkRequestBuilder.execute().actionGet();
-    }
+        Mockito.when(api.lookupById(child.getId())).thenReturn(Collections.singletonList(child));
+        Mockito.when(api.lookupById(parent1.getId())).thenReturn(Collections.singletonList(parent1));
 
-    @AfterClass
-    public static void tearDown() throws Exception {
-        node.stop();
-        // The in-memory ES creates a "data" directory for indexes. Clean that up after tests.
-        FileUtils.deleteDirectory(new File("data"));
     }
 
     @Test
@@ -116,14 +86,8 @@ public class OntologySearchParentTest {
         TermParent actualParent1 = term.getParents().get(0);
         TermParent actualParent2 = term.getParents().get(1);
 
-        assertTrue(actualParent1.getLabel().equals(parent1.getLabel()));
-        assertTrue(actualParent1.getDefinition().equals(parent1.getDefinition()));
-        assertTrue(actualParent1.getSynonyms().equals(parent1.getSynonyms()));
-
-        assertTrue(actualParent2.getLabel().equals(parent2.getLabel()));
-        assertTrue(actualParent2.getDefinition().equals(parent2.getDefinition()));
-        assertTrue(actualParent2.getSynonyms().equals(parent2.getSynonyms()));
-
+        assertTrue(actualParent1.getId().equals(parent1.getId()));
+        assertTrue(actualParent2.getId().equals(parent2.getId()));
     }
 
     @SuppressWarnings("unchecked")
@@ -132,34 +96,6 @@ public class OntologySearchParentTest {
         List<TermResource> terms = (List<TermResource>) response.getEntity();
         assertTrue(terms.size() == 1);
         return terms;
-    }
-
-    private static XContentBuilder buildDocument(TermResource term) throws IOException {
-        XContentBuilder builder = XContentFactory.jsonBuilder()
-            .startObject()
-            .field("id", term.id)
-            .field("ontology", "test-type")
-            .field("usable", true);
-        if (term.getLabel() != null) {
-            builder = builder.field("label", term.getLabel());
-        }
-        if (term.getDefinition() != null) {
-            builder = builder.field("definition", term.getDefinition());
-        }
-        if (term.getSynonyms() != null && term.getSynonyms().size() != 0) {
-            builder = builder.array("synonyms", term.getSynonyms().stream().toArray(String[]::new));
-        }
-        if (term.getParents() != null && !term.getParents().isEmpty()) {
-            builder.startArray("parents");
-            for (TermParent parent : term.getParents()) {
-                builder.startObject();
-                builder.field("id", parent.getId());
-                builder.field("order", parent.getOrder());
-                builder.endObject();
-            }
-            builder.endArray();
-        }
-        return builder.endObject();
     }
 
 }

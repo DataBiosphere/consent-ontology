@@ -9,11 +9,10 @@ public class MatchWorkerActor extends UntypedActor {
 
     private LoggingAdapter log = Logging.getLogger(getContext().system(), this);
 
-    private OntModelCache ontModelCache = OntModelCache.INSTANCE;
-
     @Override
     @Timed(name = "onReceive")
     public void onReceive(Object msg) throws Exception {
+        OntModelCache ontModelCache = OntModelCache.INSTANCE;
         log.debug("Received Event: " + msg);
         if (msg instanceof MatchWorkerMessage) {
             Boolean match = ontModelCache.matchPurpose((MatchWorkerMessage) msg);

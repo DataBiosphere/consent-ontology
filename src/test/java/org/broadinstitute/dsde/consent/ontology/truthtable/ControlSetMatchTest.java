@@ -4,52 +4,54 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.*;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.junit.Test;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
+
 public class ControlSetMatchTest extends TruthTableTests {
 
     private UseRestriction darCSA = new And(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/control"),
+        new Named(CONTROL),
         new Named("http://purl.obolibrary.org/obo/DOID_162")
     );
 
     private UseRestriction darDefaultCSA = new And(
-            new And(
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research")),
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/population")),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/control")
-            ),
-            new Named("http://purl.obolibrary.org/obo/DOID_162"),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit")
+        new And(
+            new Not(new Named(METHODS_RESEARCH)),
+            new Not(new Named(POPULATION_STRUCTURE)),
+            new Named(CONTROL)
+        ),
+        new Named("http://purl.obolibrary.org/obo/DOID_162"),
+        new Named(NON_PROFIT)
 
     );
 
     private UseRestriction darCSB = new Named("http://purl.obolibrary.org/obo/DOID_162");
 
     private UseRestriction darDefaultCSB = new And(
-            new And(
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research")),
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/population")),
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/control"))
-            ),
-            new Named("http://purl.obolibrary.org/obo/DOID_162"),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit")
+        new And(
+            new Not(new Named(METHODS_RESEARCH)),
+            new Not(new Named(POPULATION_STRUCTURE)),
+            new Not(new Named(CONTROL))
+        ),
+        new Named("http://purl.obolibrary.org/obo/DOID_162"),
+        new Named(NON_PROFIT)
     );
 
-    private UseRestriction darCSC = new Named("http://www.broadinstitute.org/ontologies/DUOS/control");
+    private UseRestriction darCSC = new Named(CONTROL);
 
     private UseRestriction darDefaultCSC = new And(
-            new And(
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research")),
-                new Not(new Named("http://www.broadinstitute.org/ontologies/DUOS/population")),
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/control")
-            ),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/Non_profit")
+        new And(
+            new Not(new Named(METHODS_RESEARCH)),
+            new Not(new Named(POPULATION_STRUCTURE)),
+            new Named(CONTROL)
+        ),
+        new Named(NON_PROFIT)
     );
 
     // Combined example from OD-329
     private UseRestriction dulUC1 = new Or(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
+        new Named(AGGREGATE_RESEARCH),
         new Or(
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
+            new Named(METHODS_RESEARCH),
             new Named("http://purl.obolibrary.org/obo/DOID_162")
         )
     );
@@ -57,29 +59,29 @@ public class ControlSetMatchTest extends TruthTableTests {
     // Combined example from OD-335
     private UseRestriction dulUC2 = new Or(
         new Or(
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
+            new Named(AGGREGATE_RESEARCH),
             new Or(
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
+                new Named(METHODS_RESEARCH),
                 new Named("http://purl.obolibrary.org/obo/DOID_162")
             )
         ),
         new And(
             new Or(
-                new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
+                new Named(AGGREGATE_RESEARCH),
                 new Or(
-                    new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
+                    new Named(METHODS_RESEARCH),
                     new Named("http://purl.obolibrary.org/obo/DOID_162")
                 )
             ),
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/control")
+            new Named(CONTROL)
         )
     );
 
     // Combined example from OD-336
     private UseRestriction dulUC3 = new Or(
-        new Named("http://www.broadinstitute.org/ontologies/DUOS/aggregate_research"),
+        new Named(AGGREGATE_RESEARCH),
         new Or(
-            new Named("http://www.broadinstitute.org/ontologies/DUOS/methods_research"),
+            new Named(METHODS_RESEARCH),
             new Named("http://purl.obolibrary.org/obo/DOID_162")
         )
     );
