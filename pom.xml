@@ -229,13 +229,6 @@
 
     <dependencies>
 
-        <!-- https://mvnrepository.com/artifact/org.parboiled/parboiled-java -->
-        <dependency>
-            <groupId>org.parboiled</groupId>
-            <artifactId>parboiled-java</artifactId>
-            <version>1.1.8</version>
-        </dependency>
-
         <!-- pull in jackson-databind directly to get a recent version without security warnings;
                 this is normally a transitive dependency -->
         <dependency>
