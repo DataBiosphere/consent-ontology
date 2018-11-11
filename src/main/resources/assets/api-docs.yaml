@@ -104,9 +104,7 @@ paths:
           description: Consent and Purpose Use Restrictions.
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/matchRestrictions'
+            $ref: '#/definitions/matchRestrictions'
       tags:
         - Match
       responses:
@@ -126,9 +124,7 @@ paths:
             description: Restriction
             required: true
             schema:
-              type: array
-              items:
-                $ref: '#/definitions/Restriction'
+              $ref: '#/definitions/Restriction'
         tags:
           - Validate
         responses:
