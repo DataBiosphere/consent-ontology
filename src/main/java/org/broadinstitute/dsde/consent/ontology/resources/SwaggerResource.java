@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import org.apache.commons.lang3.StringUtils;
 import org.parboiled.common.FileUtils;
 
 import javax.ws.rs.GET;
@@ -47,21 +48,23 @@ public class SwaggerResource {
     }
 
     private String getMediaTypeFromPath(String path) {
-        // Default case:
-        String mediaType = MediaType.TEXT_HTML;
-
-        // Handle specific cases for the various swagger ui file content types:
-        if (path.endsWith("css")) {
-            mediaType = "text/css";
-        }
-        if (path.endsWith("js")) {
-            mediaType = "application/js";
-        }
-        if (path.endsWith("png")) {
-            mediaType = "image/png";
-        }
-        if (path.endsWith("gif")) {
-            mediaType = "image/gif";
+        String mediaType;
+        switch (StringUtils.substringAfterLast(path, ".")) {
+            case "css":
+                mediaType = "text/css";
+                break;
+            case "js":
+                mediaType = "application/js";
+                break;
+            case "png":
+                mediaType = "image/png";
+                break;
+            case "gif":
+                mediaType = "image/gif";
+                break;
+            default:
+                mediaType = MediaType.TEXT_HTML;
+                break;
         }
         return mediaType;
     }
