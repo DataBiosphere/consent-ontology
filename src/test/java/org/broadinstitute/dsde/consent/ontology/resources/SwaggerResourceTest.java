@@ -59,6 +59,12 @@ public class SwaggerResourceTest {
         Assert.assertEquals(response.getStatus(), Response.Status.NOT_FOUND.getStatusCode());
     }
 
+    @Test
+    public void testImageNotFound() {
+        Response response = swaggerResource.content("foo/bar.png");
+        Assert.assertEquals(response.getStatus(), Response.Status.NOT_FOUND.getStatusCode());
+    }
+
     private void checkStatusAndHeader(Response response, String header) {
         Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
         Object headerObject = response.getHeaders().get("Content-type");
