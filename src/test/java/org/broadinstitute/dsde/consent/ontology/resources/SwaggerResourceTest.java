@@ -7,6 +7,11 @@ import org.junit.Test;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_CSS;
+import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_JS;
+import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_PNG;
+import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_GIF;
+
 public class SwaggerResourceTest {
 
     private SwaggerResource swaggerResource;
@@ -28,7 +33,7 @@ public class SwaggerResourceTest {
     @Test
     public void testStyle() {
         Response response = swaggerResource.content("css/style.css");
-        checkStatusAndHeader(response, "text/css");
+        checkStatusAndHeader(response, MEDIA_TYPE_CSS);
         String content = response.getEntity().toString().trim();
         Assert.assertTrue(content.startsWith(".swagger-section"));
     }
@@ -36,7 +41,7 @@ public class SwaggerResourceTest {
     @Test
     public void testJavascript() {
         Response response = swaggerResource.content("lib/marked.js");
-        checkStatusAndHeader(response, "application/js");
+        checkStatusAndHeader(response, MEDIA_TYPE_JS);
         String content = response.getEntity().toString().trim();
         Assert.assertTrue(content.startsWith("(function()"));
     }
@@ -44,13 +49,13 @@ public class SwaggerResourceTest {
     @Test
     public void testPng() {
         Response response = swaggerResource.content("images/explorer_icons.png");
-        checkStatusAndHeader(response, "image/png");
+        checkStatusAndHeader(response, MEDIA_TYPE_PNG);
     }
 
     @Test
     public void testGif() {
         Response response = swaggerResource.content("images/expand.gif");
-        checkStatusAndHeader(response, "image/gif");
+        checkStatusAndHeader(response, MEDIA_TYPE_GIF);
     }
 
     @Test

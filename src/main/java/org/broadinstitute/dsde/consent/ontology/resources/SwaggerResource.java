@@ -15,6 +15,10 @@ import javax.ws.rs.core.UriInfo;
 public class SwaggerResource {
 
     private final static String swaggerResource = "META-INF/resources/webjars/swagger-ui/2.2.8/";
+    final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
+    final static String MEDIA_TYPE_JS = new MediaType("application", "js").toString();
+    final static String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
+    final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
 
     @Context
     UriInfo uriInfo;
@@ -51,16 +55,16 @@ public class SwaggerResource {
         String mediaType;
         switch (StringUtils.substringAfterLast(path, ".")) {
             case "css":
-                mediaType = "text/css";
+                mediaType = MEDIA_TYPE_CSS;
                 break;
             case "js":
-                mediaType = "application/js";
+                mediaType = MEDIA_TYPE_JS;
                 break;
             case "png":
-                mediaType = "image/png";
+                mediaType = MEDIA_TYPE_PNG;
                 break;
             case "gif":
-                mediaType = "image/gif";
+                mediaType = MEDIA_TYPE_GIF;
                 break;
             default:
                 mediaType = MediaType.TEXT_HTML;
