@@ -41,7 +41,7 @@ public class SwaggerResource {
                 }
             } else {
                 String content = FileUtils.readAllTextFromResource(swaggerResource + path);
-                if (content != null) {
+                if (StringUtils.isNotEmpty(content)) {
                     response = Response.ok().entity(content).type(mediaType).build();
                 } else {
                     response = Response.status(Response.Status.NOT_FOUND).build();
