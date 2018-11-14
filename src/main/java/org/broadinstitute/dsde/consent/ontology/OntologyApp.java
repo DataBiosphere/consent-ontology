@@ -7,7 +7,13 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.broadinstitute.dsde.consent.ontology.resources.*;
+import org.broadinstitute.dsde.consent.ontology.resources.AllTermsResource;
+import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
+import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
+import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource;
+import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
+import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;
+import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 import org.broadinstitute.dsde.consent.ontology.resources.validate.ValidationResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.dhatim.dropwizard.sentry.logging.SentryBootstrap;
@@ -46,6 +52,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(ValidationResource.class));
         env.jersey().register(injector.getInstance(OntologySearchResource.class));
         env.jersey().register(injector.getInstance(DataUseResource.class));
+        env.jersey().register(injector.getInstance(SwaggerResource.class));
 
         ElasticSearchConfiguration esConfig = config.getElasticSearchConfiguration();
         env.healthChecks().register("elastic-search", new ElasticSearchHealthCheck(esConfig));
@@ -62,7 +69,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
 
     @Override
     public void initialize(Bootstrap<OntologyConfiguration> bootstrap) {
-        bootstrap.addBundle(new AssetsBundle("/assets/", "/swagger", "index.html"));
+        bootstrap.addBundle(new AssetsBundle("/assets/", "/api-docs", "index.html"));
     }
 
 }
