@@ -18,6 +18,7 @@
         <akka.version>2.4.20</akka.version>
         <jersey.version>2.19</jersey.version>
         <swagger.ui.version>2.2.8</swagger.ui.version>
+        <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
@@ -25,6 +26,23 @@
     <build>
         <finalName>consent-ontology</finalName>
         <plugins>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>properties-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <executions>
+                    <execution>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>write-project-properties</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.outputDirectory}/mvn.properties</outputFile>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
 
             <!-- Used for hot reloading during local development -->
             <plugin>

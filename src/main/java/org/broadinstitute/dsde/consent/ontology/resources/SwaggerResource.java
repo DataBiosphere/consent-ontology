@@ -10,15 +10,41 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
+import java.io.InputStream;
+import java.util.Properties;
+import java.util.logging.Logger;
 
 @Path("/swagger")
 public class SwaggerResource {
 
-    private final static String swaggerResource = "META-INF/resources/webjars/swagger-ui/2.2.8/";
+    private static final Logger logger = Logger.getLogger(SwaggerResource.class.getName());
+    // Default swagger ui library if not found in properties
+    private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/2.2.8/";
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
     final static String MEDIA_TYPE_JS = new MediaType("application", "js").toString();
     final static String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
     final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
+
+    private String swaggerResource = null;
+
+    private String getSwaggerResource() {
+        if (swaggerResource == null) {
+            try (InputStream is = this.getClass().getResourceAsStream("/mvn.properties")) {
+                Properties p = new Properties();
+                p.load(is);
+                if (StringUtils.isNotEmpty(p.getProperty("swagger.ui.path"))) {
+                    swaggerResource = p.getProperty("swagger.ui.path");
+                } else {
+                    logger.warning("swagger.ui.path is not configured correctly");
+                    swaggerResource = DEFAULT_LIB;
+                }
+            } catch (Exception e) {
+                logger.warning(e.getMessage());
+                swaggerResource = DEFAULT_LIB;
+            }
+        }
+        return swaggerResource;
+    }
 
     @Context
     UriInfo uriInfo;
@@ -26,10 +52,11 @@ public class SwaggerResource {
     @GET
     @Path("{path:.*}")
     public Response content(@PathParam("path") String path) {
+        String swaggerResource = getSwaggerResource();
         Response response;
         String mediaType = getMediaTypeFromPath(path);
         if (path.isEmpty() || path.equals("index.html")) {
-            response = Response.ok().entity(getIndex()).type(mediaType).build();
+            response = Response.ok().entity(getIndex(swaggerResource)).type(mediaType).build();
         } else {
             mediaType = getMediaTypeFromPath(path);
             if (path.endsWith("png") || path.endsWith("gif")) {
@@ -73,9 +100,10 @@ public class SwaggerResource {
         return mediaType;
     }
 
-    private String getIndex() {
+    private String getIndex(String swaggerResource) {
         String content = FileUtils.readAllTextFromResource(swaggerResource + "index.html");
         return content
+            .replace("your-client-id", "")
             .replace("your-client-secret-if-required", "")
             .replace("your-realms", "Broad Institute")
             .replace("your-app-name", "Consent Ontology")
