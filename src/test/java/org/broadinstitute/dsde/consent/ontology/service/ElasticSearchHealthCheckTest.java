@@ -7,11 +7,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockserver.integration.ClientAndServer;
 
+import javax.ws.rs.InternalServerErrorException;
 import java.util.Collections;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
+import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
@@ -59,7 +61,7 @@ public class ElasticSearchHealthCheckTest {
     }
 
     @Test
-    public void testCheckTimeOut() throws Exception {
+    public void testCheckTimeOut() {
         mockRequest("red", true);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
         assertFalse(result.isHealthy());
@@ -67,7 +69,7 @@ public class ElasticSearchHealthCheckTest {
     }
 
     @Test
-    public void testCheckStatusRed() throws Exception {
+    public void testCheckStatusRed() {
         mockRequest("red", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
         assertFalse(result.isHealthy());
@@ -75,7 +77,7 @@ public class ElasticSearchHealthCheckTest {
     }
 
     @Test
-    public void testCheckStatusYellow() throws Exception {
+    public void testCheckStatusYellow() {
         mockRequest("yellow", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
         assertFalse(result.isHealthy());
@@ -83,9 +85,24 @@ public class ElasticSearchHealthCheckTest {
     }
 
     @Test
-    public void testCheckStatusOK() throws Exception {
+    public void testCheckStatusOK() {
         mockRequest("green", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
         assertTrue(result.isHealthy());
     }
+
+    @Test(expected = InternalServerErrorException.class)
+    public void testCheckDroppedConnection() {
+        server.reset();
+        server.when(request()).error(error().withDropConnection(true));
+        elasticSearchHealthCheck.check();
+    }
+
+    @Test(expected = InternalServerErrorException.class)
+    public void testErrorStatus() {
+        server.reset();
+        server.when(request()).respond(response().withStatusCode(500));
+        elasticSearchHealthCheck.check();
+    }
+
 }
