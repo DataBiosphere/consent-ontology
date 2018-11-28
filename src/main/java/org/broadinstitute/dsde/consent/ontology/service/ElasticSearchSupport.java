@@ -25,6 +25,7 @@ import java.util.stream.Collectors;
 class ElasticSearchSupport {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchSupport.class);
+    private static final Gson gson = new GsonBuilder().create();
 
     static RestClient createRestClient(ElasticSearchConfiguration configuration) {
         HttpHost[] hosts = configuration
@@ -35,7 +36,7 @@ class ElasticSearchSupport {
                 .toArray(new HttpHost[configuration.getServers().size()]);
         return RestClient
                 .builder(hosts)
-                .setDefaultHeaders(new Header[]{jsonHeader})
+                .setDefaultHeaders(new Header[]{new BasicHeader("Content-Type", "application/json")})
                 .build();
     }
 
@@ -54,10 +55,6 @@ class ElasticSearchSupport {
     static String getClusterHealthPath(String index) {
         return "/_cluster/health/" + index;
     }
-
-    private static Header jsonHeader = new BasicHeader("Content-Type", "application/json");
-
-    private static Gson gson = new GsonBuilder().create();
 
     /**
      * Builds an elastic search json query object in the form of:
