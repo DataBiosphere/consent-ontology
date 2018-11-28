@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
@@ -21,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.InternalServerErrorException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -37,6 +37,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
     private JsonParser parser = new JsonParser();
     private Gson gson = new GsonBuilder().create();
     private RestClient client;
+    private ElasticSearchSupport elasticSearchSupport;
 
     @Override
     public void start() { }
@@ -50,7 +51,13 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
 
     public ElasticSearchAutocompleteAPI(ElasticSearchConfiguration configuration) {
         this.configuration = configuration;
-        this.client = ElasticSearchSupport.createRestClient(configuration);
+        setElasticSearchSupport(new ElasticSearchSupport());
+        this.client = elasticSearchSupport.createRestClient(configuration);
+    }
+
+    @VisibleForTesting
+    void setElasticSearchSupport(ElasticSearchSupport elasticSearchSupport) {
+        this.elasticSearchSupport = elasticSearchSupport;
     }
 
     /**
@@ -65,11 +72,11 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
     @SuppressWarnings("SameParameterValue")
     private List<TermResource> executeSearch(String query, int limit, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
-        String endpoint = ElasticSearchSupport.getSearchPath(configuration.getIndex());
+        String endpoint = elasticSearchSupport.getSearchPath(configuration.getIndex());
         Request request = new Request(GET, endpoint);
         request.addParameter("size", String.valueOf(limit));
         request.setEntity(new NStringEntity(query, ContentType.APPLICATION_JSON));
-        JsonObject jsonResponse = parseResponseToJson(ElasticSearchSupport.retryRequest(client, request));
+        JsonObject jsonResponse = parseResponseToJson(elasticSearchSupport.retryRequest(client, request));
         JsonObject hitsSummary = jsonResponse.getAsJsonObject("hits");
         if (hitsSummary != null) {
             JsonArray hits = hitsSummary.getAsJsonArray("hits");
@@ -94,17 +101,12 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
      */
     private List<TermResource> executeGet(String query, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
-        try {
-            String endpoint = ElasticSearchSupport.getTermPath(configuration.getIndex()) + "/" + java.net.URLEncoder.encode(query, "UTF-8");
-            Request request = new Request(GET, endpoint);
-            JsonObject jsonResponse = parseResponseToJson(ElasticSearchSupport.retryRequest(client, request));
-            JsonElement data = jsonResponse.getAsJsonObject("_source");
-            TermResource resource = gson.fromJson(data, TermResource.class);
-            termList.add(filterThin(resource, thinFilter));
-        } catch (IOException e) {
-            logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
-            throw new InternalServerErrorException(e);
-        }
+        String endpoint = elasticSearchSupport.getEncodedEndpoint(query, configuration.getIndex());
+        Request request = new Request(GET, endpoint);
+        JsonObject jsonResponse = parseResponseToJson(elasticSearchSupport.retryRequest(client, request));
+        JsonElement data = jsonResponse.getAsJsonObject("_source");
+        TermResource resource = gson.fromJson(data, TermResource.class);
+        termList.add(filterThin(resource, thinFilter));
         return termList;
     }
 
@@ -138,7 +140,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
 
     @Override
     public List<TermResource> lookup(Collection<String> tags, String query, int limit) {
-        return executeSearch(ElasticSearchSupport.buildFilterQuery(query, tags), limit, true);
+        return executeSearch(elasticSearchSupport.buildFilterQuery(query, tags), limit, true);
     }
 
     @Override

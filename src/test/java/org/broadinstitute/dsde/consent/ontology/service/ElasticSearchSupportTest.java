@@ -16,30 +16,32 @@ import java.util.List;
 public class ElasticSearchSupportTest {
 
     private ElasticSearchConfiguration configuration;
+    private ElasticSearchSupport elasticSearchSupport;
 
     @Before
     public void setUp() {
         configuration = new ElasticSearchConfiguration();
         configuration.setIndex("local-ontology");
         configuration.setServers(Collections.singletonList("localhost"));
+        this.elasticSearchSupport = new ElasticSearchSupport();
     }
 
     @Test
     public void testGetRestClient() {
-        RestClient client = ElasticSearchSupport.createRestClient(configuration);
+        RestClient client = elasticSearchSupport.createRestClient(configuration);
         Assert.assertNotNull(client);
     }
 
     @Test
     public void testGetIndexPath() {
-        String path = ElasticSearchSupport.getIndexPath(configuration.getIndex());
+        String path = elasticSearchSupport.getIndexPath(configuration.getIndex());
         Assert.assertNotNull(path);
         Assert.assertTrue(path.contains(configuration.getIndex()));
     }
 
     @Test
     public void testGetClusterHealthPath() {
-        String path = ElasticSearchSupport.getClusterHealthPath(configuration.getIndex());
+        String path = elasticSearchSupport.getClusterHealthPath(configuration.getIndex());
         Assert.assertNotNull(path);
         Assert.assertTrue(path.contains(configuration.getIndex()));
         Assert.assertTrue(path.contains("health"));
@@ -49,7 +51,7 @@ public class ElasticSearchSupportTest {
     public void testBuildFilterQuery() {
         String termId = "term_id";
         List<String> filters = Arrays.asList("Disease", "Organization");
-        String query = ElasticSearchSupport.buildFilterQuery(termId, filters);
+        String query = elasticSearchSupport.buildFilterQuery(termId, filters);
 
         JsonParser parser = new JsonParser();
 
@@ -72,7 +74,7 @@ public class ElasticSearchSupportTest {
         Assert.assertEquals(joMultiMatch.get("query").getAsString(), termId);
         Assert.assertTrue(joMultiMatch.has("type"));
         Assert.assertTrue(joMultiMatch.has("fields"));
-        Assert.assertEquals(joMultiMatch.getAsJsonArray("fields").size(), ElasticSearchSupport.searchFields.length);
+        Assert.assertEquals(joMultiMatch.getAsJsonArray("fields").size(), elasticSearchSupport.searchFields.length);
 
         JsonArray joFilter = joBool.getAsJsonArray("filter");
         Assert.assertEquals(2, joFilter.size());

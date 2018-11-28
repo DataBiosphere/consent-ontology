@@ -16,7 +16,9 @@ import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -32,7 +34,7 @@ class ElasticSearchSupport {
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchSupport.class);
     private static final Gson gson = new GsonBuilder().create();
 
-    static RestClient createRestClient(ElasticSearchConfiguration configuration) {
+    RestClient createRestClient(ElasticSearchConfiguration configuration) {
         HttpHost[] hosts = configuration
                 .getServers()
                 .stream()
@@ -45,19 +47,19 @@ class ElasticSearchSupport {
                 .build();
     }
 
-    static String getIndexPath(String index) {
+    String getIndexPath(String index) {
         return "/" + index;
     }
 
-    static String getTermPath(String index) {
+    String getTermPath(String index) {
         return getIndexPath(index) + "/ontology_term";
     }
 
-    static String getSearchPath(String index) {
+    String getSearchPath(String index) {
         return getTermPath(index) + "/_search";
     }
 
-    static String getClusterHealthPath(String index) {
+    String getClusterHealthPath(String index) {
         return "/_cluster/health/" + index;
     }
 
@@ -85,7 +87,7 @@ class ElasticSearchSupport {
      * @param tags List of ontology type filter tags that should be applied. Filter of `usable=true` is always applied
      * @return Json formatted string suitable for using as an Elastic Search query object.
      */
-    static String buildFilterQuery(String term, Collection<String> tags) {
+    String buildFilterQuery(String term, Collection<String> tags) {
         List<Map<String, Object>> filterList = new ArrayList<>();
         Map<String, Object> usable = new HashMap<>();
         usable.put("usable", "true");
@@ -123,9 +125,9 @@ class ElasticSearchSupport {
     /*
      * Preferred search fields are boosted by default, e.g., '^3' triples a field's weight.
      */
-    static final String[] searchFields = {"id^3", "label^2", "synonyms", "definition"};
+    final String[] searchFields = {"id^3", "label^2", "synonyms", "definition"};
 
-    static Response retryRequest(final RestClient client, final Request request) {
+    Response retryRequest(final RestClient client, final Request request) {
         Callable<Response> callable = () -> client.performRequest(request);
         Retryer<Response> retryer = RetryerBuilder.<Response>newBuilder()
                 .retryIfException()
@@ -137,6 +139,15 @@ class ElasticSearchSupport {
         } catch (Exception e) {
             logger.error("Unable to retry request: ", e);
             throw new InternalServerErrorException(e);
+        }
+    }
+
+    String getEncodedEndpoint(String query, String index) {
+        try {
+            return getTermPath(index) + "/" + java.net.URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.error("Unable to encode query: " + query, e);
+            throw new BadRequestException(e);
         }
     }
 

@@ -6,14 +6,19 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockserver.integration.ClientAndServer;
 import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpResponse;
 
+import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
@@ -26,8 +31,12 @@ public class ElasticSearchAutocompleteAPITest {
     private static final String INDEX_NAME = "local-ontology";
     private ClientAndServer server;
 
+    @Mock
+    ElasticSearchSupport elasticSearchSupport;
+
     @Before
     public void setUp() {
+        MockitoAnnotations.initMocks(this);
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList("localhost"));
@@ -80,6 +89,20 @@ public class ElasticSearchAutocompleteAPITest {
         server.reset();
         server.when(request()).error(error().withDropConnection(true));
         autocompleteAPI.lookup("cancer", 1);
+    }
+
+    @Test(expected = InternalServerErrorException.class)
+    public void testBadResponse() {
+        mockResponse(response().withStatusCode(400));
+        autocompleteAPI.lookup("cancer", 1);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void testInvalidIdStringError() {
+        mockResponse(response().withStatusCode(200).withBody(cancerJson));
+        when(elasticSearchSupport.getEncodedEndpoint(any(), any())).thenThrow(new BadRequestException());
+        autocompleteAPI.setElasticSearchSupport(elasticSearchSupport);
+        autocompleteAPI.lookupById("cancer");
     }
 
     @Test

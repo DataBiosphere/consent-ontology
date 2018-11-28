@@ -23,6 +23,7 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     private ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
     private RestClient client;
+    private ElasticSearchSupport elasticSearchSupport;
 
 
     @Override
@@ -36,15 +37,16 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     }
 
     public ElasticSearchHealthCheck(ElasticSearchConfiguration config) {
-        this.configuration = config;
-        this.client = ElasticSearchSupport.createRestClient(this.configuration);
+        this.configuration =  config;
+        this.elasticSearchSupport = new ElasticSearchSupport();
+        this.client = elasticSearchSupport.createRestClient(this.configuration);
     }
 
     @Override
     protected Result check() {
         try {
-            Request request = new Request(GET, ElasticSearchSupport.getClusterHealthPath(configuration.getIndex()));
-            Response response = ElasticSearchSupport.retryRequest(client, request);
+            Request request = new Request(GET, elasticSearchSupport.getClusterHealthPath(configuration.getIndex()));
+            Response response = elasticSearchSupport.retryRequest(client, request);
             if (response.getStatusLine().getStatusCode() != 200) {
                 logger.error("Invalid health check request: " + response.getStatusLine().getReasonPhrase());
                 throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
