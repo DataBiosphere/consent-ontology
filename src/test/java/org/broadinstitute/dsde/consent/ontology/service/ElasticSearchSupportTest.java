@@ -18,7 +18,7 @@ public class ElasticSearchSupportTest {
     private ElasticSearchConfiguration configuration;
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         configuration = new ElasticSearchConfiguration();
         configuration.setIndex("local-ontology");
         configuration.setServers(Collections.singletonList("localhost"));
@@ -69,13 +69,13 @@ public class ElasticSearchSupportTest {
 
         JsonObject joMultiMatch = joMust.getAsJsonObject("multi_match");
         Assert.assertTrue(joMultiMatch.has("query"));
-        Assert.assertTrue(joMultiMatch.get("query").getAsString().equals(termId));
+        Assert.assertEquals(joMultiMatch.get("query").getAsString(), termId);
         Assert.assertTrue(joMultiMatch.has("type"));
         Assert.assertTrue(joMultiMatch.has("fields"));
-        Assert.assertTrue(joMultiMatch.getAsJsonArray("fields").size() == ElasticSearchSupport.searchFields.length);
+        Assert.assertEquals(joMultiMatch.getAsJsonArray("fields").size(), ElasticSearchSupport.searchFields.length);
 
         JsonArray joFilter = joBool.getAsJsonArray("filter");
-        Assert.assertTrue(joFilter.size() == 2);
+        Assert.assertEquals(2, joFilter.size());
 
     }
 

@@ -1,6 +1,11 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import io.dropwizard.lifecycle.Managed;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
@@ -8,27 +13,33 @@ import org.apache.http.nio.entity.NStringEntity;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
+import org.eclipse.jetty.http.HttpMethod;
+import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
-import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
 
     private static final Logger logger = LoggerFactory.getLogger(ElasticSearchAutocompleteAPI.class);
+    private static final String GET = HttpMethod.GET.asString();
     private final ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
     private Gson gson = new GsonBuilder().create();
     private RestClient client;
 
     @Override
-    public void start() throws Exception { }
+    public void start() { }
 
     @Override
     public void stop() throws Exception {
@@ -51,42 +62,24 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
      *                   false, we provide the fully populated object.
      * @return List of TermResources that match the query
      */
+    @SuppressWarnings("SameParameterValue")
     private List<TermResource> executeSearch(String query, int limit, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
-        try {
-            Map<String, String> params = new HashMap<>();
-            params.put("size", String.valueOf(limit));
-            Response esResponse = client.performRequest(
-                "GET",
-                ElasticSearchSupport.getSearchPath(configuration.getIndex()),
-                params,
-                new NStringEntity(query, ContentType.APPLICATION_JSON),
-                ElasticSearchSupport.jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException();
+        String endpoint = ElasticSearchSupport.getSearchPath(configuration.getIndex());
+        Request request = new Request(GET, endpoint);
+        request.addParameter("size", String.valueOf(limit));
+        request.setEntity(new NStringEntity(query, ContentType.APPLICATION_JSON));
+        JsonObject jsonResponse = parseResponseToJson(ElasticSearchSupport.retryRequest(client, request));
+        JsonObject hitsSummary = jsonResponse.getAsJsonObject("hits");
+        if (hitsSummary != null) {
+            JsonArray hits = hitsSummary.getAsJsonArray("hits");
+            for (JsonElement hit : hits) {
+                JsonElement data = hit.getAsJsonObject().getAsJsonObject("_source");
+                TermResource resource = gson.fromJson(data, TermResource.class);
+                termList.add(filterThin(resource, thinFilter));
             }
-            String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
-            JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
-            JsonObject hitsSummary = jsonResponse.getAsJsonObject("hits");
-            if (hitsSummary != null) {
-                JsonArray hits = hitsSummary.getAsJsonArray("hits");
-                for (JsonElement hit : hits) {
-                    JsonElement data = hit.getAsJsonObject().getAsJsonObject("_source");
-                    TermResource resource = gson.fromJson(data, TermResource.class);
-                    if (thinFilter) {
-                        resource.setOntology(null);
-                        resource.setUsable(null);
-                        resource.setParents(null);
-                    }
-                    termList.add(resource);
-                }
-            } else {
-                logger.error("Unable to parse 'hits' from: " + stringResponse);
-            }
-        } catch (IOException e) {
-            logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
-            throw new RuntimeException(e);
+        } else {
+            logger.error("Unable to parse 'hits' from: " + jsonResponse);
         }
         return termList;
     }
@@ -102,37 +95,40 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
     private List<TermResource> executeGet(String query, Boolean thinFilter) {
         List<TermResource> termList = new ArrayList<>();
         try {
-            Response esResponse = client.performRequest(
-                    "GET",
-                    ElasticSearchSupport.getTermPath(configuration.getIndex()) + "/" + java.net.URLEncoder.encode(query, "UTF-8"),
-                    ElasticSearchSupport.jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid search request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException();
-            }
-            String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
-            JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
+            String endpoint = ElasticSearchSupport.getTermPath(configuration.getIndex()) + "/" + java.net.URLEncoder.encode(query, "UTF-8");
+            Request request = new Request(GET, endpoint);
+            JsonObject jsonResponse = parseResponseToJson(ElasticSearchSupport.retryRequest(client, request));
             JsonElement data = jsonResponse.getAsJsonObject("_source");
             TermResource resource = gson.fromJson(data, TermResource.class);
-            if (thinFilter) {
-                resource.setOntology(null);
-                resource.setUsable(null);
-                resource.setParents(null);
-            }
-            termList.add(resource);
-        } catch (ResponseException re) {
-            if (re.getResponse().getStatusLine().getStatusCode() == 404) {
-                // 404 is an expected case from ES, indicating the ID was not found
-                return termList;
-            } else {
-                logger.error("Unable to parse query response for " + query + "\n" + re.getMessage());
-                throw new RuntimeException(re);
-            }
+            termList.add(filterThin(resource, thinFilter));
         } catch (IOException e) {
             logger.error("Unable to parse query response for " + query + "\n" + e.getMessage());
-            throw new RuntimeException(e);
+            throw new InternalServerErrorException(e);
         }
         return termList;
+    }
+
+    private TermResource filterThin(TermResource term, boolean thinFilter) {
+        if (thinFilter) {
+            term.setOntology(null);
+            term.setUsable(null);
+            term.setParents(null);
+        }
+        return term;
+    }
+
+    private JsonObject parseResponseToJson(Response response) {
+        if (response.getStatusLine().getStatusCode() != 200) {
+            logger.error("Invalid search request: " + response.getStatusLine().getReasonPhrase());
+            throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
+        }
+        try {
+            String stringResponse = IOUtils.toString(response.getEntity().getContent());
+            return parser.parse(stringResponse).getAsJsonObject();
+        } catch (Exception e) {
+            logger.error("Unable to parse response: ", e);
+            throw new InternalServerErrorException(e);
+        }
     }
 
     @Override
@@ -146,7 +142,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
     }
 
     @Override
-    public List<TermResource> lookupById(String query) throws IOException {
+    public List<TermResource> lookupById(String query) {
         List<TermResource> terms = executeGet(query, false);
 
         Collection<String> parentIds = terms.stream().

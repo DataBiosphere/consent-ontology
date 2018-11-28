@@ -6,22 +6,27 @@ import com.google.gson.JsonParser;
 import io.dropwizard.lifecycle.Managed;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
+import org.eclipse.jetty.http.HttpMethod;
+import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.io.IOException;
 
 public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
 
-    private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(ElasticSearchHealthCheck.class);
+    private static final Logger logger = LoggerFactory.getLogger(ElasticSearchHealthCheck.class);
+    private static final String GET = HttpMethod.GET.asString();
     private ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
     private RestClient client;
 
 
     @Override
-    public void start() throws Exception { }
+    public void start() { }
 
     @Override
     public void stop() throws Exception {
@@ -36,18 +41,17 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     }
 
     @Override
-    protected Result check() throws Exception {
+    protected Result check() {
         try {
-            Response esResponse = client.performRequest("GET",
-                ElasticSearchSupport.getClusterHealthPath(configuration.getIndex()),
-                ElasticSearchSupport.jsonHeader);
-            if (esResponse.getStatusLine().getStatusCode() != 200) {
-                logger.error("Invalid health check request: " + esResponse.getStatusLine().getReasonPhrase());
-                throw new InternalServerErrorException(esResponse.getStatusLine().getReasonPhrase());
+            Request request = new Request(GET, ElasticSearchSupport.getClusterHealthPath(configuration.getIndex()));
+            Response response = ElasticSearchSupport.retryRequest(client, request);
+            if (response.getStatusLine().getStatusCode() != 200) {
+                logger.error("Invalid health check request: " + response.getStatusLine().getReasonPhrase());
+                throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
             }
-            String stringResponse = IOUtils.toString(esResponse.getEntity().getContent());
+            String stringResponse = IOUtils.toString(response.getEntity().getContent());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
-            Boolean timeout = jsonResponse.get("timed_out").getAsBoolean();
+            boolean timeout = jsonResponse.get("timed_out").getAsBoolean();
             String status = jsonResponse.get("status").getAsString();
             if (timeout) {
                 return Result.unhealthy("HealthCheck timed out");
