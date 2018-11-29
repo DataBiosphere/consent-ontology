@@ -1,49 +1,70 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import com.github.rholder.retry.Retryer;
+import com.github.rholder.retry.RetryerBuilder;
+import com.github.rholder.retry.StopStrategies;
+import com.github.rholder.retry.WaitStrategies;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.*;
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.InternalServerErrorException;
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
-public class ElasticSearchSupport {
+class ElasticSearchSupport {
 
-    public static RestClient createRestClient(ElasticSearchConfiguration configuration) {
-        HttpHost[] hosts = configuration.
-            getServers().
-            stream().
-            map(server -> new HttpHost(server, 9200, "http")).
-            collect(Collectors.toList()).toArray(new HttpHost[configuration.getServers().size()]);
-        return RestClient.builder(hosts).build();
+    private static final Logger logger = LoggerFactory.getLogger(ElasticSearchSupport.class);
+    private static final Gson gson = new GsonBuilder().create();
+
+    RestClient createRestClient(ElasticSearchConfiguration configuration) {
+        HttpHost[] hosts = configuration
+                .getServers()
+                .stream()
+                .map(server -> new HttpHost(server, 9200, "http"))
+                .collect(Collectors.toList())
+                .toArray(new HttpHost[configuration.getServers().size()]);
+        return RestClient
+                .builder(hosts)
+                .setDefaultHeaders(new Header[]{new BasicHeader("Content-Type", "application/json")})
+                .build();
     }
 
-    public static String getIndexPath(String index) {
+    String getIndexPath(String index) {
         return "/" + index;
     }
 
-    public static String getTermPath(String index) {
+    String getTermPath(String index) {
         return getIndexPath(index) + "/ontology_term";
     }
 
-    public static String getSearchPath(String index) {
+    String getSearchPath(String index) {
         return getTermPath(index) + "/_search";
     }
 
-    public static String getClusterHealthPath(String index) {
+    String getClusterHealthPath(String index) {
         return "/_cluster/health/" + index;
     }
 
-    public static Header jsonHeader = new BasicHeader("Content-Type", "application/json");
-
-    private static Gson gson = new GsonBuilder().create();
-
     /**
-     * Builds a json object in the form of:
+     * Builds an elastic search json query object in the form of:
      *
      {
          "query": {
@@ -66,7 +87,7 @@ public class ElasticSearchSupport {
      * @param tags List of ontology type filter tags that should be applied. Filter of `usable=true` is always applied
      * @return Json formatted string suitable for using as an Elastic Search query object.
      */
-    public static String buildFilterQuery(String term, Collection<String> tags) {
+    String buildFilterQuery(String term, Collection<String> tags) {
         List<Map<String, Object>> filterList = new ArrayList<>();
         Map<String, Object> usable = new HashMap<>();
         usable.put("usable", "true");
@@ -104,7 +125,30 @@ public class ElasticSearchSupport {
     /*
      * Preferred search fields are boosted by default, e.g., '^3' triples a field's weight.
      */
-    public static final String[] searchFields = {"id^3", "label^2", "synonyms", "definition"};
+    final String[] searchFields = {"id^3", "label^2", "synonyms", "definition"};
 
+    Response retryRequest(final RestClient client, final Request request) {
+        Callable<Response> callable = () -> client.performRequest(request);
+        Retryer<Response> retryer = RetryerBuilder.<Response>newBuilder()
+                .retryIfException()
+                .withWaitStrategy(WaitStrategies.exponentialWait(10, 5, TimeUnit.SECONDS))
+                .withStopStrategy(StopStrategies.stopAfterAttempt(3))
+                .build();
+        try {
+            return retryer.call(callable);
+        } catch (Exception e) {
+            logger.error("Unable to retry request: ", e);
+            throw new InternalServerErrorException(e);
+        }
+    }
+
+    String getEncodedEndpoint(String query, String index) {
+        try {
+            return getTermPath(index) + "/" + java.net.URLEncoder.encode(query, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            logger.error("Unable to encode query: " + query, e);
+            throw new BadRequestException(e);
+        }
+    }
 
 }
