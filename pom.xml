@@ -13,7 +13,7 @@
         <owl.version>5.0.5</owl.version>
         <jena.version>2.6.4</jena.version>
         <lucene.version>4.9.0</lucene.version>
-        <dropwizard.version>1.0.0</dropwizard.version>
+        <dropwizard.version>1.3.5</dropwizard.version>
         <metrics.version>3.1.0</metrics.version>
         <akka.version>2.4.20</akka.version>
         <jersey.version>2.19</jersey.version>
@@ -252,7 +252,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.7.9.1</version>
+            <version>2.9.7</version>
         </dependency>
 
         <dependency>
@@ -576,7 +576,7 @@
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.11.0</version>
+            <version>2.12.0</version>
         </dependency>
 
         <dependency>
