@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.Response;
@@ -12,12 +12,10 @@ import java.util.List;
 @Path("/search")
 public class OntologySearchResource {
 
-    private AutocompleteAPI api;
-
-    public OntologySearchResource() {}
+    private AutocompleteService api;
 
     @Inject
-    public OntologySearchResource(AutocompleteAPI api) {
+    public OntologySearchResource(AutocompleteService api) {
         this.api = api;
     }
 

@@ -4,7 +4,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -18,17 +18,17 @@ import java.util.List;
 
 
 @RunWith(MockitoJUnitRunner.class)
-public class AllTermsResourceTest {
+public class AutocompleteResourceTest {
 
     @Mock
-    AutocompleteAPI apiMockUp;
+    AutocompleteService apiMockUp;
 
-    AllTermsResource allTermsResource;
+    private AutocompleteResource autocompleteResource;
 
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
-        allTermsResource = new AllTermsResource(apiMockUp);
+        autocompleteResource = new AutocompleteResource(apiMockUp);
     }
 
     @Test
@@ -37,7 +37,7 @@ public class AllTermsResourceTest {
         List<TermResource> termResources = new ArrayList<>();
 
         Mockito.when(apiMockUp.lookup(null,limit)).thenReturn(termResources);
-        allTermsResource.getTerms(null, null, limit);
+        autocompleteResource.getTerms(null, null, limit);
         verify(apiMockUp, times(1)).lookup(Mockito.anyString(), Mockito.anyInt());
     }
 
@@ -47,7 +47,7 @@ public class AllTermsResourceTest {
         List<TermResource> termResources = new ArrayList<>();
         String ontologyName = "Kidney Cancer";
         Mockito.when(apiMockUp.lookup(ontologyName,limit)).thenReturn(termResources);
-        allTermsResource.getTerms(null, null, limit);
+        autocompleteResource.getTerms(null, null, limit);
         verify(apiMockUp,times(1)).lookup(Mockito.anyString(), Mockito.anyInt());
     }
 

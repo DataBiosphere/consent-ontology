@@ -11,11 +11,11 @@ import java.util.List;
  */
 class Fixtures {
     
-    static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
-    static final List<String> cancerNodeList = Collections.singletonList(cancerNode);
+    private static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
+    private static final List<String> cancerNodeList = Collections.singletonList(cancerNode);
 
-    static final String bipolarNode = "http://purl.obolibrary.org/obo/DOID_0060166";
-    static final List<String> bipolarNodeList = Collections.singletonList(bipolarNode);
+    private static final String bipolarNode = "http://purl.obolibrary.org/obo/DOID_0060166";
+    private static final List<String> bipolarNodeList = Collections.singletonList(bipolarNode);
 
     // Health/medical/biomedical research
     static final class HMB {

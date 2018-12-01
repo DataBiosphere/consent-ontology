@@ -25,9 +25,9 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class ElasticSearchAutocompleteAPITest {
+public class ElasticSearchAutocompleteTest {
 
-    private ElasticSearchAutocompleteAPI autocompleteAPI;
+    private ElasticSearchAutocomplete autocompleteAPI;
     private static final String INDEX_NAME = "local-ontology";
     private ClientAndServer server;
 
@@ -40,7 +40,7 @@ public class ElasticSearchAutocompleteAPITest {
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList("localhost"));
-        autocompleteAPI = new ElasticSearchAutocompleteAPI(configuration);
+        autocompleteAPI = new ElasticSearchAutocomplete(configuration);
         server = startClientAndServer(9200);
     }
 

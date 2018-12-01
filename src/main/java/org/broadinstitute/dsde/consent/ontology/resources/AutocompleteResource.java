@@ -2,20 +2,18 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 import javax.ws.rs.*;
 import java.util.Arrays;
 import java.util.List;
 
 @Path("/autocomplete")
-public class AllTermsResource {
-    private AutocompleteAPI api;
-
-    public AllTermsResource() {}
+public class AutocompleteResource {
+    private AutocompleteService api;
 
     @Inject
-    public AllTermsResource(AutocompleteAPI api) {
+    public AutocompleteResource(AutocompleteService api) {
         this.api = api;
     }
 

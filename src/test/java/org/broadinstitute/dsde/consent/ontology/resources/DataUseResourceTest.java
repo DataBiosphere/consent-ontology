@@ -13,13 +13,14 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.*;
 
+@SuppressWarnings("SimplifiableJUnitAssertion")
 public class DataUseResourceTest {
 
-    DataUseResource dataUseResource;
-    String generalUse = "{ \"generalUse\": true }";
+    private DataUseResource dataUseResource;
+    private String generalUse = "{ \"generalUse\": true }";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         dataUseResource = new DataUseResource();
     }
 
@@ -54,6 +55,7 @@ public class DataUseResourceTest {
         assertStatusAndHeader(response, Response.Status.OK, MediaType.APPLICATION_JSON);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private void assertStatusAndHeader(Response response, Response.Status status, String contentType) {
         Assert.assertTrue(response.getStatus() == status.getStatusCode());
         Object header = response.getHeaders().get("Content-type");
