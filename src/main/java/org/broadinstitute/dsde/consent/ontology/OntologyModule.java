@@ -1,6 +1,9 @@
 package org.broadinstitute.dsde.consent.ontology;
 
-import com.google.inject.*;
+import com.google.inject.AbstractModule;
+import com.google.inject.Provides;
+import com.google.inject.Scopes;
+import com.google.inject.Singleton;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
@@ -36,7 +39,7 @@ public class OntologyModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public AutocompleteService providesAPI() {
+    public AutocompleteService providesAutocomplete() {
         return new ElasticSearchAutocomplete(config.getElasticSearchConfiguration());
     }
 
