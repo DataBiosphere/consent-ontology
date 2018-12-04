@@ -20,7 +20,7 @@ import java.util.Collections;
 
 public class MatchWorkerActorTest {
 
-    static ActorSystem system;
+    private static ActorSystem system;
 
     @BeforeClass
     public static void setup() {

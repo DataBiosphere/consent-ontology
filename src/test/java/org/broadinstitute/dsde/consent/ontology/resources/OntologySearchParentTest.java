@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteAPI;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -15,17 +15,18 @@ import java.util.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+@SuppressWarnings("SimplifiableJUnitAssertion")
 public class OntologySearchParentTest {
 
     @Mock
-    AutocompleteAPI api;
+    AutocompleteService api;
 
-    OntologySearchResource resource;
+    private OntologySearchResource resource;
 
     // Construction of children and parents.
-    static TermResource child = new TermResource();
-    static TermResource parent1 = new TermResource();
-    static TermResource parent2 = new TermResource();
+    private static TermResource child = new TermResource();
+    private static TermResource parent1 = new TermResource();
+    private static TermResource parent2 = new TermResource();
 
     @Before
     public void setUp() throws Exception {

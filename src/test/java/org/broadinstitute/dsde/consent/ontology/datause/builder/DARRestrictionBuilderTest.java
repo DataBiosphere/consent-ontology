@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.util.Collections;
 
+@SuppressWarnings("SimplifiableJUnitAssertion")
 public class DARRestrictionBuilderTest {
 
     private UseRestrictionBuilder restrictionBuilder = new DARRestrictionBuilder();
