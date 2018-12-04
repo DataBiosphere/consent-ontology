@@ -13,9 +13,7 @@ import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpResponse;
 
 import javax.ws.rs.BadRequestException;
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
 import java.util.Collections;
 import java.util.List;
