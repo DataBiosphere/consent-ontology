@@ -13,7 +13,10 @@ import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpResponse;
 
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.NotFoundException;
 import java.util.Collections;
 import java.util.List;
 
@@ -91,9 +94,15 @@ public class ElasticSearchAutocompleteTest {
         autocompleteAPI.lookup("cancer", 1);
     }
 
-    @Test(expected = InternalServerErrorException.class)
-    public void testBadResponse() {
+    @Test(expected = BadRequestException.class)
+    public void testBadRequest() {
         mockResponse(response().withStatusCode(400));
+        autocompleteAPI.lookup("cancer", 1);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testNotFound() {
+        mockResponse(response().withStatusCode(404));
         autocompleteAPI.lookup("cancer", 1);
     }
 

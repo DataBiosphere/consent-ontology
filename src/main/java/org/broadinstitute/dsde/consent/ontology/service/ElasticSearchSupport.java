@@ -1,9 +1,13 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import com.github.rholder.retry.Attempt;
+import com.github.rholder.retry.RetryException;
 import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
+import com.github.rholder.retry.StopStrategy;
 import com.github.rholder.retry.WaitStrategies;
+import com.google.common.base.Predicate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.http.Header;
@@ -12,12 +16,16 @@ import org.apache.http.message.BasicHeader;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
+import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.BadRequestException;
+import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotAuthorizedException;
+import javax.ws.rs.NotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -26,8 +34,14 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.FORBIDDEN;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
+import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 class ElasticSearchSupport {
 
@@ -136,7 +150,21 @@ class ElasticSearchSupport {
                 .build();
         try {
             return retryer.call(callable);
-        } catch (Exception e) {
+        } catch (RetryException e) {
+            if (e.getCause() instanceof ResponseException) {
+                ResponseException re = (ResponseException) e.getCause();
+                int status = re.getResponse().getStatusLine().getStatusCode();
+                if (status == BAD_REQUEST.getStatusCode()) {
+                    throw new BadRequestException(e.getMessage());
+                } else if (status == NOT_FOUND.getStatusCode()) {
+                    throw new NotFoundException(e.getMessage());
+                } else {
+                    throw new InternalServerErrorException(e);
+                }
+            } else {
+                throw new InternalServerErrorException(e);
+            }
+        } catch (ExecutionException e) {
             logger.error("Unable to retry request: ", e);
             throw new InternalServerErrorException(e);
         }
