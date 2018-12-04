@@ -29,9 +29,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
+public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
 
-    private static final Logger logger = LoggerFactory.getLogger(ElasticSearchAutocompleteAPI.class);
+    private static final Logger logger = LoggerFactory.getLogger(ElasticSearchAutocomplete.class);
     private static final String GET = HttpMethod.GET.asString();
     private final ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
@@ -49,7 +49,7 @@ public class ElasticSearchAutocompleteAPI implements AutocompleteAPI, Managed {
         }
     }
 
-    public ElasticSearchAutocompleteAPI(ElasticSearchConfiguration configuration) {
+    public ElasticSearchAutocomplete(ElasticSearchConfiguration configuration) {
         this.configuration = configuration;
         setElasticSearchSupport(new ElasticSearchSupport());
         this.client = elasticSearchSupport.createRestClient(configuration);
