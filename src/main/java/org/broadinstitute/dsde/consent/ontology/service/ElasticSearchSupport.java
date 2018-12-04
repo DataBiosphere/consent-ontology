@@ -1,13 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import com.github.rholder.retry.Attempt;
 import com.github.rholder.retry.RetryException;
 import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
-import com.github.rholder.retry.StopStrategy;
 import com.github.rholder.retry.WaitStrategies;
-import com.google.common.base.Predicate;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import org.apache.http.Header;
@@ -22,9 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.BadRequestException;
-import javax.ws.rs.ForbiddenException;
 import javax.ws.rs.InternalServerErrorException;
-import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.NotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
@@ -39,9 +34,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
-import static javax.ws.rs.core.Response.Status.FORBIDDEN;
 import static javax.ws.rs.core.Response.Status.NOT_FOUND;
-import static javax.ws.rs.core.Response.Status.UNAUTHORIZED;
 
 class ElasticSearchSupport {
 
