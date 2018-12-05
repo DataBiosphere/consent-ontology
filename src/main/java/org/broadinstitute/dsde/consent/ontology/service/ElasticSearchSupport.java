@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import com.github.rholder.retry.RetryException;
 import com.github.rholder.retry.Retryer;
 import com.github.rholder.retry.RetryerBuilder;
 import com.github.rholder.retry.StopStrategies;
@@ -12,12 +13,14 @@ import org.apache.http.message.BasicHeader;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
+import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -28,6 +31,9 @@ import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
+
+import static javax.ws.rs.core.Response.Status.BAD_REQUEST;
+import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 class ElasticSearchSupport {
 
@@ -136,6 +142,20 @@ class ElasticSearchSupport {
                 .build();
         try {
             return retryer.call(callable);
+        } catch (RetryException e) {
+            if (e.getCause() instanceof ResponseException) {
+                ResponseException re = (ResponseException) e.getCause();
+                int status = re.getResponse().getStatusLine().getStatusCode();
+                if (status == BAD_REQUEST.getStatusCode()) {
+                    throw new BadRequestException();
+                } else if (status == NOT_FOUND.getStatusCode()) {
+                    throw new NotFoundException("Term not found");
+                } else {
+                    throw new InternalServerErrorException(e);
+                }
+            } else {
+                throw new InternalServerErrorException(e);
+            }
         } catch (Exception e) {
             logger.error("Unable to retry request: ", e);
             throw new InternalServerErrorException(e);
