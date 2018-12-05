@@ -147,9 +147,9 @@ class ElasticSearchSupport {
                 ResponseException re = (ResponseException) e.getCause();
                 int status = re.getResponse().getStatusLine().getStatusCode();
                 if (status == BAD_REQUEST.getStatusCode()) {
-                    throw new BadRequestException(e.getMessage());
+                    throw new BadRequestException();
                 } else if (status == NOT_FOUND.getStatusCode()) {
-                    throw new NotFoundException(e.getMessage());
+                    throw new NotFoundException("Term not found");
                 } else {
                     throw new InternalServerErrorException(e);
                 }

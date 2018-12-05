@@ -168,14 +168,18 @@ paths:
       parameters:
         - name: id
           in: query
-          description: The ontology id which the service us to find it (e.g. DOID_4).
+          description: The ontology id which the service us to find it (e.g. http://purl.obolibrary.org/obo/DOID_162).
           required: true
           type: string
       tags:
         - Search
       responses:
         '200':
-          description: The given id was found. Json result with ontology information.
+          description: The given id was found. Term result with parent information.
+        '400':
+          description: Bad request.
+        '404':
+          description: The given id was not found.
         default:
           description: Unexpected error
 
