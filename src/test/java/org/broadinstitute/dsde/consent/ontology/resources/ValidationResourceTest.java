@@ -17,6 +17,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
+@SuppressWarnings("SimplifiableJUnitAssertion")
 @RunWith(MockitoJUnitRunner.class)
 public class ValidationResourceTest {
 
@@ -25,17 +26,17 @@ public class ValidationResourceTest {
     @Mock
     private UseRestrictionValidateAPI validateAPI;
 
-    private String useRestriction = "{ + \"type\": \"and\","
+    private static final String useRestriction = "{ + \"type\": \"and\","
                                    + "\"operands\": [{ \"type\": \"named\","
                                    + "\"name\": \"http://purl.obolibrary.org/obo/DOID_162\""
                                    + "}]}";
-    private String invalidUseRestriction = "{\"test\": \"and\","
+    private static final String invalidUseRestriction = "{\"test\": \"and\","
                                     + "\"operands\": [{ \"type\": \"named\","
                                     + "\"name\": \"http://purl.obolibrary.org/obo/DOID_162\""
                                     + "}]}";
 
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         validationResource = new ValidationResource();
         validationResource.setValidateAPI(validateAPI);

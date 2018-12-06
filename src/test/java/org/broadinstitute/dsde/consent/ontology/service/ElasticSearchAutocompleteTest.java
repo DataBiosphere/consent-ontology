@@ -6,33 +6,47 @@ import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 import org.mockserver.integration.ClientAndServer;
+import org.mockserver.matchers.Times;
 import org.mockserver.model.HttpResponse;
 
+import javax.ws.rs.BadRequestException;
+import javax.ws.rs.InternalServerErrorException;
+import javax.ws.rs.NotFoundException;
 import java.util.Collections;
 import java.util.List;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.when;
 import static org.mockserver.integration.ClientAndServer.startClientAndServer;
+import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
-public class ElasticSearchAutocompleteAPITest {
+@SuppressWarnings("FieldCanBeLocal")
+public class ElasticSearchAutocompleteTest {
 
-    private ElasticSearchAutocompleteAPI autocompleteAPI;
+    private ElasticSearchAutocomplete autocompleteAPI;
     private static final String INDEX_NAME = "local-ontology";
     private ClientAndServer server;
 
+    @Mock
+    ElasticSearchSupport elasticSearchSupport;
+
     @Before
-    public void setUp() throws Exception {
+    public void setUp() {
+        MockitoAnnotations.initMocks(this);
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList("localhost"));
-        autocompleteAPI = new ElasticSearchAutocompleteAPI(configuration);
+        autocompleteAPI = new ElasticSearchAutocomplete(configuration);
         server = startClientAndServer(9200);
     }
 
     @After
-    public void shutDown() throws Exception {
+    public void shutDown() {
         if (server != null && server.isRunning()) {
             server.stop();
         }
@@ -44,26 +58,81 @@ public class ElasticSearchAutocompleteAPITest {
     }
 
     @Test
-    public void testLookup() throws Exception {
+    public void testRetrySuccessAfterOneFailure() {
+        server.reset();
+        server.when(request(), Times.exactly(1)).error(error().withDropConnection(true));
+        server.when(request(), Times.exactly(1)).respond(response().withStatusCode(200).withBody(cancerJson));
+        List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
+        Assert.assertEquals(1, termResource.size());
+        Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
+    }
+
+    @Test
+    public void testRetrySuccessAfterTwoFailures() {
+        server.reset();
+        server.when(request(), Times.exactly(2)).error(error().withDropConnection(true));
+        server.when(request(), Times.exactly(1)).respond(response().withStatusCode(200).withBody(cancerJson));
+        List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
+        Assert.assertEquals(1, termResource.size());
+        Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
+    }
+
+    @Test(expected = InternalServerErrorException.class)
+    public void testRetryFailureAfterThreeFailures() {
+        server.reset();
+        server.when(request(), Times.exactly(3)).error(error().withDropConnection(true));
+        server.when(request(), Times.exactly(1)).respond(response().withStatusCode(200).withBody(cancerJson));
+        autocompleteAPI.lookup("cancer", 1);
+    }
+
+    @Test(expected = InternalServerErrorException.class)
+    public void testRetryFailure() {
+        server.reset();
+        server.when(request()).error(error().withDropConnection(true));
+        autocompleteAPI.lookup("cancer", 1);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void testBadRequest() {
+        mockResponse(response().withStatusCode(400));
+        autocompleteAPI.lookup("cancer", 1);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void testNotFound() {
+        mockResponse(response().withStatusCode(404));
+        autocompleteAPI.lookup("cancer", 1);
+    }
+
+    @Test(expected = BadRequestException.class)
+    public void testInvalidIdStringError() {
+        mockResponse(response().withStatusCode(200).withBody(cancerJson));
+        when(elasticSearchSupport.getEncodedEndpoint(any(), any())).thenThrow(new BadRequestException());
+        autocompleteAPI.setElasticSearchSupport(elasticSearchSupport);
+        autocompleteAPI.lookupById("cancer");
+    }
+
+    @Test
+    public void testLookup() {
         mockResponse(response().withStatusCode(200).withBody(cancerJson));
         List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
-        Assert.assertTrue(termResource.size() == 1);
+        Assert.assertEquals(1, termResource.size());
         Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
-    public void testLookupWithTags() throws Exception {
+    public void testLookupWithTags() {
         mockResponse(response().withStatusCode(200).withBody(cancerJson));
         List<TermResource> termResource = autocompleteAPI.lookup(Collections.singletonList("tag"), "cancer", 1);
-        Assert.assertTrue(termResource.size() == 1);
+        Assert.assertEquals(1, termResource.size());
         Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
-    public void  testLookupById() throws Exception {
+    public void  testLookupById() {
         mockResponse(response().withStatusCode(200).withBody(cancerGetJson));
         List<TermResource> termResource = autocompleteAPI.lookupById("http://purl.obolibrary.org/obo/DOID_162");
-        Assert.assertTrue(termResource.size() == 1);
+        Assert.assertEquals(1, termResource.size());
         Assert.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 

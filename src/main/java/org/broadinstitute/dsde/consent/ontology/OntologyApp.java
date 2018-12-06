@@ -7,7 +7,7 @@ import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.broadinstitute.dsde.consent.ontology.resources.AllTermsResource;
+import org.broadinstitute.dsde.consent.ontology.resources.AutocompleteResource;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
 import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource;
@@ -46,7 +46,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     public void run(OntologyConfiguration config, Environment env) {
 
         Injector injector = Guice.createInjector(new OntologyModule(config, env));
-        env.jersey().register(injector.getInstance(AllTermsResource.class));
+        env.jersey().register(injector.getInstance(AutocompleteResource.class));
         env.jersey().register(injector.getInstance(MatchResource.class));
         env.jersey().register(injector.getInstance(TranslateResource.class));
         env.jersey().register(injector.getInstance(ValidationResource.class));

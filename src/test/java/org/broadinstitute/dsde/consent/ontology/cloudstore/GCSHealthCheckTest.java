@@ -11,7 +11,6 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 
 import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
 
@@ -23,7 +22,7 @@ public class GCSHealthCheckTest {
     private GCSStore store;
 
     @Before
-    public void setUpClass() throws Exception {
+    public void setUpClass() {
         MockitoAnnotations.initMocks(this);
         healthCheck = new GCSHealthCheck(store);
     }
