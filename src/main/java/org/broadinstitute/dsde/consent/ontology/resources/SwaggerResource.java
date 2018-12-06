@@ -103,13 +103,20 @@ public class SwaggerResource {
     private String getIndex(String swaggerResource) {
         String content = FileUtils.readAllTextFromResource(swaggerResource + "index.html");
         return content
-            .replace("your-client-id", "")
-            .replace("your-client-secret-if-required", "")
-            .replace("your-realms", "Broad Institute")
-            .replace("your-app-name", "Consent Ontology")
-            .replace("scopeSeparator: \",\"", "scopeSeparator: \" \"")
-            .replace("jsonEditor: false,", "jsonEditor: false," + "validatorUrl: null, apisSorter: \"alpha\", operationsSorter: \"alpha\",")
-            .replace("url = \"http://petstore.swagger.io/v2/swagger.json\";", "url = '/api-docs/api-docs.yaml';");
+                .replace(OAUTH_BLOCK, "")
+                .replace("jsonEditor: false,", "jsonEditor: false," + "validatorUrl: null, apisSorter: \"alpha\", operationsSorter: \"alpha\",")
+                .replace("url = \"http://petstore.swagger.io/v2/swagger.json\";", "url = '/api-docs/api-docs.yaml';");
     }
+
+    private static final String OAUTH_BLOCK = "if(typeof initOAuth == \"function\") {\n" +
+            "            initOAuth({\n" +
+            "              clientId: \"your-client-id\",\n" +
+            "              clientSecret: \"your-client-secret-if-required\",\n" +
+            "              realm: \"your-realms\",\n" +
+            "              appName: \"your-app-name\",\n" +
+            "              scopeSeparator: \" \",\n" +
+            "              additionalQueryStringParams: {}\n" +
+            "            });\n" +
+            "          }";
 
 }
