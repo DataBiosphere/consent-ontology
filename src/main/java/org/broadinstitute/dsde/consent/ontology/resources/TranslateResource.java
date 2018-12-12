@@ -1,11 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
-import org.broadinstitute.dsde.consent.ontology.datause.services.HtmlTranslator;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -13,9 +16,8 @@ import java.io.IOException;
 @Path("/translate")
 public class TranslateResource {
 
-    private final org.slf4j.Logger log = LoggerFactory.getLogger(TranslateResource.class);
+    private final Logger log = LoggerFactory.getLogger(TranslateResource.class);
     private TextTranslationService helper;
-    private HtmlTranslator htmlTranslator;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
@@ -25,9 +27,9 @@ public class TranslateResource {
         } catch (IOException e) {
             log.error("Error while translating", e);
             return Response.
-                status(Response.Status.INTERNAL_SERVER_ERROR).
-                entity("Error while translating: " + e.getMessage()).
-                build();
+                    status(Response.Status.INTERNAL_SERVER_ERROR).
+                    entity("Error while translating: " + e.getMessage()).
+                    build();
         }
     }
 
@@ -36,36 +38,14 @@ public class TranslateResource {
         this.helper = helper;
     }
 
-    @POST
-    @Path("/html")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.TEXT_HTML)
-    public Response translateHtml(
-        @QueryParam("for") String forParam, String restriction) {
-        try {
-            return buildResponse(forParam, restriction, htmlTranslator);
-        } catch (IOException e) {
-            log.error("Error while translating", e);
-            return Response.
-                status(Response.Status.INTERNAL_SERVER_ERROR).
-                entity("Error while translating: " + e.getMessage()).
-                build();
-        }
-    }
-
-    @Inject
-    public void setHtmlTranslator(HtmlTranslator htmlTranslator) {
-        this.htmlTranslator = htmlTranslator;
-    }
-
     /**
      * Helper method to build a response from any form of text translation service
      *
-     * @param forParam Either "purpose" or "sampleset"
-     * @param restriction JSON representation of the translatable restriction
+     * @param forParam           Either "purpose" or "sampleset"
+     * @param restriction        JSON representation of the translatable restriction
      * @param translationService Selected translation service
      * @return Response
-     * @throws IOException
+     * @throws IOException       The Exception
      */
     private Response buildResponse(String forParam, String restriction, TextTranslationService translationService) throws IOException {
         if ("purpose".equals(forParam)) {
