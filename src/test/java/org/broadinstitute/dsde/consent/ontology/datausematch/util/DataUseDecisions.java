@@ -9,8 +9,6 @@ public class DataUseDecisions {
 
     private static final Logger log = Logger.getLogger(DataUseDecisions.class);
 
-
-
     /**
      * RP: Methods development/Validation study
      * Datasets:
@@ -51,8 +49,7 @@ public class DataUseDecisions {
         return false;
     }
 
-
-    private static boolean getNullable(Boolean bool) {
+    public static boolean getNullable(Boolean bool) {
         return Optional.ofNullable(bool).orElse(false);
     }
 

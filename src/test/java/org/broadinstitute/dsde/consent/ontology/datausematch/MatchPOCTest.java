@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datausematch;
 
 import org.apache.log4j.Logger;
-import org.apache.lucene.index.Term;
 import org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
@@ -21,7 +20,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -54,12 +52,13 @@ public class MatchPOCTest {
 
     @Test
     public void testDiseaseMatching_positive() throws Exception {
-        DataUse consent = new DataUseBuilder().build();
-        consent.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_162"); // Cancer
+        DataUse dataset = new DataUseBuilder().build();
+        dataset.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_162"); // Cancer
         DataUse purpose = new DataUseBuilder().build();
         String purposeId = "http://purl.obolibrary.org/obo/DOID_10155"; // Intestinal Cancer
         purpose.getDiseaseRestrictions().add(purposeId);
 
+        // Build a mock response of term parents based on what is returned when searching on DOID_10155
         List<TermResource> termResources = new ArrayList<>();
         TermResource resource = new TermResource();
         TermParent parent1 = new TermParent();
@@ -84,17 +83,18 @@ public class MatchPOCTest {
         termResources.add(resource);
 
         when(autocompleteService.lookupById(purposeId)).thenReturn(termResources);
-        assertTrue(matchPurposeAndDataset(purpose, consent));
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
     }
 
     @Test
     public void testDiseaseMatching_negative() throws Exception {
-        DataUse consent = new DataUseBuilder().build();
+        DataUse dataset = new DataUseBuilder().build();
         DataUse purpose = new DataUseBuilder().build();
-        consent.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_10155"); // Intestinal Cancer
+        dataset.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_10155"); // Intestinal Cancer
         String purposeId = "http://purl.obolibrary.org/obo/DOID_162"; //  Cancer
         purpose.getDiseaseRestrictions().add(purposeId);
 
+        // Build a mock response of term parents based on what is returned when searching on DOID_162
         List<TermResource> termResources = new ArrayList<>();
         TermResource resource = new TermResource();
         TermParent parent1 = new TermParent();
@@ -110,38 +110,40 @@ public class MatchPOCTest {
         termResources.add(resource);
 
         when(autocompleteService.lookupById(purposeId)).thenReturn(termResources);
-        assertFalse(matchPurposeAndDataset(purpose, consent));
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
 
     @Ignore // We don't have HMB RP logic in our table ... need to add that.
     @Test
     public void testHMB_positive() {
-        DataUse consent = new DataUseBuilder().setGeneralUse(true).build();
+        DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setHmbResearch(true).build();
-        assertTrue(matchPurposeAndDataset(purpose, consent));
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
     }
 
     @Ignore // We don't have HMB RP logic in our table ... need to add that.
     @Test
     public void testHMB_negative() {
-        DataUse consent = new DataUseBuilder().setHmbResearch(true).build();
+        DataUse dataset = new DataUseBuilder().setHmbResearch(true).build();
         DataUse purpose = new DataUseBuilder().setGeneralUse(true).build();
-        assertFalse(matchPurposeAndDataset(purpose, consent));
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
     @Test
     public void testNMDS_positive_case_1() {
-        DataUse consent = new DataUseBuilder().setGeneralUse(true).build();
+        DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setMethodsResearch(true).build();
-        assertTrue(matchPurposeAndDataset(purpose, consent));
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
     }
 
     @Test
     public void testNMDS_negative_case_1() {
-        DataUse consent = new DataUseBuilder().setMethodsResearch(true).build();
+        // TODO: This is confusing. In the context of a consented dataset, this means no methods research
+        DataUse dataset = new DataUseBuilder().setMethodsResearch(true).build();
+        // TODO: This is confusing. In the context of a research purpose, this means yes to methods research
         DataUse purpose = new DataUseBuilder().setMethodsResearch(true).build();
-        assertFalse(matchPurposeAndDataset(purpose, consent));
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
 
@@ -162,8 +164,15 @@ public class MatchPOCTest {
                 controlMatch;
     }
 
-    // Helper methods
-
+    /**
+     * RP: Disease Focused Research
+     * Datasets:
+     *      Any dataset with GRU=true
+     *      Any dataset with HMB=true
+     *      Any dataset tagged to this disease exactly
+     *      Any dataset tagged to a DOID ontology Parent of disease X
+     *
+     */
     private boolean matchDiseases(DataUse purpose, DataUse dataset) {
         if (purpose.getDiseaseRestrictions().isEmpty()) {
             return true;
@@ -178,12 +187,15 @@ public class MatchPOCTest {
                             .stream()
                             .anyMatch(dataset.getDiseaseRestrictions()::contains))
                     .collect(Collectors.toSet());
-            return Optional.ofNullable(dataset.getGeneralUse()).orElse(false) ||
-                    Optional.ofNullable(dataset.getHmbResearch()).orElse(false) ||
+            return DataUseDecisions.getNullable(dataset.getGeneralUse()) ||
+                    DataUseDecisions.getNullable(dataset.getHmbResearch()) ||
                     !matches.contains(false);
         }
     }
 
+    // Helper methods
+    
+    // Get a map of disease term to list of parent term ids (which also includes disease term id)
     private Map<String, List<String>> purposeDiseaseIdMap(List<String> diseaseRestrictions) {
         return diseaseRestrictions
                 .stream()
@@ -201,12 +213,13 @@ public class MatchPOCTest {
         purposeTermIdList.add(purposeDiseaseId);
         return purposeTermIdList;
     }
-
+    
+    // Silly wrapper around the lookup api call to swallow errors
     private Collection<TermResource> apiWrapper(String termId) {
         try {
             return autocompleteService.lookupById(termId);
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return Collections.emptyList();
     }
