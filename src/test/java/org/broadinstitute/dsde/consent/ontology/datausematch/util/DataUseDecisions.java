@@ -1,13 +1,43 @@
 package org.broadinstitute.dsde.consent.ontology.datausematch.util;
 
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 
 import java.util.Optional;
 
+/**
+ * General case is that we make very granular comparisons.
+ * Short-circuit checks if possible.
+ * Go through the result cases one by one.
+ * Prefer longer, descriptive expressions over terse comparisons. We're not looking for
+ * the most concise code possible, but instead it is critical that we favor clarity first.
+ */
+@SuppressWarnings("RedundantIfStatement")
 public class DataUseDecisions {
 
-    private static final Logger log = Logger.getLogger(DataUseDecisions.class);
+    /**
+     * RP: HMB
+     * Datasets:
+     *      Any dataset tagged with GRU
+     *      Any dataset tagged with HMB
+     */
+    public static boolean matchHMB(DataUse purpose, DataUse dataset) {
+        // short-circuit hmb if not set
+        if (purpose.getHmbResearch() == null && dataset.getHmbResearch() == null) {
+            return true;
+        }
+
+        boolean purposeHMB = getNullable(purpose.getHmbResearch());
+        boolean datasetGRU = getNullable(dataset.getGeneralUse());
+        boolean datasetHMB = getNullable(dataset.getHmbResearch());
+
+        if (purposeHMB && datasetGRU) {
+            return true;
+        }
+        if (purposeHMB && datasetHMB) {
+            return true;
+        }
+        return false;
+    }
 
     /**
      * RP: Methods development/Validation study
@@ -16,6 +46,7 @@ public class DataUseDecisions {
      *      Any dataset where NMDS is true AND DS-X match
      */
     public static boolean matchNMDS(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
+        // short-circuit if no nmds clause
         if (purpose.getMethodsResearch() == null) {
             return true;
         }
@@ -32,6 +63,7 @@ public class DataUseDecisions {
      *      Any DS-X match, if user specified a disease in the res purpose search
      */
     public static boolean matchControlSet(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
+        // short-circuit if no control set clause
         if (purpose.getControlSetOption() == null) {
             return true;
         }

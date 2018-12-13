@@ -8,7 +8,6 @@ import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -23,13 +22,16 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchControlSet;
+import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchHMB;
+import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchNMDS;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 
 /**
- * See https://docs.google.com/document/d/1P70Gt5wCru0YzvJWNru9Nt4tCADhEsBWpKPp7qs_n2M/edit#
+ * See https://docs.google.com/document/d/1P70Gt5wCru0YzvJWNru9Nt4tCADhEsBWpKPp7qs_n2M
  * for minimum number of use cases that need to be implemented.
  *
  */
@@ -113,8 +115,6 @@ public class MatchPOCTest {
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
-
-    @Ignore // We don't have HMB RP logic in our table ... need to add that.
     @Test
     public void testHMB_positive() {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
@@ -122,7 +122,6 @@ public class MatchPOCTest {
         assertTrue(matchPurposeAndDataset(purpose, dataset));
     }
 
-    @Ignore // We don't have HMB RP logic in our table ... need to add that.
     @Test
     public void testHMB_negative() {
         DataUse dataset = new DataUseBuilder().setHmbResearch(true).build();
@@ -151,15 +150,18 @@ public class MatchPOCTest {
 
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
         // Calculating disease matches is expensive and used in multiple cases so we always calculate it
+        boolean hmbMatch = matchHMB(purpose, dataset);
         boolean diseaseMatch = matchDiseases(purpose, dataset);
-        boolean nmdsMatch = DataUseDecisions.matchNMDS(purpose, dataset, diseaseMatch);
-        boolean controlMatch = DataUseDecisions.matchControlSet(purpose, dataset, diseaseMatch);
+        boolean nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch);
+        boolean controlMatch = matchControlSet(purpose, dataset, diseaseMatch);
 
+        log.info("hmbMatch: " + hmbMatch);
         log.info("diseaseMatch: " + diseaseMatch);
         log.info("nmdsMatch: " + nmdsMatch);
         log.info("controlMatch: " + controlMatch);
 
-        return diseaseMatch &&
+        return hmbMatch &&
+                diseaseMatch &&
                 nmdsMatch &&
                 controlMatch;
     }
@@ -176,9 +178,14 @@ public class MatchPOCTest {
     private boolean matchDiseases(DataUse purpose, DataUse dataset) {
         if (purpose.getDiseaseRestrictions().isEmpty()) {
             return true;
+        }
+        if (DataUseDecisions.getNullable(dataset.getGeneralUse())) {
+            return true;
+        }
+        if (DataUseDecisions.getNullable(dataset.getHmbResearch())) {
+            return true;
         } else {
             Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
-
             // We want all purpose disease IDs to be a subclass of any dataset disease ID
             Set<Boolean> matches = purposeDiseaseIdMap
                     .values()
@@ -187,9 +194,7 @@ public class MatchPOCTest {
                             .stream()
                             .anyMatch(dataset.getDiseaseRestrictions()::contains))
                     .collect(Collectors.toSet());
-            return DataUseDecisions.getNullable(dataset.getGeneralUse()) ||
-                    DataUseDecisions.getNullable(dataset.getHmbResearch()) ||
-                    !matches.contains(false);
+            return !matches.contains(false);
         }
     }
 
@@ -199,11 +204,11 @@ public class MatchPOCTest {
     private Map<String, List<String>> purposeDiseaseIdMap(List<String> diseaseRestrictions) {
         return diseaseRestrictions
                 .stream()
-                .collect(Collectors.toMap(r -> r, this::getPurposeTermIds, (a, b) -> b));
+                .collect(Collectors.toMap(r -> r, this::getParentTermIds, (a, b) -> b));
     }
 
     // Get a list of term ids that represent a disease term + all parent ids
-    private List<String> getPurposeTermIds(String purposeDiseaseId) {
+    private List<String> getParentTermIds(String purposeDiseaseId) {
         List<String> purposeTermIdList = apiWrapper(purposeDiseaseId)
                 .stream()
                 .filter(Objects::nonNull)
