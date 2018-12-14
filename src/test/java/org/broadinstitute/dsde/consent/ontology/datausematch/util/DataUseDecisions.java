@@ -126,7 +126,7 @@ public class DataUseDecisions {
      * Datasets:
      *      Any dataset where NAGR is false and is (GRU or HMB)
      */
-    public static boolean matchAggregateAnalysis(DataUse purpose, DataUse dataset) {
+    public static boolean matchNAGR(DataUse purpose, DataUse dataset) {
         // short-circuit if no aggregate clause
         if (purpose.getAggregateResearch() == null && dataset.getAggregateResearch() == null) {
             return true;
@@ -140,7 +140,21 @@ public class DataUseDecisions {
                 (getNullable(dataset.getHmbResearch()) || getNullable(dataset.getGeneralUse()));
     }
 
+    /**
+     * RP: Study population origins or ancestry
+     * Future use is limited to research involving a specific population [POA]
+     * Datasets:
+     *      Any dataset tagged with GRU
+     */
+    public static boolean matchPOA(DataUse purpose, DataUse dataset) {
+        // short-circuit if no POA clause
+        if (purpose.getPopulationOriginsAncestry() == null) {
+            return true;
+        }
 
+        return purpose.getPopulationOriginsAncestry() &&
+                getNullable(dataset.getGeneralUse());
+    }
 
     // Helper Methods
 

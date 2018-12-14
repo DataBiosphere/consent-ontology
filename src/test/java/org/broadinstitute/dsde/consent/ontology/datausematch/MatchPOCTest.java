@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datausematch;
 
 import org.apache.log4j.Logger;
-import org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
@@ -21,11 +20,12 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchAggregateAnalysis;
+import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchNAGR;
 import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchControlSet;
 import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchDiseases;
 import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchHMB;
 import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchNMDS;
+import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchPOA;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -162,6 +162,20 @@ public class MatchPOCTest {
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
+    @Test
+    public void testPOA_positive() {
+        DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
+        DataUse purpose = new DataUseBuilder().setPopulationOriginsAncestry(true).build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testPOA_negative() {
+        DataUse dataset = new DataUseBuilder().setHmbResearch(true).build();
+        DataUse purpose = new DataUseBuilder().setPopulationOriginsAncestry(true).build();
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
+    }
+
     // Matching Algorithm
 
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
@@ -171,19 +185,22 @@ public class MatchPOCTest {
         boolean diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
         boolean nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch);
         boolean controlMatch = matchControlSet(purpose, dataset, diseaseMatch);
-        boolean nagrMatch = matchAggregateAnalysis(purpose, dataset);
+        boolean nagrMatch = matchNAGR(purpose, dataset);
+        boolean poaMatch = matchPOA(purpose, dataset);
 
         log.info("hmbMatch: " + hmbMatch);
         log.info("diseaseMatch: " + diseaseMatch);
         log.info("nmdsMatch: " + nmdsMatch);
         log.info("controlMatch: " + controlMatch);
         log.info("nagrMatch: " + nagrMatch);
+        log.info("poaMatch: " + poaMatch);
 
         return hmbMatch &&
                 diseaseMatch &&
                 nmdsMatch &&
                 controlMatch &&
-                nagrMatch;
+                nagrMatch &&
+                poaMatch;
     }
 
     // Helper methods
