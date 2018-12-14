@@ -2,7 +2,11 @@ package org.broadinstitute.dsde.consent.ontology.datausematch.util;
 
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * General case is that we make very granular comparisons.
@@ -39,6 +43,37 @@ public class DataUseDecisions {
         return false;
     }
 
+    /**
+     * RP: Disease Focused Research
+     * Datasets:
+     *      Any dataset with GRU=true
+     *      Any dataset with HMB=true
+     *      Any dataset tagged to this disease exactly
+     *      Any dataset tagged to a DOID ontology Parent of disease X
+     *
+     */
+    public static boolean matchDiseases(DataUse purpose, DataUse dataset, Map<String, List<String>> purposeDiseaseIdMap) {
+        // short-circuit if not disease focused research
+        if (purpose.getDiseaseRestrictions().isEmpty()) {
+            return true;
+        }
+        if (DataUseDecisions.getNullable(dataset.getGeneralUse())) {
+            return true;
+        }
+        if (DataUseDecisions.getNullable(dataset.getHmbResearch())) {
+            return true;
+        } else {
+            // We want all purpose disease IDs to be a subclass of any dataset disease ID
+            Set<Boolean> matches = purposeDiseaseIdMap
+                    .values()
+                    .stream()
+                    .map(idList -> idList
+                            .stream()
+                            .anyMatch(dataset.getDiseaseRestrictions()::contains))
+                    .collect(Collectors.toSet());
+            return !matches.contains(false);
+        }
+    }
     /**
      * RP: Methods development/Validation study
      * Datasets:

@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datausematch;
 
 import org.apache.log4j.Logger;
-import org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
@@ -19,10 +18,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchControlSet;
+import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchDiseases;
 import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchHMB;
 import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchNMDS;
 import static org.junit.Assert.assertFalse;
@@ -149,9 +148,10 @@ public class MatchPOCTest {
     // Matching Algorithm
 
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
-        // Calculating disease matches is expensive and used in multiple cases so we always calculate it
+        Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
+
         boolean hmbMatch = matchHMB(purpose, dataset);
-        boolean diseaseMatch = matchDiseases(purpose, dataset);
+        boolean diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
         boolean nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch);
         boolean controlMatch = matchControlSet(purpose, dataset, diseaseMatch);
 
@@ -164,38 +164,6 @@ public class MatchPOCTest {
                 diseaseMatch &&
                 nmdsMatch &&
                 controlMatch;
-    }
-
-    /**
-     * RP: Disease Focused Research
-     * Datasets:
-     *      Any dataset with GRU=true
-     *      Any dataset with HMB=true
-     *      Any dataset tagged to this disease exactly
-     *      Any dataset tagged to a DOID ontology Parent of disease X
-     *
-     */
-    private boolean matchDiseases(DataUse purpose, DataUse dataset) {
-        if (purpose.getDiseaseRestrictions().isEmpty()) {
-            return true;
-        }
-        if (DataUseDecisions.getNullable(dataset.getGeneralUse())) {
-            return true;
-        }
-        if (DataUseDecisions.getNullable(dataset.getHmbResearch())) {
-            return true;
-        } else {
-            Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
-            // We want all purpose disease IDs to be a subclass of any dataset disease ID
-            Set<Boolean> matches = purposeDiseaseIdMap
-                    .values()
-                    .stream()
-                    .map(idList -> idList
-                            .stream()
-                            .anyMatch(dataset.getDiseaseRestrictions()::contains))
-                    .collect(Collectors.toSet());
-            return !matches.contains(false);
-        }
     }
 
     // Helper methods
