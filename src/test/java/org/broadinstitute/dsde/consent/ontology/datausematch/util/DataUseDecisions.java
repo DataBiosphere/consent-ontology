@@ -45,12 +45,12 @@ public class DataUseDecisions {
 
     /**
      * RP: Disease Focused Research
+     * Future use is limited to research involving the following disease area(s) [DS]
      * Datasets:
      *      Any dataset with GRU=true
      *      Any dataset with HMB=true
      *      Any dataset tagged to this disease exactly
      *      Any dataset tagged to a DOID ontology Parent of disease X
-     *
      */
     public static boolean matchDiseases(DataUse purpose, DataUse dataset, Map<String, List<String>> purposeDiseaseIdMap) {
         // short-circuit if not disease focused research
@@ -74,9 +74,11 @@ public class DataUseDecisions {
             return !matches.contains(false);
         }
     }
-    
+
     /**
      * RP: Methods development/Validation study
+     * Future use for methods research (analytic/software/technology development) outside the
+     *      bounds of the other specified restrictions is prohibited [NMDS]
      * Datasets:
      *      Any dataset where NMDS is false
      *      Any dataset where NMDS is true AND DS-X match
@@ -94,6 +96,7 @@ public class DataUseDecisions {
 
     /**
      * RP: Control Set
+     * Future use as a control set for diseases other than those specified is prohibited [NCTRL]
      * Datasets:
      *      Any dataset where NCTRL is false and is (GRU or HMB)
      *      Any DS-X match, if user specified a disease in the res purpose search
@@ -117,7 +120,31 @@ public class DataUseDecisions {
         return false;
     }
 
-    public static boolean getNullable(Boolean bool) {
+    /**
+     * RP: Aggregate analysis to understand variation in the general population
+     * Future use of aggregate-level data for general research purposes is prohibited [NAGR] (Yes | No | Unspecified)
+     * Datasets:
+     *      Any dataset where NAGR is false and is (GRU or HMB)
+     */
+    public static boolean matchAggregateAnalysis(DataUse purpose, DataUse dataset) {
+        // short-circuit if no aggregate clause
+        if (purpose.getAggregateResearch() == null && dataset.getAggregateResearch() == null) {
+            return true;
+        }
+
+        boolean purposeNAGR = getNullable(purpose.getAggregateResearch());
+        boolean datasetNAGR = getNullable(dataset.getAggregateResearch());
+
+        return purposeNAGR &&
+                !datasetNAGR &&
+                (getNullable(dataset.getHmbResearch()) || getNullable(dataset.getGeneralUse()));
+    }
+
+
+
+    // Helper Methods
+
+    private static boolean getNullable(Boolean bool) {
         return Optional.ofNullable(bool).orElse(false);
     }
 
