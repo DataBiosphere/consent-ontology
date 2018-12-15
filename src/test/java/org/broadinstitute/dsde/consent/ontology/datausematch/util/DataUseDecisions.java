@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  * Prefer longer, descriptive expressions over terse comparisons. We're not looking for
  * the most concise code possible, but instead it is critical that we favor clarity first.
  */
-@SuppressWarnings("RedundantIfStatement")
+@SuppressWarnings({"RedundantIfStatement", "ConstantConditions"})
 public class DataUseDecisions {
 
     /**
@@ -53,8 +53,8 @@ public class DataUseDecisions {
      *      Any dataset tagged to a DOID ontology Parent of disease X
      */
     public static boolean matchDiseases(DataUse purpose, DataUse dataset, Map<String, List<String>> purposeDiseaseIdMap) {
-        // short-circuit if not disease focused research
-        if (purpose.getDiseaseRestrictions().isEmpty()) {
+        // short-circuit if no disease focused research
+        if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
             return true;
         }
         if (DataUseDecisions.getNullable(dataset.getGeneralUse())) {
@@ -85,13 +85,20 @@ public class DataUseDecisions {
      */
     public static boolean matchNMDS(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
         // short-circuit if no nmds clause
-        if (purpose.getMethodsResearch() == null) {
+        if (purpose.getMethodsResearch() == null && dataset.getMethodsResearch() == null) {
             return true;
         }
 
         boolean datasetNMDS = getNullable(dataset.getMethodsResearch());
-        boolean purposeDiseaseMatch = !purpose.getDiseaseRestrictions().isEmpty() && diseaseMatch;
-        return !datasetNMDS || purposeDiseaseMatch;
+        if (!datasetNMDS) {
+            return true;
+        }
+
+        if (datasetNMDS && diseaseMatch) {
+            return true;
+        }
+
+        return false;
     }
 
     /**

@@ -35,10 +35,14 @@ import static org.mockito.Mockito.when;
  * See https://docs.google.com/document/d/1P70Gt5wCru0YzvJWNru9Nt4tCADhEsBWpKPp7qs_n2M
  * for minimum number of use cases that need to be implemented.
  *
+ * TODO: Update the Truth Table Tests
+ * We should modify the truth table tests to use this algorithm instead of the owl process.
  */
 public class MatchPOCTest {
 
     private static final Logger log = Logger.getLogger(MatchPOCTest.class);
+    private static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
+    private static final String intestinalCancerNode = "http://purl.obolibrary.org/obo/DOID_10155";
 
     @Mock
     AutocompleteService autocompleteService;
@@ -55,12 +59,12 @@ public class MatchPOCTest {
 
     @Test
     public void testDiseaseMatching_positive() throws Exception {
-        DataUse dataset = new DataUseBuilder().build();
-        dataset.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_162"); // Cancer
-        DataUse purpose = new DataUseBuilder().build();
-        String purposeId = "http://purl.obolibrary.org/obo/DOID_10155"; // Intestinal Cancer
-        purpose.getDiseaseRestrictions().add(purposeId);
-
+        DataUse dataset = new DataUseBuilder()
+                .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+                .build();
+        DataUse purpose = new DataUseBuilder()
+                .setDiseaseRestrictions(Collections.singletonList(intestinalCancerNode))
+                .build();
         // Build a mock response of term parents based on what is returned when searching on DOID_10155
         List<TermResource> termResources = new ArrayList<>();
         TermResource resource = new TermResource();
@@ -75,7 +79,7 @@ public class MatchPOCTest {
         TermParent parent5 = new TermParent();
         parent5.setId("http://purl.obolibrary.org/obo/DOID_4");
 
-        resource.setId(purposeId);
+        resource.setId(intestinalCancerNode);
         resource.setParents(new ArrayList<>());
         resource.getParents().add(parent1);
         resource.getParents().add(parent2);
@@ -85,17 +89,18 @@ public class MatchPOCTest {
 
         termResources.add(resource);
 
-        when(autocompleteService.lookupById(purposeId)).thenReturn(termResources);
+        when(autocompleteService.lookupById(intestinalCancerNode)).thenReturn(termResources);
         assertTrue(matchPurposeAndDataset(purpose, dataset));
     }
 
     @Test
     public void testDiseaseMatching_negative() throws Exception {
-        DataUse dataset = new DataUseBuilder().build();
-        DataUse purpose = new DataUseBuilder().build();
-        dataset.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_10155"); // Intestinal Cancer
-        String purposeId = "http://purl.obolibrary.org/obo/DOID_162"; //  Cancer
-        purpose.getDiseaseRestrictions().add(purposeId);
+        DataUse dataset = new DataUseBuilder()
+                .setDiseaseRestrictions(Collections.singletonList(intestinalCancerNode))
+                .build();
+        DataUse purpose = new DataUseBuilder()
+                .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+                .build();
 
         // Build a mock response of term parents based on what is returned when searching on DOID_162
         List<TermResource> termResources = new ArrayList<>();
@@ -105,14 +110,14 @@ public class MatchPOCTest {
         TermParent parent2 = new TermParent();
         parent2.setId("http://purl.obolibrary.org/obo/DOID_4");
 
-        resource.setId(purposeId);
+        resource.setId(cancerNode);
         resource.setParents(new ArrayList<>());
         resource.getParents().add(parent1);
         resource.getParents().add(parent2);
 
         termResources.add(resource);
 
-        when(autocompleteService.lookupById(purposeId)).thenReturn(termResources);
+        when(autocompleteService.lookupById(cancerNode)).thenReturn(termResources);
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
@@ -137,12 +142,12 @@ public class MatchPOCTest {
         assertTrue(matchPurposeAndDataset(purpose, dataset));
     }
 
-    // TODO: This is confusing. In the context of a consented dataset, this means no methods research
-    // In the context of a research purpose, this means yes to methods research
     @Test
     public void testNMDS_negative_case_1() {
         DataUse dataset = new DataUseBuilder().setMethodsResearch(true).build();
-        DataUse purpose = new DataUseBuilder().setMethodsResearch(true).build();
+        DataUse purpose = new DataUseBuilder()
+                .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+                .setMethodsResearch(true).build();
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
