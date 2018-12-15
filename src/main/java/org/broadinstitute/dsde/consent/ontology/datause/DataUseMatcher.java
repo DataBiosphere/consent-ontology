@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import com.google.inject.Inject;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.slf4j.Logger;
@@ -35,7 +34,6 @@ public class DataUseMatcher {
     }
 
     // Matching Algorithm
-
     public boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) throws IOException {
         Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
 
@@ -46,12 +44,12 @@ public class DataUseMatcher {
         boolean nagrMatch = matchNAGR(purpose, dataset);
         boolean poaMatch = matchPOA(purpose, dataset);
 
-        log.info("hmbMatch: " + hmbMatch);
-        log.info("diseaseMatch: " + diseaseMatch);
-        log.info("nmdsMatch: " + nmdsMatch);
-        log.info("controlMatch: " + controlMatch);
-        log.info("nagrMatch: " + nagrMatch);
-        log.info("poaMatch: " + poaMatch);
+        log.debug("hmbMatch: " + hmbMatch);
+        log.debug("diseaseMatch: " + diseaseMatch);
+        log.debug("nmdsMatch: " + nmdsMatch);
+        log.debug("controlMatch: " + controlMatch);
+        log.debug("nagrMatch: " + nagrMatch);
+        log.debug("poaMatch: " + poaMatch);
 
         return hmbMatch &&
                 diseaseMatch &&

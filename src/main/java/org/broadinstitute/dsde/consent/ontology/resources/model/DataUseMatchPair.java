@@ -2,11 +2,14 @@ package org.broadinstitute.dsde.consent.ontology.resources.model;
 
 import com.google.gson.Gson;
 
+@SuppressWarnings("unused")
 public class DataUseMatchPair {
 
     private DataUse purpose;
 
     private DataUse dataset;
+
+    public DataUseMatchPair() { }
 
     public DataUseMatchPair(DataUse purpose, DataUse dataset) {
         this.purpose = purpose;

@@ -1,6 +1,5 @@
-package org.broadinstitute.dsde.consent.ontology.datausematch;
+package org.broadinstitute.dsde.consent.ontology.datause;
 
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
@@ -25,7 +24,7 @@ import static org.mockito.Mockito.when;
  * See https://docs.google.com/document/d/1P70Gt5wCru0YzvJWNru9Nt4tCADhEsBWpKPp7qs_n2M
  * for minimum number of use cases that need to be implemented.
  */
-public class MatchPOCTest {
+public class DataUseMatcherTest {
 
     private static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
     private static final String intestinalCancerNode = "http://purl.obolibrary.org/obo/DOID_10155";
