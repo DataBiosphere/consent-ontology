@@ -32,20 +32,20 @@ public class DataUseDecisions {
             return true;
         }
 
-        boolean purposeHMB = getNullable(purpose.getHmbResearch());
         boolean purposeGRU = getNullable(purpose.getGeneralUse());
+        boolean purposeHMB = getNullable(purpose.getHmbResearch());
         boolean datasetGRU = getNullable(dataset.getGeneralUse());
         boolean datasetHMB = getNullable(dataset.getHmbResearch());
+
+        if (datasetHMB && purposeGRU) {
+            return false;
+        }
 
         if (purposeHMB && datasetGRU) {
             return true;
         }
         if (purposeHMB && datasetHMB) {
             return true;
-        }
-
-        if (datasetHMB && purposeGRU) {
-            return false;
         }
 
         if (diseaseMatch) {

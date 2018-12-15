@@ -34,9 +34,6 @@ import static org.mockito.Mockito.when;
 /**
  * See https://docs.google.com/document/d/1P70Gt5wCru0YzvJWNru9Nt4tCADhEsBWpKPp7qs_n2M
  * for minimum number of use cases that need to be implemented.
- *
- * TODO: Update the Truth Table Tests
- * We should modify the truth table tests to use this algorithm instead of the owl process.
  */
 public class MatchPOCTest {
 
