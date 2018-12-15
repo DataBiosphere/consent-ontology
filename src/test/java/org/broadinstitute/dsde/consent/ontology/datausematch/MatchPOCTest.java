@@ -186,8 +186,8 @@ public class MatchPOCTest {
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
         Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
 
-        boolean hmbMatch = matchHMB(purpose, dataset);
         boolean diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
+        boolean hmbMatch = matchHMB(purpose, dataset, diseaseMatch);
         boolean nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch);
         boolean controlMatch = matchControlSet(purpose, dataset, diseaseMatch);
         boolean nagrMatch = matchNAGR(purpose, dataset);

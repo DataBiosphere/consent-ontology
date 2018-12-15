@@ -23,14 +23,17 @@ public class DataUseDecisions {
      * Datasets:
      *      Any dataset tagged with GRU
      *      Any dataset tagged with HMB
+     *      *** Adding based on HMB Truth Table use case support ***
+     *      Any DS match
      */
-    public static boolean matchHMB(DataUse purpose, DataUse dataset) {
+    public static boolean matchHMB(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
         // short-circuit hmb if not set
         if (purpose.getHmbResearch() == null && dataset.getHmbResearch() == null) {
             return true;
         }
 
         boolean purposeHMB = getNullable(purpose.getHmbResearch());
+        boolean purposeGRU = getNullable(purpose.getGeneralUse());
         boolean datasetGRU = getNullable(dataset.getGeneralUse());
         boolean datasetHMB = getNullable(dataset.getHmbResearch());
 
@@ -40,6 +43,15 @@ public class DataUseDecisions {
         if (purposeHMB && datasetHMB) {
             return true;
         }
+
+        if (datasetHMB && purposeGRU) {
+            return false;
+        }
+
+        if (diseaseMatch) {
+            return true;
+        }
+
         return false;
     }
 
