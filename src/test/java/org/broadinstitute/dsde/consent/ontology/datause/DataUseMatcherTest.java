@@ -166,6 +166,34 @@ public class DataUseMatcherTest {
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
+    @Test
+    public void testCommercial_positive_1() {
+        DataUse dataset = new DataUseBuilder().setCommercialUse(true).build();
+        DataUse purpose = new DataUseBuilder().setCommercialUse(true).build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testCommercial_positive_2() {
+        DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
+        DataUse purpose = new DataUseBuilder().setCommercialUse(true).build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testCommercial_negative_1() {
+        DataUse dataset = new DataUseBuilder().setCommercialUse(false).build();
+        DataUse purpose = new DataUseBuilder().setCommercialUse(true).build();
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testCommercial_negative_2() {
+        DataUse dataset = new DataUseBuilder().setCommercialUse(true).build();
+        DataUse purpose = new DataUseBuilder().setCommercialUse(false).build();
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
+    }
+
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
         DataUseMatcher matcher = new DataUseMatcher();
         matcher.setAutocompleteService(autocompleteService);

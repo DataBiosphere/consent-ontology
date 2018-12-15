@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
  * the most concise code possible, but instead favor clarity.
  */
 @SuppressWarnings({"RedundantIfStatement", "ConstantConditions"})
-public class DataUseMatchCases {
+class DataUseMatchCases {
 
     /**
      * RP: HMB
@@ -27,7 +27,7 @@ public class DataUseMatchCases {
      *      TODO: Validate that this is acceptable with Product Owner.
      *      Any DS match
      */
-    public static boolean matchHMB(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
+    static boolean matchHMB(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
         // short-circuit hmb if not set
         if (purpose.getHmbResearch() == null && dataset.getHmbResearch() == null) {
             return true;
@@ -65,7 +65,7 @@ public class DataUseMatchCases {
      *      Any dataset tagged to this disease exactly
      *      Any dataset tagged to a DOID ontology Parent of disease X
      */
-    public static boolean matchDiseases(DataUse purpose, DataUse dataset, Map<String, List<String>> purposeDiseaseIdMap) {
+    static boolean matchDiseases(DataUse purpose, DataUse dataset, Map<String, List<String>> purposeDiseaseIdMap) {
         // short-circuit if no disease focused research
         if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
             return true;
@@ -96,7 +96,7 @@ public class DataUseMatchCases {
      *      Any dataset where NMDS is false
      *      Any dataset where NMDS is true AND DS-X match
      */
-    public static boolean matchNMDS(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
+    static boolean matchNMDS(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
         // short-circuit if no nmds clause
         if (purpose.getMethodsResearch() == null && dataset.getMethodsResearch() == null) {
             return true;
@@ -121,7 +121,7 @@ public class DataUseMatchCases {
      *      Any dataset where NCTRL is false and is (GRU or HMB)
      *      Any DS-X match, if user specified a disease in the res purpose search
      */
-    public static boolean matchControlSet(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
+    static boolean matchControlSet(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
         // short-circuit if no control set clause
         if (purpose.getControlSetOption() == null) {
             return true;
@@ -146,7 +146,7 @@ public class DataUseMatchCases {
      * Datasets:
      *      Any dataset where NAGR is false and is (GRU or HMB)
      */
-    public static boolean matchNAGR(DataUse purpose, DataUse dataset) {
+    static boolean matchNAGR(DataUse purpose, DataUse dataset) {
         // short-circuit if no aggregate clause
         if (purpose.getAggregateResearch() == null && dataset.getAggregateResearch() == null) {
             return true;
@@ -166,7 +166,7 @@ public class DataUseMatchCases {
      * Datasets:
      *      Any dataset tagged with GRU
      */
-    public static boolean matchPOA(DataUse purpose, DataUse dataset) {
+    static boolean matchPOA(DataUse purpose, DataUse dataset) {
         // short-circuit if no POA clause
         if (purpose.getPopulationOriginsAncestry() == null) {
             return true;
@@ -174,6 +174,34 @@ public class DataUseMatchCases {
 
         return purpose.getPopulationOriginsAncestry() &&
                 getNullable(dataset.getGeneralUse());
+    }
+
+    /**
+     * RP: Commercial purpose/by a commercial entity
+     * Future commercial use is prohibited [NCU]
+     * Future use by for-profit entities is prohibited [NPU]
+     * Datasets:
+     *      Any dataset where NPU and NCU are both false
+     */
+    static boolean matchCommercial(DataUse purpose, DataUse dataset) {
+        // short-circuit if no commercial clause
+        if (purpose.getCommercialUse() == null) {
+            return true;
+        }
+
+        boolean purposeCommercial = getNullable(purpose.getCommercialUse());
+        // If commercial is not set on the dataset, it can be used for commercial use.
+        boolean datasetCommercial = dataset.getCommercialUse() == null || getNullable(dataset.getCommercialUse());
+
+        if (purposeCommercial) {
+            return datasetCommercial;
+        }
+
+        if (!purposeCommercial) {
+            return !datasetCommercial;
+        }
+
+        return false;
     }
 
     // Helper Methods

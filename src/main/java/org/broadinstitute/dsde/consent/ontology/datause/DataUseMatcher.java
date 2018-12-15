@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchCommercial;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchControlSet;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchDiseases;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchHMB;
@@ -43,6 +44,7 @@ public class DataUseMatcher {
         boolean controlMatch = matchControlSet(purpose, dataset, diseaseMatch);
         boolean nagrMatch = matchNAGR(purpose, dataset);
         boolean poaMatch = matchPOA(purpose, dataset);
+        boolean commercialMatch = matchCommercial(purpose, dataset);
 
         log.debug("hmbMatch: " + hmbMatch);
         log.debug("diseaseMatch: " + diseaseMatch);
@@ -50,13 +52,15 @@ public class DataUseMatcher {
         log.debug("controlMatch: " + controlMatch);
         log.debug("nagrMatch: " + nagrMatch);
         log.debug("poaMatch: " + poaMatch);
+        log.debug("commercialMatch: " + commercialMatch);
 
         return hmbMatch &&
                 diseaseMatch &&
                 nmdsMatch &&
                 controlMatch &&
                 nagrMatch &&
-                poaMatch;
+                poaMatch &&
+                commercialMatch;
     }
 
     // Helper methods
