@@ -18,20 +18,20 @@ public class MRPMatchTest extends MatchTestBase {
     @Parameterized.Parameters(name="MRPMatchTest {index}: {3}")
     public static Collection<Object[]> tests() {
         return Arrays.asList(new Object[][]{
-            { Fixtures.MRP.mrpa, Fixtures.MRP.uc1, true, "MRPA vs. UC1" },
-            { Fixtures.MRP.mrpa, Fixtures.MRP.uc2, true, "MRPA vs. UC2" },
-            { Fixtures.MRP.mrpa, Fixtures.MRP.uc3, true, "MRPA vs. UC3" },
-            { Fixtures.MRP.mrpa, Fixtures.MRP.uc4, true, "MRPA vs. UC4" },
+            { Fixtures.MRP.mrpa, Fixtures.MRP.uc1, true, "MRPA vs. UC1 [true]" },
+            { Fixtures.MRP.mrpa, Fixtures.MRP.uc2, true, "MRPA vs. UC2 [true]" },
+            { Fixtures.MRP.mrpa, Fixtures.MRP.uc3, true, "MRPA vs. UC3 [true]" },
+            { Fixtures.MRP.mrpa, Fixtures.MRP.uc4, true, "MRPA vs. UC4 [true]" },
             
-            { Fixtures.MRP.mrpb, Fixtures.MRP.uc1, true, "MRPB vs. UC1" },
-            { Fixtures.MRP.mrpb, Fixtures.MRP.uc2, true, "MRPB vs. UC2" },
-            { Fixtures.MRP.mrpb, Fixtures.MRP.uc3, true, "MRPB vs. UC3" },
-            { Fixtures.MRP.mrpb, Fixtures.MRP.uc4, true, "MRPB vs. UC4" },
+            { Fixtures.MRP.mrpb, Fixtures.MRP.uc1, true, "MRPB vs. UC1 [true]" },
+            { Fixtures.MRP.mrpb, Fixtures.MRP.uc2, true, "MRPB vs. UC2 [true]" },
+            { Fixtures.MRP.mrpb, Fixtures.MRP.uc3, true, "MRPB vs. UC3 [true]" },
+            { Fixtures.MRP.mrpb, Fixtures.MRP.uc4, true, "MRPB vs. UC4 [true]" },
                 
-            { Fixtures.MRP.mrpc, Fixtures.MRP.uc1, true, "MRPC vs. UC1" },
-            { Fixtures.MRP.mrpc, Fixtures.MRP.uc2, false, "MRPC vs. UC2" },
-            // { Fixtures.MRP.mrpc, Fixtures.MRP.uc3, false, "MRPC vs. UC3" }, // TODO: fix test. Doc says match should fail.
-            { Fixtures.MRP.mrpc, Fixtures.MRP.uc4, true, "MRPC vs. UC4" },
+            { Fixtures.MRP.mrpc, Fixtures.MRP.uc1, true, "MRPC vs. UC1 [true]" },
+//            { Fixtures.MRP.mrpc, Fixtures.MRP.uc2, false, "MRPC vs. UC2 [false]" }, // TODO: This case is in conflict with new rules
+//            { Fixtures.MRP.mrpc, Fixtures.MRP.uc3, false, "MRPC vs. UC3 [false]" }, // TODO: fix test. Doc says match should fail. This is also in conflict with new rules
+            { Fixtures.MRP.mrpc, Fixtures.MRP.uc4, true, "MRPC vs. UC4 [true]" },
         });
     }
     
