@@ -10,15 +10,23 @@ import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerActor;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 
-import javax.ws.rs.*;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URL;
 import java.util.Collection;
@@ -36,6 +44,34 @@ public class MatchResource {
 
     public MatchResource() {}
 
+    @Path("/datause")
+    @POST
+    public Response matchDataUse(final DataUseMatchPair matchPair) {
+        DataUse purpose = matchPair.getPurpose();
+        DataUse dataset = matchPair.getDataset();
+        try {
+            if (purpose != null && dataset != null) {
+                boolean match = new DataUseMatcher().matchPurposeAndDataset(purpose, dataset);
+                return Response
+                        .ok()
+                        .entity(ImmutableMap.of("result", match, "matchPair", matchPair))
+                        .type(MediaType.APPLICATION_JSON)
+                        .build();
+            }
+            ErrorResponse error = new ErrorResponse();
+            error.setCode(Response.Status.BAD_REQUEST.getStatusCode());
+            if (purpose == null) {
+                error.setMessage("Purpose is required");
+            } else {
+                error.setMessage("Dataset is required");
+            }
+            return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON).build();
+        } catch (Exception e) {
+            return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
+        }
+    }
+
+    @Deprecated
     @POST
     public void match(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
         // TODO: Timeout should likely be an application-wide property

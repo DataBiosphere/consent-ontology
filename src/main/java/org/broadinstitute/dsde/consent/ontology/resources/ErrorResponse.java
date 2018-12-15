@@ -10,8 +10,7 @@ public class ErrorResponse {
     @JsonProperty
     private Integer code;
 
-    public ErrorResponse() {
-    }
+    ErrorResponse() { }
 
     public ErrorResponse(String message, Integer code) {
         this.message = message;
@@ -24,5 +23,13 @@ public class ErrorResponse {
 
     public void setMessage(String error) {
         this.message = error;
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
     }
 }

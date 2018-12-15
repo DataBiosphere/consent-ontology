@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.datausematch.util;
+package org.broadinstitute.dsde.consent.ontology.datause;
 
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 
@@ -11,12 +11,12 @@ import java.util.stream.Collectors;
 /**
  * General case is that we make very granular comparisons.
  * Short-circuit checks if possible.
- * Go through the result cases one by one.
+ * Go through the result cases individually.
  * Prefer longer, descriptive expressions over terse comparisons. We're not looking for
- * the most concise code possible, but instead it is critical that we favor clarity first.
+ * the most concise code possible, but instead favor clarity.
  */
 @SuppressWarnings({"RedundantIfStatement", "ConstantConditions"})
-public class DataUseDecisions {
+public class DataUseMatchCases {
 
     /**
      * RP: HMB
@@ -24,6 +24,7 @@ public class DataUseDecisions {
      *      Any dataset tagged with GRU
      *      Any dataset tagged with HMB
      *      *** Adding based on HMB Truth Table use case support ***
+     *      TODO: Validate that this is acceptable with Product Owner.
      *      Any DS match
      */
     public static boolean matchHMB(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
@@ -69,10 +70,10 @@ public class DataUseDecisions {
         if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
             return true;
         }
-        if (DataUseDecisions.getNullable(dataset.getGeneralUse())) {
+        if (getNullable(dataset.getGeneralUse())) {
             return true;
         }
-        if (DataUseDecisions.getNullable(dataset.getHmbResearch())) {
+        if (getNullable(dataset.getHmbResearch())) {
             return true;
         } else {
             // We want all purpose disease IDs to be a subclass of any dataset disease ID

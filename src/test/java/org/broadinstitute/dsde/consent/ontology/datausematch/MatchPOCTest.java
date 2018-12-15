@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datausematch;
 
-import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
@@ -13,19 +13,9 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchNAGR;
-import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchControlSet;
-import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchDiseases;
-import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchHMB;
-import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchNMDS;
-import static org.broadinstitute.dsde.consent.ontology.datausematch.util.DataUseDecisions.matchPOA;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -37,7 +27,6 @@ import static org.mockito.Mockito.when;
  */
 public class MatchPOCTest {
 
-    private static final Logger log = Logger.getLogger(MatchPOCTest.class);
     private static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
     private static final String intestinalCancerNode = "http://purl.obolibrary.org/obo/DOID_10155";
 
@@ -178,62 +167,14 @@ public class MatchPOCTest {
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
-    // Matching Algorithm
-
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
-        Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
-
-        boolean diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
-        boolean hmbMatch = matchHMB(purpose, dataset, diseaseMatch);
-        boolean nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch);
-        boolean controlMatch = matchControlSet(purpose, dataset, diseaseMatch);
-        boolean nagrMatch = matchNAGR(purpose, dataset);
-        boolean poaMatch = matchPOA(purpose, dataset);
-
-        log.info("hmbMatch: " + hmbMatch);
-        log.info("diseaseMatch: " + diseaseMatch);
-        log.info("nmdsMatch: " + nmdsMatch);
-        log.info("controlMatch: " + controlMatch);
-        log.info("nagrMatch: " + nagrMatch);
-        log.info("poaMatch: " + poaMatch);
-
-        return hmbMatch &&
-                diseaseMatch &&
-                nmdsMatch &&
-                controlMatch &&
-                nagrMatch &&
-                poaMatch;
-    }
-
-    // Helper methods
-    
-    // Get a map of disease term to list of parent term ids (which also includes disease term id)
-    private Map<String, List<String>> purposeDiseaseIdMap(List<String> diseaseRestrictions) {
-        return diseaseRestrictions
-                .stream()
-                .collect(Collectors.toMap(r -> r, this::getParentTermIds, (a, b) -> b));
-    }
-
-    // Get a list of term ids that represent a disease term + all parent ids
-    private List<String> getParentTermIds(String purposeDiseaseId) {
-        List<String> purposeTermIdList = apiWrapper(purposeDiseaseId)
-                .stream()
-                .filter(Objects::nonNull)
-                .flatMap(t -> t.parents.stream())
-                .map(p -> p.id)
-                .collect(Collectors.toList());
-        purposeTermIdList.add(purposeDiseaseId);
-        return purposeTermIdList;
-    }
-    
-    // Silly wrapper around the lookup api call to swallow errors
-    private Collection<TermResource> apiWrapper(String termId) {
+        DataUseMatcher matcher = new DataUseMatcher();
+        matcher.setAutocompleteService(autocompleteService);
         try {
-            return autocompleteService.lookupById(termId);
+            return matcher.matchPurposeAndDataset(purpose, dataset);
         } catch (IOException e) {
-            log.error(e.getMessage());
+            throw new RuntimeException(e);
         }
-        return Collections.emptyList();
     }
 
 }
