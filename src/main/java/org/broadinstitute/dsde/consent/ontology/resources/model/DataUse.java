@@ -55,7 +55,6 @@ import java.util.List;
     "vulnerablePopulations",
     "psychologicalTraits",
     "nonBiomedical",
-    "irb",
     "manualReview"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -119,8 +118,6 @@ public class DataUse {
     private Boolean psychologicalTraits;
     @JsonProperty("nonBiomedical")
     private Boolean nonBiomedical;
-    @JsonProperty("irb")
-    private Boolean irb;
     @JsonProperty("manualReview")
     private Boolean manualReview;
 
@@ -414,16 +411,6 @@ public class DataUse {
         this.nonBiomedical = nonBiomedical;
     }
 
-    @JsonProperty("irb")
-    public Boolean getIrb() {
-        return irb;
-    }
-
-    @JsonProperty("irb")
-    public void setIrb(Boolean irb) {
-        this.irb = irb;
-    }
-
     @JsonProperty("manualReview")
     public Boolean getManualReview() {
         return manualReview;
@@ -470,7 +457,6 @@ public class DataUse {
                 .append(vulnerablePopulations)
                 .append(psychologicalTraits)
                 .append(nonBiomedical)
-                .append(irb)
                 .append(manualReview)
                 .toHashCode();
     }
@@ -513,7 +499,6 @@ public class DataUse {
                 .append(vulnerablePopulations, rhs.vulnerablePopulations)
                 .append(psychologicalTraits, rhs.psychologicalTraits)
                 .append(nonBiomedical, rhs.nonBiomedical)
-                .append(irb, rhs.irb)
                 .append(manualReview, rhs.manualReview)
                 .isEquals();
     }

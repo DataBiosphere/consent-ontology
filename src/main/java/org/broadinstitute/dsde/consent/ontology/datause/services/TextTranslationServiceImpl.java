@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 
 import java.io.IOException;
@@ -12,6 +13,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TextTranslationServiceImpl implements TextTranslationService {
+
+    private final Logger log = Logger.getLogger(TextTranslationServiceImpl.class);
 
     private static final String YES = "Yes";
     private static final String FEMALE = "Female";
@@ -147,7 +150,12 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             summary.add(RS_PD_POS);
         }
         if (dataUse.getDateRestriction() != null) {
-            summary.add(String.format(DATE_POS, DATE_FORMAT.format(dataUse.getDateRestriction())));
+            try {
+                String date = DATE_FORMAT.format(dataUse.getDateRestriction());
+                summary.add(String.format(DATE_POS, date));
+            } catch (IllegalArgumentException e) {
+                log.warn("Invalid date format for: " + dataUse.getDateRestriction());
+            }
         }
         if (Optional.ofNullable(dataUse.getAggregateResearch()).orElse("na").equalsIgnoreCase(YES)) {
             summary.add(AGGREGATE_POS);
@@ -167,7 +175,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         if (dataUse.getOther() != null && !dataUse.getOther().isEmpty()) {
             summary.add(String.format(OTHER_POS, dataUse.getOther()));
         }
-        if (Optional.ofNullable(dataUse.getIrb()).orElse(false)) {
+        if (Optional.ofNullable(dataUse.getEthicsApprovalRequired()).orElse(false)) {
             summary.add(ETHICS_APPROVAL);
         }
         if (Optional.ofNullable(dataUse.getManualReview()).orElse(false)) {
