@@ -48,10 +48,10 @@ public class TranslateResource {
      */
     private Response buildResponse(String forParam, String datause) throws IOException {
         if (TextTranslationService.TranslateFor.PURPOSE.name().equalsIgnoreCase(forParam)) {
-            return Response.ok().entity(translationService.translatePurposeDataUse(datause)).build();
+            return Response.ok().entity(translationService.translatePurpose(datause)).build();
         }
         if (TextTranslationService.TranslateFor.DATASET.name().equalsIgnoreCase(forParam)) {
-            return Response.ok().entity(translationService.translateDatasetDataUse(datause)).build();
+            return Response.ok().entity(translationService.translateDataset(datause)).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }

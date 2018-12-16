@@ -9,8 +9,8 @@ public interface TextTranslationService {
 
     enum TranslateFor { DATASET, PURPOSE }
 
-    String translateDatasetDataUse(String dataUse) throws IOException;
+    String translateDataset(String dataUse) throws IOException;
 
-    String translatePurposeDataUse(String dataUse) throws IOException;
+    String translatePurpose(String dataUse) throws IOException;
 
 }

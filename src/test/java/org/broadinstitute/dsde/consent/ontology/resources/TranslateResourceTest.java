@@ -49,7 +49,7 @@ public class TranslateResourceTest {
                         .accept(MediaType.TEXT_PLAIN_TYPE)
                         .post(Entity.json(gson.toJson(datause)));
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(String.class)).isEqualTo(mockTranslationService.translateDatasetDataUse(""));
+        assertThat(response.readEntity(String.class)).isEqualTo(mockTranslationService.translateDataset(""));
     }
 
     @Test
@@ -63,7 +63,7 @@ public class TranslateResourceTest {
                         .accept(MediaType.TEXT_PLAIN_TYPE)
                         .post(Entity.json(gson.toJson(datause)));
         assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(String.class)).isEqualTo(mockTranslationService.translatePurposeDataUse(""));
+        assertThat(response.readEntity(String.class)).isEqualTo(mockTranslationService.translatePurpose(""));
     }
 
 }

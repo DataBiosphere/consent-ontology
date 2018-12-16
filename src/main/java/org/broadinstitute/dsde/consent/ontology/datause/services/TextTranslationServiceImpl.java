@@ -56,14 +56,14 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     public TextTranslationServiceImpl() { }
 
     @Override
-    public String translateDatasetDataUse(String dataUseString) throws IOException {
+    public String translateDataset(String dataUseString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
         return translate(dataUse, TranslateFor.DATASET);
     }
 
     @Override
-    public String translatePurposeDataUse(String dataUseString) throws IOException {
+    public String translatePurpose(String dataUseString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
         return translate(dataUse, TranslateFor.PURPOSE);
