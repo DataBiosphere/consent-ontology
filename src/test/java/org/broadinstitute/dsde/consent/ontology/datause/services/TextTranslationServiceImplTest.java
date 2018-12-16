@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import java.io.IOException;
 import java.util.Collections;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
@@ -83,43 +84,99 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     }
 
     @Test
-    public void testTranslateCoverage() throws IOException {
+    public void testTranslateCoverageTrue() throws IOException {
         Gson gson = new Gson();
         DataUse dataset = new DataUseBuilder()
-                .setGeneralUse(false)
+                .setGeneralUse(true)
                 .setHmbResearch(true)
                 .setDiseaseRestrictions(Collections.singletonList("disease"))
                 .setMethodsResearch(true)
                 .setControlSetOption("Yes")
-                .setCommercialUse(false)
+                .setCommercialUse(true)
                 .setGender("Male")
                 .setPediatric(true)
                 .setPopulationRestrictions(Collections.singletonList("population"))
-                .setAddiction(false)
+                .setAddiction(true)
                 .setAggregateResearch("Yes")
                 .setCloudStorage("Yes")
                 .setDateRestriction("12/01/2050")
-                .setEthicsApprovalRequired(false)
+                .setEthicsApprovalRequired(true)
                 .setGenomicPhenotypicData("Yes")
-                .setIllegalBehavior(false)
-                .setNonBiomedical(false)
+                .setIllegalBehavior(true)
+                .setNonBiomedical(true)
                 .setOther("Other")
                 .setOtherRestrictions(true)
                 .setGeographicalRestrictions("Geographical restriction")
-                .setPopulationOriginsAncestry(false)
+                .setPopulationOriginsAncestry(true)
                 .setPopulationStructure(true)
+                .setPsychologicalTraits(true)
+                .setRecontactMay("may")
+                .setRecontactMust("must")
+                .setSexualDiseases(true)
+                .setStigmatizeDiseases(true)
+                .setVulnerablePopulations(true)
+                .setManualReview(true)
+                .build();
+        String datasetString = gson.toJson(dataset);
+        String translation = service.translatePurpose(datasetString);
+        log.info(translation);
+        assertNotNull(translation);
+        assertTrue(translation.contains("[GRU]"));
+    }
+
+    @Test
+    public void testTranslateCoverageFalse() throws IOException {
+        Gson gson = new Gson();
+        DataUse dataset = new DataUseBuilder()
+                .setGeneralUse(false)
+                .setHmbResearch(false)
+                .setDiseaseRestrictions(Collections.singletonList("disease"))
+                .setMethodsResearch(false)
+                .setControlSetOption("No")
+                .setCommercialUse(false)
+                .setGender("Male")
+                .setPediatric(false)
+                .setPopulationRestrictions(Collections.singletonList("population"))
+                .setAddiction(false)
+                .setAggregateResearch("No")
+                .setCloudStorage("No")
+                .setDateRestriction("12/01/2050")
+                .setEthicsApprovalRequired(false)
+                .setGenomicPhenotypicData("No")
+                .setIllegalBehavior(false)
+                .setNonBiomedical(false)
+                .setOther("Other")
+                .setOtherRestrictions(false)
+                .setGeographicalRestrictions("Geographical restriction")
+                .setPopulationOriginsAncestry(false)
+                .setPopulationStructure(false)
                 .setPsychologicalTraits(false)
                 .setRecontactMay("may")
                 .setRecontactMust("must")
                 .setSexualDiseases(false)
                 .setStigmatizeDiseases(false)
                 .setVulnerablePopulations(false)
+                .setManualReview(false)
                 .build();
         String datasetString = gson.toJson(dataset);
         String translation = service.translatePurpose(datasetString);
         log.info(translation);
         assertNotNull(translation);
-        assertTrue(!translation.contains("[GRU]"));
+        assertFalse(translation.contains("[GRU]"));
+    }
+
+    @Test
+    public void testInvalidDate() throws IOException {
+        Gson gson = new Gson();
+        DataUse dataset = new DataUseBuilder()
+                .setGeneralUse(true)
+                .setDateRestriction("invalid date format")
+                .build();
+        String datasetString = gson.toJson(dataset);
+        String translation = service.translatePurpose(datasetString);
+        log.info(translation);
+        assertNotNull(translation);
+        assertTrue(translation.contains("[GRU]"));
     }
 
 }
