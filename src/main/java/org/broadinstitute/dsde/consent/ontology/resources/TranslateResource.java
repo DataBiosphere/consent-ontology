@@ -41,17 +41,17 @@ public class TranslateResource {
     /**
      * Helper method to build a response from any form of text translation service
      *
-     * @param forParam Either "purpose" or "sampleset"
-     * @param datause  JSON representation of the translatable data use object
+     * @param forParam Either "purpose" or "dataset"
+     * @param dataUse  JSON representation of the data use object
      * @return Response The Response
      * @throws IOException The Exception
      */
-    private Response buildResponse(String forParam, String datause) throws IOException {
+    private Response buildResponse(String forParam, String dataUse) throws IOException {
         if (TextTranslationService.TranslateFor.PURPOSE.name().equalsIgnoreCase(forParam)) {
-            return Response.ok().entity(translationService.translatePurpose(datause)).build();
+            return Response.ok().entity(translationService.translatePurpose(dataUse)).build();
         }
         if (TextTranslationService.TranslateFor.DATASET.name().equalsIgnoreCase(forParam)) {
-            return Response.ok().entity(translationService.translateDataset(datause)).build();
+            return Response.ok().entity(translationService.translateDataset(dataUse)).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }

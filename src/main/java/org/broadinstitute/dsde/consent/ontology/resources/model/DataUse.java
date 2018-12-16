@@ -13,50 +13,50 @@ import java.util.List;
 
 /**
  * Data Use
- * <p>
+ *
  * Dynamically generated java class from jsonschema2pojo
- * <p>
+ *
  * See: https://github.com/joelittlejohn/jsonschema2pojo
  * <code>jsonschema2pojo --source src/main/resources/data-use.json --target java-gen</code>
- * <p>
+ *
  * Needed to manually fix commons.lang -> commons.lang3 and some other minor simplifications
- * <p>
+ *
  * Also see https://jsonschemalint.com/#/version/draft-04/markup/json for validating json.
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-        "generalUse",
-        "hmbResearch",
-        "diseaseRestrictions",
-        "populationOriginsAncestry",
-        "populationStructure",
-        "commercialUse",
-        "methodsResearch",
-        "aggregateResearch",
-        "controlSetOption",
-        "gender",
-        "pediatric",
-        "populationRestrictions",
-        "dateRestriction",
-        "recontactingDataSubjects",
-        "recontactMay",
-        "recontactMust",
-        "genomicPhenotypicData",
-        "otherRestrictions",
-        "cloudStorage",
-        "ethicsApprovalRequired",
-        "geographicalRestrictions",
-        "other",
-        "illegalBehavior",
-        "addiction",
-        "sexualDiseases",
-        "stigmatizeDiseases",
-        "vulnerablePopulations",
-        "psychologicalTraits",
-        "nonBiomedical",
-        "irb",
-        "manualReview"
+    "generalUse",
+    "hmbResearch",
+    "diseaseRestrictions",
+    "populationOriginsAncestry",
+    "populationStructure",
+    "commercialUse",
+    "methodsResearch",
+    "aggregateResearch",
+    "controlSetOption",
+    "gender",
+    "pediatric",
+    "populationRestrictions",
+    "dateRestriction",
+    "recontactingDataSubjects",
+    "recontactMay",
+    "recontactMust",
+    "genomicPhenotypicData",
+    "otherRestrictions",
+    "cloudStorage",
+    "ethicsApprovalRequired",
+    "geographicalRestrictions",
+    "other",
+    "illegalBehavior",
+    "addiction",
+    "sexualDiseases",
+    "stigmatizeDiseases",
+    "vulnerablePopulations",
+    "psychologicalTraits",
+    "nonBiomedical",
+    "irb",
+    "manualReview"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataUse {
@@ -476,14 +476,14 @@ public class DataUse {
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (other == this) {
+    public boolean equals(Object otherDataUse) {
+        if (otherDataUse == this) {
             return true;
         }
-        if (!(other instanceof DataUse)) {
+        if (!(otherDataUse instanceof DataUse)) {
             return false;
         }
-        DataUse rhs = ((DataUse) other);
+        DataUse rhs = ((DataUse) otherDataUse);
         return new EqualsBuilder()
                 .append(generalUse, rhs.generalUse)
                 .append(hmbResearch, rhs.hmbResearch)
