@@ -68,28 +68,29 @@ paths:
 
   /translate:
     post:
-      summary: translate
-      description: The Translate service will render an English-language version of a consent or research purpose.
+      summary: Translate Data Use JSON into plain English
+      description: The Translate service will render an English-language version of a research purpose or dataset.
       produces: 
         - text/plain
       parameters:
         - name: for
           in: query
-          description: Translates a research purpose or a consent. (purpose or sampleset)
-          required: true
-          type: string
-        - name: body
-          in: body
-          description: Restriction
+          description: dataset or purpose
           required: true
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/Restriction'
+            type: string
+            enum: [dataset, purpose]
+        - name: body
+          in: body
+          description: DataUse
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
       tags:
+        - Data Use
         - Translate
       responses:
-        '200':
+        200:
           description: Successful translation.
         default:
           description: Unexpected error

@@ -120,6 +120,12 @@
     },
     "nonBiomedical": {
       "type": "boolean"
+    },
+    "irb": {
+      "type": "boolean"
+    },
+    "manualReview": {
+      "type": "boolean"
     }
   }
 }

@@ -7,8 +7,10 @@ import java.io.IOException;
 @ImplementedBy(TextTranslationServiceImpl.class)
 public interface TextTranslationService {
 
-    String translateSample(String restrictionStr) throws IOException;
+    enum TranslateFor { DATASET, PURPOSE }
 
-    String translatePurpose(String restrictionStr) throws IOException;
+    String translateDatasetDataUse(String dataUse) throws IOException;
+
+    String translatePurposeDataUse(String dataUse) throws IOException;
 
 }
