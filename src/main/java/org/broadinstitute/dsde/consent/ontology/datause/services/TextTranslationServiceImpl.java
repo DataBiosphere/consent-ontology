@@ -1,8 +1,11 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -56,7 +59,12 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
-    public TextTranslationServiceImpl() { }
+    private AutocompleteService autocompleteService;
+
+    @Inject
+    public TextTranslationServiceImpl(AutocompleteService autocompleteService) {
+        this.autocompleteService = autocompleteService;
+    }
 
     @Override
     public String translateDataset(String dataUseString) throws IOException {
@@ -92,14 +100,28 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         if (Optional.ofNullable(dataUse.getGeneralUse()).orElse(false)) summary.add(GRU_POS);
         if (Optional.ofNullable(dataUse.getHmbResearch()).orElse(false)) summary.add(HMB_POS);
 
-        // TODO: Need to query ES for the term label ... can't just use the ID here.
         if (!dataUse.getDiseaseRestrictions().isEmpty()) {
-            String dsRestrictions = dataUse.getDiseaseRestrictions()
-                    .stream()
-                    .filter(Objects::nonNull)
-                    .filter(r -> !r.isEmpty())
-                    .collect(Collectors.joining(", "));
-            summary.add(String.format(DS_POS, dsRestrictions));
+            List<String> labels = new ArrayList<>();
+            dataUse.getDiseaseRestrictions().forEach(r -> {
+                try {
+                    List<TermResource> terms = autocompleteService.lookupById(r);
+                    if (!terms.isEmpty()) {
+                        labels.add(terms.get(0).label);
+                    } else {
+                        log.warn("No terms returned for: " + r);
+                    }
+                } catch (IOException e) {
+                    log.warn("Unable to retrieve term id: " + r);
+                }
+            });
+            if (!labels.isEmpty()) {
+                String dsRestrictions = labels
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .filter(r -> !r.isEmpty())
+                        .collect(Collectors.joining(", "));
+                summary.add(String.format(DS_POS, dsRestrictions));
+            }
         }
         if (Optional.ofNullable(dataUse.getPopulationOriginsAncestry()).orElse(false)) {
             summary.add(POA_POS);
