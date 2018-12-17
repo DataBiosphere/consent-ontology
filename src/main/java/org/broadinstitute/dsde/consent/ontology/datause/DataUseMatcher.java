@@ -20,6 +20,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchNAGR;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchNMDS;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchPOA;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchRSPD;
 
 public class DataUseMatcher {
 
@@ -45,6 +46,7 @@ public class DataUseMatcher {
         boolean nagrMatch = matchNAGR(purpose, dataset);
         boolean poaMatch = matchPOA(purpose, dataset);
         boolean commercialMatch = matchCommercial(purpose, dataset);
+        boolean pediatricMatch = matchRSPD(purpose, dataset);
 
         log.debug("hmbMatch: " + hmbMatch);
         log.debug("diseaseMatch: " + diseaseMatch);
@@ -53,6 +55,7 @@ public class DataUseMatcher {
         log.debug("nagrMatch: " + nagrMatch);
         log.debug("poaMatch: " + poaMatch);
         log.debug("commercialMatch: " + commercialMatch);
+        log.debug("pediatricMatch: " + pediatricMatch);
 
         return hmbMatch &&
                 diseaseMatch &&
@@ -60,7 +63,8 @@ public class DataUseMatcher {
                 controlMatch &&
                 nagrMatch &&
                 poaMatch &&
-                commercialMatch;
+                commercialMatch &&
+                pediatricMatch;
     }
 
     // Helper methods

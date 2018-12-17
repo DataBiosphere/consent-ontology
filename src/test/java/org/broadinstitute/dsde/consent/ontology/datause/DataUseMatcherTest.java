@@ -194,6 +194,34 @@ public class DataUseMatcherTest {
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
+    @Test
+    public void testPediatric_positive_1() {
+        DataUse dataset = new DataUseBuilder().setPediatric(true).build();
+        DataUse purpose = new DataUseBuilder().setPediatric(true).build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testPediatric_positive_2() {
+        DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
+        DataUse purpose = new DataUseBuilder().setPediatric(true).build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testPediatric_positive_3() {
+        DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
+        DataUse purpose = new DataUseBuilder().setPediatric(false).build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testPediatric_negative_1() {
+        DataUse dataset = new DataUseBuilder().setPediatric(true).build();
+        DataUse purpose = new DataUseBuilder().setPediatric(false).build();
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
+    }
+
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
         DataUseMatcher matcher = new DataUseMatcher();
         matcher.setAutocompleteService(autocompleteService);

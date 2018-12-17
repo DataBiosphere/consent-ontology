@@ -204,6 +204,27 @@ class DataUseMatchCases {
         return false;
     }
 
+    /**
+     *
+     * RP: Restricted to a specific population
+     * Future use is limited to pediatric research [RS-PD] (required) (Yes | No)
+     * Datasets:
+     *      Any dataset tagged with RS-PD
+     */
+    static boolean matchRSPD(DataUse purpose, DataUse dataset) {
+        // short-circuit if no dataset is not restricted
+        if (dataset.getPediatric() == null || !dataset.getPediatric()) {
+            return true;
+        }
+
+        // also short circuit if RS is not tagged:
+        if (purpose.getPediatric() == null) {
+            return true;
+        }
+
+        return purpose.getPediatric() && dataset.getPediatric();
+    }
+
     // Helper Methods
 
     private static boolean getNullable(Boolean bool) {
