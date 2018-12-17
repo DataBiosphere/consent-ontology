@@ -222,6 +222,37 @@ public class DataUseMatcherTest {
         assertFalse(matchPurposeAndDataset(purpose, dataset));
     }
 
+    @Test
+    public void testGenderMatch_positive_1() {
+        DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
+        DataUse purpose = new DataUseBuilder().setGender("Male").build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+
+        purpose.setGender("Female");
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testGenderMatch_positive_2() {
+        DataUse dataset = new DataUseBuilder().setGender("N/A").build();
+        DataUse purpose = new DataUseBuilder().setGender("Male").build();
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+
+        purpose.setGender("Female");
+        assertTrue(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
+    public void testGenderMatch_negative_1() {
+        DataUse dataset = new DataUseBuilder().setGender("Female").build();
+        DataUse purpose = new DataUseBuilder().setGender("Male").build();
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
+
+        dataset.setGender("Male");
+        purpose.setGender("Female");
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
+    }
+
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
         DataUseMatcher matcher = new DataUseMatcher();
         matcher.setAutocompleteService(autocompleteService);

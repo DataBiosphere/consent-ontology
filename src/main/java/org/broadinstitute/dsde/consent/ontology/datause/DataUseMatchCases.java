@@ -10,7 +10,8 @@ import java.util.stream.Collectors;
 
 /**
  * General case is that we make very granular comparisons.
- * Short-circuit checks if possible.
+ * Short-circuit checks if possible. Need to evaluate carefully if short circuiting can happen on
+ *      either the dataset, purpose, or both.
  * Go through the result cases individually.
  * Prefer longer, descriptive expressions over terse comparisons. We're not looking for
  * the most concise code possible, but instead favor clarity.
@@ -33,10 +34,10 @@ class DataUseMatchCases {
             return true;
         }
 
-        boolean purposeGRU = getNullable(purpose.getGeneralUse());
-        boolean purposeHMB = getNullable(purpose.getHmbResearch());
-        boolean datasetGRU = getNullable(dataset.getGeneralUse());
-        boolean datasetHMB = getNullable(dataset.getHmbResearch());
+        boolean purposeGRU = getNullableOrFalse(purpose.getGeneralUse());
+        boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
+        boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
+        boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
 
         if (datasetHMB && purposeGRU) {
             return false;
@@ -70,10 +71,10 @@ class DataUseMatchCases {
         if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
             return true;
         }
-        if (getNullable(dataset.getGeneralUse())) {
+        if (getNullableOrFalse(dataset.getGeneralUse())) {
             return true;
         }
-        if (getNullable(dataset.getHmbResearch())) {
+        if (getNullableOrFalse(dataset.getHmbResearch())) {
             return true;
         } else {
             // We want all purpose disease IDs to be a subclass of any dataset disease ID
@@ -102,7 +103,7 @@ class DataUseMatchCases {
             return true;
         }
 
-        boolean datasetNMDS = getNullable(dataset.getMethodsResearch());
+        boolean datasetNMDS = getNullableOrFalse(dataset.getMethodsResearch());
         if (!datasetNMDS) {
             return true;
         }
@@ -128,7 +129,7 @@ class DataUseMatchCases {
         }
 
         boolean datasetNCTRL = getNullable(purpose.getControlSetOption());
-        boolean datasetGRUorHMB = (getNullable(dataset.getGeneralUse()) || getNullable(dataset.getHmbResearch()));
+        boolean datasetGRUorHMB = (getNullableOrFalse(dataset.getGeneralUse()) || getNullableOrFalse(dataset.getHmbResearch()));
         if (datasetNCTRL && datasetGRUorHMB) {
             return true;
         }
@@ -157,7 +158,7 @@ class DataUseMatchCases {
 
         return purposeNAGR &&
                 !datasetNAGR &&
-                (getNullable(dataset.getHmbResearch()) || getNullable(dataset.getGeneralUse()));
+                (getNullableOrFalse(dataset.getHmbResearch()) || getNullableOrFalse(dataset.getGeneralUse()));
     }
 
     /**
@@ -173,7 +174,7 @@ class DataUseMatchCases {
         }
 
         return purpose.getPopulationOriginsAncestry() &&
-                getNullable(dataset.getGeneralUse());
+                getNullableOrFalse(dataset.getGeneralUse());
     }
 
     /**
@@ -185,13 +186,12 @@ class DataUseMatchCases {
      */
     static boolean matchCommercial(DataUse purpose, DataUse dataset) {
         // short-circuit if no commercial clause
-        if (purpose.getCommercialUse() == null) {
+        if (purpose.getCommercialUse() == null || dataset.getCommercialUse() == null) {
             return true;
         }
 
-        boolean purposeCommercial = getNullable(purpose.getCommercialUse());
-        // If commercial is not set on the dataset, it can be used for commercial use.
-        boolean datasetCommercial = dataset.getCommercialUse() == null || getNullable(dataset.getCommercialUse());
+        boolean purposeCommercial = getNullableOrFalse(purpose.getCommercialUse());
+        boolean datasetCommercial = getNullableOrFalse(dataset.getCommercialUse());
 
         if (purposeCommercial) {
             return datasetCommercial;
@@ -212,7 +212,7 @@ class DataUseMatchCases {
      *      Any dataset tagged with RS-PD
      */
     static boolean matchRSPD(DataUse purpose, DataUse dataset) {
-        // short-circuit if no dataset is not restricted
+        // short-circuit if dataset is not restricted
         if (dataset.getPediatric() == null || !dataset.getPediatric()) {
             return true;
         }
@@ -225,9 +225,43 @@ class DataUseMatchCases {
         return purpose.getPediatric() && dataset.getPediatric();
     }
 
+    /**
+     *
+     * RP: Restricted to a specific population
+     * Women
+     * Men
+     * Other
+     * Future use is limited to research involving a particular gender [RS-G] (required) (Male | Female | N/A)
+     * Any dataset tagged with:
+     *      RS-G:F or N/A
+     *      RS-G:M or N/A
+     */
+    static boolean matchRSG(DataUse purpose, DataUse dataset) {
+        // short-circuit if dataset is not restricted
+        if (dataset.getGender() == null) {
+            return true;
+        }
+
+        String purposeGender = Optional.ofNullable(purpose.getGender()).orElse("N/A");
+
+        if (dataset.getGender().equalsIgnoreCase("N/A")) {
+            return true;
+        }
+
+        if (purposeGender.equalsIgnoreCase("Male")) {
+            return dataset.getGender().equalsIgnoreCase("Male");
+        }
+
+        if (purposeGender.equalsIgnoreCase("Female")) {
+            return dataset.getGender().equalsIgnoreCase("Female");
+        }
+
+        return false;
+    }
+
     // Helper Methods
 
-    private static boolean getNullable(Boolean bool) {
+    private static boolean getNullableOrFalse(Boolean bool) {
         return Optional.ofNullable(bool).orElse(false);
     }
 
