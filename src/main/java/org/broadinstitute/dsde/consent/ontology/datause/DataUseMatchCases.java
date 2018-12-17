@@ -205,8 +205,8 @@ class DataUseMatchCases {
     }
 
     /**
-     *
-     * RP: Restricted to a specific population
+     * TODO: Validate that this is acceptable with Product Owner.
+     * RP: Restricted to a pediatric
      * Future use is limited to pediatric research [RS-PD] (required) (Yes | No)
      * Datasets:
      *      Any dataset tagged with RS-PD
@@ -226,8 +226,8 @@ class DataUseMatchCases {
     }
 
     /**
-     *
-     * RP: Restricted to a specific population
+     * TODO: Validate that this is acceptable with Product Owner.
+     * RP: Restricted to a gender
      * Women
      * Men
      * Other
