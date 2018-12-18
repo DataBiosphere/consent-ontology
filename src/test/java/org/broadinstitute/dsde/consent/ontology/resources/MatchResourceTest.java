@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseMatchPair;
@@ -36,6 +37,9 @@ public class MatchResourceTest {
         MockitoAnnotations.initMocks(this);
         Mockito.when(autocompleteService.lookupById(any())).thenReturn(Collections.emptyList());
         resource = new MatchResource();
+        DataUseMatcher dataUseMatcher = new DataUseMatcher();
+        dataUseMatcher.setAutocompleteService(autocompleteService);
+        resource.setDataUseMatcher(dataUseMatcher);
     }
 
     @Test
