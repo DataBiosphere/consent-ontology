@@ -23,17 +23,17 @@ public class HMBMatchTest extends MatchTestBase {
             { Fixtures.MRP.mrpa, Fixtures.HMB.uc2, true, "MRPA vs. UC2" },
             { Fixtures.MRP.mrpa, Fixtures.HMB.uc3, true, "MRPA vs. UC3" },
             { Fixtures.MRP.mrpa, Fixtures.HMB.uc4, true, "MRPA vs. UC4" },
-            
+
             { Fixtures.MRP.mrpb, Fixtures.HMB.uc1, true, "MRPB vs. UC1" },
             { Fixtures.MRP.mrpb, Fixtures.HMB.uc2, true, "MRPB vs. UC2" },
             { Fixtures.MRP.mrpb, Fixtures.HMB.uc3, true, "MRPB vs. UC3" },
             { Fixtures.MRP.mrpb, Fixtures.HMB.uc4, true, "MRPB vs. UC4" },
-                
+
             { Fixtures.MRP.mrpc, Fixtures.HMB.uc1, true, "MRPC vs. UC1" },
-            // { Fixtures.MRP.mrpc, Fixtures.HMB.uc2, false, "MRPC vs. UC2" }, // TODO: fix test. Doc says match should fail.
-            // { Fixtures.MRP.mrpc, Fixtures.HMB.uc3, false, "MRPC vs. UC3" }, // TODO: fix test. Doc says match should fail.
+            // { Fixtures.MRP.mrpc, Fixtures.HMB.uc2, false, "MRPC vs. UC2" }, // TODO: fix test. Doc says match should fail. This is also in conflict with new rules
+            // { Fixtures.MRP.mrpc, Fixtures.HMB.uc3, false, "MRPC vs. UC3" }, // TODO: fix test. Doc says match should fail. This is also in conflict with new rules
             { Fixtures.MRP.mrpc, Fixtures.HMB.uc4, true, "MRPC vs. UC4" },
-        
+
             { Fixtures.CS.csa, Fixtures.HMB.uc1, true, "CSA vs. UC1" },
             { Fixtures.CS.csb, Fixtures.HMB.uc1, true, "CSB vs. UC1" },
             { Fixtures.CS.csc, Fixtures.HMB.uc1, true, "CSC vs. UC1" },

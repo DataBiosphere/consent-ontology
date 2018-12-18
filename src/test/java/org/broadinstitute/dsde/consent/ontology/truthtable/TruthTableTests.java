@@ -19,7 +19,7 @@ import java.util.Collection;
  * org.broadinstitute.dsde.consent.ontology.datause.builder.DARUseCases
  * for test cases.
  */
-@Deprecated
+@SuppressWarnings("UnstableApiUsage")
 public class TruthTableTests extends AbstractTest {
 
     private Collection<URL> RESOURCES = Arrays.asList(
@@ -28,10 +28,10 @@ public class TruthTableTests extends AbstractTest {
 
     private OntModelCache ontModelCache = OntModelCache.INSTANCE;
 
-    public void assertResponse(MatchPair pair, Boolean expected) {
+    void assertResponse(MatchPair pair, Boolean expected) {
         MatchWorkerMessage message = new MatchWorkerMessage(RESOURCES, pair);
         try {
-            Assert.assertTrue(ontModelCache.matchPurpose(message).equals(expected));
+            Assert.assertEquals(ontModelCache.matchPurpose(message), expected);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
