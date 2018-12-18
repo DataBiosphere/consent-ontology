@@ -97,7 +97,7 @@ paths:
 
   /match:
     post:
-      summary: match
+      summary: Match UseRestriction Consent and Research Purpose
       description: The Match service will render a response of true or false between a Consent and a Research Purpose.
       parameters:
         - name: body
@@ -105,7 +105,7 @@ paths:
           description: Consent and Purpose Use Restrictions.
           required: true
           schema:
-            $ref: '#/definitions/matchRestrictions'
+            $ref: '#/definitions/MatchPair'
       tags:
         - Match
       responses:
@@ -114,7 +114,29 @@ paths:
         default:
           description: Unexpected error
           
-            
+  /match/datause:
+    post:
+      summary: Match DataUse Purpose and Dataset
+      description: Determine if a Research Purpose and Dataset logically match.
+      parameters:
+        - name: body
+          in: body
+          description: Research Purpose and Dataset DataUse pair.
+          required: true
+          schema:
+            $ref: '#/definitions/DataUseMatchPair'
+      tags:
+        - Match
+      responses:
+        200:
+          description: Successful matching.
+          schema:
+            $ref: '#/definitions/DataUseMatchPairResult'
+        400:
+          description: Bad Request if either purpose or dataset are not provided.
+        500:
+          description: Internal Server Error
+
   /validate/userestriction:
       post:
         summary: validate
@@ -207,11 +229,12 @@ definitions:
           type: string
         description: Array of ontologies.
 
-  matchRestrictions:
+  MatchPair:
     type: object
     properties:
       purpose:
         type: object
+        description: UseRestriction of the research purpose
         properties:
           type: 
             type: string
@@ -222,6 +245,7 @@ definitions:
               description: Array of ontologies.
       consent:
         type: object
+        description: UseRestriction of the consent
         properties:
           type: 
             type: string
@@ -244,3 +268,22 @@ definitions:
         defined by the Data Use schema
         ...
       }
+
+  DataUseMatchPair:
+    type: object
+    description: JSON model of research purpose and dataset
+    properties:
+      purpose:
+        $ref: '#/definitions/DataUse'
+      dataset:
+        $ref: '#/definitions/DataUse'
+
+  DataUseMatchPairResult:
+    type: object
+    properties:
+      result:
+        type: boolean
+        description: Result of the match algorithm on the provided purpose and dataset
+      matchPair:
+        $ref: '#/definitions/DataUseMatchPair'
+        description: The provided purpose and consent
