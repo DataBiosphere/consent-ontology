@@ -19,13 +19,17 @@ import java.util.stream.Collectors;
 @SuppressWarnings({"RedundantIfStatement", "ConstantConditions"})
 class DataUseMatchCases {
 
+    private static final String na = "N/A";
+    private static final String male = "Male";
+    private static final String female = "Female";
+
     /**
      * RP: HMB
      * Datasets:
      *      Any dataset tagged with GRU
      *      Any dataset tagged with HMB
      *      *** Adding based on HMB Truth Table use case support ***
-     *      TODO: Validate that this is acceptable with Product Owner.
+     *      TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/BTRX-481
      *      Any DS match
      */
     static boolean matchHMB(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
@@ -205,7 +209,7 @@ class DataUseMatchCases {
     }
 
     /**
-     * TODO: Validate that this is acceptable with Product Owner.
+     * TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/BTRX-481
      * RP: Restricted to a pediatric
      * Future use is limited to pediatric research [RS-PD] (required) (Yes | No)
      * Datasets:
@@ -226,7 +230,7 @@ class DataUseMatchCases {
     }
 
     /**
-     * TODO: Validate that this is acceptable with Product Owner.
+     * TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/BTRX-481
      * RP: Restricted to a gender
      * Women
      * Men
@@ -242,18 +246,18 @@ class DataUseMatchCases {
             return true;
         }
 
-        String purposeGender = Optional.ofNullable(purpose.getGender()).orElse("N/A");
+        String purposeGender = Optional.ofNullable(purpose.getGender()).orElse(na);
 
-        if (dataset.getGender().equalsIgnoreCase("N/A")) {
+        if (dataset.getGender().equalsIgnoreCase(na)) {
             return true;
         }
 
-        if (purposeGender.equalsIgnoreCase("Male")) {
-            return dataset.getGender().equalsIgnoreCase("Male");
+        if (purposeGender.equalsIgnoreCase(male)) {
+            return dataset.getGender().equalsIgnoreCase(male);
         }
 
-        if (purposeGender.equalsIgnoreCase("Female")) {
-            return dataset.getGender().equalsIgnoreCase("Female");
+        if (purposeGender.equalsIgnoreCase(female)) {
+            return dataset.getGender().equalsIgnoreCase(female);
         }
 
         return false;
@@ -261,10 +265,18 @@ class DataUseMatchCases {
 
     // Helper Methods
 
+    /**
+     * @param bool nullable boolean value
+     * @return boolean The value, or false otherwise
+     */
     private static boolean getNullableOrFalse(Boolean bool) {
         return Optional.ofNullable(bool).orElse(false);
     }
 
+    /**
+     * @param yesOrNo nullable string value
+     * @return boolean True if "yes", false otherwise
+     */
     private static boolean getNullable(String yesOrNo) {
         return Optional.ofNullable(yesOrNo).orElse("no").equalsIgnoreCase("yes");
     }
