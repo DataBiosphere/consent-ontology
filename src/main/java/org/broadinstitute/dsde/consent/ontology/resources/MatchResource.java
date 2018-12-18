@@ -38,6 +38,7 @@ public class MatchResource {
 
     private final Logger log = LoggerFactory.getLogger(MatchResource.class);
     private StoreOntologyService storeOntologyService;
+    private DataUseMatcher dataUseMatcher;
 
     private static final ActorSystem actorSystem = ActorSystem.create("actorSystem");
     private static final ActorRef matchWorkerActor = actorSystem.actorOf(Props.create(MatchWorkerActor.class), "MatchWorkerActor");
@@ -51,7 +52,7 @@ public class MatchResource {
         DataUse dataset = matchPair.getDataset();
         try {
             if (purpose != null && dataset != null) {
-                boolean match = new DataUseMatcher().matchPurposeAndDataset(purpose, dataset);
+                boolean match = dataUseMatcher.matchPurposeAndDataset(purpose, dataset);
                 return Response
                         .ok()
                         .entity(ImmutableMap.of("result", match, "matchPair", matchPair))
@@ -102,6 +103,11 @@ public class MatchResource {
     @Inject
     public void setStoreOntologyService(StoreOntologyService storeOntologyService) {
         this.storeOntologyService = storeOntologyService;
+    }
+
+    @Inject
+    public void setDataUseMatcher(DataUseMatcher dataUseMatcher) {
+        this.dataUseMatcher = dataUseMatcher;
     }
 
 }

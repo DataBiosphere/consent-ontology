@@ -87,6 +87,7 @@ public class DataUseMatcher {
         List<String> purposeTermIdList = autocompleteService.lookupById(purposeDiseaseId)
                 .stream()
                 .filter(Objects::nonNull)
+                .filter(t -> t.getParents() != null && !t.getParents().isEmpty())
                 .flatMap(t -> t.parents.stream())
                 .map(p -> p.id)
                 .collect(Collectors.toList());
