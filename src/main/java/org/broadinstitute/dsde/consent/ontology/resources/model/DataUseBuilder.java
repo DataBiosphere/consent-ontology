@@ -161,4 +161,10 @@ public class DataUseBuilder {
         du.setNonBiomedical(nonBiomedical);
         return this;
     }
+
+    public DataUseBuilder setManualReview(Boolean manualReview) {
+        du.setManualReview(manualReview);
+        return this;
+    }
+
 }

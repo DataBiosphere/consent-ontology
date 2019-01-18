@@ -120,6 +120,9 @@
     },
     "nonBiomedical": {
       "type": "boolean"
+    },
+    "manualReview": {
+      "type": "boolean"
     }
   }
 }

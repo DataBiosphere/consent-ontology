@@ -17,13 +17,13 @@ import java.io.IOException;
 public class TranslateResource {
 
     private final Logger log = LoggerFactory.getLogger(TranslateResource.class);
-    private TextTranslationService helper;
+    private TextTranslationService translationService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response translate(@QueryParam("for") String forParam, String restriction) {
         try {
-            return buildResponse(forParam, restriction, helper);
+            return buildResponse(forParam, restriction);
         } catch (IOException e) {
             log.error("Error while translating", e);
             return Response.
@@ -34,25 +34,24 @@ public class TranslateResource {
     }
 
     @Inject
-    public void setHelper(TextTranslationService helper) {
-        this.helper = helper;
+    public void setTranslationService(TextTranslationService translationService) {
+        this.translationService = translationService;
     }
 
     /**
      * Helper method to build a response from any form of text translation service
      *
-     * @param forParam           Either "purpose" or "sampleset"
-     * @param restriction        JSON representation of the translatable restriction
-     * @param translationService Selected translation service
-     * @return Response
-     * @throws IOException       The Exception
+     * @param forParam Either "purpose" or "dataset"
+     * @param dataUse  JSON representation of the data use object
+     * @return Response The Response
+     * @throws IOException The Exception
      */
-    private Response buildResponse(String forParam, String restriction, TextTranslationService translationService) throws IOException {
-        if ("purpose".equals(forParam)) {
-            return Response.ok().entity(translationService.translatePurpose(restriction)).build();
+    private Response buildResponse(String forParam, String dataUse) throws IOException {
+        if (TextTranslationService.TranslateFor.PURPOSE.name().equalsIgnoreCase(forParam)) {
+            return Response.ok().entity(translationService.translatePurpose(dataUse)).build();
         }
-        if ("sampleset".equals(forParam)) {
-            return Response.ok().entity(translationService.translateSample(restriction)).build();
+        if (TextTranslationService.TranslateFor.DATASET.name().equalsIgnoreCase(forParam)) {
+            return Response.ok().entity(translationService.translateDataset(dataUse)).build();
         }
         return Response.status(Response.Status.BAD_REQUEST).build();
     }
