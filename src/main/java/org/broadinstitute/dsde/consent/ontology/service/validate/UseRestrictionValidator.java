@@ -17,9 +17,9 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Singleton
-public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI {
+public class UseRestrictionValidator implements UseRestrictionValidationService {
 
-    private final Logger log = Logger.getLogger(UseRestrictionValidateImpl.class);
+    private final Logger log = Logger.getLogger(UseRestrictionValidator.class);
     private OntologyTermSearchAPI ontologyTermSearchAPI;
 
     @Inject

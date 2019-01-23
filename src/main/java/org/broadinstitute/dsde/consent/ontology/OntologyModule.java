@@ -12,7 +12,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslation
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplete;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidateAPI;
+import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidationService;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -31,10 +31,9 @@ public class OntologyModule extends AbstractModule {
     protected void configure() {
         bind(Configuration.class).toInstance(config);
         bind(Environment.class).toInstance(environment);
-        bind(UseRestrictionValidateAPI.class).in(Scopes.SINGLETON);
+        bind(UseRestrictionValidationService.class).in(Scopes.SINGLETON);
         bind(TextTranslationService.class).in(Scopes.SINGLETON);
-        bind(UseRestrictionValidateAPI.class).in(Scopes.SINGLETON);
-        bind(TextTranslationService.class).in(Scopes.SINGLETON);
+        bind(UseRestrictionValidationService.class).in(Scopes.SINGLETON);
     }
 
     @Provides
