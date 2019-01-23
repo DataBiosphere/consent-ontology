@@ -23,8 +23,7 @@ public class UseRestrictionValidatorTest extends AbstractTest {
     public static void setUpClass() throws Exception {
         StoreOntologyService storeOntologyServiceMock = getStorageServiceMock();
         OntologyTermSearchAPI api = new LuceneOntologyTermSearchAPI(storeOntologyServiceMock);
-        service = new UseRestrictionValidator();
-        service.setOntologySearchTermAPI(api);
+        service = new UseRestrictionValidator(api);
     }
 
     /**

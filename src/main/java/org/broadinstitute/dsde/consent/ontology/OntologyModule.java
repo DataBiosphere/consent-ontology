@@ -10,11 +10,13 @@ import io.dropwizard.setup.Environment;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
+import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplete;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidationService;
+import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidator;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -33,8 +35,14 @@ public class OntologyModule extends AbstractModule {
     protected void configure() {
         bind(Configuration.class).toInstance(config);
         bind(Environment.class).toInstance(environment);
-        bind(UseRestrictionValidationService.class).in(Scopes.SINGLETON);
         bind(TextTranslationService.class).in(Scopes.SINGLETON);
+    }
+
+    @Provides
+    @Singleton
+    public UseRestrictionValidationService providesUseRestrictionValidationService() {
+        LuceneOntologyTermSearchAPI service = new LuceneOntologyTermSearchAPI(providesStore());
+        return new UseRestrictionValidator(service);
     }
 
     @Provides
