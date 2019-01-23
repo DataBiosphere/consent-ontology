@@ -4,7 +4,11 @@ import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.List;
@@ -12,18 +16,18 @@ import java.util.List;
 @Path("/search")
 public class OntologySearchResource {
 
-    private AutocompleteService api;
+    private AutocompleteService service;
 
     @Inject
-    public OntologySearchResource(AutocompleteService api) {
-        this.api = api;
+    public OntologySearchResource(AutocompleteService service) {
+        this.service = service;
     }
 
     @GET
     @Produces("application/json")
     public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) throws IOException {
         if (!queryTerm.isEmpty()) {
-            List<TermResource> result = api.lookupById(queryTerm);
+            List<TermResource> result = service.lookupById(queryTerm);
             if(!result.isEmpty()){
                 return Response.ok().entity(result).build();
             } else {

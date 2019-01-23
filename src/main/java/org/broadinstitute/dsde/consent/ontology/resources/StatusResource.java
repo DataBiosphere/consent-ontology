@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
+import com.google.inject.Inject;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.GET;
@@ -19,6 +20,7 @@ public class StatusResource {
 
     private HealthCheckRegistry healthChecks;
 
+    @Inject
     public StatusResource(HealthCheckRegistry healthChecks) {
         this.healthChecks = healthChecks;
     }

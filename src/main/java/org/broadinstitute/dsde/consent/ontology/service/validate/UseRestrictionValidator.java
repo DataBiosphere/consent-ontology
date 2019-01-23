@@ -1,29 +1,27 @@
 package org.broadinstitute.dsde.consent.ontology.service.validate;
 
-
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.google.inject.Inject;
-import com.google.inject.Singleton;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.enumerations.UseRestrictionKeys;
-import java.util.HashSet;
+
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Singleton
-public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI {
+public class UseRestrictionValidator implements UseRestrictionValidationService {
 
-    private final Logger log = Logger.getLogger(UseRestrictionValidateImpl.class);
+    private final Logger log = Logger.getLogger(UseRestrictionValidator.class);
     private OntologyTermSearchAPI ontologyTermSearchAPI;
 
     @Inject
-    public void setOntologySearchTermAPI(OntologyTermSearchAPI ontologyTermSearchAPI) {
+    public UseRestrictionValidator(OntologyTermSearchAPI ontologyTermSearchAPI) {
         this.ontologyTermSearchAPI = ontologyTermSearchAPI;
     }
 
@@ -49,7 +47,7 @@ public class UseRestrictionValidateImpl implements UseRestrictionValidateAPI {
             }
             if(invalidTerms.size() > 0){
                 isValid.setValid(false);
-                isValid.addError("Term not found: " + invalidTerms.stream().collect(Collectors.joining(", ")));
+                isValid.addError("Term not found: " + String.join(", ", invalidTerms));
             }
         }
         catch(UnrecognizedPropertyException e){
