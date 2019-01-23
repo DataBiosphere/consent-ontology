@@ -8,6 +8,7 @@ import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
+import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplete;
@@ -55,5 +56,11 @@ public class OntologyModule extends AbstractModule {
             config.getStoreOntologyConfiguration().getBucketSubdirectory(),
             config.getStoreOntologyConfiguration().getConfigurationFileName());
     }
+
+    @Provides
+    public ElasticSearchConfiguration providesElasticSearchConfiguration() {
+        return config.getElasticSearchConfiguration();
+    }
+
 }
 

@@ -55,7 +55,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(SwaggerResource.class));
 
         ElasticSearchConfiguration esConfig = config.getElasticSearchConfiguration();
-        env.healthChecks().register("elastic-search", new ElasticSearchHealthCheck(esConfig));
+        env.healthChecks().register(ElasticSearchHealthCheck.NAME, injector.getInstance(ElasticSearchHealthCheck.class));
         env.jersey().register(new StatusResource(env.healthChecks()));
 
         FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
