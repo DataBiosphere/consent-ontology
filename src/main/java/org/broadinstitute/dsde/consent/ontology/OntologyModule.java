@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology;
 
+import com.codahale.metrics.health.HealthCheckRegistry;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
@@ -60,6 +61,11 @@ public class OntologyModule extends AbstractModule {
     @Provides
     public ElasticSearchConfiguration providesElasticSearchConfiguration() {
         return config.getElasticSearchConfiguration();
+    }
+
+    @Provides
+    public HealthCheckRegistry providesHealthCheckRegistry() {
+        return environment.healthChecks();
     }
 
 }
