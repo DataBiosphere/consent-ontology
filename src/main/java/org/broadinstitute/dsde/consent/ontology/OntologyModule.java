@@ -6,7 +6,6 @@ import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
-import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
@@ -59,16 +58,19 @@ public class OntologyModule extends AbstractModule {
     @Provides
     @Singleton
     public StoreOntologyService providesStore() {
-        GCSStore googleStore;
+        return new StoreOntologyService(providesGCSStore(),
+            config.getStoreOntologyConfiguration().getBucketSubdirectory(),
+            config.getStoreOntologyConfiguration().getConfigurationFileName());
+    }
+
+    @Provides
+    @Singleton
+    public GCSStore providesGCSStore() {
         try {
-            googleStore = new GCSStore(config.getCloudStoreConfiguration());
+            return new GCSStore(config.getCloudStoreConfiguration());
         } catch (GeneralSecurityException | IOException e) {
             throw new IllegalStateException(e);
         }
-        environment.healthChecks().register("google-cloud-storage", new GCSHealthCheck(googleStore));
-        return new StoreOntologyService(googleStore,
-            config.getStoreOntologyConfiguration().getBucketSubdirectory(),
-            config.getStoreOntologyConfiguration().getConfigurationFileName());
     }
 
     @Provides

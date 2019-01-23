@@ -2,11 +2,15 @@ package org.broadinstitute.dsde.consent.ontology.cloudstore;
 
 import com.codahale.metrics.health.HealthCheck;
 import com.google.api.services.storage.model.Bucket;
+import com.google.inject.Inject;
 
 public class GCSHealthCheck extends HealthCheck {
 
     private GCSStore store;
 
+    public static String NAME = "google-cloud-storage";
+
+    @Inject
     public GCSHealthCheck(GCSStore store) {
         this.store = store;
     }

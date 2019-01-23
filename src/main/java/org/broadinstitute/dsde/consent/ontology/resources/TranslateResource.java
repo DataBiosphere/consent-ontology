@@ -19,6 +19,11 @@ public class TranslateResource {
     private final Logger log = LoggerFactory.getLogger(TranslateResource.class);
     private TextTranslationService translationService;
 
+    @Inject
+    public TranslateResource(TextTranslationService translationService) {
+        this.translationService = translationService;
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response translate(@QueryParam("for") String forParam, String restriction) {
@@ -31,11 +36,6 @@ public class TranslateResource {
                     entity("Error while translating: " + e.getMessage()).
                     build();
         }
-    }
-
-    @Inject
-    public void setTranslationService(TextTranslationService translationService) {
-        this.translationService = translationService;
     }
 
     /**
