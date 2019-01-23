@@ -3,7 +3,6 @@ package org.broadinstitute.dsde.consent.ontology;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
-import com.google.inject.Scopes;
 import com.google.inject.Singleton;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
@@ -12,6 +11,7 @@ import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplete;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
@@ -35,7 +35,12 @@ public class OntologyModule extends AbstractModule {
     protected void configure() {
         bind(Configuration.class).toInstance(config);
         bind(Environment.class).toInstance(environment);
-        bind(TextTranslationService.class).in(Scopes.SINGLETON);
+    }
+
+    @Provides
+    @Singleton
+    public TextTranslationService providesTextTranslationService() {
+        return new TextTranslationServiceImpl(providesAutocomplete());
     }
 
     @Provides
