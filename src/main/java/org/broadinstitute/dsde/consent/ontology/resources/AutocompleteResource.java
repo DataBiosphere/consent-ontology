@@ -4,17 +4,22 @@ import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
-import javax.ws.rs.*;
+import javax.ws.rs.DefaultValue;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import java.util.Arrays;
 import java.util.List;
 
 @Path("/autocomplete")
 public class AutocompleteResource {
-    private AutocompleteService api;
+
+    private AutocompleteService service;
 
     @Inject
-    public AutocompleteResource(AutocompleteService api) {
-        this.api = api;
+    public AutocompleteResource(AutocompleteService service) {
+        this.service = service;
     }
 
     @GET
@@ -24,9 +29,9 @@ public class AutocompleteResource {
             @QueryParam("types") @DefaultValue("") String ontologyNames,
             @QueryParam("count") @DefaultValue("20") int limit) {
         if (ontologyNames == null || ontologyNames.isEmpty()) {
-            return api.lookup(queryTerm, limit);
+            return service.lookup(queryTerm, limit);
         } else {
-            return api.lookup(Arrays.asList(ontologyNames.split(",")), queryTerm, limit);
+            return service.lookup(Arrays.asList(ontologyNames.split(",")), queryTerm, limit);
         }
     }
 

@@ -3,6 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.service;
 import com.codahale.metrics.health.HealthCheck;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.inject.Inject;
 import io.dropwizard.lifecycle.Managed;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
@@ -15,6 +16,7 @@ import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.io.IOException;
+import java.nio.charset.Charset;
 
 public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
 
@@ -24,7 +26,7 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     private JsonParser parser = new JsonParser();
     private RestClient client;
     private ElasticSearchSupport elasticSearchSupport;
-
+    public static String NAME = "elastic-search";
 
     @Override
     public void start() { }
@@ -36,8 +38,9 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
         }
     }
 
-    public ElasticSearchHealthCheck(ElasticSearchConfiguration config) {
-        this.configuration =  config;
+    @Inject
+    public ElasticSearchHealthCheck(ElasticSearchConfiguration configuration) {
+        this.configuration = configuration;
         this.elasticSearchSupport = new ElasticSearchSupport();
         this.client = elasticSearchSupport.createRestClient(this.configuration);
     }
@@ -51,7 +54,7 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
                 logger.error("Invalid health check request: " + response.getStatusLine().getReasonPhrase());
                 throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
             }
-            String stringResponse = IOUtils.toString(response.getEntity().getContent());
+            String stringResponse = IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());
             JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
             boolean timeout = jsonResponse.get("timed_out").getAsBoolean();
             String status = jsonResponse.get("status").getAsString();
@@ -70,4 +73,5 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
         }
         return Result.healthy("ClusterHealth is GREEN");
     }
+    
 }
