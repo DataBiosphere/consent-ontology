@@ -33,7 +33,6 @@ public class OntologyModule extends AbstractModule {
         bind(Environment.class).toInstance(environment);
         bind(UseRestrictionValidationService.class).in(Scopes.SINGLETON);
         bind(TextTranslationService.class).in(Scopes.SINGLETON);
-        bind(UseRestrictionValidationService.class).in(Scopes.SINGLETON);
     }
 
     @Provides
