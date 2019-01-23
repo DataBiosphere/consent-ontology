@@ -23,7 +23,7 @@ public class ValidationResourceTest {
     private ValidationResource validationResource;
 
     @Mock
-    private UseRestrictionValidationService validateAPI;
+    private UseRestrictionValidationService validationService;
 
     private static final String useRestriction = "{ + \"type\": \"and\","
                                    + "\"operands\": [{ \"type\": \"named\","
@@ -38,13 +38,13 @@ public class ValidationResourceTest {
     public void setUp() {
         MockitoAnnotations.initMocks(this);
         validationResource = new ValidationResource();
-        validationResource.setValidationService(validateAPI);
+        validationResource.setValidationService(validationService);
     }
 
     @Test
     public void testValidateUseRestriction() throws Exception {
         ValidateResponse validateResponse = new ValidateResponse(true, useRestriction);
-        when(validateAPI.validateUseRestriction(useRestriction)).thenReturn(validateResponse);
+        when(validationService.validateUseRestriction(useRestriction)).thenReturn(validateResponse);
         Response response = validationResource.validateUseRestriction(useRestriction);
         ValidateResponse validateResponseResult = (ValidateResponse) response.getEntity();
         assertTrue(validateResponseResult.getErrors().isEmpty());
@@ -58,7 +58,7 @@ public class ValidationResourceTest {
         String error = "Term not found: test";
         ValidateResponse validateResponse = new ValidateResponse(false, invalidUseRestriction);
         validateResponse.addError(error);
-        when(validateAPI.validateUseRestriction(useRestriction)).thenReturn(validateResponse);
+        when(validationService.validateUseRestriction(useRestriction)).thenReturn(validateResponse);
         Response response = validationResource.validateUseRestriction(useRestriction);
         ValidateResponse validateResponseResult = (ValidateResponse) response.getEntity();
         assertFalse(validateResponseResult.isValid());
@@ -68,7 +68,7 @@ public class ValidationResourceTest {
 
     @Test
     public void testValidateUseRestrictionAfterException() throws Exception {
-        doThrow(new Exception()).when(validateAPI).validateUseRestriction(useRestriction);
+        doThrow(new Exception()).when(validationService).validateUseRestriction(useRestriction);
         Response response = validationResource.validateUseRestriction(useRestriction);
         assertEquals(response.getStatus(), Response.Status.BAD_REQUEST.getStatusCode());
     }
