@@ -15,18 +15,18 @@ import javax.ws.rs.core.Response;
 @Produces("application/json")
 public class ValidationResource {
 
-    private UseRestrictionValidationService validationService;
+    private UseRestrictionValidationService service;
 
     @Inject
-    public void setValidationService(UseRestrictionValidationService validationService) {
-        this.validationService = validationService;
+    public ValidationResource(UseRestrictionValidationService service) {
+        this.service = service;
     }
 
     @POST
     @Path("/userestriction")
     public Response validateUseRestriction(String useRestriction){
         try{
-            return Response.ok().entity(validationService.validateUseRestriction(useRestriction)).build();
+            return Response.ok().entity(service.validateUseRestriction(useRestriction)).build();
         } catch (Exception e){
             return Response.status(Response.Status.BAD_REQUEST).entity(new ErrorResponse(e.getMessage(), Response.Status.BAD_REQUEST.getStatusCode())).build();
         }

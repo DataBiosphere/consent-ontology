@@ -6,7 +6,7 @@ import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
-import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.resources.AutocompleteResource;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
@@ -54,8 +54,8 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(DataUseResource.class));
         env.jersey().register(injector.getInstance(SwaggerResource.class));
 
-        ElasticSearchConfiguration esConfig = config.getElasticSearchConfiguration();
         env.healthChecks().register(ElasticSearchHealthCheck.NAME, injector.getInstance(ElasticSearchHealthCheck.class));
+        env.healthChecks().register(GCSHealthCheck.NAME, injector.getInstance(GCSHealthCheck.class));
         env.jersey().register(injector.getInstance(StatusResource.class));
 
         FilterRegistration.Dynamic corsFilter = env.servlets().addFilter("CORS", CrossOriginFilter.class);
