@@ -14,6 +14,7 @@ import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource
 import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
 import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
+import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
 import org.broadinstitute.dsde.consent.ontology.resources.validate.ValidationResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.dhatim.dropwizard.sentry.logging.SentryBootstrap;
@@ -53,6 +54,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(OntologySearchResource.class));
         env.jersey().register(injector.getInstance(DataUseResource.class));
         env.jersey().register(injector.getInstance(SwaggerResource.class));
+        env.jersey().register(injector.getInstance(VersionResource.class));
 
         env.healthChecks().register(ElasticSearchHealthCheck.NAME, injector.getInstance(ElasticSearchHealthCheck.class));
         env.healthChecks().register(GCSHealthCheck.NAME, injector.getInstance(GCSHealthCheck.class));
