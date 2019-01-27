@@ -219,7 +219,7 @@ paths:
   /version:
     get:
       summary: Current application version
-      description: The current short hash and snapshot version of the application.
+      description: The current short hash and version of the application.
       tags:
         - Status
       responses:
