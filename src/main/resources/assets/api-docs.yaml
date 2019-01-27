@@ -304,9 +304,9 @@ definitions:
   Version:
     type: object
     properties:
-      version:
-        type: string
-        description: Current version
       hash:
         type: string
         description: Current short hash of this version
+      version:
+        type: string
+        description: Current version
