@@ -216,6 +216,19 @@ paths:
         200: All systems are OK
         500: Some number of subsystems are not OK.
 
+  /version:
+    get:
+      summary: Current application version
+      description: The current short hash and snapshot version of the application.
+      tags:
+        - Status
+      responses:
+        200:
+          description: Successful Response
+          schema:
+            $ref: '#/definitions/Version'
+        500: Internal Server Error
+
 definitions:
   Restriction:
     type: object
@@ -287,3 +300,13 @@ definitions:
       matchPair:
         $ref: '#/definitions/DataUseMatchPair'
         description: The provided purpose and consent
+
+  Version:
+    type: object
+    properties:
+      version:
+        type: string
+        description: Current version
+      hash:
+        type: string
+        description: Current short hash of this version
