@@ -11,10 +11,12 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Properties;
 import java.util.logging.Logger;
 
-@Path("/swagger")
+@Path("/")
 public class SwaggerResource {
 
     private static final Logger logger = Logger.getLogger(SwaggerResource.class.getName());
@@ -48,6 +50,18 @@ public class SwaggerResource {
 
     @Context
     UriInfo uriInfo;
+
+    @GET
+    @Path("")
+    public Response main() {
+        return content("");
+    }
+
+    @GET
+    @Path("swagger")
+    public Response swagger() throws URISyntaxException {
+        return Response.seeOther(new URI("/")).build();
+    }
 
     @GET
     @Path("{path:.*}")
