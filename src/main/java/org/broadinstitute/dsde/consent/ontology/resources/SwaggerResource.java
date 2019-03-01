@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.io.InputStream;
 import java.net.URI;
@@ -60,7 +61,8 @@ public class SwaggerResource {
     @GET
     @Path("swagger")
     public Response swagger() throws URISyntaxException {
-        return Response.seeOther(new URI("/")).build();
+        URI uri = UriBuilder.fromPath("/").scheme("https").build();
+        return Response.seeOther(uri).build();
     }
 
     @GET
