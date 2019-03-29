@@ -11,11 +11,20 @@ import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
 import org.apache.lucene.store.Directory;
 import org.apache.lucene.store.RAMDirectory;
-import org.apache.lucene.util.Version;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.semanticweb.owlapi.apibinding.OWLManager;
-import org.semanticweb.owlapi.model.*;
+import org.semanticweb.owlapi.model.HasClassesInSignature;
+import org.semanticweb.owlapi.model.IRI;
+import org.semanticweb.owlapi.model.OWLAnnotation;
+import org.semanticweb.owlapi.model.OWLAnnotationProperty;
+import org.semanticweb.owlapi.model.OWLAnnotationValueVisitorEx;
+import org.semanticweb.owlapi.model.OWLAnonymousIndividual;
+import org.semanticweb.owlapi.model.OWLClass;
+import org.semanticweb.owlapi.model.OWLLiteral;
+import org.semanticweb.owlapi.model.OWLOntology;
+import org.semanticweb.owlapi.model.OWLOntologyCreationException;
+import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +33,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -56,10 +69,10 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
         Collection<String> resources = storeOntologyService.retrieveConfigurationKeys();
         Directory indexDirectory = new RAMDirectory();
 
-        Analyzer analyzer = new StandardAnalyzer(Version.LUCENE_4_9);
+        Analyzer analyzer = new StandardAnalyzer();
 
         try (IndexWriter indexWriter = new IndexWriter(indexDirectory,
-                new IndexWriterConfig(Version.LUCENE_4_9, analyzer))) {
+                new IndexWriterConfig(analyzer))) {
             for (String resource : resources) {
                 try (InputStream stream = new URL(resource).openStream()) {
                     OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
