@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.codahale.metrics.health.HealthCheck;
+import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.junit.After;
 import org.junit.Before;
@@ -12,12 +13,11 @@ import java.util.Collections;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
-public class ElasticSearchHealthCheckTest {
+public class ElasticSearchHealthCheckTest implements WithMockServer {
 
     private ElasticSearchHealthCheck elasticSearchHealthCheck;
     private ClientAndServer server;
@@ -28,7 +28,7 @@ public class ElasticSearchHealthCheckTest {
         configuration.setIndex("test-ontology");
         configuration.setServers(Collections.singletonList("localhost"));
         elasticSearchHealthCheck = new ElasticSearchHealthCheck(configuration);
-        server = startClientAndServer(9200);
+        server = startMockServer(9200);
     }
 
     @After
