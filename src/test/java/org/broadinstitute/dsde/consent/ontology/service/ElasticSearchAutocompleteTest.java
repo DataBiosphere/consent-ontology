@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.junit.After;
@@ -20,13 +21,12 @@ import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockserver.integration.ClientAndServer.startClientAndServer;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 @SuppressWarnings("FieldCanBeLocal")
-public class ElasticSearchAutocompleteTest {
+public class ElasticSearchAutocompleteTest implements WithMockServer {
 
     private ElasticSearchAutocomplete autocompleteAPI;
     private static final String INDEX_NAME = "local-ontology";
@@ -42,7 +42,7 @@ public class ElasticSearchAutocompleteTest {
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList("localhost"));
         autocompleteAPI = new ElasticSearchAutocomplete(configuration);
-        server = startClientAndServer(9200);
+        server = startMockServer(9200);
     }
 
     @After
