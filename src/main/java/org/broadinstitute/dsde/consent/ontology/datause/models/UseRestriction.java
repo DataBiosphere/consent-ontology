@@ -13,6 +13,7 @@ import io.dropwizard.jackson.Jackson;
 import java.io.IOException;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
@@ -33,7 +34,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestri
 })
 public abstract class UseRestriction {
 
-    private static Logger LOG = Logger.getLogger(UseRestriction.class);
+    private static final Logger log = Utils.getLogger(UseRestriction.class);
 
     private static ObjectMapper mapper = Jackson.newObjectMapper();
 
@@ -44,7 +45,7 @@ public abstract class UseRestriction {
             ObjectReader reader = mapper.readerFor(UseRestriction.class);
             return reader.readValue(str);
         } catch (IOException e) {
-            LOG.error(String.format("Parse exception on \"%s\"", str));
+            log.error(String.format("Parse exception on \"%s\"", str));
             throw e;
         }
     }

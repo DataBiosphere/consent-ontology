@@ -3,6 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.datause.services;
 import com.google.gson.Gson;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
@@ -24,7 +25,7 @@ import static org.mockito.Matchers.any;
 
 public class TextTranslationServiceImplTest extends AbstractTest {
 
-    private final Logger log = Logger.getLogger(TextTranslationServiceImplTest.class);
+    private final Logger log = Utils.getLogger(this.getClass());
 
     private TextTranslationServiceImpl service;
 

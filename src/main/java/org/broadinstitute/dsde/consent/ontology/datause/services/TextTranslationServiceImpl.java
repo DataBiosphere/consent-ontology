@@ -3,6 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.datause.services;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 public class TextTranslationServiceImpl implements TextTranslationService {
 
-    private final Logger log = Logger.getLogger(TextTranslationServiceImpl.class);
+    private final Logger log = Utils.getLogger(this.getClass());
 
     private static final String YES = "Yes";
     private static final String FEMALE = "Female";

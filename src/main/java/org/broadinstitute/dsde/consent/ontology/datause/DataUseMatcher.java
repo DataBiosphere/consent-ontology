@@ -1,10 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import com.google.inject.Inject;
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -25,7 +25,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases
 
 public class DataUseMatcher {
 
-    private final Logger log = LoggerFactory.getLogger(DataUseMatcher.class);
+    private final Logger log = Utils.getLogger(this.getClass());
 
     private AutocompleteService autocompleteService;
 

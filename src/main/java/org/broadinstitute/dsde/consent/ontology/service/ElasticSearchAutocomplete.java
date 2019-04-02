@@ -11,6 +11,8 @@ import io.dropwizard.lifecycle.Managed;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
@@ -18,8 +20,6 @@ import org.eclipse.jetty.http.HttpMethod;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 
 public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
 
-    private static final Logger logger = LoggerFactory.getLogger(ElasticSearchAutocomplete.class);
+    private final Logger log = Utils.getLogger(this.getClass());
     private static final String GET = HttpMethod.GET.asString();
     private final ElasticSearchConfiguration configuration;
     private JsonParser parser = new JsonParser();
@@ -86,7 +86,7 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
                 termList.add(filterThin(resource, thinFilter));
             }
         } else {
-            logger.error("Unable to parse 'hits' from: " + jsonResponse);
+            log.error("Unable to parse 'hits' from: " + jsonResponse);
         }
         return termList;
     }
@@ -121,14 +121,14 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
 
     private JsonObject parseResponseToJson(Response response) {
         if (response.getStatusLine().getStatusCode() != 200) {
-            logger.error("Invalid search request: " + response.getStatusLine().getReasonPhrase());
+            log.error("Invalid search request: " + response.getStatusLine().getReasonPhrase());
             throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
         }
         try {
             String stringResponse = IOUtils.toString(response.getEntity().getContent());
             return parser.parse(stringResponse).getAsJsonObject();
         } catch (Exception e) {
-            logger.error("Unable to parse response: ", e);
+            log.error("Unable to parse response: ", e);
             throw new InternalServerErrorException(e);
         }
     }

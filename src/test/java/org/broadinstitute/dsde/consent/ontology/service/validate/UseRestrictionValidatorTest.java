@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.service.validate;
 
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
@@ -17,7 +18,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestri
 public class UseRestrictionValidatorTest extends AbstractTest {
 
     private static UseRestrictionValidator service;
-    private final Logger log = Logger.getLogger(UseRestrictionValidatorTest.class);
+    private final Logger log = Utils.getLogger(this.getClass());
 
     @BeforeClass
     public static void setUpClass() throws Exception {

@@ -3,14 +3,17 @@ package org.broadinstitute.dsde.consent.ontology.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpResponseException;
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
@@ -19,7 +22,7 @@ import java.util.stream.Collectors;
 @SuppressWarnings("FieldCanBeLocal")
 public class StoreOntologyService {
 
-    private final Logger log = LoggerFactory.getLogger(StoreOntologyService.class);
+    private final Logger log = Utils.getLogger(this.getClass());
     private final ObjectMapper MAPPER = new ObjectMapper();
     private final CloudStore store;
     private final String bucketSubdirectory;
