@@ -8,6 +8,7 @@ class OntologySimulations extends Simulation {
   setUp(
     scenarioList.map(scn =>
       scn.inject(atOnceUsers(defaultUsers)))
+    // TODO: pause?
   ).protocols(httpProtocol)
 
 }
