@@ -72,3 +72,5 @@ src/main/resources/assets/swagger-ui.js
 src/main/resources/assets/swagger-ui.min.js
 /config/
 /project/build.properties
+/automation/project/target/
+/automation/project/project/target/
