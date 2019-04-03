@@ -1,14 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentRestrictionBuilder;
 import org.broadinstitute.dsde.consent.ontology.datause.builder.DARRestrictionBuilder;
 import org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilder;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.parboiled.common.FileUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -21,7 +21,7 @@ import javax.ws.rs.core.Response;
 @Path("/schemas")
 public class DataUseResource {
 
-    private final static Logger log = LoggerFactory.getLogger(DataUseResource.class);
+    private final Logger log = Utils.getLogger(this.getClass());
 
     @GET
     @Path("/data-use")

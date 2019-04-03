@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -17,7 +17,7 @@ import java.util.Optional;
 @Path("/version")
 public class VersionResource {
 
-    private final Logger log = LoggerFactory.getLogger(VersionResource.class);
+    private final Logger log = Utils.getLogger(this.getClass());
 
     @GET
     @Produces("application/json")

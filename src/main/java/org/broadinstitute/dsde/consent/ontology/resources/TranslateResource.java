@@ -1,9 +1,9 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,7 +16,7 @@ import java.io.IOException;
 @Path("/translate")
 public class TranslateResource {
 
-    private final Logger log = LoggerFactory.getLogger(TranslateResource.class);
+    private final Logger log = Utils.getLogger(this.getClass());
     private TextTranslationService translationService;
 
     @Inject

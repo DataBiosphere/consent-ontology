@@ -1,6 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.parboiled.common.FileUtils;
 
 import javax.ws.rs.GET;
@@ -15,12 +17,12 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Properties;
-import java.util.logging.Logger;
 
 @Path("/")
 public class SwaggerResource {
 
-    private static final Logger logger = Logger.getLogger(SwaggerResource.class.getName());
+    private final Logger log = Utils.getLogger(this.getClass());
+
     // Default swagger ui library if not found in properties
     private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/2.2.8/";
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
@@ -38,11 +40,11 @@ public class SwaggerResource {
                 if (StringUtils.isNotEmpty(p.getProperty("swagger.ui.path"))) {
                     swaggerResource = p.getProperty("swagger.ui.path");
                 } else {
-                    logger.warning("swagger.ui.path is not configured correctly");
+                    log.warn("swagger.ui.path is not configured correctly");
                     swaggerResource = DEFAULT_LIB;
                 }
             } catch (Exception e) {
-                logger.warning(e.getMessage());
+                log.warn(e.getMessage());
                 swaggerResource = DEFAULT_LIB;
             }
         }

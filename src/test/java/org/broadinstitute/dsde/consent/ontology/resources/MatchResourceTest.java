@@ -1,5 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
@@ -12,8 +14,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.core.Response;
 import java.io.IOException;
@@ -25,7 +25,7 @@ import static org.mockito.Matchers.any;
 @RunWith(MockitoJUnitRunner.class)
 public class MatchResourceTest {
 
-    private final Logger log = LoggerFactory.getLogger(MatchResourceTest.class);
+    private final Logger log = Utils.getLogger(this.getClass());
 
     @Mock
     AutocompleteService autocompleteService;

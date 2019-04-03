@@ -4,6 +4,7 @@ import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.google.inject.Inject;
 import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -14,9 +15,7 @@ import java.util.Map;
 @Path("status")
 public class StatusResource {
 
-    private Logger logger() {
-        return Logger.getLogger(StatusResource.class);
-    }
+    private final Logger log = Utils.getLogger(this.getClass());
 
     private HealthCheckRegistry healthChecks;
 
@@ -33,7 +32,7 @@ public class StatusResource {
         results.entrySet().
                 stream().
                 filter(e -> !e.getValue().isHealthy()).
-                forEach(e -> logger().warn("Error in service " + e.getKey() + ": " + formatResultError(e.getValue())));
+                forEach(e -> log.warn("Error in service " + e.getKey() + ": " + formatResultError(e.getValue())));
         return Response.ok(results).build();
     }
 

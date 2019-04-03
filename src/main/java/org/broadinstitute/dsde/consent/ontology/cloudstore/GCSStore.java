@@ -1,12 +1,17 @@
 package org.broadinstitute.dsde.consent.ontology.cloudstore;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleCredential;
-import com.google.api.client.http.*;
+import com.google.api.client.http.GenericUrl;
+import com.google.api.client.http.HttpRequest;
+import com.google.api.client.http.HttpRequestFactory;
+import com.google.api.client.http.HttpResponse;
+import com.google.api.client.http.HttpTransport;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.storage.Storage;
 import com.google.api.services.storage.StorageScopes;
 import com.google.api.services.storage.model.Bucket;
 import org.apache.log4j.Logger;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguration;
 
 import java.io.FileInputStream;
@@ -20,9 +25,7 @@ public class GCSStore implements CloudStore {
     private StoreConfiguration sConfig;
     private HttpRequestFactory requestFactory;
 
-    protected Logger logger() {
-        return Logger.getLogger("GCSStore");
-    }
+    private final Logger log = Utils.getLogger(this.getClass());
 
     public GCSStore(StoreConfiguration config) throws GeneralSecurityException, IOException {
         sConfig = config;
@@ -40,7 +43,7 @@ public class GCSStore implements CloudStore {
                 fromStream(new FileInputStream(sConfig.getPassword())).
                 createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
         } catch (Exception e) {
-            logger().error("Error on GCS Store initialization. Service won't work: " + e);
+            log.error("Error on GCS Store initialization. Service won't work: " + e);
             throw new RuntimeException(e);
         }
         return credential;

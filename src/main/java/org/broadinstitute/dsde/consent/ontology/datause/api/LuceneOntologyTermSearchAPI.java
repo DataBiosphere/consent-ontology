@@ -2,9 +2,11 @@ package org.broadinstitute.dsde.consent.ontology.datause.api;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import org.apache.log4j.Logger;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -20,8 +22,6 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.search.EntitySearcher;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -38,13 +38,14 @@ import java.util.stream.Stream;
 @Singleton
 public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
 
+    private final Logger log = Utils.getLogger(this.getClass());
+
     private static final String FIELD_ID = "id";
     private static final String FIELD_COMMENT = "comment";
     private static final String FIELD_LABEL = "label";
     private static final String FIELD_DEFINITION = "definition";
     private static final String FIELD_SYNONYM = "synonym";
     private static final String FIELD_DEFINITION_CLASS = "IAO_0000115";
-    private final Logger log = LoggerFactory.getLogger(LuceneOntologyTermSearchAPI.class);
     private Map<String, OntologyTerm> nameToTerm = new HashMap<>();
     private StoreOntologyService storeOntologyService;
 
