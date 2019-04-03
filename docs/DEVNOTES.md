@@ -21,7 +21,7 @@ Ensure that your test environment supports that.
 
 #### Docker
 
-Consent-Ontology is packaged into a docker image that is stored in the cloud in the [Consent-Ontology Dockerhub Repo](https://hub.docker.com/r/broadinstitute/consent-ontology).
+Consent-Ontology is packaged into a docker image that is stored in [Consent-Ontology Dockerhub Repo](https://hub.docker.com/r/broadinstitute/consent-ontology).
 ```
 # to build the image
 ./build.sh -d build

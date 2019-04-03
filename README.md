@@ -11,4 +11,16 @@ A semi-automated management service for compliant secondary use of human genomic
 There are restrictions on researching human genomics data. For example: “Data can only be used for breast cancer research with non-commercial purpose”.
 The Data Use Oversight system ensures that researchers using genomics data honor these restrictions.
 
-See [consent-ontology/DEVNOTES.md](DEVNOTES.md) to run locally.
+## Matching Algorithms
+
+See [Algorithm](docs/Algorithms.md) and [Use Restriction Grammar](docs/UseRestrictionGrammar.md) for detailed information on how the system 
+peforms data use matching between consented datasets and research purposes.
+
+## Contributing
+
+See [Contributing](docs/CONTRIBUTING.md) for information on how to 
+contribute to this project. 
+
+## Local Development
+See [DEVNOTES.md](docs/DEVNOTES.md) to run locally.
+

@@ -74,7 +74,7 @@ paths:
         - text/plain
       parameters:
         - name: for
-          in: query
+          in: body
           description: dataset or purpose
           required: true
           schema:
@@ -109,15 +109,38 @@ paths:
       tags:
         - Match
       responses:
-        '200':
-          description: Successful matching.
-        default:
-          description: Unexpected error
+        200:
+          description: Match Result.
+          schema:
+            $ref: '#/definitions/MatchPairResult'
+        500:
+          description: Internal Server Error
           
-  /match/datause:
+  /match/v1:
     post:
-      summary: Match DataUse Purpose and Dataset
-      description: Determine if a Research Purpose and Dataset logically match.
+      summary: Match UseRestriction Consent and Research Purpose
+      description: The Match service will render a response of true or false between a Consent and a Research Purpose.
+      parameters:
+        - name: body
+          in: body
+          description: Consent and Purpose Use Restrictions.
+          required: true
+          schema:
+            $ref: '#/definitions/MatchPair'
+      tags:
+        - Match
+      responses:
+        200:
+          description: Match Result.
+          schema:
+            $ref: '#/definitions/MatchPairResult'
+        500:
+          description: Internal Server Error
+
+  /match/v2:
+    post:
+      summary: Match DataUse Purpose and Consent
+      description: Determine if a Research Purpose and Consent logically match.
       parameters:
         - name: body
           in: body
@@ -133,7 +156,7 @@ paths:
           schema:
             $ref: '#/definitions/DataUseMatchPairResult'
         400:
-          description: Bad Request if either purpose or dataset are not provided.
+          description: Bad Request if either purpose or consent are not provided.
         500:
           description: Internal Server Error
 
@@ -151,7 +174,7 @@ paths:
         tags:
           - Validate
         responses:
-          '200':
+          200:
             description: Successful validation. True for valid restriction and False for invalid.
           default:
             description: Unexpected error
@@ -179,7 +202,7 @@ paths:
       tags:
         - Autocomplete
       responses:
-        '200':
+        200:
           description: Array of results.
         default:
           description: Unexpected error
@@ -197,11 +220,11 @@ paths:
       tags:
         - Search
       responses:
-        '200':
+        200:
           description: The given id was found. Term result with parent information.
-        '400':
+        400:
           description: Bad request.
-        '404':
+        404:
           description: The given id was not found.
         default:
           description: Unexpected error
@@ -213,8 +236,10 @@ paths:
       tags:
         - Status
       responses:
-        200: All systems are OK
-        500: Some number of subsystems are not OK.
+        200:
+          description: All systems are OK
+        500:
+          description: Some number of subsystems are not OK.
 
   /version:
     get:
@@ -227,7 +252,8 @@ paths:
           description: Successful Response
           schema:
             $ref: '#/definitions/Version'
-        500: Internal Server Error
+        500:
+          description: Internal Server Error
 
 definitions:
   Restriction:
@@ -267,20 +293,20 @@ definitions:
             items:
               type: string
               description: Array of ontologies.
+
+  MatchPairResult:
+    type: object
+    properties:
+      result:
+        type: boolean
+      matchPair:
+        $ref: '#/definitions/MatchPair'
+
   DataUse:
     type: object
     description: JSON model of a set of data use questions and answers
-    example: |
-      {
-        "generalUse": false,
-        "hmbResearch": true,
-        "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602", "http://purl.obolibrary.org/obo/DOID_162"],
-        "gender": "Male",
-        ...
-        additional JSON-standard fields as
-        defined by the Data Use schema
-        ...
-      }
+    example:
+      { "generalUse": false, "hmbResearch": true, "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602"] }
 
   DataUseMatchPair:
     type: object
@@ -288,7 +314,7 @@ definitions:
     properties:
       purpose:
         $ref: '#/definitions/DataUse'
-      dataset:
+      consent:
         $ref: '#/definitions/DataUse'
 
   DataUseMatchPairResult:

@@ -4,7 +4,7 @@
 
 You most likely want to do your work on a feature branch based on develop. There is no explicit naming convention; we usually use some combination of the JIRA issue number and something alluding to the work we're doing.
 
-When you open a pull request, add the JIRA issue number (e.g. `BTRX-1234`) to the PR title. This will make a reference from JIRA to the GitHub issue. Add a brief description of your changes above the PR checkbox template.
+When you open a pull request, add the JIRA issue number (e.g. `DUOS-1234`) to the PR title. This will make a reference from JIRA to the GitHub issue. Add a brief description of your changes above the PR checkbox template.
 
 This is also a good opportunity to check that the acceptance criteria for your JIRA ticket exists and is met. Check with your PO if you have any questions there. You should also fill out a summary to go in the release notes and some instructions on what QA should be looking at.
 
@@ -18,9 +18,8 @@ You should get review from two people (either through GitHub's request-review fe
 
 Your PR is ready to merge when all of the following things are true:
 
-1. Two reviewers have thumbed (or otherwise approved) your PR
-2. If your change is user-facing, your PO has seen it and signed off
-3. All tests pass
+1. At least one reviewer has thumbed (or otherwise approved) your PR
+2. All tests pass
 
 ## API changes
 
@@ -37,7 +36,3 @@ If you're making breaking changes to the API, do the following:
 1. Check in with Comms to explain the change and the impact on users.
 2. Write an email to users explaining the change and send it least a few days BEFORE the release goes out. You'll need to explain the change and what users need to do to update their code. Get Comms signoff on the wording.
 3. Get someone Suitable to send the email to api-users@firecloud.org.
-
-## FISMA documentation changes
-
-If you're making changes to authentication, authorization, encryption, or audit trails, you should check in with Bernick or Jyotin to see if our security documentation should be updated.
