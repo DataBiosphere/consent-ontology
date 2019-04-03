@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.parboiled.common.FileUtils;
@@ -41,11 +40,11 @@ public class SwaggerResource {
                 if (StringUtils.isNotEmpty(p.getProperty("swagger.ui.path"))) {
                     swaggerResource = p.getProperty("swagger.ui.path");
                 } else {
-                    log.log(Level.WARN, "swagger.ui.path is not configured correctly");
+                    log.warn("swagger.ui.path is not configured correctly");
                     swaggerResource = DEFAULT_LIB;
                 }
             } catch (Exception e) {
-                log.log(Level.WARN, e.getMessage());
+                log.warn(e.getMessage());
                 swaggerResource = DEFAULT_LIB;
             }
         }
