@@ -50,11 +50,3 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 | Gender focused research | Future use is limited to research involving a particular gender **RS-G** | Any dataset tagged with **RS-G:F** OR **N/A** when gender is **F** |
 | | | Any dataset tagged with **RS-G:M** OR **N/A**  when gender is **M** |
 | | | |
-
-
-
-
-
-
-
-
