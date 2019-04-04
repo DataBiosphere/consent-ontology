@@ -20,8 +20,11 @@ between the purpose and the consent. See [Use Restriction Grammar](./UseRestrict
 we create ontology nodes for a consent or research purpose.
 
 ## Version 2
-This version of the algorithm uses a custom set of business rules to match a research purpose and consent.
-This was developed for [FireCloud](https://api.firecloud.org/) and is the basis for the Data Catalog search ruleset. 
+This version of the algorithm uses a custom set of business rules to match a research purpose and consented dataset. 
+In determining a postive match between research purpose and consented dataset, we make sure that the consented
+dataset matches **ALL** conditions specified in the research purpose.  
+
+This was originally developed for [FireCloud](https://api.firecloud.org/) and is the basis for the Data Catalog search ruleset. 
 This version makes use of [Consent Codes](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1005772)
 as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human Disease Ontology](https://www.ebi.ac.uk/ols/ontologies/doid).
 
@@ -29,6 +32,10 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 | ----------------------------- | -------------------- | ---------------- |
 | Disease focused research | Future use is limited to research involving the following disease area(s) **DS** | Any dataset with **GRU**=true |
 | | | Any dataset with **HMB**=true  |
+| | | Any dataset tagged to this disease exactly |
+| | | Any dataset tagged to a DOID ontology **Parent** of **DS-X** |
+| | | |
+| Health, Medical, Biological focused research | Future use is limited to **HMB** research | Any dataset with **HMB**=true |
 | | | Any dataset tagged to this disease exactly |
 | | | Any dataset tagged to a DOID ontology **Parent** of **DS-X** |
 | | | |

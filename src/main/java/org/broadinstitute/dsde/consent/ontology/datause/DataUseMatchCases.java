@@ -29,7 +29,7 @@ class DataUseMatchCases {
      *      Any dataset tagged with GRU
      *      Any dataset tagged with HMB
      *      *** Adding based on HMB Truth Table use case support ***
-     *      TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/BTRX-481
+     *      TODO: Validate that this is acceptable with Product Owner. See See https://broadinstitute.atlassian.net/browse/DUOS-259
      *      Any DS match
      */
     static boolean matchHMB(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
