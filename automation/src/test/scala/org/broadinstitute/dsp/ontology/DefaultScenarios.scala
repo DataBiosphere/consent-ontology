@@ -8,10 +8,8 @@ import org.broadinstitute.dsp.ontology.requests.Requests
 
 class DefaultScenarios extends Simulation {
 
-  // TODO: Some requests accept plain text. Can we abstract that out per scenario?
   val httpProtocol: HttpProtocolBuilder = http
     .baseUrl("https://consent-ontology.dsde-dev.broadinstitute.org")
-    .acceptHeader(Config.applicationJson)
     .userAgentHeader(Config.defaultUserAgent)
 
   val defaultScenarios: List[ScenarioBuilder] = List(
