@@ -52,8 +52,21 @@ object Requests {
         .check(status.is(session => 200)))
   }
 
-  // TODO: Match v1
-  // TODO: Match v2
+  // '{ "purpose": { "type": "everything" }, "consent": { "type": "everything" } }' is a good example
+  def matchV1(json: String): ChainBuilder = {
+    exec(http("Match V1")
+      .post(s"/matchv1")
+      .form(json)
+      .check(status.is(session => 200)))
+  }
+
+  // '{ "purpose": {"hmbResearch": true}, "consent": {"generalUse": true} }' is a good example
+  def matchV2(json: String): ChainBuilder = {
+    exec(http("Match V2")
+      .post(s"/match/v2")
+      .form(json)
+      .check(status.is(session => 200)))
+  }
 
   // 'http://purl.obolibrary.org/obo/DOID_162' is a good example
   def searchRequest(term: String): ChainBuilder = {
@@ -74,8 +87,15 @@ object Requests {
       .check(status.is(session => 200))
   )
 
-  // TODO: Translate
-  // TODO: Validate (validates a UseRestriction)
+  // '{ "type": "everything" }' is a good example
+  def valudate(json: String): ChainBuilder = {
+    exec(
+      http("Validate Use Restriction")
+        .post("/validate/userestriction")
+        .form(json)
+        .check(status.is(session => 200))
+    )
+  }
 
   private def encode(term: String): String = {
     URLEncoder.encode(term, "UTF-8")
