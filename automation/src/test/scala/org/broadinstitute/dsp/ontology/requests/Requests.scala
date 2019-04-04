@@ -1,4 +1,4 @@
-package org.broadinstitute.dsp.ontology
+package org.broadinstitute.dsp.ontology.requests
 
 import java.net.URLEncoder
 

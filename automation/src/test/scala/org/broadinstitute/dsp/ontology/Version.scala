@@ -6,7 +6,7 @@ import io.gatling.http.Predef.http
 import io.gatling.http.protocol.HttpProtocolBuilder
 import org.broadinstitute.dsp.ontology.requests.Requests
 
-class DefaultScenarios extends Simulation {
+class Version extends Simulation {
 
   val httpProtocol: HttpProtocolBuilder = http
     .baseUrl("https://consent-ontology.dsde-dev.broadinstitute.org")

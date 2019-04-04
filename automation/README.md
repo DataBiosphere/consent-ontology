@@ -20,3 +20,9 @@ sbt gatling:test
 ```
 sbt gatling:testOnly *.DefaultScenarios 
 ```
+
+## Development
+To create new tests, use `org.broadinstitute.dsp.ontology.DefaultScenarios` as a model. 
+All tests extending `Simulation` will be run during normal test running. 
+`org.broadinstitute.dsp.ontology.requests.Requests` contains a summary of existing API calls supported
+by the application. 
