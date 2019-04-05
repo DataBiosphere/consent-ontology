@@ -28,32 +28,127 @@ This was originally developed for [FireCloud](https://api.firecloud.org/) and is
 This version makes use of [Consent Codes](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1005772)
 as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human Disease Ontology](https://www.ebi.ac.uk/ols/ontologies/doid).
 
-| If my Research Purpose has... | Related DUL question | I should see ... |
-| ----------------------------- | -------------------- | ---------------- |
-| Disease focused research | Future use is limited to research involving the following disease area(s) **DS** | Any dataset with **GRU**=true |
-| | | Any dataset with **HMB**=true  |
-| | | Any dataset tagged to this disease exactly |
-| | | Any dataset tagged to a DOID ontology **Parent** of **DS-X** |
-| | | |
-| Health, Medical, Biological focused research | Future use is limited to **HMB** research | Any dataset with **HMB**=true |
-| | | Any dataset tagged to this disease exactly |
-| | | Any dataset tagged to a DOID ontology **Parent** of **DS-X** |
-| | | |
-| Methods development/Validation study | Future use for methods research (analytic/software/technology development) outside the bounds of the other specified restrictions is prohibited **NMDS** | Any dataset with **GRU**=true |
-| | | Any dataset where **NMDS** is false |
-| | | Any dataset where **NMDS** is true AND **DS-X** match |
-| | | |
-| Control set | Future use as a control set for diseases other than those specified is prohibited **NCTRL** | Any dataset where **NCTRL** is false and is (**GRU** or **HMB**) |
-| | | Any **DS-X** match, if user specified a disease in the research purpose |
-| | | |
-| Aggregate analysis to understand variation in the general population | Future use of aggregate-level data for general research purposes is prohibited **NAGR** | Any dataset where **NAGR** is false and is (**GRU** or **HMB**) | 
-| | | |
-| Study population origins or ancestry | Future use is limited to research involving a specific population **POA** | Any dataset tagged with **GRU** |
-| | | |
-| Commercial purpose/by a commercial entity | Future commercial use is prohibited **NCU**. Future use by for-profit entities is prohibited **NPU** | Any dataset where **NPU** and **NCU** are both false |
-| | | |
-| Pediatric focused research | Future use is limited to pediatric research **RS-PD** | Any dataset tagged with **RS-PD** |
-| | | |
-| Gender focused research | Future use is limited to research involving a particular gender **RS-G** | Any dataset tagged with **RS-G:F** OR **N/A** when gender is **F** |
-| | | Any dataset tagged with **RS-G:M** OR **N/A**  when gender is **M** |
-| | | |
+<table>
+	<thead>
+		<tr>
+			<th>If my Research Purpose has...</th>
+			<th>What datasets should I see?</th>
+			<th>Related DUL question</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Disease focused research (i.e. <strong>DS-X</strong>)</td>
+			<td>
+				<ul>
+					<li>Any dataset with <strong>GRU</strong>=true</li>
+					<li>Any dataset with <strong>HMB</strong>=true</li>
+					<li>Any dataset tagged to this disease (<strong>DS-X</strong>) exactly or a parent disease of <strong>DS-X</strong></li>
+				</ul>	
+			</td>	
+			<td>
+				<ul>
+					<li>Data is available for future general research use</li>
+					<li>Future use is limited for health/medical/biomedical research</li>
+					<li>Future use is limited to research involving the following disease area(s) <strong>DS-X</strong></li>					
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Methods development/Validation study</td>
+			<td>
+				<ul>
+					<li>Any dataset with <strong>GRU</strong>=true</li>
+					<li>Any dataset where <strong>NMDS</strong> is false</li>
+					<li>Any dataset where <strong>NMDS</strong> is true AND <strong>DS-X</strong> match</li>
+				</ul>	
+			</td>	
+			<td>
+				<ul>
+					<li>Future use for methods research (analytic/software/technology development) outside the bounds of the other specified restrictions is prohibited <strong>NMDS</strong></li>
+				</ul>						
+			</td>
+		</tr>
+		<tr>
+			<td>Control Set</td>
+			<td>
+				<ul>
+					<li>Any dataset where <strong>NCTRL</strong> is false and is (<strong>GRU</strong> or <strong>HMB</strong>)</li>
+					<li>Any <strong>DS-X</strong> match, if user specified a disease in the research purpose</li>
+				</ul>	
+			</td>	
+			<td>
+				<ul>
+					<li>Future use as a control set for diseases other than those specified is prohibited <strong>NCTRL</strong></li>
+					<li>Future use is limited to research involving the following disease area(s) <strong>DS-X</strong></li>
+				</ul>	
+			</td>
+		</tr>
+		<tr>
+			<td>Aggregate analysis to understand variation in the general population</td>
+			<td>
+				<ul>
+					<li>Any dataset where <strong>NAGR</strong> is false and is (<strong>GRU</strong> or <strong>HMB</strong>)</li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li>Future use of aggregate-level data for general research purposes is prohibited <strong>NAGR</strong></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Study population origins or ancestry</td>
+			<td>
+				<ul>
+					<li>Any dataset tagged with <strong>GRU</strong></li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li>Future use is limited to research involving a specific population POA</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Commercial purpose/by a commercial entity</td>
+			<td>
+				<ul>
+					<li>Any dataset where <strong>NPU</strong> and <strong>NCU</strong> are both false</li>
+				</ul>			
+			</td>
+			<td>
+				<ul>
+					<li>Future commercial use is prohibited <strong>NCU</strong>. Future use by for-profit entities is prohibited <strong>NPU</strong></li>
+				</ul>			
+			</td>
+		</tr>
+		<tr>
+			<td>Pediatric focused research</td>
+			<td>
+				<ul>
+					<li>Any dataset tagged with <strong>RS-PD</strong></li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li>Future use is limited to pediatric research <strong>RS-PD</strong></li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Gender focused research</td>
+			<td>
+				<ul>
+					<li>Any dataset tagged with <strong><strong>RS-G</strong>:F</strong> OR N/A when gender is F</li>
+					<li>Any dataset tagged with <strong><strong>RS-G</strong>:M</strong> OR N/A when gender is M</li>
+				</ul>			
+			</td>
+			<td>
+				<ul>
+					<li>Future use is limited to research involving a particular gender <strong>RS-G</strong></li>
+				</ul>
+			</td>
+		</tr>	
+	</tbody>
+</table>
