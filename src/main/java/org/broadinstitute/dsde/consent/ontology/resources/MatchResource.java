@@ -43,13 +43,19 @@ public class MatchResource {
     private static final ActorSystem actorSystem = ActorSystem.create("actorSystem");
     private static final ActorRef matchWorkerActor = actorSystem.actorOf(Props.create(MatchWorkerActor.class), "MatchWorkerActor");
 
-    public MatchResource() {}
+    MatchResource() {}
 
-    @Path("/datause")
+    /**
+     * Most recent version of matching logic as implemented in FireCloud
+     *
+     * @param matchPair The DataUseMatchPair
+     * @return Response
+     */
+    @Path("/v2")
     @POST
     public Response matchDataUse(final DataUseMatchPair matchPair) {
         DataUse purpose = matchPair.getPurpose();
-        DataUse dataset = matchPair.getDataset();
+        DataUse dataset = matchPair.getConsent();
         try {
             if (purpose != null && dataset != null) {
                 boolean match = dataUseMatcher.matchPurposeAndDataset(purpose, dataset);
@@ -72,12 +78,31 @@ public class MatchResource {
         }
     }
 
+    /**
+     * V1 pointer to original implementation of matching logic. Should remain supported until no longer in use.
+     *
+     * @param response AsyncResponse
+     * @param matchPair MatchPair
+     * @throws Exception The Exception
+     */
+    @Deprecated
+    @Path("/v1")
+    @POST
+    public void matchV1(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
+        match(response, matchPair);
+    }
+
+    /**
+     * Original implementation of matching logic. Should remain supported until no longer in use.
+     *
+     * @param response AsyncResponse
+     * @param matchPair MatchPair
+     * @throws Exception The Exception
+     */
     @Deprecated
     @POST
     public void match(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
-        // TODO: Timeout should likely be an application-wide property
         Timeout timeout = new Timeout(Duration.create(15000, "seconds"));
-        log.debug("Received the following: " + matchPair.toString());
         Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
         final MatchWorkerMessage matchMessage = new MatchWorkerMessage(urls, matchPair);
         final Future<Object> matchFuture = Patterns.ask(matchWorkerActor, matchMessage, timeout);

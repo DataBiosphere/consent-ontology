@@ -7,13 +7,13 @@ public class DataUseMatchPair {
 
     private DataUse purpose;
 
-    private DataUse dataset;
+    private DataUse consent;
 
     public DataUseMatchPair() { }
 
-    public DataUseMatchPair(DataUse purpose, DataUse dataset) {
+    public DataUseMatchPair(DataUse purpose, DataUse consent) {
         this.purpose = purpose;
-        this.dataset = dataset;
+        this.consent = consent;
     }
 
     public DataUse getPurpose() {
@@ -24,12 +24,12 @@ public class DataUseMatchPair {
         this.purpose = purpose;
     }
 
-    public DataUse getDataset() {
-        return dataset;
+    public DataUse getConsent() {
+        return consent;
     }
 
-    public void setDataset(DataUse dataset) {
-        this.dataset = dataset;
+    public void setConsent(DataUse consent) {
+        this.consent = consent;
     }
 
     @Override

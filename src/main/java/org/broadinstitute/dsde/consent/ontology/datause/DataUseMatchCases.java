@@ -29,7 +29,7 @@ class DataUseMatchCases {
      *      Any dataset tagged with GRU
      *      Any dataset tagged with HMB
      *      *** Adding based on HMB Truth Table use case support ***
-     *      TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/BTRX-481
+     *      TODO: Validate that this is acceptable with Product Owner. See See https://broadinstitute.atlassian.net/browse/DUOS-259
      *      Any DS match
      */
     static boolean matchHMB(DataUse purpose, DataUse dataset, boolean diseaseMatch) {
@@ -209,8 +209,8 @@ class DataUseMatchCases {
     }
 
     /**
-     * TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/BTRX-481
-     * RP: Restricted to a pediatric
+     * TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/DUOS-259
+     * RP: Restricted to pediatric
      * Future use is limited to pediatric research [RS-PD] (required) (Yes | No)
      * Datasets:
      *      Any dataset tagged with RS-PD
@@ -230,7 +230,7 @@ class DataUseMatchCases {
     }
 
     /**
-     * TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/BTRX-481
+     * TODO: Validate that this is acceptable with Product Owner. See https://broadinstitute.atlassian.net/browse/DUOS-259
      * RP: Restricted to a gender
      * Women
      * Men
