@@ -13,9 +13,9 @@ class DefaultScenarios extends Simulation {
   setUp(
     defaultScenarios.map(scn =>
       scn
-        .pause(Config.defaultPause)
-        .inject(atOnceUsers(Config.defaultUsers))
+        .pause(TestConfig.defaultPause)
+        .inject(atOnceUsers(TestConfig.defaultUsers))
     )
-  ).protocols(Config.defaultHttpProtocol)
+  ).protocols(TestConfig.defaultHttpProtocol)
 
 }

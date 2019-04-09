@@ -6,7 +6,11 @@ import io.gatling.http.protocol.HttpProtocolBuilder
 
 import scala.concurrent.duration._
 
-object Config {
+import com.typesafe.config.{ Config, ConfigFactory }
+
+object TestConfig {
+
+  val config: Config = ConfigFactory.load()
 
   val defaultUsers: Int = 1
   val defaultPause: FiniteDuration = 1 second
@@ -14,11 +18,10 @@ object Config {
   val plainTextHeader: Map[String, String] = Map("Accept" -> "text/plain")
   val jsonHeader: Map[String, String] = Map("Accept" -> "application/json")
 
-  // TODO: Handle environment
   val defaultHttpProtocol: HttpProtocolBuilder = {
     http
-      .baseUrl("https://consent-ontology.dsde-dev.broadinstitute.org")
-      .userAgentHeader(Config.defaultUserAgent)
+      .baseUrl(config.getString("ontology.baseUrl"))
+      .userAgentHeader(TestConfig.defaultUserAgent)
   }
 
 }

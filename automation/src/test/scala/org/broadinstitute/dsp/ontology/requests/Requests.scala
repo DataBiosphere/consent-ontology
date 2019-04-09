@@ -5,7 +5,7 @@ import java.net.URLEncoder
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
 import io.gatling.http.Predef._
-import org.broadinstitute.dsp.ontology.Config
+import org.broadinstitute.dsp.ontology.TestConfig
 
 object Requests {
 
@@ -19,14 +19,14 @@ object Requests {
   def autocomplete(term: String): ChainBuilder = exec(
     http(s"Autocomplete: $term")
       .get(s"/autocomplete?q=${encode(term)}")
-      .headers(Config.jsonHeader)
+      .headers(TestConfig.jsonHeader)
       .check(status.is(session => 200))
   )
 
   val dataUseSchema: ChainBuilder = exec(
     http("Data Use Schema")
       .get("/schemas/data-use")
-      .headers(Config.jsonHeader)
+      .headers(TestConfig.jsonHeader)
       .check(status.is(session => 200))
   )
 
@@ -35,7 +35,7 @@ object Requests {
     exec(
       http("Translate Consent")
         .post("/schemas/data-use/consent/translate")
-        .headers(Config.jsonHeader)
+        .headers(TestConfig.jsonHeader)
         .form(json)
         .check(status.is(session => 200)))
   }
@@ -45,17 +45,17 @@ object Requests {
     exec(
       http("Translate DAR")
         .post("/schemas/data-use/dar/translate")
-        .headers(Config.jsonHeader)
+        .headers(TestConfig.jsonHeader)
         .form(json)
         .check(status.is(session => 200)))
   }
 
-  // ('dataset' | 'purpose') and '{ "generalUse": true }' are good examples
+  // ('dataset' || 'purpose') and '{ "generalUse": true }' are good examples
   def dataUseTranslateFor(whatFor: String, json: String): ChainBuilder = {
     exec(
       http("Translate")
         .post(s"/translate?for=$whatFor")
-        .headers(Config.plainTextHeader)
+        .headers(TestConfig.plainTextHeader)
         .form(json)
         .check(status.is(session => 200)))
   }
@@ -64,7 +64,7 @@ object Requests {
   def matchV1(json: String): ChainBuilder = {
     exec(http("Match V1")
       .post(s"/matchv1")
-      .headers(Config.jsonHeader)
+      .headers(TestConfig.jsonHeader)
       .form(json)
       .check(status.is(session => 200)))
   }
@@ -73,7 +73,7 @@ object Requests {
   def matchV2(json: String): ChainBuilder = {
     exec(http("Match V2")
       .post(s"/match/v2")
-      .headers(Config.jsonHeader)
+      .headers(TestConfig.jsonHeader)
       .form(json)
       .check(status.is(session => 200)))
   }
@@ -82,21 +82,21 @@ object Requests {
   def searchRequest(term: String): ChainBuilder = {
     exec(http(s"Search: $term")
       .get(s"/search?id=${encode(term)}")
-      .headers(Config.jsonHeader)
+      .headers(TestConfig.jsonHeader)
       .check(status.is(session => 200)))
   }
 
   val statusRequest: ChainBuilder = exec(
     http("Status Request")
       .get("/status")
-      .headers(Config.jsonHeader)
+      .headers(TestConfig.jsonHeader)
       .check(status.is(session => 200))
   )
 
   val versionRequest: ChainBuilder = exec(
     http("Version Request")
       .get("/version")
-      .headers(Config.jsonHeader)
+      .headers(TestConfig.jsonHeader)
       .check(status.is(session => 200))
   )
 
@@ -105,7 +105,7 @@ object Requests {
     exec(
       http("Validate Use Restriction")
         .post("/validate/userestriction")
-        .headers(Config.jsonHeader)
+        .headers(TestConfig.jsonHeader)
         .form(json)
         .check(status.is(session => 200))
     )

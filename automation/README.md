@@ -14,21 +14,20 @@ References:
 
 ## Run Tests
 
+First, render configs:
 ```bash
-./render-local-env.sh [branch of firecloud-automated-testing] [vault token] [env] [service root]
+./render-local-env.sh [fc instance] [vault token] [env]
 ```
 
 **Arguments:** (arguments are positional)
 
-* branch of firecloud-automated-testing
-    * Configs branch; defaults to `master`
-* Vault auth token
-	* Defaults to reading it from the .vault-token via `$(cat ~/.vault-token)`.
+* FC Instance 
+  * defaults to `fiab`
+  * can be `live`, `local`, or `fiab`
+* Vault Auth Token
+  * Defaults to reading it from the .vault-token via `$(cat ~/.vault-token)`.
 * env
-	* Environment of your FiaB; defaults to `dev`
-* service root
-    * the name of your local clone of consent-ontology if not `consent-ontology`
-
+  * Environment of your FiaB; defaults to `dev`
 
 ### Run all tests:
 ```
