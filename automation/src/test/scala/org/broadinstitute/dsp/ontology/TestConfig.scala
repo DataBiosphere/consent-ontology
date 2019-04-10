@@ -16,7 +16,7 @@ object TestConfig {
   val plainTextHeader: Map[String, String] = Map("Accept" -> "text/plain")
   val jsonHeader: Map[String, String] = Map("Accept" -> "application/json")
 
-  val defaultHttpProtocol: HttpProtocolBuilder = {
+  lazy val defaultHttpProtocol: HttpProtocolBuilder = {
     http
       .baseUrl(config.getString("ontology.baseUrl"))
       .userAgentHeader(TestConfig.defaultUserAgent)

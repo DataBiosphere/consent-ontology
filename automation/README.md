@@ -6,19 +6,19 @@ References:
 * [Gatling Documentation](https://gatling.io/docs/current/)
 * [Gatling SBT Plugin](https://github.com/gatling/gatling-sbt-plugin-demo)
 
-## Automated Testing
+## Automated Testing (Jenkins)
 
+From jenkins, tests are meant to be run from a predetermined environment. 
 ```
 ../jenkins/run-integration-tests.sh
 ```
 
-## Run Tests
+## Automated Testing (Local Development)
 
-First, render configs:
+Render configs for all cases below:
 ```bash
 ./render-local-env.sh [fc instance] [vault token] [env]
 ```
-
 **Arguments:** (arguments are positional)
 
 * FC Instance 
@@ -37,6 +37,12 @@ sbt clean gatling:test
 ### Run specific tests:
 ```
 sbt clean gatling:testOnly *.DefaultScenarios 
+```
+
+### Run all tests under docker:
+```
+docker build -f Dockerfile-tests -t automation-ontology .
+docker run automation-ontology
 ```
 
 ## Development
