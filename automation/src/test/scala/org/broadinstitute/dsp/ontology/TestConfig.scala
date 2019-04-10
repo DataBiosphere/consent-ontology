@@ -19,7 +19,7 @@ object TestConfig {
   lazy val defaultHttpProtocol: HttpProtocolBuilder = {
     http
       .baseUrl(config.getString("ontology.baseUrl"))
-      .userAgentHeader(TestConfig.defaultUserAgent)
+      .userAgentHeader(defaultUserAgent)
   }
 
 }
