@@ -1,20 +1,15 @@
 #!/bin/bash
 
-if [ -z "${FC_ENV}" ]; then
-    echo "FATAL ERROR: FC_ENV undefined."
-    exit 1
-fi
-
 if [ -z "${ENV}" ]; then
     echo "FATAL ERROR: ENV undefined."
-    exit 2
+    exit 1
 fi
 
 TEST_IMAGE=automation-ontology
 VAULT_TOKEN=$(cat /etc/vault-token-dsde)
 
 # Render Configs
-./render-local-env.sh ${FC_ENV} ${ENV}
+./render-local-env.sh fiab ${ENV}
 
 # Build docker image
 docker build -f Dockerfile -t ${TEST_IMAGE} .
