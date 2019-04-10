@@ -17,11 +17,8 @@ VAULT_TOKEN=${2:-$VAULT_TOKEN}
 ENV=${3:-$ENV}
 SERVICE_ROOT=${4:-$SERVICE}
 
-SCRIPT_ROOT=${SERVICE_ROOT}/automation
-
-docker pull broadinstitute/dsde-toolbox:dev
-
 # render application.conf
+docker pull broadinstitute/dsde-toolbox:dev
 docker run -it --rm -e VAULT_TOKEN=${VAULT_TOKEN} \
     -e ENVIRONMENT=${ENV} -e FC_INSTANCE=${FC_INSTANCE} -e ROOT_DIR=${WORKING_DIR} \
     -e OUT_PATH=/output/src/test/resources -e INPUT_PATH=/input \

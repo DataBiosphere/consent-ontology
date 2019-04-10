@@ -36,7 +36,7 @@ sbt clean gatling:test
 
 ### Run specific tests:
 ```
-sbt clean gatling:testOnly *.DefaultScenarios 
+sbt clean gatling:testOnly *.StatusScenarios 
 ```
 
 ### Run all tests under docker:
