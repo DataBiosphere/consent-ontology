@@ -8,9 +8,9 @@ References:
 
 ## Automated Testing (Jenkins)
 
-From jenkins, tests are meant to be run from a predetermined environment. 
+From jenkins, tests are meant to be run from a preconfigured environment. 
 ```
-../jenkins/run-integration-tests.sh
+./automation/run-automation-tests.sh
 ```
 
 ## Automated Testing (Local Development)
