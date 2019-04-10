@@ -1,7 +1,7 @@
 #!/bin/bash
 
-if [ -z "${HOST_IP}" ]; then
-    echo "FATAL ERROR: HOST_IP undefined."
+if [ -z "${FC_ENV}" ]; then
+    echo "FATAL ERROR: FC_ENV undefined."
     exit 1
 fi
 
@@ -10,15 +10,17 @@ if [ -z "${ENV}" ]; then
     exit 2
 fi
 
-SERVICE_TESTS=automation-ontology
+TEST_IMAGE=automation-ontology
 VAULT_TOKEN=$(cat /etc/vault-token-dsde)
 
-# build test docker image
-cd ../automation
-docker build -f Dockerfile -t $SERVICE_TESTS .
+# Render Configs
+./render-local-env.sh ${FC_ENV} ${ENV}
+
+# Build docker image
+docker build -f Dockerfile -t ${TEST_IMAGE} .
 
 # run tests
-./run-tests.sh 2 $ENV $HOST_IP $SERVICE_TESTS $VAULT_TOKEN
+docker run ${TEST_IMAGE}
 TEST_EXIT_CODE=$?
 
 # do some cleanup after
