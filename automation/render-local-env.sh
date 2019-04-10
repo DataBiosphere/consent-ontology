@@ -19,22 +19,11 @@ SERVICE_ROOT=${4:-$SERVICE}
 
 SCRIPT_ROOT=${SERVICE_ROOT}/automation
 
-render_configs() {
-    original_dir=$WORKING_DIR
-    docker pull broadinstitute/dsde-toolbox:dev
+docker pull broadinstitute/dsde-toolbox:dev
 
-    # render application.conf
-    docker run -it --rm -e VAULT_TOKEN=${VAULT_TOKEN} \
-        -e ENVIRONMENT=${ENV} -e FC_INSTANCE=${FC_INSTANCE} -e ROOT_DIR=${WORKING_DIR} \
-        -e OUT_PATH=/output/src/test/resources -e INPUT_PATH=/input \
-        -v $PWD/configs:/input -v $PWD:/output \
-        broadinstitute/dsde-toolbox:dev render-templates.sh
-    cd $original_dir
-}
-
-if [[ $PWD != *"${SCRIPT_ROOT}" ]]; then
-    echo "Error: this script needs to be running from the ${SCRIPT_ROOT} directory!"
-    exit 1
-fi
-
-render_configs
+# render application.conf
+docker run -it --rm -e VAULT_TOKEN=${VAULT_TOKEN} \
+    -e ENVIRONMENT=${ENV} -e FC_INSTANCE=${FC_INSTANCE} -e ROOT_DIR=${WORKING_DIR} \
+    -e OUT_PATH=/output/src/test/resources -e INPUT_PATH=/input \
+    -v $PWD/configs:/input -v $PWD:/output \
+    broadinstitute/dsde-toolbox:dev render-templates.sh

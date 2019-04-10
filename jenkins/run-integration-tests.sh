@@ -15,7 +15,7 @@ VAULT_TOKEN=$(cat /etc/vault-token-dsde)
 
 # build test docker image
 cd ../automation
-docker build -f Dockerfile-tests -t $SCALATESTS .
+docker build -f Dockerfile -t $SCALATESTS .
 
 # run tests
 ./run-tests.sh 2 $ENV $HOST_IP $SCALATESTS $VAULT_TOKEN

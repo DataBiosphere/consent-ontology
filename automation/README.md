@@ -41,7 +41,7 @@ sbt clean gatling:testOnly *.DefaultScenarios
 
 ### Run all tests under docker:
 ```
-docker build -f Dockerfile-tests -t automation-ontology .
+docker build -t automation-ontology .
 docker run automation-ontology
 ```
 
