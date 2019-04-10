@@ -1,17 +1,15 @@
 package org.broadinstitute.dsp.ontology
 
+import com.typesafe.config.{Config, ConfigFactory}
 import io.gatling.core.Predef._
 import io.gatling.http.Predef.http
 import io.gatling.http.protocol.HttpProtocolBuilder
 
 import scala.concurrent.duration._
 
-import com.typesafe.config.{ Config, ConfigFactory }
-
 object TestConfig {
 
   val config: Config = ConfigFactory.load()
-
   val defaultUsers: Int = 1
   val defaultPause: FiniteDuration = 1 second
   val defaultUserAgent: String = "Gatling Client"
