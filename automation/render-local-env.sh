@@ -15,7 +15,6 @@ SERVICE=consent-ontology
 FC_INSTANCE=${1:-$FC_INSTANCE}
 VAULT_TOKEN=${2:-$VAULT_TOKEN}
 ENV=${3:-$ENV}
-SERVICE_ROOT=${4:-$SERVICE}
 
 # render application.conf
 docker pull broadinstitute/dsde-toolbox:dev
