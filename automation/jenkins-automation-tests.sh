@@ -8,9 +8,6 @@ fi
 TEST_IMAGE=automation-ontology
 VAULT_TOKEN=$(cat /etc/vault-token-dsde)
 
-# Render Configs
-./render-local-env.sh fiab ${ENV}
-
 # Build docker image
 docker build -f Dockerfile -t ${TEST_IMAGE} .
 
