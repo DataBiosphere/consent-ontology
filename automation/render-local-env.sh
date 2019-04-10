@@ -9,7 +9,6 @@ WORKING_DIR=$PWD
 FC_INSTANCE=fiab
 VAULT_TOKEN=$(cat ~/.vault-token)
 ENV=dev
-SERVICE=consent-ontology
 
 # Parameters
 FC_INSTANCE=${1:-$FC_INSTANCE}
