@@ -10,15 +10,15 @@ if [ -z "${ENV}" ]; then
     exit 2
 fi
 
-SCALATESTS=automation-ontology
+SERVICE_TESTS=automation-ontology
 VAULT_TOKEN=$(cat /etc/vault-token-dsde)
 
 # build test docker image
 cd ../automation
-docker build -f Dockerfile -t $SCALATESTS .
+docker build -f Dockerfile -t $SERVICE_TESTS .
 
 # run tests
-./run-tests.sh 2 $ENV $HOST_IP $SCALATESTS $VAULT_TOKEN
+./run-tests.sh 2 $ENV $HOST_IP $SERVICE_TESTS $VAULT_TOKEN
 TEST_EXIT_CODE=$?
 
 # do some cleanup after
