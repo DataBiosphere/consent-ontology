@@ -10,8 +10,16 @@ References:
 
 From jenkins, tests are meant to be run from a preconfigured environment. 
 ```
-./automation/run-automation-tests.sh
+./automation/jenkins-automation-tests.sh [fc instance] [env] 
 ```
+**Arguments:** (arguments are positional)
+* FC Instance 
+  * defaults to `fiab`
+  * can be `live` or `fiab`. If `live`, tests will be run against the environment
+    specified in `env`. If `fiab`, tests are run against the host provided in the 
+    swatomation run.
+* env
+  * Environment of your FiaB; defaults to `dev`
 
 ## Automated Testing (Local Development)
 

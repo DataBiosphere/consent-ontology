@@ -1,22 +1,32 @@
 #!/bin/bash
 
-if [ -z "${ENV}" ]; then
-    echo "FATAL ERROR: ENV undefined."
-    exit 1
-fi
+# This script is specific to DSP's jenkins CI server.
 
+FC_INSTANCE=${1:-$FC_INSTANCE}
+ENV=${2:-$ENV}
 TEST_IMAGE=automation-ontology
-VAULT_TOKEN=$(cat /etc/vault-token-dsde)
 
-# Build docker image
+mkdir target
+
+# Render Configurations
+docker run --rm \
+    -e ENVIRONMENT=${ENV} \
+    -e ROOT_DIR="${PWD}" \
+    -e FC_INSTANCE=${FC_INSTANCE} \
+    -e OUT_PATH=/output/src/test/resources \
+    -e INPUT_PATH=/input \
+    -v /etc/vault-token-dsde:/root/.vault-token \
+    -v "${PWD}/configs":/input \
+    -v "${PWD}":/output \
+    broadinstitute/dsde-toolbox:dev render-templates.sh
+
+
+# Build Test Image
 docker build -f Dockerfile -t ${TEST_IMAGE} .
 
-# run tests
-docker run ${TEST_IMAGE}
+# Run Tests
+docker run -v "${PWD}/target":/app/target ${TEST_IMAGE}
 TEST_EXIT_CODE=$?
-
-# do some cleanup after
-#sudo chmod -R 777 logs
 
 # exit with exit code of test script
 exit $TEST_EXIT_CODE
