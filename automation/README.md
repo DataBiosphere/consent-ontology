@@ -20,7 +20,6 @@ Render configs for all cases below:
 ./render-local-env.sh [fc instance] [vault token] [env]
 ```
 **Arguments:** (arguments are positional)
-
 * FC Instance 
   * defaults to `fiab`
   * can be `live`, `local`, or `fiab`
@@ -28,6 +27,12 @@ Render configs for all cases below:
   * Defaults to reading it from the .vault-token via `$(cat ~/.vault-token)`.
 * env
   * Environment of your FiaB; defaults to `dev`
+  
+Example for running tests locally against the dev environment:
+```bash
+./render-local-env.sh live $(cat ~/.vault-token) dev
+```  
+
 
 ### Run all tests:
 ```
