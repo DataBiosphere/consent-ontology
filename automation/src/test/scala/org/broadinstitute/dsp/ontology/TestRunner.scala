@@ -6,14 +6,17 @@ import io.gatling.core.structure.ScenarioBuilder
 
 trait TestRunner extends Simulation {
 
-  def runScenarios(scenarios: List[ScenarioBuilder]): SetUp = {
+  def runScenarios(scenarios: List[ScenarioBuilder],
+                   assertions: List[Assertion] = List(global.failedRequests.count.is(0))): SetUp = {
     setUp(
       scenarios.map { scn =>
         scn
           .pause(TestConfig.defaultPause)
           .inject(atOnceUsers(TestConfig.defaultUsers))
       }
-    ).protocols(TestConfig.defaultHttpProtocol)
+    )
+      .protocols(TestConfig.defaultHttpProtocol)
+      .assertions(assertions)
   }
 
 }
