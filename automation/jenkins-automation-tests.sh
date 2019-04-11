@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # This script is specific to DSP's jenkins CI server.
 

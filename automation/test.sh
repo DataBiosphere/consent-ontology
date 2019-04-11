@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+set -e
 
 SBT_CMD=${1-"gatling:test"}
 echo $SBT_CMD
