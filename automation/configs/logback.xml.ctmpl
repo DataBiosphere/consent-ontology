@@ -1,5 +1,4 @@
-{{with $environment := env "ENVIRONMENT"}}
-<?xml version="1.0" encoding="UTF-8"?>
+{{with $environment := env "ENVIRONMENT"}}<?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
@@ -17,5 +16,4 @@
         <appender-ref ref="CONSOLE" />
     </root>
 
-</configuration>
-{{end}}
+</configuration>{{end}}
