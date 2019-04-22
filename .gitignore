@@ -75,6 +75,7 @@ src/main/resources/assets/swagger-ui.min.js
 /automation/project/project/target/
 /automation/target/
 /automation/src/test/resources/application.conf
+/automation/src/test/resources/logback.xml
 
 # OS stuff
 **/.DS_Store

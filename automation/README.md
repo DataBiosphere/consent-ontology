@@ -5,21 +5,7 @@ Tests are designed to be run in two ways. Manually from the command line, or thr
 References:
 * [Gatling Documentation](https://gatling.io/docs/current/)
 * [Gatling SBT Plugin](https://github.com/gatling/gatling-sbt-plugin-demo)
-
-## Automated Testing (Jenkins)
-
-From jenkins, tests are meant to be run from a preconfigured environment. 
-```
-./automation/jenkins-automation-tests.sh [fc instance] [env] 
-```
-**Arguments:** (arguments are positional)
-* FC Instance 
-  * defaults to `fiab`
-  * can be `live` or `fiab`. If `live`, tests will be run against the environment
-    specified in `env`. If `fiab`, tests are run against the host provided in the 
-    swatomation run.
-* env
-  * Environment of your FiaB; defaults to `dev`
+* [Consul Template](https://github.com/hashicorp/consul-template)
 
 ## Automated Testing (Local Development)
 
