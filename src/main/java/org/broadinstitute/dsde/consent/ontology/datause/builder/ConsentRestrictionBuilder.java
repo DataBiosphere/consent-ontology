@@ -61,8 +61,18 @@ public class ConsentRestrictionBuilder implements UseRestrictionBuilder {
         }
 
         // FALSE: Future commercial use is prohibited
-        if (getOrElseFalse(dataUse.getCommercialUse())) {
-            categoryRestrictions.add(new Not(new Named(NON_PROFIT)));
+        // From ORSP, a false value means a dataset cannot be used for commercial purposes
+        //     if (dataUseRestriction.commercialUseExcluded) {
+        //         dataUseDTO.commercialUse = false
+        //     }
+        // commercialUse:false -> we need a NON_PROFIT ONLY restriction
+        // commercialUse:true  -> we need a NOT NON_PROFIT restriction
+        if (dataUse.getCommercialUse() != null) {
+            if (!getOrElseFalse(dataUse.getCommercialUse())) {
+                categoryRestrictions.add(new Named(NON_PROFIT));
+            } else {
+                categoryRestrictions.add(new Not(new Named(NON_PROFIT)));
+            }
         }
 
         // Gender/Pediatric checks.
