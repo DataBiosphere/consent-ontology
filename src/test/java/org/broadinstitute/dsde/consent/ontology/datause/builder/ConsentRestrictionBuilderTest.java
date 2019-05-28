@@ -241,4 +241,13 @@ public class ConsentRestrictionBuilderTest {
         Assert.assertFalse(restriction.toString().contains("\"type\":\"not\""));
     }
 
+    @Test
+    public void testCommercialUseNull() {
+        DataUse dataUse = new DataUseBuilder().
+                setCommercialUse(null).
+                build();
+        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
+        Assert.assertFalse(restriction.toString().contains(NON_PROFIT));
+    }
+
 }
