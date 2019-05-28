@@ -9,6 +9,8 @@ import org.junit.Test;
 
 import java.util.Collections;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+
 public class ConsentRestrictionBuilderTest {
 
     private UseRestrictionBuilder restrictionBuilder = new ConsentRestrictionBuilder();
@@ -217,6 +219,35 @@ public class ConsentRestrictionBuilderTest {
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
         Assert.assertEquals(restriction, ConsentUseCases.CSdulUC3);
+    }
+
+    @Test
+    public void testCommercialUse() {
+        DataUse dataUse = new DataUseBuilder().
+                setCommercialUse(true).
+                build();
+        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
+        Assert.assertTrue(restriction.toString().contains(NON_PROFIT));
+        Assert.assertTrue(restriction.toString().contains("\"type\":\"not\""));
+    }
+
+    @Test
+    public void testCommercialUseExcluded() {
+        DataUse dataUse = new DataUseBuilder().
+                setCommercialUse(false).
+                build();
+        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
+        Assert.assertTrue(restriction.toString().contains(NON_PROFIT));
+        Assert.assertFalse(restriction.toString().contains("\"type\":\"not\""));
+    }
+
+    @Test
+    public void testCommercialUseNull() {
+        DataUse dataUse = new DataUseBuilder().
+                setCommercialUse(null).
+                build();
+        UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
+        Assert.assertFalse(restriction.toString().contains(NON_PROFIT));
     }
 
 }
