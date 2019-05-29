@@ -55,7 +55,6 @@ public class SwaggerResource {
     UriInfo uriInfo;
 
     @GET
-    @Path("")
     public Response main() {
         return content("");
     }
