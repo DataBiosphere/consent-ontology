@@ -107,6 +107,15 @@ public class DataUseMatcherTest {
     }
 
     @Test
+    public void testDiseaseMatching_noPurposeDiseases() {
+        DataUse dataset = new DataUseBuilder()
+                .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+                .build();
+        DataUse purpose = new DataUseBuilder().build();
+        assertFalse(matchPurposeAndDataset(purpose, dataset));
+    }
+
+    @Test
     public void testHMB_positive() {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setHmbResearch(true).build();

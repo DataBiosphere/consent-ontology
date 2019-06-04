@@ -75,22 +75,28 @@ class DataUseMatchCases {
         if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
             return true;
         }
+        // short-circuit if dataset is GRU
         if (getNullableOrFalse(dataset.getGeneralUse())) {
             return true;
         }
+        // short-circuit if dataset is HMB
         if (getNullableOrFalse(dataset.getHmbResearch())) {
             return true;
-        } else {
-            // We want all purpose disease IDs to be a subclass of any dataset disease ID
-            Set<Boolean> matches = purposeDiseaseIdMap
-                    .values()
-                    .stream()
-                    .map(idList -> idList
-                            .stream()
-                            .anyMatch(dataset.getDiseaseRestrictions()::contains))
-                    .collect(Collectors.toSet());
-            return !matches.contains(false);
         }
+        // short-circuit if no diseases specified in the purpose, but the dataset specifies diseases
+        if (!dataset.getDiseaseRestrictions().isEmpty() && purpose.getDiseaseRestrictions().isEmpty()) {
+            return false;
+        }
+
+        // We want all purpose disease IDs to be a subclass of any dataset disease ID
+        Set<Boolean> matches = purposeDiseaseIdMap
+                .values()
+                .stream()
+                .map(idList -> idList
+                        .stream()
+                        .anyMatch(dataset.getDiseaseRestrictions()::contains))
+                .collect(Collectors.toSet());
+        return !matches.contains(false);
     }
 
     /**
