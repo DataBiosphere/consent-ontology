@@ -8,6 +8,7 @@ import akka.pattern.Patterns;
 import akka.util.Timeout;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerActor;
@@ -30,6 +31,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.net.URL;
 import java.util.Collection;
+import java.util.List;
 
 @Path("/match")
 @Consumes("application/json")
@@ -58,10 +60,15 @@ public class MatchResource {
         DataUse dataset = matchPair.getConsent();
         try {
             if (purpose != null && dataset != null) {
-                boolean match = dataUseMatcher.matchPurposeAndDataset(purpose, dataset);
+                ImmutablePair<Boolean, List<String>> matchResult = dataUseMatcher.matchPurposeAndDatasetV2(purpose, dataset);
+                boolean match = matchResult.getLeft();
+                List<String> failures = matchResult.getRight();
                 return Response
                         .ok()
-                        .entity(ImmutableMap.of("result", match, "matchPair", matchPair))
+                        .entity(ImmutableMap.of(
+                                "result", match,
+                                "matchPair", matchPair,
+                                "failureReasons", failures))
                         .type(MediaType.APPLICATION_JSON)
                         .build();
             }

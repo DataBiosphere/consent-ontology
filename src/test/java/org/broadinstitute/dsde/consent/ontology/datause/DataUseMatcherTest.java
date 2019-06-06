@@ -266,7 +266,7 @@ public class DataUseMatcherTest {
         DataUseMatcher matcher = new DataUseMatcher();
         matcher.setAutocompleteService(autocompleteService);
         try {
-            return matcher.matchPurposeAndDataset(purpose, dataset);
+            return matcher.matchPurposeAndDatasetV2(purpose, dataset).getLeft();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

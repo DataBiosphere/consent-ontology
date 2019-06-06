@@ -1,17 +1,23 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 import java.io.IOException;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchCommercial;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchControlSet;
@@ -37,38 +43,54 @@ public class DataUseMatcher {
     }
 
     // Matching Algorithm
-    public boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) throws IOException {
+    public ImmutablePair<Boolean, List<String>> matchPurposeAndDatasetV2(DataUse purpose, DataUse dataset) throws IOException {
         Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
 
-        boolean diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
-        boolean hmbMatch = matchHMB(purpose, dataset, diseaseMatch);
-        boolean nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch);
-        boolean controlMatch = matchControlSet(purpose, dataset, diseaseMatch);
-        boolean nagrMatch = matchNAGR(purpose, dataset);
-        boolean poaMatch = matchPOA(purpose, dataset);
-        boolean commercialMatch = matchCommercial(purpose, dataset);
-        boolean pediatricMatch = matchRSPD(purpose, dataset);
-        boolean genderMatch = matchRSG(purpose, dataset);
+        ImmutablePair<Boolean, List<String>> diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
+        ImmutablePair<Boolean, List<String>> hmbMatch = matchHMB(purpose, dataset, diseaseMatch.getLeft());
+        ImmutablePair<Boolean, List<String>> nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch.getLeft());
+        ImmutablePair<Boolean, List<String>> controlMatch = matchControlSet(purpose, dataset, diseaseMatch.getLeft());
+        ImmutablePair<Boolean, List<String>> nagrMatch = matchNAGR(purpose, dataset);
+        ImmutablePair<Boolean, List<String>> poaMatch = matchPOA(purpose, dataset);
+        ImmutablePair<Boolean, List<String>> commercialMatch = matchCommercial(purpose, dataset);
+        ImmutablePair<Boolean, List<String>> pediatricMatch = matchRSPD(purpose, dataset);
+        ImmutablePair<Boolean, List<String>> genderMatch = matchRSG(purpose, dataset);
 
-        log.debug("hmbMatch: " + hmbMatch);
-        log.debug("diseaseMatch: " + diseaseMatch);
-        log.debug("nmdsMatch: " + nmdsMatch);
-        log.debug("controlMatch: " + controlMatch);
-        log.debug("nagrMatch: " + nagrMatch);
-        log.debug("poaMatch: " + poaMatch);
-        log.debug("commercialMatch: " + commercialMatch);
-        log.debug("pediatricMatch: " + pediatricMatch);
-        log.debug("genderMatch: " + genderMatch);
+        log.debug("hmbMatch: " + hmbMatch.getLeft());
+        log.debug("diseaseMatch: " + diseaseMatch.getLeft());
+        log.debug("nmdsMatch: " + nmdsMatch.getLeft());
+        log.debug("controlMatch: " + controlMatch.getLeft());
+        log.debug("nagrMatch: " + nagrMatch.getLeft());
+        log.debug("poaMatch: " + poaMatch.getLeft());
+        log.debug("commercialMatch: " + commercialMatch.getLeft());
+        log.debug("pediatricMatch: " + pediatricMatch.getLeft());
+        log.debug("genderMatch: " + genderMatch.getLeft());
 
-        return hmbMatch &&
-                diseaseMatch &&
-                nmdsMatch &&
-                controlMatch &&
-                nagrMatch &&
-                poaMatch &&
-                commercialMatch &&
-                pediatricMatch &&
-                genderMatch;
+        Boolean match = hmbMatch.getLeft() &&
+                diseaseMatch.getLeft() &&
+                nmdsMatch.getLeft() &&
+                controlMatch.getLeft() &&
+                nagrMatch.getLeft() &&
+                poaMatch.getLeft() &&
+                commercialMatch.getLeft() &&
+                pediatricMatch.getLeft() &&
+                genderMatch.getLeft();
+
+        List<String> reasons = Stream.of(
+                diseaseMatch.getRight(),
+                hmbMatch.getRight(),
+                nmdsMatch.getRight(),
+                controlMatch.getRight(),
+                nagrMatch.getRight(),
+                poaMatch.getRight(),
+                commercialMatch.getRight(),
+                pediatricMatch.getRight(),
+                genderMatch.getRight())
+                .flatMap(Collection::stream)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
+
+        return ImmutablePair.of(match, reasons);
     }
 
     // Helper methods
