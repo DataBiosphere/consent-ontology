@@ -23,6 +23,18 @@ class DataUseMatchCases {
     private static final String na = "N/A";
     private static final String male = "Male";
     private static final String female = "Female";
+    private static final String HMB_F1 = "The GRU Research Purpose does not match the HMB data use limitations.";
+    private static final String HMB_F2 = "The HMB Research Purpose does not match the Disease-Specific data use limitations.";
+    private static final String DS_F1 = "The unspecified Disease Research Purpose does not match the Disease-Specific data use limitations.";
+    private static final String DS_F2 = "The Disease-Specific: %s Research Purpose is not a valid subclass of the Disease-Specific data use limitations.";
+    private static final String NMDS_F1 = "The Methods development Research Purpose is prohibited by the NMDS No Methods Development data use limitation.";
+    private static final String NCTRL_F1 = "The Controls Use Research Purpose is prohibited by the NCTRL No Controls Use data use limitation.";
+    private static final String NAGR_F1 = "The Aggregate-level Research Purpose is prohibited by the NAGR No Aggregate-level data use limitation.";
+    private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
+    private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commerical Use data use limitation.";
+    private static final String RSPD_F1 = "The Research Purpose did not specify Population: Pediatric as specified by the data use limitations.";
+    private static final String RSG_F1 = "The Research Purpose did not specify Population: Female as specified by the data use limitations.";
+    private static final String RSG_F2 = "The Research Purpose did not specify Population: Male as specified by the data use limitations.";
 
     /**
      * RP: HMB
@@ -47,7 +59,7 @@ class DataUseMatchCases {
         boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
 
         if (datasetHMB && purposeGRU) {
-            return ImmutablePair.of(false, Collections.singletonList("[HMB] Research Purpose requires a General Use Dataset"));
+            return ImmutablePair.of(false, Collections.singletonList(HMB_F1));
         }
 
         if (purposeHMB && datasetGRU) {
@@ -60,7 +72,7 @@ class DataUseMatchCases {
         if (diseaseMatch) {
             return ImmutablePair.of(true, Collections.emptyList());
         } else {
-            return ImmutablePair.of(false, Collections.singletonList("[HMB] Research Purpose does not match the disease restriction for the Dataset"));
+            return ImmutablePair.of(false, Collections.singletonList(HMB_F2));
         }
 
     }
@@ -93,7 +105,7 @@ class DataUseMatchCases {
         }
         // short-circuit if no diseases specified in the purpose, but the dataset specifies diseases
         if (!dataset.getDiseaseRestrictions().isEmpty() && purpose.getDiseaseRestrictions().isEmpty()) {
-            return ImmutablePair.of(false, Collections.singletonList("[DS:X] Dataset has disease restrictions while the research purpose does not"));
+            return ImmutablePair.of(false, Collections.singletonList(DS_F1));
         }
 
         // We want all purpose disease IDs to be a subclass of any dataset disease ID
@@ -103,7 +115,7 @@ class DataUseMatchCases {
                     .stream()
                     .anyMatch(dataset.getDiseaseRestrictions()::contains);
             if (!match) {
-                failures.add("[DS:X] Research Purpose Disease term " + entry.getKey() + " is not a valid subclass of any dataset disease restrictions.");
+                failures.add(String.format(DS_F2,  entry.getKey()));
             }
         }
 
@@ -129,13 +141,13 @@ class DataUseMatchCases {
         if (!datasetNMDS) {
             return ImmutablePair.of(true, Collections.emptyList());
         } else {
-            failures.add("[NMDS] Dataset is restricted to no method development research");
+            failures.add(NMDS_F1);
         }
 
         if (datasetNMDS && diseaseMatch) {
             return ImmutablePair.of(true, Collections.emptyList());
         } else {
-            failures.add("[NMDS] Research Purpose does not match the disease restriction for the Dataset");
+            failures.add(NMDS_F1);
         }
 
         return ImmutablePair.of(failures.isEmpty(), failures);
@@ -160,13 +172,13 @@ class DataUseMatchCases {
         if (datasetNCTRL && datasetGRUorHMB) {
             return ImmutablePair.of(true, Collections.emptyList());
         } else {
-            failures.add("[NCTRL] Dataset is restricted to no control set usage");
+            failures.add(NCTRL_F1);
         }
 
         if (!purpose.getDiseaseRestrictions().isEmpty() && diseaseMatch) {
             return ImmutablePair.of(true, Collections.emptyList());
         } else {
-            failures.add("[NCTRL] Research Purpose does not match the disease restriction for the Dataset");
+            failures.add(NCTRL_F1);
         }
 
         return ImmutablePair.of(failures.isEmpty(), failures);
@@ -191,7 +203,7 @@ class DataUseMatchCases {
         if (!(purposeNAGR &&
                 !datasetNAGR &&
                 (getNullableOrFalse(dataset.getHmbResearch()) || getNullableOrFalse(dataset.getGeneralUse())))) {
-            failures.add("[NAGR] Future use of aggregate-level data for dataset is prohibited");
+            failures.add(NAGR_F1);
         }
 
         return ImmutablePair.of(failures.isEmpty(), failures);
@@ -212,7 +224,7 @@ class DataUseMatchCases {
         List<String> failures = new ArrayList<>();
         if (!(purpose.getPopulationOriginsAncestry() &&
                 getNullableOrFalse(dataset.getGeneralUse()))) {
-            failures.add("[POA] Future use of aggregate-level data for general research purposes is prohibited");
+            failures.add(POA_F1);
         }
 
         return ImmutablePair.of(failures.isEmpty(), failures);
@@ -236,11 +248,12 @@ class DataUseMatchCases {
         boolean datasetCommercial = getNullableOrFalse(dataset.getCommercialUse());
 
         if (purposeCommercial && !datasetCommercial) {
-            failures.add("[NCU/NPU] Dataset is not consented for commercial use");
+            failures.add(NCU_F1);
         }
 
+        // TODO: Fix this ... it's wrong.
         if (!purposeCommercial && datasetCommercial) {
-            failures.add("[NCU/NPU] Research Purpose is not consented for commercial use");
+            failures.add(NCU_F1);
         }
 
         return ImmutablePair.of(failures.isEmpty(), failures);
@@ -265,7 +278,7 @@ class DataUseMatchCases {
 
         List<String> failures = new ArrayList<>();
         if (!(purpose.getPediatric() && dataset.getPediatric())) {
-            failures.add("[RS-PD] Research Purpose and Dataset Pediatric conditions do not align");
+            failures.add(RSPD_F1);
         }
 
         return ImmutablePair.of(failures.isEmpty(), failures);
@@ -296,13 +309,13 @@ class DataUseMatchCases {
         List<String> failures = new ArrayList<>();
         if (purposeGender.equalsIgnoreCase(male)) {
             if (!dataset.getGender().equalsIgnoreCase(male)) {
-                failures.add("[RS-G] Dataset restricted to research involving female participants");
+                failures.add(RSG_F1);
             }
         }
 
         if (purposeGender.equalsIgnoreCase(female)) {
             if (!dataset.getGender().equalsIgnoreCase(female)) {
-                failures.add("[RS-G] Dataset restricted to research involving male participants");
+                failures.add(RSG_F2);
             }
         }
 
