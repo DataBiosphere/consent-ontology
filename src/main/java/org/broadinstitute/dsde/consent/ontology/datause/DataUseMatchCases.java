@@ -29,6 +29,7 @@ class DataUseMatchCases {
     private static final String DS_F2 = "The Disease-Specific: %s Research Purpose is not a valid subclass of the Disease-Specific data use limitations.";
     private static final String NMDS_F1 = "The Methods development Research Purpose is prohibited by the NMDS No Methods Development data use limitation.";
     private static final String NCTRL_F1 = "The Controls Use Research Purpose is prohibited by the NCTRL No Controls Use data use limitation.";
+    private static final String NCTRL_F2 = "TThe Disease-Specific: %s Research Purpose is not a valid subclass of the Disease-Specific data use limitations.";
     private static final String NAGR_F1 = "The Aggregate-level Research Purpose is prohibited by the NAGR No Aggregate-level data use limitation.";
     private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
     private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commerical Use data use limitation.";
@@ -147,10 +148,9 @@ class DataUseMatchCases {
         if (datasetNMDS && diseaseMatch) {
             return ImmutablePair.of(true, Collections.emptyList());
         } else {
-            failures.add(NMDS_F1);
+            // If there is a disease failure, that will already be captured in the disease match block
+            return ImmutablePair.of(false, failures);
         }
-
-        return ImmutablePair.of(failures.isEmpty(), failures);
     }
 
     /**
@@ -178,10 +178,9 @@ class DataUseMatchCases {
         if (!purpose.getDiseaseRestrictions().isEmpty() && diseaseMatch) {
             return ImmutablePair.of(true, Collections.emptyList());
         } else {
-            failures.add(NCTRL_F1);
+            // If there is a disease failure, that will already be captured in the disease match block
+            return ImmutablePair.of(false, failures);
         }
-
-        return ImmutablePair.of(failures.isEmpty(), failures);
     }
 
     /**
@@ -248,11 +247,6 @@ class DataUseMatchCases {
         boolean datasetCommercial = getNullableOrFalse(dataset.getCommercialUse());
 
         if (purposeCommercial && !datasetCommercial) {
-            failures.add(NCU_F1);
-        }
-
-        // TODO: Fix this ... it's wrong.
-        if (!purposeCommercial && datasetCommercial) {
             failures.add(NCU_F1);
         }
 
