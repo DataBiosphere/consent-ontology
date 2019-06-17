@@ -360,4 +360,13 @@ public class DataUseTest {
         assertInvalidJson("{ \"ethicsApprovalRequired\": \"string\" }");
     }
 
+    @Test
+    public void collaboratorRequired() throws Exception {
+        String json = "{ \"collaboratorRequired\": true }";
+        DataUse dataUse = MAPPER.readValue(json, DataUse.class);
+        assertTrue(dataUse.getCollaboratorRequired());
+        assertValidJson(json);
+        assertInvalidJson("{ \"collaboratorRequired\": \"string\" }");
+    }
+
 }
