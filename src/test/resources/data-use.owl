@@ -21,7 +21,7 @@
          xmlns:dc="http://purl.org/dc/elements/1.1/">
     <owl:Ontology rdf:about="http://www.broadinstitute.org/ontologies/DUOS">
         <rdfs:label rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Data-Use Restrictions and Research Purpose Ontology</rdfs:label>
-        <owl:imports rdf:resource="http://purl.obolibrary.org/obo/duo/releases/2017-02-17/duo.owl"/>
+        <owl:imports rdf:resource="https://raw.githubusercontent.com/EBISPOT/DUO/v2019-01-07/duo.owl"/>
         <dc:contributor rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Moran N Cabili</dc:contributor>
         <dc:contributor rdf:datatype="http://www.w3.org/2001/XMLSchema#string">David An</dc:contributor>
         <dc:contributor rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Diego Gil</dc:contributor>
