@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -76,6 +77,7 @@ public class DataUseMatcherTest {
 
         when(autocompleteService.lookupById(intestinalCancerNode)).thenReturn(termResources);
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -104,6 +106,7 @@ public class DataUseMatcherTest {
 
         when(autocompleteService.lookupById(cancerNode)).thenReturn(termResources);
         assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -120,6 +123,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setHmbResearch(true).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -127,6 +131,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setHmbResearch(true).build();
         DataUse purpose = new DataUseBuilder().setGeneralUse(true).build();
         assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -134,6 +139,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setMethodsResearch(true).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -143,6 +149,7 @@ public class DataUseMatcherTest {
                 .setDiseaseRestrictions(Collections.singletonList(cancerNode))
                 .setMethodsResearch(true).build();
         assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     // TODO: This is confusing. In the context of a consented dataset, this means no aggregate research
@@ -152,6 +159,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).setAggregateResearch("No").build();
         DataUse purpose = new DataUseBuilder().setAggregateResearch("Yes").build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -159,6 +167,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setAggregateResearch("No").build(); // Not GRU or HMB
         DataUse purpose = new DataUseBuilder().setAggregateResearch("Yes").build();
         assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -166,6 +175,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setPopulationOriginsAncestry(true).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -173,6 +183,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setHmbResearch(true).build();
         DataUse purpose = new DataUseBuilder().setPopulationOriginsAncestry(true).build();
         assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -180,6 +191,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setCommercialUse(true).build();
         DataUse purpose = new DataUseBuilder().setCommercialUse(true).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -187,20 +199,15 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setCommercialUse(true).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
-    public void testCommercial_negative_1() {
+    public void testCommercial_negative() {
         DataUse dataset = new DataUseBuilder().setCommercialUse(false).build();
         DataUse purpose = new DataUseBuilder().setCommercialUse(true).build();
         assertFalse(matchPurposeAndDataset(purpose, dataset));
-    }
-
-    @Test
-    public void testCommercial_negative_2() {
-        DataUse dataset = new DataUseBuilder().setCommercialUse(true).build();
-        DataUse purpose = new DataUseBuilder().setCommercialUse(false).build();
-        assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -208,6 +215,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setPediatric(true).build();
         DataUse purpose = new DataUseBuilder().setPediatric(true).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -215,6 +223,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setPediatric(true).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -222,6 +231,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         DataUse purpose = new DataUseBuilder().setPediatric(false).build();
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -229,6 +239,7 @@ public class DataUseMatcherTest {
         DataUse dataset = new DataUseBuilder().setPediatric(true).build();
         DataUse purpose = new DataUseBuilder().setPediatric(false).build();
         assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -239,6 +250,7 @@ public class DataUseMatcherTest {
 
         purpose.setGender("Female");
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -249,6 +261,7 @@ public class DataUseMatcherTest {
 
         purpose.setGender("Female");
         assertTrue(matchPurposeAndDataset(purpose, dataset));
+        assertTrue(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     @Test
@@ -260,6 +273,7 @@ public class DataUseMatcherTest {
         dataset.setGender("Male");
         purpose.setGender("Female");
         assertFalse(matchPurposeAndDataset(purpose, dataset));
+        assertFalse(getMatchFailures(purpose, dataset).isEmpty());
     }
 
     private boolean matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
@@ -267,6 +281,16 @@ public class DataUseMatcherTest {
         matcher.setAutocompleteService(autocompleteService);
         try {
             return matcher.matchPurposeAndDatasetV2(purpose, dataset).getLeft();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private List<String> getMatchFailures(DataUse purpose, DataUse dataset) {
+        DataUseMatcher matcher = new DataUseMatcher();
+        matcher.setAutocompleteService(autocompleteService);
+        try {
+            return matcher.matchPurposeAndDatasetV2(purpose, dataset).getRight();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
