@@ -326,6 +326,13 @@ definitions:
       matchPair:
         $ref: '#/definitions/DataUseMatchPair'
         description: The provided purpose and consent
+      failureReasons:
+        type: array
+        items:
+          type: string
+        description: |
+          Optional list of reasons why a match result may have failed. Only supported in
+          in versions 2 and higher
 
   Version:
     type: object

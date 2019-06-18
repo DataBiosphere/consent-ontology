@@ -50,7 +50,7 @@ abstract class MatchTestBase extends TruthTableTests {
     public void parameterizedTest() throws IOException {
         DataUseMatcher matcher = new DataUseMatcher();
         matcher.setAutocompleteService(autocompleteService);
-        boolean algorithmMatch = matcher.matchPurposeAndDataset(purpose, consent);
+        boolean algorithmMatch = matcher.matchPurposeAndDatasetV2(purpose, consent).getLeft();
         String testMessage = testName + "; expected result: " + expectedMatchResult;
         assertEquals(testMessage, expectedMatchResult, algorithmMatch);
     }
