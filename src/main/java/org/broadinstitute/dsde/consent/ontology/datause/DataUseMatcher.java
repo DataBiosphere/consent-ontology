@@ -1,6 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
@@ -10,12 +9,10 @@ import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 import java.io.IOException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -77,8 +74,8 @@ public class DataUseMatcher {
                 genderMatch.getLeft();
 
         List<String> reasons = Stream.of(
-                diseaseMatch.getRight(),
                 hmbMatch.getRight(),
+                diseaseMatch.getRight(),
                 nmdsMatch.getRight(),
                 controlMatch.getRight(),
                 nagrMatch.getRight(),
