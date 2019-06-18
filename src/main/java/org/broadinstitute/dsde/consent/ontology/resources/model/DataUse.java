@@ -46,6 +46,7 @@ import java.util.List;
     "otherRestrictions",
     "cloudStorage",
     "ethicsApprovalRequired",
+    "collaboratorRequired",
     "geographicalRestrictions",
     "other",
     "illegalBehavior",
@@ -100,6 +101,8 @@ public class DataUse {
     private String cloudStorage;
     @JsonProperty("ethicsApprovalRequired")
     private Boolean ethicsApprovalRequired;
+    @JsonProperty("collaboratorRequired")
+    private Boolean collaboratorRequired;
     @JsonProperty("geographicalRestrictions")
     private String geographicalRestrictions;
     @JsonProperty("other")
@@ -321,6 +324,14 @@ public class DataUse {
         this.ethicsApprovalRequired = ethicsApprovalRequired;
     }
 
+    @JsonProperty("collaboratorRequired")
+    public Boolean getCollaboratorRequired() { return collaboratorRequired; }
+
+    @JsonProperty("collaboratorRequired")
+    public void setCollaboratorRequired(Boolean collaboratorRequired) {
+        this.collaboratorRequired = collaboratorRequired;
+    }
+
     @JsonProperty("geographicalRestrictions")
     public String getGeographicalRestrictions() {
         return geographicalRestrictions;
@@ -448,6 +459,7 @@ public class DataUse {
                 .append(otherRestrictions)
                 .append(cloudStorage)
                 .append(ethicsApprovalRequired)
+                .append(collaboratorRequired)
                 .append(geographicalRestrictions)
                 .append(other)
                 .append(illegalBehavior)
@@ -490,6 +502,7 @@ public class DataUse {
                 .append(otherRestrictions, rhs.otherRestrictions)
                 .append(cloudStorage, rhs.cloudStorage)
                 .append(ethicsApprovalRequired, rhs.ethicsApprovalRequired)
+                .append(collaboratorRequired, rhs.collaboratorRequired)
                 .append(geographicalRestrictions, rhs.geographicalRestrictions)
                 .append(other, rhs.other)
                 .append(illegalBehavior, rhs.illegalBehavior)

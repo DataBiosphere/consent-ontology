@@ -15,6 +15,7 @@
       "anyOf": [
         {"required": ["cloudStorage"]},
         {"required": ["ethicsApprovalRequired"]},
+        {"required": ["collaboratorRequired"]},
         {"required": ["geographicalRestrictions"]},
         {"required": ["other"]}
       ]
@@ -95,6 +96,9 @@
       "enum": ["Yes", "No", "Unspecified"]
     },
     "ethicsApprovalRequired": {
+      "type": "boolean"
+    },
+    "collaboratorRequired": {
       "type": "boolean"
     },
     "geographicalRestrictions": {

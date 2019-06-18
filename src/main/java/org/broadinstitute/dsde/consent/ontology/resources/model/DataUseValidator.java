@@ -70,6 +70,7 @@ public class DataUseValidator {
             return
                 getOrElseFalse(dataUse.getCloudStorage()) ||
                 getOrElseFalse(dataUse.getEthicsApprovalRequired()) ||
+                getOrElseFalse(dataUse.getCloudStorage()) ||
                 getOrElseFalse(dataUse.getGeographicalRestrictions()) ||
                 getOrElseFalse(dataUse.getOther());
         }
@@ -116,6 +117,7 @@ public class DataUseValidator {
                 getOrElseFalse(dataUse.getOther()) ||
                 getOrElseFalse(dataUse.getCloudStorage()) ||
                 getOrElseFalse(dataUse.getEthicsApprovalRequired()) ||
+                getOrElseFalse(dataUse.getCollaboratorRequired()) ||
                 getOrElseFalse(dataUse.getGeographicalRestrictions()) ||
                 getOrElseFalse(dataUse.getIllegalBehavior()) ||
                 getOrElseFalse(dataUse.getAddiction()) ||
