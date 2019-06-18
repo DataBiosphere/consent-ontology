@@ -55,6 +55,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     private static final String RECONTACT_MUST = "Subject re-contact must occur in certain circumstances, as specified: %s";
     private static final String CLOUD_PROHIBITED = "Data storage on the cloud is prohibited.";
     private static final String ETHICS_APPROVAL = "Local ethics committee approval is required.";
+    private static final String COLLABORATOR_REQUIRED = "Collaborator approval is required.";
     private static final String GEO_RESTRICTION = "Geographical restrictions: %s.";
     private static final String OTHER_POS = "Other restrictions: %s.";
 
@@ -200,6 +201,9 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         }
         if (Optional.ofNullable(dataUse.getEthicsApprovalRequired()).orElse(false)) {
             summary.add(ETHICS_APPROVAL);
+        }
+        if (Optional.ofNullable(dataUse.getCollaboratorRequired()).orElse(false)) {
+            summary.add(COLLABORATOR_REQUIRED);
         }
         if (Optional.ofNullable(dataUse.getManualReview()).orElse(false)) {
             summary.add(MANUAL_REVIEW);
