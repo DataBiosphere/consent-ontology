@@ -63,22 +63,6 @@ public class DataUseTest {
     }
 
     /*
-     * General schema validation tests
-     */
-
-    @Test
-    public void validateDataUseJsonFile() throws ValidationException, IOException {
-        try (InputStream schemaStream = new URL("http://json-schema.org/draft-04/schema").openStream()) {
-            String schemaString = FileUtils.readAllText(schemaStream);
-            JSONObject rawSchema = new JSONObject(new JSONTokener(schemaString));
-            Schema schema = SchemaLoader.load(rawSchema);
-            schema.validate(new JSONObject(DU_CONTENT)); // throws a ValidationException if this object is invalid
-        }
-    }
-
-
-
-    /*
      *  Tests that look at individual fields in DataUse
      */
 
