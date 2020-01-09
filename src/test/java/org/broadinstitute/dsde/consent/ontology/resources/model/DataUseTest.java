@@ -7,15 +7,10 @@ import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.parboiled.common.FileUtils;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -28,11 +23,11 @@ public class DataUseTest {
     @ClassRule
     public static final DropwizardClientRule RULE = new DropwizardClientRule(new DataUseResource());
 
-    static ObjectMapper MAPPER;
-    static String DU_CONTENT;
-    static JSONObject RAW_SCHEMA;
-    static SchemaLoader LOADER;
-    static Schema DU_SCHEMA;
+    private static ObjectMapper MAPPER;
+    private static String DU_CONTENT;
+    private static JSONObject RAW_SCHEMA;
+    private static SchemaLoader LOADER;
+    private static Schema DU_SCHEMA;
 
     @BeforeClass
     public static void setUp() {
@@ -115,7 +110,7 @@ public class DataUseTest {
     public void commercialUse() throws Exception {
         String json = "{ \"commercialUse\": true }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify commecial use", dataUse.getCommercialUse());
+        assertTrue("DU should specify commercial use", dataUse.getCommercialUse());
         assertValidJson(json);
         assertInvalidJson("{ \"commercialUse\": \"string\" }");
     }

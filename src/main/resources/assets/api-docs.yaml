@@ -261,7 +261,7 @@ definitions:
     properties:
       type:
         type: string
-        description: 'Conector (and, or)'
+        description: 'Connector (and, or)'
       operands:
         type: array
         items:
