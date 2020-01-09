@@ -6,9 +6,6 @@ import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.Property;
 import com.hp.hpl.jena.rdf.model.Resource;
-import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
-
-import java.io.IOException;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 public class Some extends UseRestriction {
@@ -22,7 +19,7 @@ public class Some extends UseRestriction {
     public Some() {
     }
 
-    public Some(String prop, UseRestriction obj) {
+    Some(String prop, UseRestriction obj) {
         this.property = prop;
         this.target = obj;
     }
@@ -69,11 +66,6 @@ public class Some extends UseRestriction {
 
     public boolean visitAndContinue(UseRestrictionVisitor visitor) {
         return target.visit(visitor);
-    }
-
-    @JsonIgnore
-    public String getDescriptiveLabel(OntologyTermSearchAPI api) throws IOException {
-        return "Some of the following:\n" + target.getDescriptiveLabel(api);
     }
 
 }

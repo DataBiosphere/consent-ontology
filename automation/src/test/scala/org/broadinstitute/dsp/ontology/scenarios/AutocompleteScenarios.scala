@@ -10,7 +10,7 @@ class AutocompleteScenarios extends Simulation with TestRunner {
     List(
       scenario("Autocomplete: Cancer").exec(Requests.autocomplete("cancer")),
       scenario("Autocomplete: Diabetes").exec(Requests.autocomplete("diabetes")),
-      scenario("Autocomplete: Apnea").exec(Requests.autocomplete("apnea")),
+      scenario("Autocomplete: Apnea").exec(Requests.autocomplete("apnea"))
     )
   )
 
