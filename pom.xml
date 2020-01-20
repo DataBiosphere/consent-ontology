@@ -17,7 +17,7 @@
         <metrics.version>4.0.3</metrics.version>
         <akka.version>2.4.20</akka.version>
         <jersey.version>2.19</jersey.version>
-        <swagger.ui.version>2.2.8</swagger.ui.version>
+        <swagger.ui.version>3.24.3</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
