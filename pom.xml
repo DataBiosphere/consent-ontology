@@ -13,7 +13,7 @@
         <owl.version>5.1.12</owl.version>
         <jena.version>2.6.4</jena.version>
         <lucene.version>8.4.1</lucene.version>
-        <dropwizard.version>1.3.14</dropwizard.version>
+        <dropwizard.version>1.3.17</dropwizard.version>
         <metrics.version>4.0.3</metrics.version>
         <akka.version>2.5.27</akka.version>
         <jersey.version>2.19</jersey.version>
