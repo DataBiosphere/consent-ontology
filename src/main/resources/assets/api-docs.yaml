@@ -74,7 +74,7 @@ paths:
         - text/plain
       parameters:
         - name: for
-          in: body
+          in: query
           description: dataset or purpose
           required: true
           schema:
