@@ -20,12 +20,10 @@ jobs:
           paths:
             - ~/.m2
           key: v1-dependencies-{{ checksum "pom.xml" }}
-      - run: mvn clean compile
-      - run: mvn test
+      - run: mvn clean jacoco:prepare-agent test jacoco:report
       - run: mvn dependency-check:check
       - store_artifacts:
-          path: target/dependency-check-report.html
-          destination: dependency-check-report.html
+          path: target
 
 workflows:
   version: 2
