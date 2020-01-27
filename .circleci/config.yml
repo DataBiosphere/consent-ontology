@@ -3,7 +3,7 @@ version: 2.1
 executors:
   jdk:
     docker:
-      - image: openjdk:8-jdk
+      - image: openjdk:8-jdk-stretch
 
 jobs:
   test:
