@@ -23,7 +23,9 @@ jobs:
       - run: mvn clean compile
       - run: mvn test
       - run: mvn dependency-check:check
-      - run: mvn cobertura:cobertura coveralls:report
+      - store_artifacts:
+          path: target/dependency-check-report.html
+          destination: dependency-check-report.html
 
 workflows:
   version: 2
