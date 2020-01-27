@@ -1,0 +1,23 @@
+version: 2.1
+
+executors:
+  jdk:
+    docker:
+      - image: openjdk:8-jdk-stretch
+
+jobs:
+  test:
+    executor: jdk
+    steps:
+      - checkout
+      - run: mvn clean verify
+      - run: mvn cobertura:cobertura coveralls:report
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - test:
+          filters:
+            branches:
+              only: circleci
