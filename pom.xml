@@ -15,7 +15,7 @@
         <lucene.version>8.4.1</lucene.version>
         <dropwizard.version>1.3.17</dropwizard.version>
         <metrics.version>4.1.2</metrics.version>
-        <akka.version>2.5.27</akka.version>
+        <akka.version>2.5.29</akka.version>
         <jersey.version>2.19</jersey.version>
         <swagger.ui.version>2.2.8</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
