@@ -23,15 +23,15 @@ jobs:
       - run:
           name: Clean & Test
           command: mvn clean jacoco:prepare-agent test jacoco:report coveralls:report -DrepoToken=${COVERALLS_REPO_TOKEN}
-      - run:
-          name: OWASP Dependency Checks
-          command: mvn dependency-check:check
-      - store_artifacts:
-          path: target/dependency-check-report.html
       - store_test_results:
           path: target/surefire-reports
       - store_test_results:
           path: target/site/jacoco
+#      - run:
+#          name: OWASP Dependency Checks
+#          command: mvn dependency-check:check
+#      - store_artifacts:
+#          path: target/dependency-check-report.html
 
 workflows:
   version: 2
