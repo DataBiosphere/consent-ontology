@@ -28,7 +28,7 @@ public class SwaggerResource {
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
     final static String MEDIA_TYPE_JS = new MediaType("application", "js").toString();
     final static String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
-    final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
+    private final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
 
     private String swaggerResource = null;
 
