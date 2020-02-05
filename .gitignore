@@ -62,6 +62,8 @@ crashlytics-build.properties
 hs_err_pid*
 
 /target/
+
+# Swagger stuff that gets written on build:
 src/main/resources/assets/css/
 src/main/resources/assets/fonts/
 src/main/resources/assets/images/
@@ -70,6 +72,17 @@ src/main/resources/assets/lib/
 src/main/resources/assets/o2c.html
 src/main/resources/assets/swagger-ui.js
 src/main/resources/assets/swagger-ui.min.js
+src/main/resources/assets/favicon-16x16.png
+src/main/resources/assets/favicon-32x32.png
+src/main/resources/assets/oauth2-redirect.html
+src/main/resources/assets/swagger-ui.css
+src/main/resources/assets/swagger-ui.css.map
+src/main/resources/assets/swagger-ui.js.map
+src/main/resources/assets/swagger-ui-bundle.js
+src/main/resources/assets/swagger-ui-bundle.js.map
+src/main/resources/assets/swagger-ui-standalone-preset.js
+src/main/resources/assets/swagger-ui-standalone-preset.js.map
+
 /config/
 /automation/project/target/
 /automation/project/project/target/

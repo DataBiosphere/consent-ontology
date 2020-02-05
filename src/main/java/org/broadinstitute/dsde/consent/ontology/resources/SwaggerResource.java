@@ -24,7 +24,7 @@ public class SwaggerResource {
     private final Logger log = Utils.getLogger(this.getClass());
 
     // Default swagger ui library if not found in properties
-    private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/2.2.8/";
+    private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/3.24.3/";
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
     final static String MEDIA_TYPE_JS = new MediaType("application", "js").toString();
     final static String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
@@ -120,20 +120,12 @@ public class SwaggerResource {
     private String getIndex(String swaggerResource) {
         String content = FileUtils.readAllTextFromResource(swaggerResource + "index.html");
         return content
-                .replace(OAUTH_BLOCK, "")
-                .replace("jsonEditor: false,", "jsonEditor: false," + "validatorUrl: null, apisSorter: \"alpha\", operationsSorter: \"alpha\",")
-                .replace("url = \"http://petstore.swagger.io/v2/swagger.json\";", "url = '/api-docs/api-docs.yaml';");
+                .replace("url: \"https://petstore.swagger.io/v2/swagger.json\"",
+                        "        docExpansion: 'full',\n" +
+                                "        displayRequestDuration: true,\n" +
+                                "        operationsSorter: 'alpha',\n" +
+                                "        tagsSorter: 'alpha',\n" +
+                                "        url: '/api-docs/api-docs.yaml'\n");
     }
-
-    private static final String OAUTH_BLOCK = "if(typeof initOAuth == \"function\") {\n" +
-            "            initOAuth({\n" +
-            "              clientId: \"your-client-id\",\n" +
-            "              clientSecret: \"your-client-secret-if-required\",\n" +
-            "              realm: \"your-realms\",\n" +
-            "              appName: \"your-app-name\",\n" +
-            "              scopeSeparator: \" \",\n" +
-            "              additionalQueryStringParams: {}\n" +
-            "            });\n" +
-            "          }";
 
 }
