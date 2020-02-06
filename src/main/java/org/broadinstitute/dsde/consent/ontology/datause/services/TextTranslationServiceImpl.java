@@ -2,6 +2,8 @@ package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
@@ -49,6 +51,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     private static final String DATE_POS = "Data distributor must verify that data from samples collected before %s will not be shared.";
     private static final String AGGREGATE_POS = "Aggregate level data for general research use is prohibited.";
     private static final String MANUAL_REVIEW = "Data access requests will require manual review.";
+    private static final String GENETIC_STUDIES_ONLY = "Future use is limited to genetic studies only [GSO]";
+    private static final String PUBLICATION_REQUIRED = "Publishing results of studies using the data available to the larger scientific community is required”";
+    private static final String GENOMIC_RESULTS = "Genomic summary results from this study are available only through controlled-access";
+    private static final String COLLABORATION_INVESTIGATOR = "Collaboration with the primary study investigators required";
 
     // Terms of use/notes
     private static final String RECONTACT_MAY = "Subject re-contact may occur in certain circumstances, as specified: %s";
@@ -99,8 +105,8 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         if (dataUse == null) {
             return String.join("\n", summary);
         }
-        if (Optional.ofNullable(dataUse.getGeneralUse()).orElse(false)) summary.add(GRU_POS);
-        if (Optional.ofNullable(dataUse.getHmbResearch()).orElse(false)) summary.add(HMB_POS);
+        if (BooleanUtils.isTrue(dataUse.getGeneralUse())) summary.add(GRU_POS);
+        if (BooleanUtils.isTrue(dataUse.getHmbResearch())) summary.add(HMB_POS);
 
         if (!dataUse.getDiseaseRestrictions().isEmpty()) {
             List<String> labels = new ArrayList<>();
@@ -125,20 +131,20 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                 summary.add(String.format(DS_POS, dsRestrictions));
             }
         }
-        if (Optional.ofNullable(dataUse.getPopulationOriginsAncestry()).orElse(false)) {
+        if (BooleanUtils.isTrue(dataUse.getPopulationOriginsAncestry())) {
             summary.add(POA_POS);
         }
 
-        if (dataUse.getCommercialUse() == null) {
+        if (BooleanUtils.isTrue(dataUse.getCommercialUse())) {
             summary.add(NCU_NA);
         } else {
-            if (dataUse.getCommercialUse() != null) {
+            if (BooleanUtils.isTrue(dataUse.getCommercialUse())) {
                 summary.add(NCU_POS);
             } else {
                 summary.add(NCU_NEG);
             }
         }
-        if (dataUse.getMethodsResearch() == null) {
+        if (BooleanUtils.isTrue(dataUse.getMethodsResearch())) {
             summary.add(NMDS_NA);
         } else {
             if (dataUse.getMethodsResearch() != null) {
@@ -158,22 +164,23 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             }
         }
 
-        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(MALE)) summary.add(RS_M_POS);
-        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(FEMALE)) summary.add(RS_FM_POS);
+        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(MALE))
+            summary.add(RS_M_POS);
+        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(FEMALE))
+            summary.add(RS_FM_POS);
 
         // TODO: In ORSP, we query DatabioOntology services, not consent.
         if (!dataUse.getPopulationRestrictions().isEmpty()) {
             String popRestrictions = dataUse.getPopulationRestrictions()
                     .stream()
-                    .filter(Objects::nonNull)
-                    .filter(r -> !r.isEmpty())
+                    .filter(StringUtils::isNotBlank)
                     .collect(Collectors.joining(", "));
-            summary.add(String.format(RS_POS, popRestrictions ));
+            summary.add(String.format(RS_POS, popRestrictions));
         }
-        if (Optional.ofNullable(dataUse.getPediatric()).orElse(false)) {
+        if (BooleanUtils.isTrue(dataUse.getPediatric())) {
             summary.add(RS_PD_POS);
         }
-        if (dataUse.getDateRestriction() != null) {
+        if (StringUtils.isNotBlank(dataUse.getDateRestriction())) {
             try {
                 String date = DATE_FORMAT.format(dataUse.getDateRestriction());
                 summary.add(String.format(DATE_POS, date));
@@ -187,26 +194,41 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         if (dataUse.getRecontactMay() != null) {
             summary.add(String.format(RECONTACT_MAY, dataUse.getRecontactMay()));
         }
-        if (dataUse.getRecontactMust() != null) {
+        if (StringUtils.isNotBlank(dataUse.getRecontactMust())) {
             summary.add(String.format(RECONTACT_MUST, dataUse.getRecontactMust()));
         }
         if (Optional.ofNullable(dataUse.getCloudStorage()).orElse("na").equalsIgnoreCase(YES)) {
             summary.add(CLOUD_PROHIBITED);
         }
-        if (dataUse.getGeographicalRestrictions() != null && !dataUse.getGeographicalRestrictions().isEmpty()) {
+        if (StringUtils.isNotBlank(dataUse.getGeographicalRestrictions())) {
             summary.add(String.format(GEO_RESTRICTION, dataUse.getGeographicalRestrictions()));
         }
-        if (dataUse.getOther() != null && !dataUse.getOther().isEmpty()) {
+        if (StringUtils.isNotBlank(dataUse.getOther())) {
             summary.add(String.format(OTHER_POS, dataUse.getOther()));
         }
-        if (Optional.ofNullable(dataUse.getEthicsApprovalRequired()).orElse(false)) {
+        if (BooleanUtils.isTrue(dataUse.getEthicsApprovalRequired())) {
             summary.add(ETHICS_APPROVAL);
         }
-        if (Optional.ofNullable(dataUse.getCollaboratorRequired()).orElse(false)) {
+        if (BooleanUtils.isTrue(dataUse.getCollaboratorRequired())) {
             summary.add(COLLABORATOR_REQUIRED);
         }
-        if (Optional.ofNullable(dataUse.getManualReview()).orElse(false)) {
+        if (BooleanUtils.isTrue(dataUse.getManualReview())) {
             summary.add(MANUAL_REVIEW);
+        }
+        if (BooleanUtils.isTrue(dataUse.getGeneticStudiesOnly())) {
+            summary.add(GENETIC_STUDIES_ONLY);
+        }
+        if (BooleanUtils.isTrue(dataUse.getPublicationResults())) {
+            summary.add(PUBLICATION_REQUIRED);
+        }
+        if (BooleanUtils.isTrue(dataUse.getGenomicResults())) {
+            summary.add(GENOMIC_RESULTS);
+        }
+        if (StringUtils.isNotBlank(dataUse.getGenomicSummaryResults())) {
+            summary.add(dataUse.getGenomicSummaryResults());
+        }
+        if (BooleanUtils.isTrue(dataUse.getCollaborationInvestigators())) {
+            summary.add(COLLABORATION_INVESTIGATOR);
         }
 
         return String.join("\n", summary);
