@@ -13,50 +13,55 @@ import java.util.List;
 
 /**
  * Data Use
- *
+ * <p>
  * Dynamically generated java class from jsonschema2pojo
- *
+ * <p>
  * See: https://github.com/joelittlejohn/jsonschema2pojo
  * <code>jsonschema2pojo --source src/main/resources/data-use.json --target java-gen</code>
- *
+ * <p>
  * Needed to manually fix commons.lang -> commons.lang3 and some other minor simplifications
- *
+ * <p>
  * Also see https://jsonschemalint.com/#/version/draft-04/markup/json for validating json.
  */
 @SuppressWarnings({"WeakerAccess", "unused"})
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "generalUse",
-    "hmbResearch",
-    "diseaseRestrictions",
-    "populationOriginsAncestry",
-    "populationStructure",
-    "commercialUse",
-    "methodsResearch",
-    "aggregateResearch",
-    "controlSetOption",
-    "gender",
-    "pediatric",
-    "populationRestrictions",
-    "dateRestriction",
-    "recontactingDataSubjects",
-    "recontactMay",
-    "recontactMust",
-    "genomicPhenotypicData",
-    "otherRestrictions",
-    "cloudStorage",
-    "ethicsApprovalRequired",
-    "collaboratorRequired",
-    "geographicalRestrictions",
-    "other",
-    "illegalBehavior",
-    "addiction",
-    "sexualDiseases",
-    "stigmatizeDiseases",
-    "vulnerablePopulations",
-    "psychologicalTraits",
-    "nonBiomedical",
-    "manualReview"
+        "generalUse",
+        "hmbResearch",
+        "diseaseRestrictions",
+        "populationOriginsAncestry",
+        "populationStructure",
+        "commercialUse",
+        "methodsResearch",
+        "aggregateResearch",
+        "controlSetOption",
+        "gender",
+        "pediatric",
+        "populationRestrictions",
+        "dateRestriction",
+        "recontactingDataSubjects",
+        "recontactMay",
+        "recontactMust",
+        "genomicPhenotypicData",
+        "otherRestrictions",
+        "cloudStorage",
+        "ethicsApprovalRequired",
+        "collaboratorRequired",
+        "geographicalRestrictions",
+        "other",
+        "illegalBehavior",
+        "addiction",
+        "sexualDiseases",
+        "stigmatizeDiseases",
+        "vulnerablePopulations",
+        "psychologicalTraits",
+        "nonBiomedical",
+        "manualReview",
+        "geneticStudiesOnly",
+        "publicationResults",
+        "genomicResults",
+        "genomicSummaryResults",
+        "collaborationInvestigators"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataUse {
@@ -123,6 +128,16 @@ public class DataUse {
     private Boolean nonBiomedical;
     @JsonProperty("manualReview")
     private Boolean manualReview;
+    @JsonProperty("geneticStudiesOnly")
+    private Boolean geneticStudiesOnly;
+    @JsonProperty("publicationResults")
+    private Boolean publicationResults;
+    @JsonProperty("genomicResults")
+    private Boolean genomicResults;
+    @JsonProperty("genomicSummaryResults")
+    private String genomicSummaryResults;
+    @JsonProperty("collaborationInvestigators")
+    private Boolean collaborationInvestigators;
 
     @JsonProperty("generalUse")
     public Boolean getGeneralUse() {
@@ -325,7 +340,9 @@ public class DataUse {
     }
 
     @JsonProperty("collaboratorRequired")
-    public Boolean getCollaboratorRequired() { return collaboratorRequired; }
+    public Boolean getCollaboratorRequired() {
+        return collaboratorRequired;
+    }
 
     @JsonProperty("collaboratorRequired")
     public void setCollaboratorRequired(Boolean collaboratorRequired) {
@@ -432,6 +449,56 @@ public class DataUse {
         this.manualReview = manualReview;
     }
 
+    @JsonProperty("geneticStudiesOnly")
+    public Boolean getGeneticStudiesOnly() {
+        return geneticStudiesOnly;
+    }
+
+    @JsonProperty("geneticStudiesOnly")
+    public void setGeneticStudiesOnly(Boolean geneticStudiesOnly) {
+        this.geneticStudiesOnly = geneticStudiesOnly;
+    }
+
+    @JsonProperty("publicationResults")
+    public Boolean getPublicationResults() {
+        return publicationResults;
+    }
+
+    @JsonProperty("publicationResults")
+    public void setPublicationResults(Boolean publicationResults) {
+        this.publicationResults = publicationResults;
+    }
+
+    @JsonProperty("genomicResults")
+    public Boolean getGenomicResults() {
+        return genomicResults;
+    }
+
+    @JsonProperty("genomicResults")
+    public void setGenomicResults(Boolean genomicResults) {
+        this.genomicResults = genomicResults;
+    }
+
+    @JsonProperty("genomicSummaryResults")
+    public String getGenomicSummaryResults() {
+        return genomicSummaryResults;
+    }
+
+    @JsonProperty("genomicSummaryResults")
+    public void setGenomicSummaryResults(String genomicSummaryResults) {
+        this.genomicSummaryResults = genomicSummaryResults;
+    }
+
+    @JsonProperty("collaborationInvestigators")
+    public Boolean getCollaborationInvestigators() {
+        return collaborationInvestigators;
+    }
+
+    @JsonProperty("collaborationInvestigators")
+    public void setCollaborationInvestigators(Boolean collaborationInvestigators) {
+        this.collaborationInvestigators = collaborationInvestigators;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -470,6 +537,11 @@ public class DataUse {
                 .append(psychologicalTraits)
                 .append(nonBiomedical)
                 .append(manualReview)
+                .append(geneticStudiesOnly)
+                .append(publicationResults)
+                .append(genomicResults)
+                .append(genomicSummaryResults)
+                .append(collaborationInvestigators)
                 .toHashCode();
     }
 
@@ -513,6 +585,11 @@ public class DataUse {
                 .append(psychologicalTraits, rhs.psychologicalTraits)
                 .append(nonBiomedical, rhs.nonBiomedical)
                 .append(manualReview, rhs.manualReview)
+                .append(geneticStudiesOnly, rhs.geneticStudiesOnly)
+                .append(publicationResults, rhs.publicationResults)
+                .append(genomicResults, rhs.genomicResults)
+                .append(genomicSummaryResults, rhs.genomicSummaryResults)
+                .append(collaborationInvestigators, rhs.collaborationInvestigators)
                 .isEquals();
     }
 

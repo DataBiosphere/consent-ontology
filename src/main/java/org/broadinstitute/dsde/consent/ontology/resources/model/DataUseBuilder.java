@@ -167,4 +167,29 @@ public class DataUseBuilder {
         return this;
     }
 
+    public DataUseBuilder setGeneticStudiesOnly(Boolean geneticStudiesOnly) {
+        du.setGeneticStudiesOnly(geneticStudiesOnly);
+        return this;
+    }
+
+    public DataUseBuilder setPublicationResults(Boolean publicationResults) {
+        du.setPublicationResults(publicationResults);
+        return this;
+    }
+
+    public DataUseBuilder setGenomicResults(Boolean genomicResults) {
+        du.setGenomicResults(genomicResults);
+        return this;
+    }
+
+    public DataUseBuilder setGenomicSummaryResults(String genomicSummaryResults) {
+        du.setGenomicSummaryResults(genomicSummaryResults);
+        return this;
+    }
+
+    public DataUseBuilder setCollaborationInvestigators(Boolean collaborationInvestigators) {
+        du.setCollaborationInvestigators(collaborationInvestigators);
+        return this;
+    }
+
 }
