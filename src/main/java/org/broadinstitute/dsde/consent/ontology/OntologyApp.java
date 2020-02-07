@@ -38,9 +38,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     public static void main(String[] args) throws Exception {
         String dsn = System.getProperties().getProperty("sentry.dsn");
         if (StringUtils.isNotBlank(dsn)) {
-            SentryBootstrap.Builder.
-                    withDsn(dsn).
-                    bootstrap();
+            SentryBootstrap.Builder.withDsn(dsn).bootstrap();
             Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
         }
         new OntologyApp().run(args);
