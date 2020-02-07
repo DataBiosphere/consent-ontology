@@ -30,8 +30,7 @@ import java.util.EnumSet;
  * Top-level entry point to the entire application.
  *
  * See the Dropwizard docs here:
- * https://dropwizard.github.io/dropwizard/manual/core.html
- *
+ * https://www.dropwizard.io/
  */
 public class OntologyApp extends Application<OntologyConfiguration> {
 
