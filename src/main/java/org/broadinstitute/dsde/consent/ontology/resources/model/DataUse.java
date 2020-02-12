@@ -340,9 +340,7 @@ public class DataUse {
     }
 
     @JsonProperty("collaboratorRequired")
-    public Boolean getCollaboratorRequired() {
-        return collaboratorRequired;
-    }
+    public Boolean getCollaboratorRequired() { return collaboratorRequired; }
 
     @JsonProperty("collaboratorRequired")
     public void setCollaboratorRequired(Boolean collaboratorRequired) {

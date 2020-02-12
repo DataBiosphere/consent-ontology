@@ -164,10 +164,8 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             }
         }
 
-        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(MALE))
-            summary.add(RS_M_POS);
-        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(FEMALE))
-            summary.add(RS_FM_POS);
+        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(MALE)) summary.add(RS_M_POS);
+        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(FEMALE)) summary.add(RS_FM_POS);
 
         // TODO: In ORSP, we query DatabioOntology services, not consent.
         if (!dataUse.getPopulationRestrictions().isEmpty()) {
