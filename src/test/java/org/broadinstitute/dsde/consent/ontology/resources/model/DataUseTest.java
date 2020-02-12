@@ -12,9 +12,12 @@ import org.junit.ClassRule;
 import org.junit.Test;
 import org.parboiled.common.FileUtils;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+@SuppressWarnings("FieldCanBeLocal")
 public class DataUseTest {
 
     /**
@@ -83,7 +86,7 @@ public class DataUseTest {
     public void diseaseRestrictions() throws Exception {
         String json = "{ \"diseaseRestrictions\": [\"one\", \"two\"] }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify disease restrictions", dataUse.getDiseaseRestrictions().size() == 2);
+        assertEquals("DU should specify disease restrictions", 2, dataUse.getDiseaseRestrictions().size());
         assertValidJson(json);
         assertInvalidJson("{ \"diseaseRestrictions\": \"string\" }");
     }
@@ -128,7 +131,7 @@ public class DataUseTest {
     public void aggregateResearch() throws Exception {
         String json = "{ \"aggregateResearch\": \"Yes\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify aggregate research use", dataUse.getAggregateResearch().equals("Yes"));
+        assertEquals("DU should specify aggregate research use", "Yes", dataUse.getAggregateResearch());
         assertValidJson(json);
         assertInvalidJson("{ \"aggregateResearch\": \"string\" }");
     }
@@ -137,7 +140,7 @@ public class DataUseTest {
     public void gender() throws Exception {
         String json = "{ \"gender\": \"Male\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify Male gender", dataUse.getGender().equals("Male"));
+        assertEquals("DU should specify Male gender", "Male", dataUse.getGender());
         assertValidJson(json);
         assertInvalidJson("{ \"gender\": \"string\" }");
     }
@@ -146,7 +149,7 @@ public class DataUseTest {
     public void controlSetOption() throws Exception {
         String json = "{ \"controlSetOption\": \"Yes\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify a control set usage", dataUse.getControlSetOption().equals("Yes"));
+        assertEquals("DU should specify a control set usage", "Yes", dataUse.getControlSetOption());
         assertValidJson(json);
         assertInvalidJson("{ \"controlSetOption\": \"string\" }");
     }
@@ -155,7 +158,7 @@ public class DataUseTest {
     public void populationRestrictions() throws Exception {
         String json = "{ \"populationRestrictions\": [\"one\", \"two\"] }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify a population restrictions", dataUse.getPopulationRestrictions().size() == 2);
+        assertEquals("DU should specify a population restrictions", 2, dataUse.getPopulationRestrictions().size());
         assertValidJson(json);
         assertInvalidJson("{ \"populationRestrictions\": \"string\" }");
     }
@@ -173,7 +176,7 @@ public class DataUseTest {
     public void dateRestriction() throws Exception {
         String json = "{ \"dateRestriction\": \"date\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify a date restriction", dataUse.getDateRestriction().equals("date"));
+        assertEquals("DU should specify a date restriction", "date", dataUse.getDateRestriction());
         assertValidJson(json);
         assertInvalidJson("{ \"dateRestriction\": true }");
     }
@@ -203,7 +206,7 @@ public class DataUseTest {
     public void recontactMay() throws Exception {
         String json = "{ \"recontactMay\": \"may\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify conditions under which subjects *may* be recontacted", dataUse.getRecontactMay().equals("may"));
+        assertEquals("DU should specify conditions under which subjects *may* be recontacted", "may", dataUse.getRecontactMay());
         assertValidJson(json);
         assertInvalidJson("{ \"recontactMay\": true }");
     }
@@ -212,7 +215,7 @@ public class DataUseTest {
     public void recontactMust() throws Exception {
         String json = "{ \"recontactMust\": \"must\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify conditions under which subjects *must* be recontacted", dataUse.getRecontactMust().equals("must"));
+        assertEquals("DU should specify conditions under which subjects *must* be recontacted", "must", dataUse.getRecontactMust());
         assertValidJson(json);
         assertInvalidJson("{ \"recontactMust\": true }");
     }
@@ -221,7 +224,7 @@ public class DataUseTest {
     public void genomicPhenotypicData() throws Exception {
         String json = "{ \"genomicPhenotypicData\": \"Yes\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify if genomic and phenotypic data is available for future research", dataUse.getGenomicPhenotypicData().equals("Yes"));
+        assertEquals("DU should specify if genomic and phenotypic data is available for future research", "Yes", dataUse.getGenomicPhenotypicData());
         assertValidJson(json);
         assertInvalidJson("{ \"genomicPhenotypicData\": true }");
     }
@@ -244,7 +247,7 @@ public class DataUseTest {
     public void other() throws Exception {
         String json = "{ \"other\": \"other\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify other restrictions", dataUse.getOther().equals("other"));
+        assertEquals("DU should specify other restrictions", "other", dataUse.getOther());
         assertValidJson(json);
         assertInvalidJson("{ \"other\": true }");
     }
@@ -253,7 +256,7 @@ public class DataUseTest {
     public void cloudStorage() throws Exception {
         String json = "{ \"cloudStorage\": \"Yes\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify cloud storage use", dataUse.getCloudStorage().equals("Yes"));
+        assertEquals("DU should specify cloud storage use", "Yes", dataUse.getCloudStorage());
         assertValidJson(json);
         assertInvalidJson("{ \"cloudStorage\": \"string\" }");
     }
@@ -262,7 +265,7 @@ public class DataUseTest {
     public void geographicalRestrictions() throws Exception {
         String json = "{ \"geographicalRestrictions\": \"geo\" }";
         DataUse dataUse = MAPPER.readValue(json, DataUse.class);
-        assertTrue("DU should specify geographic restrictions", dataUse.getGeographicalRestrictions().equals("geo"));
+        assertEquals("DU should specify geographic restrictions", "geo", dataUse.getGeographicalRestrictions());
         assertValidJson(json);
         assertInvalidJson("{ \"geographicalRestrictions\": true }");
     }
@@ -346,6 +349,51 @@ public class DataUseTest {
         assertTrue(dataUse.getCollaboratorRequired());
         assertValidJson(json);
         assertInvalidJson("{ \"collaboratorRequired\": \"string\" }");
+    }
+
+    @Test
+    public void testGeneticStudiesOnly() throws Exception {
+        String json = "{ \"geneticStudiesOnly\": true }";
+        DataUse dataUse = MAPPER.readValue(json, DataUse.class);
+        assertTrue(dataUse.getGeneticStudiesOnly());
+        assertValidJson(json);
+        assertInvalidJson("{ \"geneticStudiesOnly\": \"string\" }");
+    }
+
+    @Test
+    public void testPublicationResults() throws Exception {
+        String json = "{ \"publicationResults\": true }";
+        DataUse dataUse = MAPPER.readValue(json, DataUse.class);
+        assertTrue(dataUse.getPublicationResults());
+        assertValidJson(json);
+        assertInvalidJson("{ \"publicationResults\": \"string\" }");
+    }
+
+    @Test
+    public void testGenomicResults() throws Exception {
+        String json = "{ \"genomicResults\": true }";
+        DataUse dataUse = MAPPER.readValue(json, DataUse.class);
+        assertTrue(dataUse.getGenomicResults());
+        assertValidJson(json);
+        assertInvalidJson("{ \"genomicResults\": \"string\" }");
+    }
+
+    @Test
+    public void testGenomicSummaryResults() throws Exception {
+        String json = "{ \"genomicSummaryResults\": \"summary results\" }";
+        DataUse dataUse = MAPPER.readValue(json, DataUse.class);
+        assertFalse(dataUse.getGenomicSummaryResults().isEmpty());
+        assertValidJson(json);
+        assertInvalidJson("{ \"genomicSummaryResults\": true }");
+    }
+
+    @Test
+    public void testCollaborationInvestigators() throws Exception {
+        String json = "{ \"collaborationInvestigators\": true }";
+        DataUse dataUse = MAPPER.readValue(json, DataUse.class);
+        assertTrue(dataUse.getCollaborationInvestigators());
+        assertValidJson(json);
+        assertInvalidJson("{ \"collaborationInvestigators\": \"string\" }");
     }
 
 }
