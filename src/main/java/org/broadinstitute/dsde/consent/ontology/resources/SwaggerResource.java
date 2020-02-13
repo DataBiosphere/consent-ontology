@@ -15,7 +15,6 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 @Path("/")
@@ -40,11 +39,12 @@ public class SwaggerResource {
                 if (StringUtils.isNotEmpty(p.getProperty("swagger.ui.path"))) {
                     swaggerResource = p.getProperty("swagger.ui.path");
                 } else {
-                    log.warn("swagger.ui.path is not configured correctly");
+                    log.warn("swagger.ui.path is not configured correctly, defaulting to: " + DEFAULT_LIB);
                     swaggerResource = DEFAULT_LIB;
                 }
             } catch (Exception e) {
                 log.warn(e.getMessage());
+                log.warn("Defaulting to: " + DEFAULT_LIB);
                 swaggerResource = DEFAULT_LIB;
             }
         }
@@ -61,7 +61,7 @@ public class SwaggerResource {
 
     @GET
     @Path("swagger")
-    public Response swagger() throws URISyntaxException {
+    public Response swagger() {
         URI uri = UriBuilder.fromPath("/").scheme("https").build();
         return Response.seeOther(uri).build();
     }
@@ -76,20 +76,16 @@ public class SwaggerResource {
             response = Response.ok().entity(getIndex(swaggerResource)).type(mediaType).build();
         } else {
             mediaType = getMediaTypeFromPath(path);
+            Object content;
             if (path.endsWith("png") || path.endsWith("gif")) {
-                byte[] content = FileUtils.readAllBytesFromResource(swaggerResource + path);
-                if (content != null) {
-                    response = Response.ok().entity(content).type(mediaType).build();
-                } else {
-                    response = Response.status(Response.Status.NOT_FOUND).build();
-                }
+                content = FileUtils.readAllBytesFromResource(swaggerResource + path);
             } else {
-                String content = FileUtils.readAllTextFromResource(swaggerResource + path);
-                if (content != null) {
-                    response = Response.ok().entity(content).type(mediaType).build();
-                } else {
-                    response = Response.status(Response.Status.NOT_FOUND).build();
-                }
+                content = FileUtils.readAllTextFromResource(swaggerResource + path);
+            }
+            if (content != null) {
+                response = Response.ok().entity(content).type(mediaType).build();
+            } else {
+                response = Response.status(Response.Status.NOT_FOUND).build();
             }
         }
         return response;
@@ -121,7 +117,7 @@ public class SwaggerResource {
         String content = FileUtils.readAllTextFromResource(swaggerResource + "index.html");
         return content
                 .replace("url: \"https://petstore.swagger.io/v2/swagger.json\"",
-                        "        docExpansion: 'full',\n" +
+                        "        docExpansion: 'none',\n" +
                                 "        displayRequestDuration: true,\n" +
                                 "        operationsSorter: 'alpha',\n" +
                                 "        tagsSorter: 'alpha',\n" +
