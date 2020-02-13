@@ -127,6 +127,21 @@
     },
     "manualReview": {
       "type": "boolean"
+    },
+    "geneticStudiesOnly": {
+      "type": "boolean"
+    },
+    "publicationResults": {
+      "type": "boolean"
+    },
+    "genomicResults": {
+      "type": "boolean"
+    },
+    "genomicSummaryResults": {
+      "type": "string"
+    },
+    "collaborationInvestigators": {
+      "type": "boolean"
     }
   }
 }
