@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
@@ -8,6 +9,7 @@ import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -40,8 +42,15 @@ public class DataUseMatcher {
     }
 
     // Matching Algorithm
-    public ImmutablePair<Boolean, List<String>> matchPurposeAndDatasetV2(DataUse purpose, DataUse dataset) throws IOException {
-        Map<String, List<String>> purposeDiseaseIdMap = purposeDiseaseIdMap(purpose.getDiseaseRestrictions());
+    public ImmutablePair<Boolean, List<String>> matchPurposeAndDatasetV2(DataUse purpose, DataUse dataset) {
+        Map<String, List<String>> purposeDiseaseIdMap;
+        try {
+            purposeDiseaseIdMap = generatePurposeDiseaseIdMap(purpose.getDiseaseRestrictions());
+        } catch (Exception e) {
+            String purposeRestrictions = StringUtils.join(purpose.getDiseaseRestrictions(), ", ");
+            List<String> errors = Arrays.asList(e.getMessage(), "Error found in one of the purpose terms: " + purposeRestrictions);
+            return ImmutablePair.of(false, errors);
+        }
 
         ImmutablePair<Boolean, List<String>> diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
         ImmutablePair<Boolean, List<String>> hmbMatch = matchHMB(purpose, dataset, diseaseMatch.getLeft());
@@ -93,7 +102,7 @@ public class DataUseMatcher {
     // Helper methods
 
     // Get a map of disease term to list of parent term ids (which also includes disease term id)
-    private Map<String, List<String>> purposeDiseaseIdMap(List<String> diseaseRestrictions) throws IOException {
+    private Map<String, List<String>> generatePurposeDiseaseIdMap(List<String> diseaseRestrictions) throws IOException {
         Map<String, List<String>> map = new HashMap<>();
         for (String r : diseaseRestrictions) {
             map.put(r, getParentTermIds(r));
