@@ -10,7 +10,6 @@ import javax.ws.rs.core.Response;
 import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_CSS;
 import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_JS;
 import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_PNG;
-import static org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource.MEDIA_TYPE_GIF;
 
 public class SwaggerResourceTest {
 
@@ -26,36 +25,30 @@ public class SwaggerResourceTest {
         Response response = swaggerResource.content("index.html");
         checkStatusAndHeader(response, MediaType.TEXT_HTML);
         String content = response.getEntity().toString().trim();
-        Assert.assertTrue(content.startsWith("<!DOCTYPE html>"));
-        Assert.assertTrue(content.endsWith("</html>"));
+        Assert.assertTrue(content.contains("<!DOCTYPE html>"));
+        Assert.assertTrue(content.contains("</html>"));
     }
 
     @Test
     public void testStyle() {
-        Response response = swaggerResource.content("css/style.css");
+        Response response = swaggerResource.content("swagger-ui.css");
         checkStatusAndHeader(response, MEDIA_TYPE_CSS);
         String content = response.getEntity().toString().trim();
-        Assert.assertTrue(content.startsWith(".swagger-section"));
+        Assert.assertFalse(content.isEmpty());
     }
 
     @Test
     public void testJavascript() {
-        Response response = swaggerResource.content("lib/marked.js");
+        Response response = swaggerResource.content("swagger-ui.js");
         checkStatusAndHeader(response, MEDIA_TYPE_JS);
         String content = response.getEntity().toString().trim();
-        Assert.assertTrue(content.startsWith("(function()"));
+        Assert.assertFalse(content.isEmpty());
     }
 
     @Test
     public void testPng() {
-        Response response = swaggerResource.content("images/explorer_icons.png");
+        Response response = swaggerResource.content("favicon-16x16.png");
         checkStatusAndHeader(response, MEDIA_TYPE_PNG);
-    }
-
-    @Test
-    public void testGif() {
-        Response response = swaggerResource.content("images/expand.gif");
-        checkStatusAndHeader(response, MEDIA_TYPE_GIF);
     }
 
     @Test
@@ -71,7 +64,7 @@ public class SwaggerResourceTest {
     }
 
     private void checkStatusAndHeader(Response response, String header) {
-        Assert.assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
+        Assert.assertEquals(Response.Status.OK.getStatusCode(), response.getStatus());
         Object headerObject = response.getHeaders().get("Content-type");
         Assert.assertTrue(headerObject.toString().contains(header));
     }
