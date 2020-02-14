@@ -3,12 +3,12 @@ package org.broadinstitute.dsde.consent.ontology.datause.models;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectReader;
 import com.google.gson.Gson;
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
-import io.dropwizard.jackson.Jackson;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
 
 import java.io.IOException;
@@ -29,7 +29,8 @@ import java.io.IOException;
 })
 public abstract class UseRestriction {
 
-    private static ObjectMapper mapper = Jackson.newObjectMapper();
+    private static ObjectMapper mapper = new ObjectMapper().
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true);
 
     public abstract OntClass createOntologicalRestriction(OntModel model);
 

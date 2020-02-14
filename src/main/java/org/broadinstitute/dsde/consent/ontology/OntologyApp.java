@@ -6,6 +6,7 @@ import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.resources.AutocompleteResource;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
@@ -29,15 +30,14 @@ import java.util.EnumSet;
  * Top-level entry point to the entire application.
  *
  * See the Dropwizard docs here:
- * https://dropwizard.github.io/dropwizard/manual/core.html
- *
+ * https://www.dropwizard.io/
  */
 public class OntologyApp extends Application<OntologyConfiguration> {
 
     public static void main(String[] args) throws Exception {
         String dsn = System.getProperties().getProperty("sentry.dsn");
-        if (null != dsn && !dsn.isEmpty()) {
-            SentryBootstrap.bootstrap(dsn);
+        if (StringUtils.isNotBlank(dsn)) {
+            SentryBootstrap.Builder.withDsn(dsn).bootstrap();
             Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
         }
         new OntologyApp().run(args);
