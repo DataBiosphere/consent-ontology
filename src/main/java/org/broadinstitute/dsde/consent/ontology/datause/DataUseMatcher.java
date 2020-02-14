@@ -1,14 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import com.google.inject.Inject;
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.log4j.Logger;
-import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,7 +16,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchCommercial;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases.matchControlSet;
@@ -30,11 +29,10 @@ import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases
 
 public class DataUseMatcher {
 
-    private final Logger log = Utils.getLogger(this.getClass());
-
     private AutocompleteService autocompleteService;
 
-    public DataUseMatcher() { }
+    public DataUseMatcher() {
+    }
 
     @Inject
     public void setAutocompleteService(AutocompleteService autocompleteService) {
@@ -53,49 +51,24 @@ public class DataUseMatcher {
         }
 
         ImmutablePair<Boolean, List<String>> diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
-        ImmutablePair<Boolean, List<String>> hmbMatch = matchHMB(purpose, dataset, diseaseMatch.getLeft());
-        ImmutablePair<Boolean, List<String>> nmdsMatch = matchNMDS(purpose, dataset, diseaseMatch.getLeft());
-        ImmutablePair<Boolean, List<String>> controlMatch = matchControlSet(purpose, dataset, diseaseMatch.getLeft());
-        ImmutablePair<Boolean, List<String>> nagrMatch = matchNAGR(purpose, dataset);
-        ImmutablePair<Boolean, List<String>> poaMatch = matchPOA(purpose, dataset);
-        ImmutablePair<Boolean, List<String>> commercialMatch = matchCommercial(purpose, dataset);
-        ImmutablePair<Boolean, List<String>> pediatricMatch = matchRSPD(purpose, dataset);
-        ImmutablePair<Boolean, List<String>> genderMatch = matchRSG(purpose, dataset);
-
-        log.debug("hmbMatch: " + hmbMatch.getLeft());
-        log.debug("diseaseMatch: " + diseaseMatch.getLeft());
-        log.debug("nmdsMatch: " + nmdsMatch.getLeft());
-        log.debug("controlMatch: " + controlMatch.getLeft());
-        log.debug("nagrMatch: " + nagrMatch.getLeft());
-        log.debug("poaMatch: " + poaMatch.getLeft());
-        log.debug("commercialMatch: " + commercialMatch.getLeft());
-        log.debug("pediatricMatch: " + pediatricMatch.getLeft());
-        log.debug("genderMatch: " + genderMatch.getLeft());
-
-        Boolean match = hmbMatch.getLeft() &&
-                diseaseMatch.getLeft() &&
-                nmdsMatch.getLeft() &&
-                controlMatch.getLeft() &&
-                nagrMatch.getLeft() &&
-                poaMatch.getLeft() &&
-                commercialMatch.getLeft() &&
-                pediatricMatch.getLeft() &&
-                genderMatch.getLeft();
-
-        List<String> reasons = Stream.of(
-                hmbMatch.getRight(),
-                diseaseMatch.getRight(),
-                nmdsMatch.getRight(),
-                controlMatch.getRight(),
-                nagrMatch.getRight(),
-                poaMatch.getRight(),
-                commercialMatch.getRight(),
-                pediatricMatch.getRight(),
-                genderMatch.getRight())
-                .flatMap(Collection::stream)
-                .filter(Objects::nonNull)
-                .collect(Collectors.toList());
-
+        final List<ImmutablePair<Boolean, List<String>>> matchReasons = new ArrayList<>();
+        matchReasons.add(matchDiseases(purpose, dataset, purposeDiseaseIdMap));
+        matchReasons.add(matchHMB(purpose, dataset, diseaseMatch.getLeft()));
+        matchReasons.add(matchNMDS(purpose, dataset, diseaseMatch.getLeft()));
+        matchReasons.add(matchControlSet(purpose, dataset, diseaseMatch.getLeft()));
+        matchReasons.add(matchNAGR(purpose, dataset));
+        matchReasons.add(matchPOA(purpose, dataset));
+        matchReasons.add(matchCommercial(purpose, dataset));
+        matchReasons.add(matchRSPD(purpose, dataset));
+        matchReasons.add(matchRSG(purpose, dataset));
+        final Boolean match = matchReasons.stream().
+                map(ImmutablePair::getLeft).
+                allMatch(BooleanUtils::isTrue);
+        final List<String> reasons = matchReasons.stream().
+                map(ImmutablePair::getRight).
+                flatMap(Collection::stream).
+                filter(StringUtils::isNotBlank).
+                collect(Collectors.toList());
         return ImmutablePair.of(match, reasons);
     }
 
