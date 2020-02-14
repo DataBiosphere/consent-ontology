@@ -15,7 +15,6 @@ import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import java.io.InputStream;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 @Path("/")
@@ -24,11 +23,11 @@ public class SwaggerResource {
     private final Logger log = Utils.getLogger(this.getClass());
 
     // Default swagger ui library if not found in properties
-    private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/2.2.8/";
+    private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/3.25.0/";
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
     final static String MEDIA_TYPE_JS = new MediaType("application", "js").toString();
     final static String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
-    final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
+    private final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
 
     private String swaggerResource = null;
 
@@ -40,11 +39,12 @@ public class SwaggerResource {
                 if (StringUtils.isNotEmpty(p.getProperty("swagger.ui.path"))) {
                     swaggerResource = p.getProperty("swagger.ui.path");
                 } else {
-                    log.warn("swagger.ui.path is not configured correctly");
+                    log.warn("swagger.ui.path is not configured correctly, defaulting to: " + DEFAULT_LIB);
                     swaggerResource = DEFAULT_LIB;
                 }
             } catch (Exception e) {
                 log.warn(e.getMessage());
+                log.warn("Defaulting to: " + DEFAULT_LIB);
                 swaggerResource = DEFAULT_LIB;
             }
         }
@@ -61,7 +61,7 @@ public class SwaggerResource {
 
     @GET
     @Path("swagger")
-    public Response swagger() throws URISyntaxException {
+    public Response swagger() {
         URI uri = UriBuilder.fromPath("/").scheme("https").build();
         return Response.seeOther(uri).build();
     }
@@ -76,20 +76,16 @@ public class SwaggerResource {
             response = Response.ok().entity(getIndex(swaggerResource)).type(mediaType).build();
         } else {
             mediaType = getMediaTypeFromPath(path);
+            Object content;
             if (path.endsWith("png") || path.endsWith("gif")) {
-                byte[] content = FileUtils.readAllBytesFromResource(swaggerResource + path);
-                if (content != null) {
-                    response = Response.ok().entity(content).type(mediaType).build();
-                } else {
-                    response = Response.status(Response.Status.NOT_FOUND).build();
-                }
+                content = FileUtils.readAllBytesFromResource(swaggerResource + path);
             } else {
-                String content = FileUtils.readAllTextFromResource(swaggerResource + path);
-                if (content != null) {
-                    response = Response.ok().entity(content).type(mediaType).build();
-                } else {
-                    response = Response.status(Response.Status.NOT_FOUND).build();
-                }
+                content = FileUtils.readAllTextFromResource(swaggerResource + path);
+            }
+            if (content != null) {
+                response = Response.ok().entity(content).type(mediaType).build();
+            } else {
+                response = Response.status(Response.Status.NOT_FOUND).build();
             }
         }
         return response;
@@ -120,20 +116,12 @@ public class SwaggerResource {
     private String getIndex(String swaggerResource) {
         String content = FileUtils.readAllTextFromResource(swaggerResource + "index.html");
         return content
-                .replace(OAUTH_BLOCK, "")
-                .replace("jsonEditor: false,", "jsonEditor: false," + "validatorUrl: null, apisSorter: \"alpha\", operationsSorter: \"alpha\",")
-                .replace("url = \"http://petstore.swagger.io/v2/swagger.json\";", "url = '/api-docs/api-docs.yaml';");
+                .replace("url: \"https://petstore.swagger.io/v2/swagger.json\"",
+                        "        docExpansion: 'none',\n" +
+                                "        displayRequestDuration: true,\n" +
+                                "        operationsSorter: 'alpha',\n" +
+                                "        tagsSorter: 'alpha',\n" +
+                                "        url: '/api-docs/api-docs.yaml'\n");
     }
-
-    private static final String OAUTH_BLOCK = "if(typeof initOAuth == \"function\") {\n" +
-            "            initOAuth({\n" +
-            "              clientId: \"your-client-id\",\n" +
-            "              clientSecret: \"your-client-secret-if-required\",\n" +
-            "              realm: \"your-realms\",\n" +
-            "              appName: \"your-app-name\",\n" +
-            "              scopeSeparator: \" \",\n" +
-            "              additionalQueryStringParams: {}\n" +
-            "            });\n" +
-            "          }";
 
 }
