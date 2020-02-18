@@ -279,6 +279,19 @@
             <groupId>org.dhatim</groupId>
             <artifactId>dropwizard-sentry</artifactId>
             <version>2.0.0-4</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ch.qos.logback</groupId>
+                    <artifactId>logback-classic</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Address Security Vulnerability: https://broadinstitute-dsp.sourceclear.io/workspaces/jppForw/issues/vulnerabilities/28254798 -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.2</version>
         </dependency>
 
         <dependency>
