@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -271,11 +270,7 @@ public class DataUseMatcherTest {
     private ImmutablePair<Boolean, List<String>> matchPurposeAndDataset(DataUse purpose, DataUse dataset) {
         DataUseMatcher matcher = new DataUseMatcher();
         matcher.setAutocompleteService(autocompleteService);
-        try {
-            return matcher.matchPurposeAndDatasetV2(purpose, dataset);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        return matcher.matchPurposeAndDatasetV2(purpose, dataset);
     }
 
 }
