@@ -53,9 +53,7 @@ public class ElasticSearchSupportTest {
         List<String> filters = Arrays.asList("Disease", "Organization");
         String query = elasticSearchSupport.buildFilterQuery(termId, filters);
 
-        JsonParser parser = new JsonParser();
-
-        JsonObject jsonQuery = parser.parse(query).getAsJsonObject();
+        JsonObject jsonQuery = JsonParser.parseString(query).getAsJsonObject();
         Assert.assertTrue(jsonQuery.has("query"));
 
         JsonObject joQuery = jsonQuery.getAsJsonObject("query");

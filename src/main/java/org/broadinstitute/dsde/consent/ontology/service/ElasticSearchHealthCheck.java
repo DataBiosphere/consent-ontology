@@ -23,7 +23,6 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     private final Logger log = Utils.getLogger(this.getClass());
     private static final String GET = HttpMethod.GET.asString();
     private ElasticSearchConfiguration configuration;
-    private JsonParser parser = new JsonParser();
     private RestClient client;
     private ElasticSearchSupport elasticSearchSupport;
     public static String NAME = "elastic-search";
@@ -55,7 +54,7 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
                 throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
             }
             String stringResponse = IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());
-            JsonObject jsonResponse = parser.parse(stringResponse).getAsJsonObject();
+            JsonObject jsonResponse = JsonParser.parseString(stringResponse).getAsJsonObject();
             boolean timeout = jsonResponse.get("timed_out").getAsBoolean();
             String status = jsonResponse.get("status").getAsString();
             if (timeout) {
@@ -73,5 +72,5 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
         }
         return Result.healthy("ClusterHealth is GREEN");
     }
-    
+
 }
