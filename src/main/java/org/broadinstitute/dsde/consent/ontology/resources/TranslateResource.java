@@ -25,6 +25,21 @@ public class TranslateResource {
     }
 
     @POST
+    @Path("summary")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response translateSummary(String restriction) {
+        try {
+            return Response.ok().entity(translationService.translateDataUseSummary(restriction)).build();
+        } catch (Exception e) {
+            log.error("Error while translating", e);
+            return Response.
+                    status(Response.Status.INTERNAL_SERVER_ERROR).
+                    entity("Error while translating: " + e.getMessage()).
+                    build();
+        }
+    }
+
+    @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response translate(@QueryParam("for") String forParam, String restriction) {
         try {

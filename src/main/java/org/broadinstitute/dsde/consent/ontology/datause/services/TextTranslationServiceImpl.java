@@ -1,12 +1,15 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseElement;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
@@ -52,7 +55,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     private static final String AGGREGATE_POS = "Aggregate level data for general research use is prohibited.";
     private static final String MANUAL_REVIEW = "Data access requests will require manual review.";
     private static final String GENETIC_STUDIES_ONLY = "Future use is limited to genetic studies only [GSO]";
-    private static final String PUBLICATION_REQUIRED = "Publishing results of studies using the data available to the larger scientific community is required”";
+    private static final String PUBLICATION_REQUIRED = "Publishing results of studies using the data available to the larger scientific community is required";
     private static final String GENOMIC_RESULTS = "Genomic summary results from this study are available only through controlled-access";
     private static final String COLLABORATION_INVESTIGATOR = "Collaboration with the primary study investigators required";
 
@@ -75,6 +78,12 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     @Override
+    public DataUseSummary translateDataUseSummary(String dataUseString) {
+        DataUse dataUse = new Gson().fromJson(dataUseString, DataUse.class);
+        return translateSummary(dataUse);
+    }
+
+    @Override
     public String translateDataset(String dataUseString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
@@ -86,6 +95,153 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         ObjectMapper mapper = new ObjectMapper();
         DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
         return translate(dataUse, TranslateFor.PURPOSE);
+    }
+
+    /**
+     * Generate a structured summary of the data use.
+     *
+     * @param dataUse The DataUse
+     * @return DataUseSummary The structured summary
+     */
+    private DataUseSummary translateSummary(DataUse dataUse) {
+        DataUseSummary summary = new DataUseSummary();
+        List<DataUseElement> primary = new ArrayList<>();
+        List<DataUseElement> secondary = new ArrayList<>();
+        if (BooleanUtils.isTrue(dataUse.getGeneralUse())) {
+            primary.add(new DataUseElement("GRU", GRU_POS));
+        }
+        if (BooleanUtils.isTrue(dataUse.getHmbResearch())) {
+            primary.add(new DataUseElement("HMB", HMB_POS));
+        }
+
+        if (!dataUse.getDiseaseRestrictions().isEmpty()) {
+            List<String> labels = new ArrayList<>();
+            dataUse.getDiseaseRestrictions().forEach(r -> {
+                try {
+                    List<TermResource> terms = autocompleteService.lookupById(r);
+                    if (!terms.isEmpty()) {
+                        labels.add(terms.get(0).label);
+                    } else {
+                        log.warn("No terms returned for: " + r);
+                    }
+                } catch (IOException e) {
+                    log.warn("Unable to retrieve term id: " + r);
+                }
+            });
+            if (!labels.isEmpty()) {
+                String dsRestrictions = labels
+                        .stream()
+                        .filter(Objects::nonNull)
+                        .filter(r -> !r.isEmpty())
+                        .collect(Collectors.joining(", "));
+                primary.add(new DataUseElement("DS", String.format(DS_POS, dsRestrictions)));
+            }
+        }
+        if (BooleanUtils.isTrue(dataUse.getPopulationOriginsAncestry())) {
+            primary.add(new DataUseElement("POA", POA_POS));
+        }
+
+        if (BooleanUtils.isTrue(dataUse.getCommercialUse())) {
+            secondary.add(new DataUseElement("NCU", NCU_NA));
+        } else {
+            if (BooleanUtils.isTrue(dataUse.getCommercialUse())) {
+                secondary.add(new DataUseElement("NCU", NCU_POS));
+            } else {
+                secondary.add(new DataUseElement("NCU", NCU_NEG));
+            }
+        }
+        if (BooleanUtils.isTrue(dataUse.getMethodsResearch())) {
+            secondary.add(new DataUseElement("NMDS", NMDS_NA));
+        } else {
+            if (dataUse.getMethodsResearch() != null) {
+                secondary.add(new DataUseElement("NMDS", NMDS_POS));
+            } else {
+                secondary.add(new DataUseElement("NMDS", NMDS_NEG));
+            }
+        }
+
+        if (dataUse.getControlSetOption() == null || dataUse.getControlSetOption().equalsIgnoreCase("Unspecified")) {
+            secondary.add(new DataUseElement("NCTRL", NCTRL_NA));
+        } else {
+            if (dataUse.getControlSetOption().equalsIgnoreCase("Yes")) {
+                secondary.add(new DataUseElement("NCTRL", NCTRL_POS));
+            } else {
+                secondary.add(new DataUseElement("NCTRL", NCTRL_NEG));
+            }
+        }
+
+        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(MALE)) {
+            secondary.add(new DataUseElement("RS-M", RS_M_POS));
+        }
+        if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(FEMALE)) {
+            secondary.add(new DataUseElement("RS-F", RS_FM_POS));
+        }
+
+        // TODO: In ORSP, we query DatabioOntology services, not consent.
+        if (!dataUse.getPopulationRestrictions().isEmpty()) {
+            String popRestrictions = dataUse.getPopulationRestrictions()
+                    .stream()
+                    .filter(StringUtils::isNotBlank)
+                    .collect(Collectors.joining(", "));
+            secondary.add(new DataUseElement("RS-POP", String.format(RS_POS, popRestrictions)));
+        }
+        if (BooleanUtils.isTrue(dataUse.getPediatric())) {
+            secondary.add(new DataUseElement("RS-PD", RS_PD_POS));
+        }
+        if (StringUtils.isNotBlank(dataUse.getDateRestriction())) {
+            try {
+                String date = DATE_FORMAT.format(dataUse.getDateRestriction());
+                secondary.add(new DataUseElement("TS", String.format(DATE_POS, date)));
+            } catch (IllegalArgumentException e) {
+                log.warn("Invalid date format for: " + dataUse.getDateRestriction());
+            }
+        }
+        if (Optional.ofNullable(dataUse.getAggregateResearch()).orElse("na").equalsIgnoreCase(YES)) {
+            secondary.add(new DataUseElement("OTHER", AGGREGATE_POS));
+        }
+        if (dataUse.getRecontactMay() != null) {
+            secondary.add(new DataUseElement("OTHER", String.format(RECONTACT_MAY, dataUse.getRecontactMay())));
+        }
+        if (StringUtils.isNotBlank(dataUse.getRecontactMust())) {
+            secondary.add(new DataUseElement("OTHER", String.format(RECONTACT_MUST, dataUse.getRecontactMust())));
+        }
+        if (Optional.ofNullable(dataUse.getCloudStorage()).orElse("na").equalsIgnoreCase(YES)) {
+            secondary.add(new DataUseElement("OTHER", CLOUD_PROHIBITED));
+        }
+        if (StringUtils.isNotBlank(dataUse.getGeographicalRestrictions())) {
+            secondary.add(new DataUseElement("GS", String.format(GEO_RESTRICTION, dataUse.getGeographicalRestrictions())));
+        }
+        if (StringUtils.isNotBlank(dataUse.getOther())) {
+            secondary.add(new DataUseElement("OTHER", String.format(OTHER_POS, dataUse.getOther())));
+        }
+        if (BooleanUtils.isTrue(dataUse.getEthicsApprovalRequired())) {
+            secondary.add(new DataUseElement("IRB", ETHICS_APPROVAL));
+        }
+        if (BooleanUtils.isTrue(dataUse.getCollaboratorRequired())) {
+            secondary.add(new DataUseElement("OTHER", COLLABORATOR_REQUIRED));
+        }
+        if (BooleanUtils.isTrue(dataUse.getManualReview())) {
+            secondary.add(new DataUseElement("OTHER", MANUAL_REVIEW));
+        }
+        if (BooleanUtils.isTrue(dataUse.getGeneticStudiesOnly())) {
+            secondary.add(new DataUseElement("GSO", GENETIC_STUDIES_ONLY));
+        }
+        if (BooleanUtils.isTrue(dataUse.getPublicationResults())) {
+            secondary.add(new DataUseElement("PUB", PUBLICATION_REQUIRED));
+        }
+        if (BooleanUtils.isTrue(dataUse.getGenomicResults())) {
+            secondary.add(new DataUseElement("OTHER", GENOMIC_RESULTS));
+        }
+        if (StringUtils.isNotBlank(dataUse.getGenomicSummaryResults())) {
+            secondary.add(new DataUseElement("OTHER", dataUse.getGenomicSummaryResults()));
+        }
+        if (BooleanUtils.isTrue(dataUse.getCollaborationInvestigators())) {
+            secondary.add(new DataUseElement("COL", COLLABORATION_INVESTIGATOR));
+        }
+
+        summary.setPrimary(primary);
+        summary.setSecondary(secondary);
+        return summary;
     }
 
     /**

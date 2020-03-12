@@ -9,7 +9,7 @@ info:
   termsOfService: 'https://github.com/DataBiosphere/consent-ontology'
 schemes:
   - https
-  
+
 paths:
 
   /schemas/data-use:
@@ -70,7 +70,7 @@ paths:
     post:
       summary: Translate Data Use JSON into plain English
       description: The Translate service will render an English-language version of a research purpose or dataset.
-      produces: 
+      produces:
         - text/plain
       parameters:
         - name: for
@@ -80,6 +80,27 @@ paths:
           schema:
             type: string
             enum: [dataset, purpose]
+        - name: body
+          in: body
+          description: DataUse
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
+      tags:
+        - Data Use
+        - Translate
+      responses:
+        200:
+          description: Successful translation.
+        default:
+          description: Unexpected error
+  /translate/summary:
+    post:
+      summary: Translate Data Use JSON into Data Use Summary JSON
+      description: The Translate service will render an structured summary with consent codes
+      produces:
+        - application/json
+      parameters:
         - name: body
           in: body
           description: DataUse
@@ -115,7 +136,7 @@ paths:
             $ref: '#/definitions/MatchPairResult'
         500:
           description: Internal Server Error
-          
+
   /match/v1:
     post:
       summary: Match UseRestriction Consent and Research Purpose
@@ -275,7 +296,7 @@ definitions:
         type: object
         description: UseRestriction of the research purpose
         properties:
-          type: 
+          type:
             type: string
           operands:
             type: array
@@ -286,7 +307,7 @@ definitions:
         type: object
         description: UseRestriction of the consent
         properties:
-          type: 
+          type:
             type: string
           operands:
             type: array
