@@ -6,6 +6,7 @@ import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.After;
@@ -48,6 +49,16 @@ public class TextTranslationServiceImplTest extends AbstractTest {
 
     @After
     public void tearDownClass() {
+    }
+
+    @Test
+    public void testTranslateSummary() {
+        Gson gson = new Gson();
+        DataUse dataUse = new DataUseBuilder().setGeneralUse(true).build();
+        String dataUseString = gson.toJson(dataUse);
+        DataUseSummary summary = service.translateDataUseSummary(dataUseString);
+        assertFalse(summary.getPrimary().isEmpty());
+        assertTrue(summary.getPrimary().get(0).getCode().equalsIgnoreCase("GRU"));
     }
 
     @Test

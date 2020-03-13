@@ -113,6 +113,8 @@ paths:
       responses:
         200:
           description: Successful translation.
+          schema:
+            $ref: '#/definitions/DataUseSummary'
         default:
           description: Unexpected error
 
@@ -322,6 +324,39 @@ definitions:
         type: boolean
       matchPair:
         $ref: '#/definitions/MatchPair'
+
+  DataUseElement:
+    type: object
+    description: Individual element of a DataUseSummary object
+    properties:
+      code:
+        type: string
+        description: Consent Code
+      description:
+        type: string
+        description: Consent Code Description
+    example:
+      { "code": "GRU", "description": "Data is available for general research use. [GRU]"}
+
+  DataUseSummary:
+    type: object
+    description: Structured summary of a DataUse object
+    properties:
+      primary:
+        description: List of primary consent codes
+        type: array
+        items:
+          $ref: '#/definitions/DataUseElement'
+      secondary:
+        type: array
+        description: List of secondary consent codes
+        items:
+          $ref: '#/definitions/DataUseElement'
+    example:
+      {
+        "primary": ["code": "GRU", "description": "Data is available for general research use. [GRU]"],
+        "secondary": ["code": "OTHER", "description": "Data storage on the cloud is prohibited."]
+      }
 
   DataUse:
     type: object
