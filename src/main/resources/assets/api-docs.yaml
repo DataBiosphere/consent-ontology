@@ -78,6 +78,7 @@ paths:
           description: Either 'dataset' or 'purpose'
           required: true
           type: string
+          enum: [dataset, purpose]
         - name: body
           in: body
           description: DataUse
