@@ -16,7 +16,7 @@
         <lucene.version>8.4.1</lucene.version>
         <owl.version>5.1.13</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
-        <rdf4j-rio.version>3.1.1</rdf4j-rio.version>
+        <rdf4j-rio.version>3.1.2</rdf4j-rio.version>
         <swagger.ui.version>3.25.0</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
