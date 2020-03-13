@@ -22,6 +22,7 @@ import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
 
 import javax.ws.rs.InternalServerErrorException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -34,7 +35,6 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
     private final Logger log = Utils.getLogger(this.getClass());
     private static final String GET = HttpMethod.GET.asString();
     private final ElasticSearchConfiguration configuration;
-    private JsonParser parser = new JsonParser();
     private Gson gson = new GsonBuilder().create();
     private RestClient client;
     private ElasticSearchSupport elasticSearchSupport;
@@ -125,8 +125,8 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
             throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
         }
         try {
-            String stringResponse = IOUtils.toString(response.getEntity().getContent());
-            return parser.parse(stringResponse).getAsJsonObject();
+            String stringResponse = IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());
+            return JsonParser.parseString(stringResponse).getAsJsonObject();
         } catch (Exception e) {
             log.error("Unable to parse response: ", e);
             throw new InternalServerErrorException(e);
