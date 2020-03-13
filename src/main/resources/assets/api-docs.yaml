@@ -73,13 +73,11 @@ paths:
       produces:
         - text/plain
       parameters:
-        - name: for
-          in: query
-          description: dataset or purpose
+        - in: query
+          name: for
+          description: Either 'dataset' or 'purpose'
           required: true
-          schema:
-            type: string
-            enum: [dataset, purpose]
+          type: string
         - name: body
           in: body
           description: DataUse
