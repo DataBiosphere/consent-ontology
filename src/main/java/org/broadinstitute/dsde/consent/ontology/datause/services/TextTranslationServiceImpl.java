@@ -138,7 +138,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             }
         }
         if (BooleanUtils.isTrue(dataUse.getPopulationOriginsAncestry())) {
-            primary.add(new DataUseElement("POA", POA_POS));
+            primary.add(new DataUseElement("NPOA", POA_POS));
         }
 
         if (BooleanUtils.isTrue(dataUse.getCommercialUse())) {
@@ -171,10 +171,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         }
 
         if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(MALE)) {
-            secondary.add(new DataUseElement("RS-M", RS_M_POS));
+            secondary.add(new DataUseElement("POP-M", RS_M_POS));
         }
         if (Optional.ofNullable(dataUse.getGender()).orElse("na").equalsIgnoreCase(FEMALE)) {
-            secondary.add(new DataUseElement("RS-F", RS_FM_POS));
+            secondary.add(new DataUseElement("POP-F", RS_FM_POS));
         }
 
         // TODO: In ORSP, we query DatabioOntology services, not consent.
@@ -183,10 +183,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                     .stream()
                     .filter(StringUtils::isNotBlank)
                     .collect(Collectors.joining(", "));
-            secondary.add(new DataUseElement("RS-POP", String.format(RS_POS, popRestrictions)));
+            secondary.add(new DataUseElement("POP", String.format(RS_POS, popRestrictions)));
         }
         if (BooleanUtils.isTrue(dataUse.getPediatric())) {
-            secondary.add(new DataUseElement("RS-PD", RS_PD_POS));
+            secondary.add(new DataUseElement("POP-PD", RS_PD_POS));
         }
         if (StringUtils.isNotBlank(dataUse.getDateRestriction())) {
             try {
@@ -197,7 +197,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             }
         }
         if (Optional.ofNullable(dataUse.getAggregateResearch()).orElse("na").equalsIgnoreCase(YES)) {
-            secondary.add(new DataUseElement("OTHER", AGGREGATE_POS));
+            secondary.add(new DataUseElement("NAGG", AGGREGATE_POS));
         }
         if (dataUse.getRecontactMay() != null) {
             secondary.add(new DataUseElement("OTHER", String.format(RECONTACT_MAY, dataUse.getRecontactMay())));
