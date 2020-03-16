@@ -5,8 +5,8 @@ public class DataUseElement {
     String description;
 
     public DataUseElement(String code, String description) {
-        this.code = code;
-        this.description = description;
+        setCode(code);
+        setDescription(description);
     }
 
     public String getCode() {
@@ -22,6 +22,6 @@ public class DataUseElement {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.replaceAll("\\[.+]", "").trim();
     }
 }

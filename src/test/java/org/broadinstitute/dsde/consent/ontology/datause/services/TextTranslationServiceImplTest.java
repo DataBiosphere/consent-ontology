@@ -18,6 +18,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -59,6 +61,10 @@ public class TextTranslationServiceImplTest extends AbstractTest {
         DataUseSummary summary = service.translateDataUseSummary(dataUseString);
         assertFalse(summary.getPrimary().isEmpty());
         assertTrue(summary.getPrimary().get(0).getCode().equalsIgnoreCase("GRU"));
+        Stream.of(summary.getPrimary(), summary.getSecondary()).flatMap(List::stream).forEach(e -> {
+            assertFalse(e.getDescription().contains("["));
+            assertFalse(e.getDescription().contains("]"));
+        });
     }
 
     @Test
