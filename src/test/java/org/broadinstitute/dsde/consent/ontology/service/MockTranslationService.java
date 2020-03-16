@@ -1,8 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseSummary;
 
 public class MockTranslationService implements TextTranslationService {
+
+    @Override
+    public DataUseSummary translateDataUseSummary(String dataUseString) {
+        return new DataUseSummary();
+    }
 
     @Override
     public String translateDataset(String dataUse) {

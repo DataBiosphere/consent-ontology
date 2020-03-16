@@ -9,7 +9,7 @@ info:
   termsOfService: 'https://github.com/DataBiosphere/consent-ontology'
 schemes:
   - https
-  
+
 paths:
 
   /schemas/data-use:
@@ -70,16 +70,15 @@ paths:
     post:
       summary: Translate Data Use JSON into plain English
       description: The Translate service will render an English-language version of a research purpose or dataset.
-      produces: 
+      produces:
         - text/plain
       parameters:
-        - name: for
-          in: query
-          description: dataset or purpose
+        - in: query
+          name: for
+          description: Either 'dataset' or 'purpose'
           required: true
-          schema:
-            type: string
-            enum: [dataset, purpose]
+          type: string
+          enum: [dataset, purpose]
         - name: body
           in: body
           description: DataUse
@@ -92,6 +91,29 @@ paths:
       responses:
         200:
           description: Successful translation.
+        default:
+          description: Unexpected error
+  /translate/summary:
+    post:
+      summary: Translate Data Use JSON into Data Use Summary JSON
+      description: The Translate service will render an structured summary with consent codes
+      produces:
+        - application/json
+      parameters:
+        - name: body
+          in: body
+          description: DataUse
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
+      tags:
+        - Data Use
+        - Translate
+      responses:
+        200:
+          description: Successful translation.
+          schema:
+            $ref: '#/definitions/DataUseSummary'
         default:
           description: Unexpected error
 
@@ -115,7 +137,7 @@ paths:
             $ref: '#/definitions/MatchPairResult'
         500:
           description: Internal Server Error
-          
+
   /match/v1:
     post:
       summary: Match UseRestriction Consent and Research Purpose
@@ -275,7 +297,7 @@ definitions:
         type: object
         description: UseRestriction of the research purpose
         properties:
-          type: 
+          type:
             type: string
           operands:
             type: array
@@ -286,7 +308,7 @@ definitions:
         type: object
         description: UseRestriction of the consent
         properties:
-          type: 
+          type:
             type: string
           operands:
             type: array
@@ -301,6 +323,39 @@ definitions:
         type: boolean
       matchPair:
         $ref: '#/definitions/MatchPair'
+
+  DataUseElement:
+    type: object
+    description: Individual element of a DataUseSummary object
+    properties:
+      code:
+        type: string
+        description: Consent Code
+      description:
+        type: string
+        description: Consent Code Description
+    example:
+      { "code": "GRU", "description": "Data is available for general research use. [GRU]"}
+
+  DataUseSummary:
+    type: object
+    description: Structured summary of a DataUse object
+    properties:
+      primary:
+        description: List of primary consent codes
+        type: array
+        items:
+          $ref: '#/definitions/DataUseElement'
+      secondary:
+        type: array
+        description: List of secondary consent codes
+        items:
+          $ref: '#/definitions/DataUseElement'
+    example:
+      {
+        "primary": ["code": "GRU", "description": "Data is available for general research use. [GRU]"],
+        "secondary": ["code": "OTHER", "description": "Data storage on the cloud is prohibited."]
+      }
 
   DataUse:
     type: object

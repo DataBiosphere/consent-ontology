@@ -6,6 +6,7 @@ import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.After;
@@ -17,6 +18,8 @@ import org.mockito.MockitoAnnotations;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -48,6 +51,20 @@ public class TextTranslationServiceImplTest extends AbstractTest {
 
     @After
     public void tearDownClass() {
+    }
+
+    @Test
+    public void testTranslateSummary() {
+        Gson gson = new Gson();
+        DataUse dataUse = new DataUseBuilder().setGeneralUse(true).build();
+        String dataUseString = gson.toJson(dataUse);
+        DataUseSummary summary = service.translateDataUseSummary(dataUseString);
+        assertFalse(summary.getPrimary().isEmpty());
+        assertTrue(summary.getPrimary().get(0).getCode().equalsIgnoreCase("GRU"));
+        Stream.of(summary.getPrimary(), summary.getSecondary()).flatMap(List::stream).forEach(e -> {
+            assertFalse(e.getDescription().contains("["));
+            assertFalse(e.getDescription().contains("]"));
+        });
     }
 
     @Test
