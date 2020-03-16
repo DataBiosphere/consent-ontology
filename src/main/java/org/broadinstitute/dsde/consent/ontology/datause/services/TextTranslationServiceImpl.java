@@ -57,14 +57,13 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     private static final String GENETIC_STUDIES_ONLY = "Future use is limited to genetic studies only [GSO]";
     private static final String PUBLICATION_REQUIRED = "Publishing results of studies using the data available to the larger scientific community is required";
     private static final String GENOMIC_RESULTS = "Genomic summary results from this study are available only through controlled-access";
-    private static final String COLLABORATION_INVESTIGATOR = "Collaboration with the primary study investigators required";
+    private static final String COLLABORATION_REQUIRED = "Collaboration with the primary study investigators required.";
 
     // Terms of use/notes
     private static final String RECONTACT_MAY = "Subject re-contact may occur in certain circumstances, as specified: %s";
     private static final String RECONTACT_MUST = "Subject re-contact must occur in certain circumstances, as specified: %s";
     private static final String CLOUD_PROHIBITED = "Data storage on the cloud is prohibited.";
     private static final String ETHICS_APPROVAL = "Local ethics committee approval is required.";
-    private static final String COLLABORATOR_REQUIRED = "Collaborator approval is required.";
     private static final String GEO_RESTRICTION = "Geographical restrictions: %s.";
     private static final String OTHER_POS = "Other restrictions: %s.";
 
@@ -218,7 +217,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             secondary.add(new DataUseElement("IRB", ETHICS_APPROVAL));
         }
         if (BooleanUtils.isTrue(dataUse.getCollaboratorRequired())) {
-            secondary.add(new DataUseElement("OTHER", COLLABORATOR_REQUIRED));
+            secondary.add(new DataUseElement("COL", COLLABORATION_REQUIRED));
         }
         if (BooleanUtils.isTrue(dataUse.getManualReview())) {
             secondary.add(new DataUseElement("OTHER", MANUAL_REVIEW));
@@ -236,7 +235,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             secondary.add(new DataUseElement("OTHER", dataUse.getGenomicSummaryResults()));
         }
         if (BooleanUtils.isTrue(dataUse.getCollaborationInvestigators())) {
-            secondary.add(new DataUseElement("COL", COLLABORATION_INVESTIGATOR));
+            secondary.add(new DataUseElement("COL", COLLABORATION_REQUIRED));
         }
 
         summary.setPrimary(primary);
@@ -364,7 +363,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             summary.add(ETHICS_APPROVAL);
         }
         if (BooleanUtils.isTrue(dataUse.getCollaboratorRequired())) {
-            summary.add(COLLABORATOR_REQUIRED);
+            summary.add(COLLABORATION_REQUIRED);
         }
         if (BooleanUtils.isTrue(dataUse.getManualReview())) {
             summary.add(MANUAL_REVIEW);
@@ -382,7 +381,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             summary.add(dataUse.getGenomicSummaryResults());
         }
         if (BooleanUtils.isTrue(dataUse.getCollaborationInvestigators())) {
-            summary.add(COLLABORATION_INVESTIGATOR);
+            summary.add(COLLABORATION_REQUIRED);
         }
 
         return String.join("\n", summary);
