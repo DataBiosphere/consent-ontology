@@ -378,7 +378,7 @@
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-storage</artifactId>
-            <version>v1-rev20200226-1.30.9</version>
+            <version>v1-rev20200326-1.30.9</version>
         </dependency>
 
         <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
