@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentRestrictionBuilder;
 import org.broadinstitute.dsde.consent.ontology.datause.builder.DARRestrictionBuilder;
@@ -9,6 +8,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBu
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.parboiled.common.FileUtils;
+import org.slf4j.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

@@ -9,7 +9,6 @@ import akka.util.Timeout;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerActor;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
@@ -17,6 +16,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
+import org.slf4j.Logger;
 import scala.concurrent.Future;
 import scala.concurrent.duration.Duration;
 

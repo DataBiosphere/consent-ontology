@@ -6,13 +6,13 @@ import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import io.dropwizard.lifecycle.Managed;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.eclipse.jetty.http.HttpMethod;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
+import org.slf4j.Logger;
 
 import javax.ws.rs.InternalServerErrorException;
 import java.io.IOException;

@@ -14,7 +14,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 public class TranslateResourceTest {
 
@@ -36,8 +36,8 @@ public class TranslateResourceTest {
                         .request(MediaType.APPLICATION_JSON_TYPE)
                         .accept(MediaType.TEXT_PLAIN_TYPE)
                         .post(Entity.json(gson.toJson(datause)));
-        assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(String.class)).isEqualTo(mockService.translateDataset(""));
+        assertEquals(200, response.getStatus());
+        assertEquals(response.readEntity(String.class), mockService.translateDataset(""));
     }
 
     @Test
@@ -50,8 +50,8 @@ public class TranslateResourceTest {
                         .request(MediaType.APPLICATION_JSON_TYPE)
                         .accept(MediaType.TEXT_PLAIN_TYPE)
                         .post(Entity.json(gson.toJson(datause)));
-        assertThat(response.getStatus()).isEqualTo(200);
-        assertThat(response.readEntity(String.class)).isEqualTo(mockService.translatePurpose(""));
+        assertEquals(200, response.getStatus());
+        assertEquals(response.readEntity(String.class), mockService.translatePurpose(""));
     }
 
 }

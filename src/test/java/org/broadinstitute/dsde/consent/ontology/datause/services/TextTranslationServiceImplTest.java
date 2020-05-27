@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.google.gson.Gson;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
@@ -15,6 +14,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.util.Collections;

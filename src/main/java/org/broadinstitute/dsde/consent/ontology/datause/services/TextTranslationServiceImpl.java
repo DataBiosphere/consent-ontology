@@ -5,13 +5,13 @@ import com.google.gson.Gson;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseElement;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;

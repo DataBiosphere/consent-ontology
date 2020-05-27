@@ -3,9 +3,9 @@ package org.broadinstitute.dsde.consent.ontology.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpResponseException;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
+import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
