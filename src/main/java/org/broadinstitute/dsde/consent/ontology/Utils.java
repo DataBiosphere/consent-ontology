@@ -1,11 +1,12 @@
 package org.broadinstitute.dsde.consent.ontology;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class Utils {
 
     public static Logger getLogger(Class clazz) {
-        return Logger.getLogger(clazz);
+        return LoggerFactory.getLogger(clazz);
     }
 
 }

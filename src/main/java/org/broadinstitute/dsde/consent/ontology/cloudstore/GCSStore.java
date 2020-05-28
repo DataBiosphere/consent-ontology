@@ -10,9 +10,9 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.storage.Storage;
 import com.google.api.services.storage.StorageScopes;
 import com.google.api.services.storage.model.Bucket;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguration;
+import org.slf4j.Logger;
 
 import java.io.FileInputStream;
 import java.io.IOException;

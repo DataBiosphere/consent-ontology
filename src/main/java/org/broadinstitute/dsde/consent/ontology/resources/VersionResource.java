@@ -4,8 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.slf4j.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

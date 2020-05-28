@@ -3,8 +3,8 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.google.inject.Inject;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.slf4j.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

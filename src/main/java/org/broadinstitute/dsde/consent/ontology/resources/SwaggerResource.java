@@ -1,9 +1,9 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.log4j.Logger;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.parboiled.common.FileUtils;
+import org.slf4j.Logger;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
