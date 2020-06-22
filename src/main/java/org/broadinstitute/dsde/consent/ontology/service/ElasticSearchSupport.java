@@ -10,13 +10,11 @@ import com.google.gson.GsonBuilder;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
 import org.apache.http.message.BasicHeader;
-import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.ResponseException;
 import org.elasticsearch.client.RestClient;
-import org.slf4j.Logger;
 
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.InternalServerErrorException;
@@ -37,7 +35,6 @@ import static javax.ws.rs.core.Response.Status.NOT_FOUND;
 
 class ElasticSearchSupport {
 
-    private final Logger log = Utils.getLogger(this.getClass());
     private static final Gson gson = new GsonBuilder().create();
 
     RestClient createRestClient(ElasticSearchConfiguration configuration) {
@@ -157,7 +154,6 @@ class ElasticSearchSupport {
                 throw new InternalServerErrorException(e);
             }
         } catch (Exception e) {
-            log.error("Unable to retry request: ", e);
             throw new InternalServerErrorException(e);
         }
     }
@@ -166,7 +162,6 @@ class ElasticSearchSupport {
         try {
             return getTermPath(index) + "/" + java.net.URLEncoder.encode(query, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            log.error("Unable to encode query: " + query, e);
             throw new BadRequestException(e);
         }
     }
