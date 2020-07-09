@@ -14,7 +14,7 @@
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
         <lucene.version>8.5.1</lucene.version>
-        <owl.version>5.1.14</owl.version>
+        <owl.version>5.1.15</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.2.3</rdf4j-rio.version>
         <swagger.ui.version>3.25.0</swagger.ui.version>
