@@ -106,6 +106,9 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         DataUseSummary summary = new DataUseSummary();
         List<DataUseElement> primary = new ArrayList<>();
         List<DataUseElement> secondary = new ArrayList<>();
+        if (Objects.isNull(dataUse)) {
+            return summary;
+        }
         if (BooleanUtils.isTrue(dataUse.getGeneralUse())) {
             primary.add(new DataUseElement("GRU", GRU_POS));
         }
