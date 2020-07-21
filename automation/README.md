@@ -24,7 +24,7 @@ Render configs for all cases below:
   
 Example for running tests locally against the dev environment:
 ```bash
-./render-local-env.sh live $(cat ~/.vault-token) dev
+./render-local-env.sh live ~/.vault-token dev
 ```  
 
 
