@@ -731,6 +731,14 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-databind</artifactId>
                 </exclusion>
+                <!--
+                  The following clashes with jakarta.validation:jakarta.validation-api and
+                  prevents configurations from loading when running locally
+                -->
+                <exclusion>
+                    <groupId>javax.validation</groupId>
+                    <artifactId>validation-api</artifactId>
+                </exclusion>
             </exclusions>
         </dependency>
 
