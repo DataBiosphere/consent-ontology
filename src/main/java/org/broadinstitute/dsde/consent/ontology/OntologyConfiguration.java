@@ -10,9 +10,6 @@ import org.broadinstitute.dsde.consent.ontology.configurations.StoreOntologyConf
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OntologyConfiguration extends Configuration {
 
-  public OntologyConfiguration() {
-  }
-
   @JsonProperty
   private final ElasticSearchConfiguration elasticSearch = new ElasticSearchConfiguration();
 
