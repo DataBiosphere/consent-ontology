@@ -3,39 +3,32 @@ package org.broadinstitute.dsde.consent.ontology;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dropwizard.Configuration;
-import org.broadinstitute.dsde.consent.ontology.configurations.*;
+import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
+import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguration;
+import org.broadinstitute.dsde.consent.ontology.configurations.StoreOntologyConfiguration;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class OntologyConfiguration extends Configuration {
 
+  @JsonProperty
+  private final ElasticSearchConfiguration elasticSearch = new ElasticSearchConfiguration();
 
-    public OntologyConfiguration() {}
+  @JsonProperty
+  private final StoreConfiguration googleStore = new StoreConfiguration();
 
-    @JsonProperty
-    private final ElasticSearchConfiguration elasticSearch = new ElasticSearchConfiguration();
+  @JsonProperty
+  private final StoreOntologyConfiguration storeOntology = new StoreOntologyConfiguration();
 
-    @JsonProperty
-    private final StoreConfiguration googleStore = new StoreConfiguration();
+  public ElasticSearchConfiguration getElasticSearchConfiguration() {
+    return elasticSearch;
+  }
 
-    @JsonProperty
-    private final StoreOntologyConfiguration storeOntology = new StoreOntologyConfiguration();
+  public StoreConfiguration getCloudStoreConfiguration() {
+    return googleStore;
+  }
 
-    @JsonProperty
-    private final CorsConfiguration cors = new CorsConfiguration();
-
-
-    public ElasticSearchConfiguration getElasticSearchConfiguration() {
-        return elasticSearch;
-    }
-
-    public StoreConfiguration getCloudStoreConfiguration() { return googleStore; }
-
-    public StoreOntologyConfiguration getStoreOntologyConfiguration() {
-        return storeOntology;
-    }
-
-    public CorsConfiguration getCorsConfiguration() {
-        return cors;
-    }
+  public StoreOntologyConfiguration getStoreOntologyConfiguration() {
+    return storeOntology;
+  }
 
 }
