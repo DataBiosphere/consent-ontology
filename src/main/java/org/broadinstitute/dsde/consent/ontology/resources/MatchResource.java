@@ -1,25 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import akka.actor.ActorRef;
-import akka.actor.ActorSystem;
-import akka.actor.Props;
-import akka.dispatch.OnComplete;
-import akka.pattern.Patterns;
-import akka.util.Timeout;
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerActor;
-import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseMatchPair;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.slf4j.Logger;
-import scala.concurrent.Future;
-import scala.concurrent.duration.Duration;
-
+import java.net.URL;
+import java.util.Collection;
+import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -29,23 +14,28 @@ import javax.ws.rs.container.AsyncResponse;
 import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.net.URL;
-import java.util.Collection;
-import java.util.List;
+import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseMatchPair;
+import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 
 @Path("/match")
 @Consumes("application/json")
 @Produces("application/json")
 public class MatchResource {
 
-    private final Logger log = Utils.getLogger(this.getClass());
-    private StoreOntologyService storeOntologyService;
-    private DataUseMatcher dataUseMatcher;
+    private final StoreOntologyService storeOntologyService;
+    private final DataUseMatcher dataUseMatcher;
+    private final OntModelCache ontModelCache = OntModelCache.INSTANCE;
 
-    private static final ActorSystem actorSystem = ActorSystem.create("actorSystem");
-    private static final ActorRef matchWorkerActor = actorSystem.actorOf(Props.create(MatchWorkerActor.class), "MatchWorkerActor");
-
-    MatchResource() {}
+    @Inject
+    MatchResource(DataUseMatcher dataUseMatcher, StoreOntologyService storeOntologyService) {
+        this.dataUseMatcher = dataUseMatcher;
+        this.storeOntologyService = storeOntologyService;
+    }
 
     /**
      * Most recent version of matching logic as implemented in FireCloud
@@ -109,37 +99,14 @@ public class MatchResource {
     @Deprecated
     @POST
     public void match(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
-        Timeout timeout = new Timeout(Duration.create(15000, "seconds"));
         Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
         final MatchWorkerMessage matchMessage = new MatchWorkerMessage(urls, matchPair);
-        final Future<Object> matchFuture = Patterns.ask(matchWorkerActor, matchMessage, timeout);
-        matchFuture.onComplete(
-            new OnComplete<Object>() {
-                @Override
-                public void onComplete(Throwable failure, Object result) {
-                    if (failure != null) {
-                        log.error("Failure: " + failure.getMessage());
-                        if(failure instanceof InternalError){
-                            response.resume(new WebApplicationException(failure.getMessage(), Response.Status.INTERNAL_SERVER_ERROR));
-                        }
-                        response.resume(new WebApplicationException(failure));
-                    } else{
-                        response.resume(ImmutableMap.of("result", result, "matchPair", matchPair));
-                    }
-                }
-            },
-            actorSystem.dispatcher()
-        );
-    }
-
-    @Inject
-    public void setStoreOntologyService(StoreOntologyService storeOntologyService) {
-        this.storeOntologyService = storeOntologyService;
-    }
-
-    @Inject
-    public void setDataUseMatcher(DataUseMatcher dataUseMatcher) {
-        this.dataUseMatcher = dataUseMatcher;
+        try {
+            Boolean match = ontModelCache.matchPurpose(matchMessage);
+            response.resume(ImmutableMap.of("result", match, "matchPair", matchPair));
+        } catch (Exception e) {
+            response.resume(new WebApplicationException(e));
+        }
     }
 
 }
