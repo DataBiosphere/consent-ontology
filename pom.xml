@@ -8,11 +8,11 @@
     <name>Consent Management: Ontology Services</name>
 
     <properties>
-        <dropwizard.version>2.0.12</dropwizard.version>
+        <dropwizard.version>2.0.13</dropwizard.version>
         <java.version>1.8</java.version>
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
-        <lucene.version>8.6.1</lucene.version>
+        <lucene.version>8.6.2</lucene.version>
         <owl.version>5.1.16</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.4.0</rdf4j-rio.version>
@@ -260,7 +260,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>5.3.2</version>
+                <version>6.0.0</version>
                 <executions>
                     <execution>
                         <goals>
@@ -357,7 +357,7 @@
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-storage</artifactId>
-            <version>v1-rev20200727-1.30.10</version>
+            <version>v1-rev20200814-1.30.10</version>
         </dependency>
 
         <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
@@ -377,13 +377,13 @@
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-            <version>1.14</version>
+            <version>1.15</version>
         </dependency>
 
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>7.9.0</version>
+            <version>7.9.1</version>
         </dependency>
 
         <dependency>
