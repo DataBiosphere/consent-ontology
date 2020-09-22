@@ -15,7 +15,7 @@
         <lucene.version>8.6.2</lucene.version>
         <owl.version>5.1.16</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
-        <rdf4j-rio.version>3.4.0</rdf4j-rio.version>
+        <rdf4j-rio.version>3.4.1</rdf4j-rio.version>
         <swagger.ui.version>3.34.0</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -183,7 +183,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.5</version>
+                <version>0.8.6</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -510,10 +510,21 @@
         </dependency>
 
         <dependency>
+            <groupId>com.ibm.icu</groupId>
+            <artifactId>icu4j</artifactId>
+            <version>67.1</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.hp.hpl.jena</groupId>
             <artifactId>jena</artifactId>
             <version>${jena.version}</version>
             <exclusions>
+                <!-- The default version included with Jena doesn't parse java version > 1.8.0_265 -->
+                <exclusion>
+                    <groupId>com.ibm.icu</groupId>
+                    <artifactId>icu4j</artifactId>
+                </exclusion>
                 <exclusion>
                     <groupId>xerces</groupId>
                     <artifactId>xercesImpl</artifactId>
