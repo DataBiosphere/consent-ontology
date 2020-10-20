@@ -90,9 +90,6 @@ function docker_cmd()
         echo "Building $DOCKERHUB_REGISTRY:$HASH_TAG"
         docker build -t $DOCKERHUB_REGISTRY:${HASH_TAG} .
 
-        echo "scanning docker image..."
-        docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$HOME"/Library/Caches:/root/.cache/ -v "$PWD/.trivyignore":/.trivyignore:ro aquasec/trivy --exit-code 1 --severity CRITICAL --ignorefile /.trivyignore "$DOCKERHUB_REGISTRY":"${HASH_TAG}"
-
         if [ $DOCKER_CMD = "push" ]; then
             echo "pushing $PROJECT docker image..."
             docker push $DOCKERHUB_REGISTRY:${HASH_TAG}
