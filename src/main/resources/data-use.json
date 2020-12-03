@@ -2,7 +2,7 @@
   "id": "https://consent-ontology.dsde-prod.broadinstitute.org/schemas/data-use",
   "$schema": "http://json-schema.org/draft-04/schema#",
   "title": "Data Use Schema",
-  "version": 1,
+  "version": 2,
   "type": "object",
   "dependencies": {
     "recontactingDataSubjects": {
@@ -91,6 +91,9 @@
     "other": {
       "type": "string"
     },
+    "secondaryOther": {
+      "type": "string"
+    },
     "cloudStorage": {
       "type": "string",
       "enum": ["Yes", "No", "Unspecified"]
@@ -142,6 +145,10 @@
     },
     "collaborationInvestigators": {
       "type": "boolean"
+    },
+    "publicationMoratorium": {
+      "type": "string",
+      "format": "date"
     }
   }
 }

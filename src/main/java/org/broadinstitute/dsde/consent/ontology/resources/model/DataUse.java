@@ -49,6 +49,7 @@ import java.util.List;
         "collaboratorRequired",
         "geographicalRestrictions",
         "other",
+        "secondaryOther",
         "illegalBehavior",
         "addiction",
         "sexualDiseases",
@@ -61,7 +62,8 @@ import java.util.List;
         "publicationResults",
         "genomicResults",
         "genomicSummaryResults",
-        "collaborationInvestigators"
+        "collaborationInvestigators",
+        "publicationMoratorium"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class DataUse {
@@ -112,6 +114,8 @@ public class DataUse {
     private String geographicalRestrictions;
     @JsonProperty("other")
     private String other;
+    @JsonProperty("secondaryOther")
+    private String secondaryOther;
     @JsonProperty("illegalBehavior")
     private Boolean illegalBehavior;
     @JsonProperty("addiction")
@@ -138,6 +142,8 @@ public class DataUse {
     private String genomicSummaryResults;
     @JsonProperty("collaborationInvestigators")
     private Boolean collaborationInvestigators;
+    @JsonProperty("publicationMoratorium")
+    private String publicationMoratorium;
 
     @JsonProperty("generalUse")
     public Boolean getGeneralUse() {
@@ -367,6 +373,16 @@ public class DataUse {
         this.other = other;
     }
 
+    @JsonProperty("secondaryOther")
+    public String getSecondaryOther() {
+        return secondaryOther;
+    }
+
+    @JsonProperty("secondaryOther")
+    public void setSecondaryOther(String secondaryOther) {
+        this.secondaryOther = secondaryOther;
+    }
+
     @JsonProperty("illegalBehavior")
     public Boolean getIllegalBehavior() {
         return illegalBehavior;
@@ -497,6 +513,14 @@ public class DataUse {
         this.collaborationInvestigators = collaborationInvestigators;
     }
 
+    @JsonProperty("publicationMoratorium")
+    public String getPublicationMoratorium() { return publicationMoratorium; }
+
+    @JsonProperty("publicationMoratorium")
+    public void setPublicationMoratorium(String publicationMoratorium) {
+        this.publicationMoratorium = publicationMoratorium;
+    }
+
     @Override
     public String toString() {
         return ToStringBuilder.reflectionToString(this);
@@ -527,6 +551,7 @@ public class DataUse {
                 .append(collaboratorRequired)
                 .append(geographicalRestrictions)
                 .append(other)
+                .append(secondaryOther)
                 .append(illegalBehavior)
                 .append(addiction)
                 .append(sexualDiseases)
@@ -540,6 +565,7 @@ public class DataUse {
                 .append(genomicResults)
                 .append(genomicSummaryResults)
                 .append(collaborationInvestigators)
+                .append(publicationMoratorium)
                 .toHashCode();
     }
 
@@ -575,6 +601,7 @@ public class DataUse {
                 .append(collaboratorRequired, rhs.collaboratorRequired)
                 .append(geographicalRestrictions, rhs.geographicalRestrictions)
                 .append(other, rhs.other)
+                .append(secondaryOther, rhs.secondaryOther)
                 .append(illegalBehavior, rhs.illegalBehavior)
                 .append(addiction, rhs.addiction)
                 .append(sexualDiseases, rhs.sexualDiseases)
@@ -588,6 +615,7 @@ public class DataUse {
                 .append(genomicResults, rhs.genomicResults)
                 .append(genomicSummaryResults, rhs.genomicSummaryResults)
                 .append(collaborationInvestigators, rhs.collaborationInvestigators)
+                .append(publicationMoratorium, rhs.publicationMoratorium)
                 .isEquals();
     }
 
