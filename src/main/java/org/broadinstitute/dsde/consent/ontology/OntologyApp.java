@@ -8,6 +8,7 @@ import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
+import org.broadinstitute.dsde.consent.ontology.filters.ResponseServerFilter;
 import org.broadinstitute.dsde.consent.ontology.resources.AutocompleteResource;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
@@ -47,6 +48,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     public void run(OntologyConfiguration config, Environment env) {
 
         Injector injector = Guice.createInjector(new OntologyModule(config, env));
+        env.jersey().register(ResponseServerFilter.class);
         env.jersey().register(injector.getInstance(AutocompleteResource.class));
         env.jersey().register(injector.getInstance(MatchResource.class));
         env.jersey().register(injector.getInstance(TranslateResource.class));
