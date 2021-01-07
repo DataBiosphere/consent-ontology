@@ -20,4 +20,5 @@ jobs:
           MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
         run: |
           mvn -v
-          mvn clean jacoco:prepare-agent test jacoco:report coveralls:report -DrepoToken=$COVERALLS_TOKEN
+          mvn clean jacoco:prepare-agent test jacoco:report
+          mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN
