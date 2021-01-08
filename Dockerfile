@@ -11,5 +11,5 @@ COPY src /usr/src/app/src
 RUN mvn clean package -Dmaven.test.skip=true
 
 # Published
-FROM us.gcr.io/broad-dsp-gcr-public/base/jre:11-alpine
+FROM us.gcr.io/broad-dsp-gcr-public/base/jre:15-alpine
 COPY --from=build /usr/src/app/target/consent-ontology.jar /opt/consent-ontology.jar
