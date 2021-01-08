@@ -1,5 +1,5 @@
 # Builder
-FROM adoptopenjdk/maven-openjdk11 AS build
+FROM adoptopenjdk/maven-openjdk11:latest AS build
 
 RUN mkdir /usr/src/app
 WORKDIR /usr/src/app
