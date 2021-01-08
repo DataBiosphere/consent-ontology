@@ -82,7 +82,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <release>11</release>
+                    <source>1.8</source>
+                    <target>1.8</target>
                 </configuration>
             </plugin>
 
@@ -92,8 +93,7 @@
                 <version>2.22.2</version>
                 <configuration>
                     <!-- @{argLine} is necessary here so that that the jacoco:prepare-agent output is included for tests -->
-                    <!-- illegal-access=permit required for java 11 -->
-                    <argLine>@{argLine} -Xmx1024m --illegal-access=permit</argLine>
+                    <argLine>@{argLine} -Xmx1024m</argLine>
                     <systemPropertyVariables>
                         <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
                     </systemPropertyVariables>
@@ -178,14 +178,6 @@
                 <groupId>org.eluder.coveralls</groupId>
                 <artifactId>coveralls-maven-plugin</artifactId>
                 <version>4.3.0</version>
-                <!-- java 11 requirement for coveralls support-->
-                <dependencies>
-                    <dependency>
-                        <groupId>javax.xml.bind</groupId>
-                        <artifactId>jaxb-api</artifactId>
-                        <version>2.3.1</version>
-                    </dependency>
-                </dependencies>
             </plugin>
 
             <plugin>
@@ -751,19 +743,6 @@
             <version>${swagger.ui.version}</version>
         </dependency>
 
-        <!-- java 11 requirement -->
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.27.0-GA</version>
-        </dependency>
-
-        <!-- java 11 requirement -->
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>3.3.0</version>
-        </dependency>
-
     </dependencies>
+
 </project>
