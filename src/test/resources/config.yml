@@ -5,18 +5,33 @@ server:
   connector:
     type: http
     port: 8180
+  requestLog:
+    appenders:
+      - type: console
+        layout:
+          type: access-json
+
 logging:
   level: INFO
+  appenders:
+    - type: console
+      threshold: INFO
+      target: stdout
+      layout:
+        type: json
   loggers:
     "org.semanticweb": ERROR
+
 elasticSearch:
   servers:
     - localhost
   index: ontology
+
 googleStore:
   password:
   endpoint:
   bucket:
+
 storeOntology:
   bucketSubdirectory:
   configurationFileName:
