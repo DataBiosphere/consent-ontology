@@ -283,6 +283,20 @@
 
     <dependencies>
 
+        <!-- Support for JSON logging -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.2.3</version>
+        </dependency>
+
+        <!-- Support for JSON logging -->
+        <dependency>
+            <groupId>io.dropwizard</groupId>
+            <artifactId>dropwizard-json-logging</artifactId>
+            <version>${dropwizard.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.dhatim</groupId>
             <artifactId>dropwizard-sentry</artifactId>
@@ -293,13 +307,6 @@
                     <artifactId>logback-classic</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <!-- Address Security Vulnerability: https://broadinstitute-dsp.sourceclear.io/workspaces/jppForw/issues/vulnerabilities/28254798 -->
-        <dependency>
-            <groupId>ch.qos.logback</groupId>
-            <artifactId>logback-classic</artifactId>
-            <version>1.2.3</version>
         </dependency>
 
         <dependency>
