@@ -61,8 +61,8 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
             if (status.equalsIgnoreCase("yellow")) {
                 return Result.unhealthy("ClusterHealth is YELLOW\n" + jsonResponse.toString());
             }
-        } catch (IOException e) {
-            return Result.unhealthy(e.getMessage());
+        } catch (Throwable t) {
+            return Result.unhealthy(t.getCause().getMessage());
         }
         return Result.healthy("ClusterHealth is GREEN");
     }
