@@ -91,18 +91,20 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
         assertTrue(result.isHealthy());
     }
 
-    @Test(expected = InternalServerErrorException.class)
+    @Test
     public void testCheckDroppedConnection() {
         server.reset();
         server.when(request()).error(error().withDropConnection(true));
-        elasticSearchHealthCheck.check();
+        HealthCheck.Result result = elasticSearchHealthCheck.check();
+        assertFalse(result.isHealthy());
     }
 
-    @Test(expected = InternalServerErrorException.class)
+    @Test
     public void testErrorStatus() {
         server.reset();
         server.when(request()).respond(response().withStatusCode(500));
-        elasticSearchHealthCheck.check();
+        HealthCheck.Result result = elasticSearchHealthCheck.check();
+        assertFalse(result.isHealthy());
     }
 
 }
