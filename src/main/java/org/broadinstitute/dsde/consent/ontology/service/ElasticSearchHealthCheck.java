@@ -5,15 +5,13 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.inject.Inject;
 import io.dropwizard.lifecycle.Managed;
+import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.eclipse.jetty.http.HttpMethod;
 import org.elasticsearch.client.Request;
 import org.elasticsearch.client.Response;
 import org.elasticsearch.client.RestClient;
-
-import java.io.IOException;
-import java.nio.charset.Charset;
 
 public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
 
