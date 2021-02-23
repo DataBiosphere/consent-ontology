@@ -1,21 +1,19 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockserver.model.HttpError.error;
+import static org.mockserver.model.HttpRequest.request;
+import static org.mockserver.model.HttpResponse.response;
+
 import com.codahale.metrics.health.HealthCheck;
+import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockserver.integration.ClientAndServer;
-
-import javax.ws.rs.InternalServerErrorException;
-import java.util.Collections;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.mockserver.model.HttpError.error;
-import static org.mockserver.model.HttpRequest.request;
-import static org.mockserver.model.HttpResponse.response;
 
 public class ElasticSearchHealthCheckTest implements WithMockServer {
 
@@ -91,18 +89,20 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
         assertTrue(result.isHealthy());
     }
 
-    @Test(expected = InternalServerErrorException.class)
+    @Test
     public void testCheckDroppedConnection() {
         server.reset();
         server.when(request()).error(error().withDropConnection(true));
-        elasticSearchHealthCheck.check();
+        HealthCheck.Result result = elasticSearchHealthCheck.check();
+        assertFalse(result.isHealthy());
     }
 
-    @Test(expected = InternalServerErrorException.class)
+    @Test
     public void testErrorStatus() {
         server.reset();
         server.when(request()).respond(response().withStatusCode(500));
-        elasticSearchHealthCheck.check();
+        HealthCheck.Result result = elasticSearchHealthCheck.check();
+        assertFalse(result.isHealthy());
     }
 
 }
