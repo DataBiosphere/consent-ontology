@@ -9,7 +9,8 @@ object Dependencies {
     "io.gatling"            % "gatling-core" % gatlingV,
     "io.gatling"            % "gatling-http" % gatlingV,
     "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingV % "test",
-    "io.gatling"            % "gatling-test-framework"    % gatlingV % "test"
+    "io.gatling"            % "gatling-test-framework"    % gatlingV % "test",
+    "io.spray"             %%  "spray-json" % "1.3.6"
   )
 
 }

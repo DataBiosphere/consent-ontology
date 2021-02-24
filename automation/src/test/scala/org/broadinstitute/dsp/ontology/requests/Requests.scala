@@ -4,6 +4,7 @@ import java.net.URLEncoder
 
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
+import io.gatling.http.request.builder._
 import io.gatling.http.Predef._
 import org.broadinstitute.dsp.ontology.TestConfig
 
@@ -23,31 +24,33 @@ object Requests {
       .check(status.is(session => 200))
   )
 
-  val dataUseSchema: ChainBuilder = exec(
-    http("Data Use Schema")
-      .get("/schemas/data-use")
-      .headers(TestConfig.jsonHeader)
-      .check(status.is(session => 200))
-  )
+  object Schemas {
+    val dataUseSchema: ChainBuilder = exec(
+      http("Data Use Schema")
+        .get("/schemas/data-use")
+        .headers(TestConfig.jsonHeader)
+        .check(status.is(session => 200))
+    )
 
-  // '{ "generalUse": true }' is a good example
-  def dataUseTranslateConsent(json: String): ChainBuilder = {
-    exec(
+    // '{ "generalUse": true }' is a good example
+    def dataUseTranslateConsent(json: String): HttpRequestBuilder = {
       http("Translate Consent")
         .post("/schemas/data-use/consent/translate")
         .headers(TestConfig.jsonHeader)
-        .form(json)
-        .check(status.is(session => 200)))
-  }
+        .body(StringBody(json))
+        .asJson
+        .check(status.is(session => 200))
+    }
 
-  // '{ "generalUse": true }' is a good example
-  def dataUseTranslateDAR(json: String): ChainBuilder = {
-    exec(
+    // '{ "generalUse": true }' is a good example
+    def dataUseTranslateDAR(json: String): HttpRequestBuilder = {
       http("Translate DAR")
         .post("/schemas/data-use/dar/translate")
         .headers(TestConfig.jsonHeader)
-        .form(json)
-        .check(status.is(session => 200)))
+        .body(StringBody(json))
+        .asJson
+        .check(status.is(session => 200))
+    }
   }
 
   // ('dataset' || 'purpose') and '{ "generalUse": true }' are good examples
