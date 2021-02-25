@@ -54,13 +54,13 @@ object Requests {
   }
 
   // ('dataset' || 'purpose') and '{ "generalUse": true }' are good examples
-  def dataUseTranslateFor(whatFor: String, json: String): ChainBuilder = {
-    exec(
-      http("Translate")
-        .post(s"/translate?for=$whatFor")
-        .headers(TestConfig.plainTextHeader)
-        .form(json)
-        .check(status.is(session => 200)))
+  def dataUseTranslateFor(whatFor: String, json: String): HttpRequestBuilder = {
+    http("Translate")
+      .post(s"/translate?for=$whatFor")
+      .headers(TestConfig.plainTextHeader)
+      .body(StringBody(json))
+      .asJson
+      .check(status.is(session => 200))
   }
 
   // '{ "purpose": { "type": "everything" }, "consent": { "type": "everything" } }' is a good example
@@ -68,7 +68,8 @@ object Requests {
     exec(http("Match V1")
       .post(s"/matchv1")
       .headers(TestConfig.jsonHeader)
-      .form(json)
+      .body(StringBody(json))
+      .asJson
       .check(status.is(session => 200)))
   }
 
@@ -77,7 +78,8 @@ object Requests {
     exec(http("Match V2")
       .post(s"/match/v2")
       .headers(TestConfig.jsonHeader)
-      .form(json)
+      .body(StringBody(json))
+      .asJson
       .check(status.is(session => 200)))
   }
 

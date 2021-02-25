@@ -1,6 +1,18 @@
 package org.broadinstitute.dsp.ontology.models
 
 object DataUseModels {
+    object Translations extends Enumeration {
+        type Translations = String
+        val DATASET = "dataset"
+        val PURPOSE = "purpose"
+    }
+
+    object DataUseResponses extends Enumeration {
+        type DataUseResponses = String
+        val GRU = "[GRU]"
+        val ManualReview = "manual review"
+    }
+
     case class DataUse(
         generalUse: Option[Boolean] = None,
         hmbResearch: Option[Boolean] = None,

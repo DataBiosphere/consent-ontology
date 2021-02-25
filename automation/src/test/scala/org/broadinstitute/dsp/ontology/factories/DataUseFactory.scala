@@ -6,24 +6,16 @@ import DefaultJsonProtocol._
 import org.broadinstitute.dsp.ontology.models.DataUseModels._
 
 object DataUseFactory {
-    val generalUse: String = {
-        val dataUse: DataUse = dataUseBuilder(generalUse = Some(true))
+    def getDataUseString(dataUse: DataUse): String = {
         implicit val dataUseFormat: JsonProtocols.DataUseFormat.type = JsonProtocols.DataUseFormat
-
         dataUse.toJson.compactPrint
     }
 
-    val hmbResearch: String = {
-        val dataUse: DataUse = dataUseBuilder(hmbResearch = Some(true))
-        implicit val dataUseFormat: JsonProtocols.DataUseFormat.type = JsonProtocols.DataUseFormat
+    val generalUse: String = getDataUseString(dataUseBuilder(generalUse = Some(true)))
 
-        dataUse.toJson.compactPrint
-    }
+    val hmbResearch: String = getDataUseString(dataUseBuilder(hmbResearch = Some(true)))
 
-    val notGeneralHmb: String = {
-        val dataUse: DataUse = dataUseBuilder(generalUse = Some(false), hmbResearch = Some(true))
-        implicit val dataUseFormat: JsonProtocols.DataUseFormat.type = JsonProtocols.DataUseFormat
+    val notGeneralHmb: String = getDataUseString(dataUseBuilder(generalUse = Some(false), hmbResearch = Some(true)))
 
-        dataUse.toJson.compactPrint
-    }
+    val manualReview: String = getDataUseString(dataUseBuilder(manualReview = Some(true)))
 }
