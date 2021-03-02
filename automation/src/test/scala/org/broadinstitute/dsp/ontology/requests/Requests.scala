@@ -4,6 +4,7 @@ import java.net.URLEncoder
 
 import io.gatling.core.Predef._
 import io.gatling.core.structure.ChainBuilder
+import io.gatling.http.request.builder._
 import io.gatling.http.Predef._
 import org.broadinstitute.dsp.ontology.TestConfig
 
@@ -23,67 +24,89 @@ object Requests {
       .check(status.is(session => 200))
   )
 
-  val dataUseSchema: ChainBuilder = exec(
-    http("Data Use Schema")
-      .get("/schemas/data-use")
-      .headers(TestConfig.jsonHeader)
-      .check(status.is(session => 200))
-  )
+  object Schemas {
+    val dataUseSchema: ChainBuilder = exec(
+      http("Data Use Schema")
+        .get("/schemas/data-use")
+        .headers(TestConfig.jsonHeader)
+        .check(status.is(session => 200))
+    )
 
-  // '{ "generalUse": true }' is a good example
-  def dataUseTranslateConsent(json: String): ChainBuilder = {
-    exec(
+    // '{ "generalUse": true }' is a good example
+    def dataUseTranslateConsent(json: String): HttpRequestBuilder = {
       http("Translate Consent")
         .post("/schemas/data-use/consent/translate")
         .headers(TestConfig.jsonHeader)
-        .form(json)
-        .check(status.is(session => 200)))
-  }
+        .body(StringBody(json))
+        .asJson
+        .check(status.is(session => 200))
+    }
 
-  // '{ "generalUse": true }' is a good example
-  def dataUseTranslateDAR(json: String): ChainBuilder = {
-    exec(
+    // '{ "generalUse": true }' is a good example
+    def dataUseTranslateDAR(json: String): HttpRequestBuilder = {
       http("Translate DAR")
         .post("/schemas/data-use/dar/translate")
         .headers(TestConfig.jsonHeader)
-        .form(json)
-        .check(status.is(session => 200)))
+        .body(StringBody(json))
+        .asJson
+        .check(status.is(session => 200))
+    }
   }
 
   // ('dataset' || 'purpose') and '{ "generalUse": true }' are good examples
-  def dataUseTranslateFor(whatFor: String, json: String): ChainBuilder = {
-    exec(
-      http("Translate")
-        .post(s"/translate?for=$whatFor")
-        .headers(TestConfig.plainTextHeader)
-        .form(json)
-        .check(status.is(session => 200)))
+  def dataUseTranslateFor(whatFor: String, json: String): HttpRequestBuilder = {
+    http("Translate")
+      .post(s"/translate?for=$whatFor")
+      .headers(TestConfig.plainTextHeader)
+      .body(StringBody(json))
+      .asJson
+      .check(status.is(session => 200))
+  }
+
+  def dataUseTranslateSummary(json: String): HttpRequestBuilder = {
+    http("Translate Summary")
+      .post(s"/translate/summary/")
+      .headers(TestConfig.plainTextHeader)
+      .body(StringBody(json))
+      .asJson
+      .check(status.is(session => 200))
+  }
+
+  def matchNoV1(json: String): HttpRequestBuilder = {
+    http("Match")
+      .post(s"/match")
+      .headers(TestConfig.jsonHeader)
+      .body(StringBody(json))
+      .asJson
+      .check(status.is(session => 200))
   }
 
   // '{ "purpose": { "type": "everything" }, "consent": { "type": "everything" } }' is a good example
-  def matchV1(json: String): ChainBuilder = {
-    exec(http("Match V1")
-      .post(s"/matchv1")
+  def matchV1(json: String): HttpRequestBuilder = {
+    http("Match V1")
+      .post(s"/match/v1")
       .headers(TestConfig.jsonHeader)
-      .form(json)
-      .check(status.is(session => 200)))
+      .body(StringBody(json))
+      .asJson
+      .check(status.is(session => 200))
   }
 
   // '{ "purpose": {"hmbResearch": true}, "consent": {"generalUse": true} }' is a good example
-  def matchV2(json: String): ChainBuilder = {
-    exec(http("Match V2")
+  def matchV2(json: String): HttpRequestBuilder = {
+    http("Match V2")
       .post(s"/match/v2")
       .headers(TestConfig.jsonHeader)
-      .form(json)
-      .check(status.is(session => 200)))
+      .body(StringBody(json))
+      .asJson
+      .check(status.is(session => 200))
   }
 
   // 'http://purl.obolibrary.org/obo/DOID_162' is a good example
-  def searchRequest(term: String): ChainBuilder = {
-    exec(http(s"Search: $term")
+  def searchRequest(term: String): HttpRequestBuilder = {
+    http(s"Search: $term")
       .get(s"/search?id=${encode(term)}")
       .headers(TestConfig.jsonHeader)
-      .check(status.is(session => 200)))
+      .check(status.is(session => 200))
   }
 
   val statusRequest: ChainBuilder = exec(
@@ -101,14 +124,13 @@ object Requests {
   )
 
   // '{ "type": "everything" }' is a good example
-  def validate(json: String): ChainBuilder = {
-    exec(
-      http("Validate Use Restriction")
-        .post("/validate/userestriction")
-        .headers(TestConfig.jsonHeader)
-        .form(json)
-        .check(status.is(session => 200))
-    )
+  def validate(json: String): HttpRequestBuilder = {
+    http("Validate Use Restriction")
+      .post("/validate/userestriction")
+      .headers(TestConfig.jsonHeader)
+      .body(StringBody(json))
+      .asJson
+      .check(status.is(session => 200))
   }
 
   private def encode(term: String): String = {

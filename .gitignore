@@ -65,3 +65,9 @@ src/main/resources/assets/oauth2-redirect.html
 
 # OS stuff
 **/.DS_Store
+
+# metals
+.metals/
+
+# vscode
+.vscode/

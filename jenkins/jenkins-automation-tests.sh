@@ -28,8 +28,16 @@ docker run --rm \
 docker build -f Dockerfile -t ${TEST_IMAGE} .
 
 # Run Tests
-docker run -v "${PWD}/target":/app/target ${TEST_IMAGE}
-TEST_EXIT_CODE=$?
+if docker run -v "${PWD}/target":/app/target ${TEST_IMAGE}
+then
+    TEST_EXIT_CODE=$?
+else
+    TEST_EXIT_CODE=$?
+fi
+
+# Parse Tests
+ls "${PWD}/scripts"
+docker run -v "${PWD}/scripts":/working -v "${PWD}/target":/working/target -w /working broadinstitute/dsp-toolbox python interpret_results.py
 
 # exit with exit code of test script
 exit $TEST_EXIT_CODE
