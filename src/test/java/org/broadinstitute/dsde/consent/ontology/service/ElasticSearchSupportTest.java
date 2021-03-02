@@ -43,7 +43,6 @@ public class ElasticSearchSupportTest {
     public void testGetClusterHealthPath() {
         String path = elasticSearchSupport.getClusterHealthPath();
         Assert.assertNotNull(path);
-        Assert.assertTrue(path.contains(configuration.getIndex()));
         Assert.assertTrue(path.contains("health"));
     }
 
