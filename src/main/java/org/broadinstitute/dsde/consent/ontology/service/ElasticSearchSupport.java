@@ -62,8 +62,8 @@ class ElasticSearchSupport {
         return getTermPath(index) + "/_search";
     }
 
-    String getClusterHealthPath(String index) {
-        return "/_cluster/health/" + index;
+    String getClusterHealthPath() {
+        return "/_cluster/health";
     }
 
     /**
