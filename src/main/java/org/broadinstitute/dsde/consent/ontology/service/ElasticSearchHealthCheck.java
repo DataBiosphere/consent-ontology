@@ -41,7 +41,7 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     @Override
     protected Result check() {
         try {
-            Request request = new Request(GET, elasticSearchSupport.getClusterHealthPath(configuration.getIndex()));
+            Request request = new Request(GET, elasticSearchSupport.getClusterHealthPath());
             Response response = elasticSearchSupport.retryRequest(client, request);
             if (response.getStatusLine().getStatusCode() != 200) {
                 return Result.unhealthy(response.getStatusLine().getReasonPhrase());
