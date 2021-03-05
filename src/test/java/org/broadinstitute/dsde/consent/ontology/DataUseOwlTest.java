@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.common.io.Resources;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
-import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.junit.AfterClass;
@@ -20,7 +20,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestri
 
 public class DataUseOwlTest extends AbstractTest {
 
-    private static final OntModelCache ONT_MODEL_CACHE = OntModelCache.INSTANCE;
+    private static final OntModelFactory ONT_MODEL_CACHE = OntModelFactory.INSTANCE;
     private static final Collection<URL> resources = Collections.singletonList(Resources.getResource("data-use.owl"));
     private static final UseRestriction methodsPurpose = new Named(METHODS_RESEARCH);
     private static final UseRestriction aggregatePurpose = new Named(AGGREGATE_RESEARCH);

@@ -16,7 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
-import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseMatchPair;
@@ -29,7 +29,7 @@ public class MatchResource {
 
     private final StoreOntologyService storeOntologyService;
     private final DataUseMatcher dataUseMatcher;
-    private final OntModelCache ontModelCache = OntModelCache.INSTANCE;
+    private final OntModelFactory ontModelFactory = OntModelFactory.INSTANCE;
 
     @Inject
     MatchResource(DataUseMatcher dataUseMatcher, StoreOntologyService storeOntologyService) {
@@ -102,7 +102,7 @@ public class MatchResource {
         Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
         final MatchWorkerMessage matchMessage = new MatchWorkerMessage(urls, matchPair);
         try {
-            Boolean match = ontModelCache.matchPurpose(matchMessage);
+            Boolean match = ontModelFactory.matchPurpose(matchMessage);
             response.resume(ImmutableMap.of("result", match, "matchPair", matchPair));
         } catch (Exception e) {
             response.resume(new WebApplicationException(e));
