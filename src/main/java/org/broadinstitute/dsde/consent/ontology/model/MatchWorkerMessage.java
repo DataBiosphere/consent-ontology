@@ -1,9 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.model;
 
-import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
-
 import java.net.URL;
 import java.util.Collection;
+import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 
 @SuppressWarnings("WeakerAccess")
 public class MatchWorkerMessage {
