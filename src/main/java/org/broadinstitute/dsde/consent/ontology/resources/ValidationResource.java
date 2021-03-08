@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.resources.validate;
+package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.resources.ErrorResponse;

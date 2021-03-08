@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.api.client.http.HttpStatusCodes;
-import org.broadinstitute.dsde.consent.ontology.resources.validate.ValidationResource;
 import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidationService;
 import org.broadinstitute.dsde.consent.ontology.service.validate.ValidateResponse;
 import org.junit.Before;

@@ -17,7 +17,7 @@ import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
 import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
-import org.broadinstitute.dsde.consent.ontology.resources.validate.ValidationResource;
+import org.broadinstitute.dsde.consent.ontology.resources.ValidationResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.dhatim.dropwizard.sentry.logging.SentryBootstrap;
 import org.dhatim.dropwizard.sentry.logging.UncaughtExceptionHandlers;
