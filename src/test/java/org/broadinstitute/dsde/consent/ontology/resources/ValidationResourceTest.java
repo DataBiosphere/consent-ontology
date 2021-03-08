@@ -1,8 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.api.client.http.HttpStatusCodes;
-import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidationService;
-import org.broadinstitute.dsde.consent.ontology.service.validate.ValidateResponse;
+import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
+import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -44,27 +44,29 @@ public class ValidationResourceTest {
 
     @Test
     public void testValidateUseRestriction() throws Exception {
-        ValidateResponse validateResponse = new ValidateResponse(true, useRestriction);
-        when(validationService.validateUseRestriction(useRestriction)).thenReturn(validateResponse);
+        ValidationResponse validationResponse = new ValidationResponse(true, useRestriction);
+        when(validationService.validateUseRestriction(useRestriction)).thenReturn(
+            validationResponse);
         Response response = validationResource.validateUseRestriction(useRestriction);
-        ValidateResponse validateResponseResult = (ValidateResponse) response.getEntity();
-        assertTrue(validateResponseResult.getErrors().isEmpty());
-        assertTrue(validateResponseResult.isValid());
+        ValidationResponse validationResponseResult = (ValidationResponse) response.getEntity();
+        assertTrue(validationResponseResult.getErrors().isEmpty());
+        assertTrue(validationResponseResult.isValid());
         assertEquals(response.getStatus(), HttpStatusCodes.STATUS_CODE_OK);
-        assertTrue(validateResponseResult.getUseRestriction().endsWith(useRestriction));
+        assertTrue(validationResponseResult.getUseRestriction().endsWith(useRestriction));
     }
 
     @Test
     public void testValidateUseRestrictionInvalid() throws Exception {
         String error = "Term not found: test";
-        ValidateResponse validateResponse = new ValidateResponse(false, invalidUseRestriction);
-        validateResponse.addError(error);
-        when(validationService.validateUseRestriction(useRestriction)).thenReturn(validateResponse);
+        ValidationResponse validationResponse = new ValidationResponse(false, invalidUseRestriction);
+        validationResponse.addError(error);
+        when(validationService.validateUseRestriction(useRestriction)).thenReturn(
+            validationResponse);
         Response response = validationResource.validateUseRestriction(useRestriction);
-        ValidateResponse validateResponseResult = (ValidateResponse) response.getEntity();
-        assertFalse(validateResponseResult.isValid());
+        ValidationResponse validationResponseResult = (ValidationResponse) response.getEntity();
+        assertFalse(validationResponseResult.isValid());
         assertEquals(response.getStatus(), Response.Status.OK.getStatusCode());
-        assertTrue(((ArrayList<String>) validateResponseResult.getErrors()).get(0).contains(error));
+        assertTrue(((ArrayList<String>) validationResponseResult.getErrors()).get(0).contains(error));
     }
 
     @Test

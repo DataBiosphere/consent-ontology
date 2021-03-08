@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.service.validate;
+package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.google.inject.Inject;
@@ -8,6 +8,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.enumerations.UseRestrictionKeys;
+import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
 import org.slf4j.Logger;
 
 import java.util.Collection;
@@ -27,9 +28,9 @@ public class UseRestrictionValidator implements UseRestrictionValidationService 
     }
 
     @Override
-    public ValidateResponse validateUseRestriction(String useRestriction) throws Exception {
+    public ValidationResponse validateUseRestriction(String useRestriction) throws Exception {
         log.debug("Received use restriction: " + useRestriction);
-        ValidateResponse isValid = new ValidateResponse(true, useRestriction);
+        ValidationResponse isValid = new ValidationResponse(true, useRestriction);
         try {
             UseRestriction restriction = UseRestriction.parse(useRestriction);
             String parsedRest = replaceChars(restriction.toString());

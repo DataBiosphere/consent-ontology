@@ -1,15 +1,15 @@
-package org.broadinstitute.dsde.consent.ontology.service.validate;
+package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-public class ValidateResponse {
+public class ValidationResponse {
 
-    private boolean valid = false;
+    private boolean valid;
     private String useRestriction;
-    private Collection<String> errors;
+    private final Collection<String> errors;
 
-    public ValidateResponse(boolean valid, String useRestriction) {
+    public ValidationResponse(boolean valid, String useRestriction) {
         this.valid = valid;
         this.useRestriction = useRestriction;
         this.errors = new ArrayList<>();

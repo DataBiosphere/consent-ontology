@@ -14,8 +14,8 @@ import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslation
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplete;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidationService;
-import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidator;
+import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
+import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidator;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
