@@ -1,8 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.common.io.Resources;
-import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
-import org.broadinstitute.dsde.consent.ontology.actor.OntModelFactory;
+import org.broadinstitute.dsde.consent.ontology.model.MatchWorkerMessage;
+import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.junit.AfterClass;

@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.actor;
+package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -11,6 +11,7 @@ import java.util.Properties;
 import java.util.UUID;
 import java.util.function.Predicate;
 import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.model.MatchWorkerMessage;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletInfGraph;

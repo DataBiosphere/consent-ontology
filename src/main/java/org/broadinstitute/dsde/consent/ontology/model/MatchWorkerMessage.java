@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.actor;
+package org.broadinstitute.dsde.consent.ontology.model;
 
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 
