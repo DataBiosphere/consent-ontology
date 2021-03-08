@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.match;
 
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  * Created by davidan on 5/2/17.
  */
 class Fixtures {
-    
+
     private static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
     private static final List<String> cancerNodeList = Collections.singletonList(cancerNode);
 

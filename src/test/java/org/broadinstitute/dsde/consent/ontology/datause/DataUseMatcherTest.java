@@ -1,10 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseBuilder;
-import org.broadinstitute.dsde.consent.ontology.resources.model.TermParent;
-import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
+import org.broadinstitute.dsde.consent.ontology.model.TermParent;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.Before;
 import org.junit.Test;

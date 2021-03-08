@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseSummary;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 
 import java.io.IOException;
 

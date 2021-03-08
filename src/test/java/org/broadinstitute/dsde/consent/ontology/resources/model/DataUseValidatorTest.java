@@ -1,5 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources.model;
 
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseValidator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertFalse;

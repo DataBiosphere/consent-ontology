@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -18,8 +18,8 @@ import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
 import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseMatchPair;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 
 @Path("/match")

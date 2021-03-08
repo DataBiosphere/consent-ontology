@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 
 /**
  * Implementors generate a data use restriction specific to case-specific business rules

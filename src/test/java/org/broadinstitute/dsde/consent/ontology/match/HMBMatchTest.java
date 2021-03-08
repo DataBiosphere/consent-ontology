@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.match;
 
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -9,11 +9,11 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class HMBMatchTest extends MatchTestBase {
-    
+
     public HMBMatchTest(DataUse purpose, DataUse consent, Boolean expectedMatchResult, String testName) {
         super(purpose, consent, expectedMatchResult, testName);
     }
-    
+
     // define all your test cases here! order is purpose, consent, expected result, test name.
     @Parameterized.Parameters(name="HMBMatchTest {index}: {3}")
     public static Collection<Object[]> tests() {
@@ -40,5 +40,5 @@ public class HMBMatchTest extends MatchTestBase {
             { Fixtures.CS.csd, Fixtures.HMB.uc1, true, "CSD vs. UC1" }
         });
     }
-    
+
 }
