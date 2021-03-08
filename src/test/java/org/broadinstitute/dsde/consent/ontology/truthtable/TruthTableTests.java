@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.truthtable;
 
 import com.google.common.io.Resources;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
-import org.broadinstitute.dsde.consent.ontology.actor.OntModelCache;
+import org.broadinstitute.dsde.consent.ontology.actor.OntModelFactory;
 import org.broadinstitute.dsde.consent.ontology.actor.MatchWorkerMessage;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.junit.Assert;
@@ -26,12 +26,12 @@ public class TruthTableTests extends AbstractTest {
         Resources.getResource("diseases.owl"),
         Resources.getResource("data-use.owl"));
 
-    private OntModelCache ontModelCache = OntModelCache.INSTANCE;
+    private OntModelFactory ontModelFactory = OntModelFactory.INSTANCE;
 
     void assertResponse(MatchPair pair, Boolean expected) {
         MatchWorkerMessage message = new MatchWorkerMessage(RESOURCES, pair);
         try {
-            Assert.assertEquals(ontModelCache.matchPurpose(message), expected);
+            Assert.assertEquals(ontModelFactory.matchPurpose(message), expected);
         } catch (Exception e) {
             e.printStackTrace();
             Assert.fail();
