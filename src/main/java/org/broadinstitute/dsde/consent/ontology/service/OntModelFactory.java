@@ -12,7 +12,7 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.broadinstitute.dsde.consent.ontology.model.MatchWorkerMessage;
+import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
 import org.mindswap.pellet.PelletOptions;
 import org.mindswap.pellet.jena.PelletInfGraph;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
@@ -32,7 +32,7 @@ public enum OntModelFactory {
   private final Logger log = Utils.getLogger(this.getClass());
 
   @SuppressWarnings("unused")
-  public final Boolean matchPurpose(MatchWorkerMessage message) throws Exception {
+  public final Boolean matchPurpose(MatchMessage message) throws Exception {
     OntModel model = getOntModel(message.getUrlCollection());
     String consentId = UUID.randomUUID().toString();
     String purposeId = UUID.randomUUID().toString();

@@ -3,7 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.truthtable;
 import com.google.common.io.Resources;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
-import org.broadinstitute.dsde.consent.ontology.model.MatchWorkerMessage;
+import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 import org.junit.Assert;
 
@@ -29,7 +29,7 @@ public class TruthTableTests extends AbstractTest {
     private OntModelFactory ontModelFactory = OntModelFactory.INSTANCE;
 
     void assertResponse(MatchPair pair, Boolean expected) {
-        MatchWorkerMessage message = new MatchWorkerMessage(RESOURCES, pair);
+        MatchMessage message = new MatchMessage(RESOURCES, pair);
         try {
             Assert.assertEquals(ontModelFactory.matchPurpose(message), expected);
         } catch (Exception e) {

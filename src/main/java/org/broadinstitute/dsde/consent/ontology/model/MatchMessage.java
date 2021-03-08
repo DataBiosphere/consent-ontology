@@ -4,14 +4,13 @@ import java.net.URL;
 import java.util.Collection;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 
-@SuppressWarnings("WeakerAccess")
-public class MatchWorkerMessage {
+public class MatchMessage {
 
     Collection<URL> urlCollection;
 
     MatchPair matchPair;
 
-    public MatchWorkerMessage(Collection<URL> urlCollection, MatchPair matchPair) {
+    public MatchMessage(Collection<URL> urlCollection, MatchPair matchPair) {
         setUrlCollection(urlCollection);
         setMatchPair(matchPair);
     }

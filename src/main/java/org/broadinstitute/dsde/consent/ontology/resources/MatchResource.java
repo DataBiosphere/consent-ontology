@@ -15,7 +15,7 @@ import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.broadinstitute.dsde.consent.ontology.model.MatchWorkerMessage;
+import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
 import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
@@ -100,7 +100,7 @@ public class MatchResource {
     @POST
     public void match(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
         Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
-        final MatchWorkerMessage matchMessage = new MatchWorkerMessage(urls, matchPair);
+        final MatchMessage matchMessage = new MatchMessage(urls, matchPair);
         try {
             Boolean match = ontModelFactory.matchPurpose(matchMessage);
             response.resume(ImmutableMap.of("result", match, "matchPair", matchPair));
