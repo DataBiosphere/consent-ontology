@@ -5,6 +5,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.model.Version;
 import org.slf4j.Logger;
 
 import javax.ws.rs.GET;
@@ -34,34 +35,6 @@ public class VersionResource {
             log.error(e.getMessage());
         }
         return null;
-    }
-
-    private class Version {
-        String hash;
-        String version;
-
-        Version(String props) {
-            if (props == null) {
-                this.hash = "error";
-                this.version = "error";
-            } else {
-                JsonObject jsonObject = new Gson().fromJson(props, JsonObject.class);
-                JsonElement shortHash = jsonObject.get("git.commit.id.abbrev");
-                JsonElement buildVersion = jsonObject.get("git.build.version");
-                if (Objects.nonNull(shortHash) && Objects.nonNull(buildVersion)) {
-                    this.hash = Optional.ofNullable(shortHash.getAsString()).orElse("error");
-                    this.version = Optional.ofNullable(buildVersion.getAsString()).orElse("error");
-                }
-            }
-        }
-
-        public String getHash() {
-            return hash;
-        }
-
-        public String getVersion() {
-            return version;
-        }
     }
 
 }
