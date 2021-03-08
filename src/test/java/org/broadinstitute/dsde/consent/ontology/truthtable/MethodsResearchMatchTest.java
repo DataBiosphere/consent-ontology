@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
+import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
 import org.junit.Test;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;

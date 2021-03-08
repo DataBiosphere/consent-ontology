@@ -2,7 +2,6 @@ package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.net.URL;
 import java.util.Collection;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
 
 public class MatchMessage {
 
