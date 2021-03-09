@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.service;
 
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;

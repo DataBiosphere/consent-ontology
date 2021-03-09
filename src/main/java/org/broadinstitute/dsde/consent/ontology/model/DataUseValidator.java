@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.resources.model;
+package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;

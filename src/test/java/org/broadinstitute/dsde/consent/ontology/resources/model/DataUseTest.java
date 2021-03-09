@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.resources.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.DropwizardClientRule;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;

@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.resources.model;
+package org.broadinstitute.dsde.consent.ontology.model;
 
 public class DataUseElement {
     String code;

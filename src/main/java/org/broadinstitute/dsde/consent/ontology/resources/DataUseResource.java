@@ -6,7 +6,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentRestricti
 import org.broadinstitute.dsde.consent.ontology.datause.builder.DARRestrictionBuilder;
 import org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilder;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.parboiled.common.FileUtils;
 import org.slf4j.Logger;
 

@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.resources;
+package org.broadinstitute.dsde.consent.ontology.model;
 
 import com.google.gson.Gson;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;

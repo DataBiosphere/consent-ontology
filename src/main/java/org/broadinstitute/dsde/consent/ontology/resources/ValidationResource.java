@@ -1,8 +1,7 @@
-package org.broadinstitute.dsde.consent.ontology.resources.validate;
+package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
-import org.broadinstitute.dsde.consent.ontology.resources.ErrorResponse;
-import org.broadinstitute.dsde.consent.ontology.service.validate.UseRestrictionValidationService;
+import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;

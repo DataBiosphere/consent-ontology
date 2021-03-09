@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.match;
 
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.truthtable.TruthTableTests;
 import org.junit.Before;

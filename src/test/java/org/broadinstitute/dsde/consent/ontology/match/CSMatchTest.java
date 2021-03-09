@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.match;
 
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
@@ -9,11 +9,11 @@ import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class CSMatchTest extends MatchTestBase {
-    
+
     public CSMatchTest(DataUse purpose, DataUse consent, Boolean expectedMatchResult, String testName) {
         super(purpose, consent, expectedMatchResult, testName);
     }
-    
+
     // define all your test cases here! order is purpose, consent, expected result, test name.
     @Parameterized.Parameters(name="CSMatchTest {index}: {3}")
     public static Collection<Object[]> tests() {
@@ -39,5 +39,5 @@ public class CSMatchTest extends MatchTestBase {
             { Fixtures.CS.csd, Fixtures.CS.uc4, true, "CSD vs. UC4" }
         });
     }
-    
+
 }

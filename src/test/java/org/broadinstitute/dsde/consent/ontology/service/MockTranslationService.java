@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUseSummary;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 
 public class MockTranslationService implements TextTranslationService {
 

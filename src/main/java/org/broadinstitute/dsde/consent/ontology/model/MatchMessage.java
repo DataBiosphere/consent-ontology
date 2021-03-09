@@ -1,18 +1,15 @@
-package org.broadinstitute.dsde.consent.ontology.actor;
-
-import org.broadinstitute.dsde.consent.ontology.resources.MatchPair;
+package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.net.URL;
 import java.util.Collection;
 
-@SuppressWarnings("WeakerAccess")
-public class MatchWorkerMessage {
+public class MatchMessage {
 
     Collection<URL> urlCollection;
 
     MatchPair matchPair;
 
-    public MatchWorkerMessage(Collection<URL> urlCollection, MatchPair matchPair) {
+    public MatchMessage(Collection<URL> urlCollection, MatchPair matchPair) {
         setUrlCollection(urlCollection);
         setMatchPair(matchPair);
     }

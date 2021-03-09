@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 
 import java.util.ArrayList;
 import java.util.Collections;

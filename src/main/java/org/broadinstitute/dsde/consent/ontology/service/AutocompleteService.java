@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import org.broadinstitute.dsde.consent.ontology.resources.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 
 import java.io.IOException;
 import java.util.Collection;

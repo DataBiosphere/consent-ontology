@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.resources.model;
+package org.broadinstitute.dsde.consent.ontology.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;

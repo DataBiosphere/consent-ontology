@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
 import org.apache.commons.collections4.CollectionUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.models.*;
-import org.broadinstitute.dsde.consent.ontology.resources.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +13,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestri
  * Apply data-access-request-specific business rules when generating use restrictions
  */
 public class DARRestrictionBuilder implements UseRestrictionBuilder {
-    
+
     public UseRestriction buildUseRestriction(DataUse dataUse) {
 
         if (isPresent(dataUse.getGeneralUse()) && dataUse.getGeneralUse()) {
@@ -41,7 +41,7 @@ public class DARRestrictionBuilder implements UseRestrictionBuilder {
         } else {
             methodsList.add(new Not(new Named(CONTROL)));
         }
-        
+
         if (CollectionUtils.isNotEmpty(methodsList)) {
             operandList.add(buildAndRestriction(methodsList));
         }
