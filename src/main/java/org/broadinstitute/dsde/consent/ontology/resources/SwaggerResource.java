@@ -119,6 +119,7 @@ public class SwaggerResource {
                 .replace("url: \"https://petstore.swagger.io/v2/swagger.json\"",
                         "        docExpansion: 'none',\n" +
                                 "        displayRequestDuration: true,\n" +
+                                "        tryItOutEnabled: true,\n" +
                                 "        operationsSorter: 'alpha',\n" +
                                 "        tagsSorter: 'alpha',\n" +
                                 "        url: '/api-docs/api-docs.yaml'\n");
