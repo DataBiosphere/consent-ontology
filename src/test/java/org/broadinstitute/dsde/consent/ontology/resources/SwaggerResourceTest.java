@@ -30,28 +30,6 @@ public class SwaggerResourceTest {
     }
 
     @Test
-    public void testStyle() {
-        Response response = swaggerResource.content("swagger-ui.css");
-        checkStatusAndHeader(response, MEDIA_TYPE_CSS);
-        String content = response.getEntity().toString().trim();
-        Assert.assertFalse(content.isEmpty());
-    }
-
-    @Test
-    public void testJavascript() {
-        Response response = swaggerResource.content("swagger-ui.js");
-        checkStatusAndHeader(response, MEDIA_TYPE_JS);
-        String content = response.getEntity().toString().trim();
-        Assert.assertFalse(content.isEmpty());
-    }
-
-    @Test
-    public void testPng() {
-        Response response = swaggerResource.content("favicon-16x16.png");
-        checkStatusAndHeader(response, MEDIA_TYPE_PNG);
-    }
-
-    @Test
     public void testNotFound() {
         Response response = swaggerResource.content("foo/bar.txt");
         Assert.assertEquals(response.getStatus(), Response.Status.NOT_FOUND.getStatusCode());
