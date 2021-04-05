@@ -24,6 +24,14 @@
 
     <build>
         <finalName>consent-ontology</finalName>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>pl.project13.maven</groupId>
@@ -60,6 +68,7 @@
                     </gitDescribe>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
