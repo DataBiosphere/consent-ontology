@@ -16,7 +16,7 @@
         <owl.version>5.1.17</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.6.2</rdf4j-rio.version>
-        <swagger.ui.version>3.45.0</swagger.ui.version>
+        <swagger.ui.version>3.46.0</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -24,6 +24,14 @@
 
     <build>
         <finalName>consent-ontology</finalName>
+
+        <testResources>
+            <testResource>
+                <directory>src/test/resources</directory>
+                <filtering>true</filtering>
+            </testResource>
+        </testResources>
+
         <plugins>
             <plugin>
                 <groupId>pl.project13.maven</groupId>
@@ -60,6 +68,7 @@
                     </gitDescribe>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>properties-maven-plugin</artifactId>
