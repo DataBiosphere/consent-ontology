@@ -1,10 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.parboiled.common.FileUtils;
-import org.slf4j.Logger;
-
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Properties;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -13,9 +11,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Properties;
+import org.apache.commons.lang3.StringUtils;
+import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.parboiled.common.FileUtils;
+import org.slf4j.Logger;
 
 @Path("/")
 public class SwaggerResource {
@@ -117,13 +116,17 @@ public class SwaggerResource {
     private String getIndex(String swaggerResource) {
         String content = FileUtils.readAllTextFromResource(swaggerResource + "index.html");
         return content
-                .replace("url: \"https://petstore.swagger.io/v2/swagger.json\"",
-                        "        docExpansion: 'none',\n" +
-                                "        displayRequestDuration: true,\n" +
-                                "        tryItOutEnabled: true,\n" +
-                                "        operationsSorter: 'alpha',\n" +
-                                "        tagsSorter: 'alpha',\n" +
-                                "        url: '/api-docs/api-docs.yaml'\n");
+            .replace("url: \"https://petstore.swagger.io/v2/swagger.json\"",
+                " syntaxHighlight: {\n" +
+                    "          activated: false,\n" +
+                    "          theme: \"agate\"\n" +
+                    "        },\n" +
+                    "        docExpansion: 'none',\n" +
+                    "        displayRequestDuration: true,\n" +
+                    "        tryItOutEnabled: true,\n" +
+                    "        operationsSorter: 'alpha',\n" +
+                    "        tagsSorter: 'alpha',\n" +
+                    "        url: '/api-docs/api-docs.yaml'\n");
     }
 
 }
