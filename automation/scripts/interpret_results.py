@@ -72,31 +72,32 @@ def build_scenario_performance(simulation_id, simulation_lines):
         line_split = line.split('\t')
 
         if line_split[0] == 'USER':
-            if line_split[3] == 'START':
-                start = float(strip_chars(line_split[4]))
-                scenario_number = line_split[2]
-                scenarios[scenario_number] = {
-                    'scenario_id': line_split[1] + '|' + strip_chars(line_split[4]),
-                    'scenario': line_split[1],
+            if line.find('START\t') > -1:
+                start = float(strip_chars(line[line.find('START\t') + 6:]))
+                scenario_name = line_split[1]
+                scenarios[scenario_name] = {
+                    'scenario_id': line_split[1] + '|' + str(start),
+                    'scenario': scenario_name,
                     'start': toBQTimestamp(start),
                     'simulation_id': simulation_id
                 }
-            elif line_split[2] == 'END':
-                end_number = line_split[2]
-                scenarios[end_number]['end'] = toBQTimestamp(float(strip_chars(line_split[4])))
-                scenarios[end_number]['time'] = int(float(strip_chars(line_split[4])) - start)
+            elif line.find('END\t') > -1:
+                end_name = line_split[1]
+                end_timestamp = float(strip_chars(line[line.find('END\t') + 4:]))
+                scenarios[end_name]['end'] = toBQTimestamp(end_timestamp)
+                scenarios[end_name]['time'] = int(end_timestamp - start)
 
-                scenario_performance_array.append(scenarios[end_number])
+                scenario_performance_array.append(scenarios[end_name])
         elif line_split[0] == 'REQUEST':
-            request_scenario_number = line_split[1]
+            request_scenario_name = line_split[1]
             request_array.append({
-                'request_id': line_split[3] + '|' + strip_chars(line_split[4]),
-                'request': line_split[3],
-                'scenario_id': scenarios[request_scenario_number]['scenario_id'],
-                'start': toBQTimestamp(float(strip_chars(line_split[4]))),
-                'end': toBQTimestamp(float(strip_chars(line_split[5]))),
-                'time': int(strip_chars(line_split[5])) - int(strip_chars(line_split[4])),
-                'result': line_split[6]
+                'request_id': line_split[2] + '|' + strip_chars(line_split[3]),
+                'request': line_split[2],
+                'scenario_id': scenarios[request_scenario_name]['scenario_id'],
+                'start': toBQTimestamp(float(strip_chars(line_split[3]))),
+                'end': toBQTimestamp(float(strip_chars(line_split[4]))),
+                'time': int(strip_chars(line_split[4])) - int(strip_chars(line_split[3])),
+                'result': line_split[5]
             })
 
     return {
@@ -105,7 +106,7 @@ def build_scenario_performance(simulation_id, simulation_lines):
     }
 
 def build_json(assertions_json, simulation_lines):
-    end = float(simulation_lines[len(simulation_lines) - 2].split('\t')[4])
+    end = float(simulation_lines[len(simulation_lines) - 2].split('\t')[3])
     end_time = toBQTimestamp(end)
     start_time = assertions_json['start']
     simulation = {

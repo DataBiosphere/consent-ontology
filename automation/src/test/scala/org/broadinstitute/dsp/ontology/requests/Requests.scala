@@ -17,12 +17,12 @@ object Requests {
   )
 
   // 'cancer' is a good example
-  def autocomplete(term: String): ChainBuilder = exec(
+  def autocomplete(term: String): HttpRequestBuilder = {
     http(s"Autocomplete: $term")
       .get(s"/autocomplete?q=${encode(term)}")
       .headers(TestConfig.jsonHeader)
       .check(status.is(session => 200))
-  )
+  }
 
   object Schemas {
     val dataUseSchema: ChainBuilder = exec(
