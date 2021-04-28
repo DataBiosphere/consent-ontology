@@ -1,0 +1,68 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  target-branch: develop
+  reviewers:
+  - rushtong
+  - JVThomas
+  assignees:
+  - rushtong
+  - JVThomas
+  labels:
+  - dependency
+  ignore:
+  - dependency-name: com.ibm.icu:icu4j
+    versions:
+    - "> 68.1"
+  - dependency-name: io.dropwizard:dropwizard-jackson
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: org.glassfish.jersey.test-framework.providers:jersey-test-framework-provider-inmemory
+    versions:
+    - "> 2.19, < 3"
+  - dependency-name: org.mockito:mockito-core
+    versions:
+    - ">= 2.a, < 3"
+  - dependency-name: org.mockito:mockito-core
+    versions:
+    - ">= 3.a, < 4"
+  - dependency-name: org.mock-server:mockserver-netty
+    versions:
+    - "> 5.11.1, < 6"
+  - dependency-name: pl.project13.maven:git-commit-id-plugin
+    versions:
+    - "> 4.0.0, < 4.1"
+  - dependency-name: com.google.inject:guice
+    versions:
+    - 5.0.0
+    - 5.0.1
+  commit-message:
+    prefix: dependency
+- package-ecosystem: docker
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  target-branch: develop
+  reviewers:
+  - rushtong
+  assignees:
+  - rushtong
+  labels:
+  - dependency
+  ignore:
+  - dependency-name: adoptopenjdk
+    versions:
+    - "> 8.pre.hotspot"
+  - dependency-name: broad-dsp-gcr-public/base/jre
+    versions:
+    - ">= 15.pre.alpine.a, < 16"
+  - dependency-name: openjdk
+    versions:
+    - "> 8"
+  commit-message:
+    prefix: dependency
