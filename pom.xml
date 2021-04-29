@@ -547,7 +547,7 @@
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>68.1</version>
+            <version>69.1</version>
         </dependency>
 
         <dependency>
