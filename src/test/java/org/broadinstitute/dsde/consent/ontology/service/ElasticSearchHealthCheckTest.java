@@ -78,7 +78,7 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
     public void testCheckStatusYellow() {
         mockRequest("yellow", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        assertFalse(result.isHealthy());
+        assertTrue(result.isHealthy());
         assertTrue(result.getMessage().contains("ClusterHealth is YELLOW"));
     }
 
