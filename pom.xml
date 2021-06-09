@@ -13,6 +13,7 @@
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
         <lucene.version>8.8.2</lucene.version>
+        <mockserver.version>5.11.2</mockserver.version>
         <owl.version>5.1.17</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.7.0</rdf4j-rio.version>
@@ -738,26 +739,20 @@
             <version>1.10.19</version>
         </dependency>
 
-        <!-- Required for mocking ontology and elastic search responses -->
+        <!-- Required for mocking elastic search responses -->
+        <dependency>
+            <groupId>org.testcontainers</groupId>
+            <artifactId>mockserver</artifactId>
+            <version>1.15.3</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Required for mocking client calls against elastic search -->
         <dependency>
             <groupId>org.mock-server</groupId>
-            <artifactId>mockserver-netty</artifactId>
-            <version>5.11.2</version>
+            <artifactId>mockserver-client-java</artifactId>
+            <version>${mockserver.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.fasterxml.jackson.core</groupId>
-                    <artifactId>jackson-databind</artifactId>
-                </exclusion>
-                <!--
-                  The following clashes with jakarta.validation:jakarta.validation-api and
-                  prevents configurations from loading when running locally
-                -->
-                <exclusion>
-                    <groupId>javax.validation</groupId>
-                    <artifactId>validation-api</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
