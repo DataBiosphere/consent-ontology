@@ -25,7 +25,6 @@ import org.mockserver.client.MockServerClient;
 import org.mockserver.matchers.Times;
 import org.testcontainers.containers.MockServerContainer;
 
-@SuppressWarnings("FieldCanBeLocal")
 public class ElasticSearchAutocompleteTest implements WithMockServer {
 
     private ElasticSearchAutocomplete autocompleteAPI;
@@ -130,7 +129,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
     }
 
     // mock response for a search
-    private static String cancerJson = "{\n" +
+    private static final String cancerJson = "{\n" +
         "  \"took\": 15,\n" +
         "  \"timed_out\": false,\n" +
         "  \"_shards\": {\n" +
@@ -175,7 +174,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
         "}";
 
     // mock response for a document get-by-id
-    private static String cancerGetJson = "{\n" +
+    private static final String cancerGetJson = "{\n" +
             "  \"_index\": \"ontology\",\n" +
             "  \"_type\": \"ontology_term\",\n" +
             "  \"_id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
