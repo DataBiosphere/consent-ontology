@@ -7,6 +7,7 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.codahale.metrics.health.HealthCheck;
+import com.google.api.client.http.HttpStatusCodes;
 import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
@@ -41,7 +42,7 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
     }
 
     private void mockRequest(String color, Boolean timedOut) {
-        mockServerClient.when(request()).respond(response().withStatusCode(200).
+        mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).
             withBody("{\n" +
                 "  \"cluster_name\": \"docker-cluster\",\n" +
                 "  \"status\": \"" + color + "\",\n" +
@@ -101,7 +102,7 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
 
     @Test
     public void testErrorStatus() {
-        mockServerClient.when(request()).respond(response().withStatusCode(500));
+        mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_SERVER_ERROR));
         HealthCheck.Result result = elasticSearchHealthCheck.check();
         assertFalse(result.isHealthy());
     }
