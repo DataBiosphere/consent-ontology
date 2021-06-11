@@ -11,6 +11,11 @@ public class ElasticSearchConfiguration {
     @NotNull
     public String index;
 
+    /**
+     * This is configurable for testing purposes
+     */
+    private int port = 9200;
+
     public List<String> getServers() {
         return servers;
     }
@@ -25,5 +30,13 @@ public class ElasticSearchConfiguration {
 
     public void setIndex(String index) {
         this.index = index;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public void setPort(int port) {
+        this.port = port;
     }
 }

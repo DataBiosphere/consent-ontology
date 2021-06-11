@@ -7,38 +7,42 @@ import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.codahale.metrics.health.HealthCheck;
+import com.google.api.client.http.HttpStatusCodes;
 import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.mockserver.integration.ClientAndServer;
+import org.mockserver.client.MockServerClient;
+import org.testcontainers.containers.MockServerContainer;
 
 public class ElasticSearchHealthCheckTest implements WithMockServer {
 
     private ElasticSearchHealthCheck elasticSearchHealthCheck;
-    private ClientAndServer server;
+    private MockServerClient mockServerClient;
+
+    @Rule
+    public MockServerContainer container = new MockServerContainer(IMAGE);
 
     @Before
     public void setUpClass() {
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex("test-ontology");
         configuration.setServers(Collections.singletonList("localhost"));
+        configuration.setPort(container.getServerPort());
         elasticSearchHealthCheck = new ElasticSearchHealthCheck(configuration);
-        server = startMockServer(9200);
+        mockServerClient = new MockServerClient(container.getHost(), container.getServerPort());
     }
 
     @After
     public void shutDown() {
-        if (server != null && server.isRunning()) {
-            server.stop();
-        }
+        stop(container);
     }
 
     private void mockRequest(String color, Boolean timedOut) {
-        server.reset();
-        server.when(request()).respond(response().withStatusCode(200).
+        mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).
             withBody("{\n" +
                 "  \"cluster_name\": \"docker-cluster\",\n" +
                 "  \"status\": \"" + color + "\",\n" +
@@ -91,16 +95,14 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
 
     @Test
     public void testCheckDroppedConnection() {
-        server.reset();
-        server.when(request()).error(error().withDropConnection(true));
+        mockServerClient.when(request()).error(error().withDropConnection(true));
         HealthCheck.Result result = elasticSearchHealthCheck.check();
         assertFalse(result.isHealthy());
     }
 
     @Test
     public void testErrorStatus() {
-        server.reset();
-        server.when(request()).respond(response().withStatusCode(500));
+        mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_SERVER_ERROR));
         HealthCheck.Result result = elasticSearchHealthCheck.check();
         assertFalse(result.isHealthy());
     }
