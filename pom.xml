@@ -14,7 +14,7 @@
         <jersey.version>2.19</jersey.version>
         <lucene.version>8.9.0</lucene.version>
         <mockserver.version>5.11.2</mockserver.version>
-        <owl.version>5.1.17</owl.version>
+        <owl.version>5.1.19</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.7.2</rdf4j-rio.version>
         <swagger.ui.version>3.51.2</swagger.ui.version>
