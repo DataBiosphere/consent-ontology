@@ -26,12 +26,9 @@ import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class StoreOntologyServiceTest {
 
     private static final String content = "{\"name\":\"" + METHODS_RESEARCH + "\"}";

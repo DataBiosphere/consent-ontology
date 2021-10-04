@@ -1,5 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.nullable;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -10,17 +12,14 @@ import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
 
-@RunWith(MockitoJUnitRunner.class)
 public class AutocompleteResourceTest {
 
     @Mock
-    AutocompleteService apiMockUp;
+    private AutocompleteService apiMockUp;
 
     private AutocompleteResource autocompleteResource;
 
@@ -35,9 +34,9 @@ public class AutocompleteResourceTest {
         int limit = 1;
         List<TermResource> termResources = new ArrayList<>();
 
-        Mockito.when(apiMockUp.lookup(null,limit)).thenReturn(termResources);
+        Mockito.when(apiMockUp.lookup(null, limit)).thenReturn(termResources);
         autocompleteResource.getTerms(null, null, limit);
-        verify(apiMockUp, times(1)).lookup(Mockito.anyString(), Mockito.anyInt());
+        verify(apiMockUp, times(1)).lookup(nullable(String.class), anyInt());
     }
 
     @Test
@@ -45,9 +44,9 @@ public class AutocompleteResourceTest {
         int limit = 20;
         List<TermResource> termResources = new ArrayList<>();
         String ontologyName = "Kidney Cancer";
-        Mockito.when(apiMockUp.lookup(ontologyName,limit)).thenReturn(termResources);
+        Mockito.when(apiMockUp.lookup(ontologyName, limit)).thenReturn(termResources);
         autocompleteResource.getTerms(null, null, limit);
-        verify(apiMockUp,times(1)).lookup(Mockito.anyString(), Mockito.anyInt());
+        verify(apiMockUp,times(1)).lookup(nullable(String.class), anyInt());
     }
 
 }

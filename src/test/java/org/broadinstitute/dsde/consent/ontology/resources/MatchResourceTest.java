@@ -2,7 +2,9 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyInt;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -18,11 +20,8 @@ import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class MatchResourceTest {
 
     @Mock
@@ -39,8 +38,8 @@ public class MatchResourceTest {
     @Before
     public void setUp() throws Exception {
         openMocks(this);
-        when(autocompleteService.lookupById(any())).thenReturn(Collections.emptyList());
-        when(dataUseMatcher.matchPurposeAndDatasetV2(any(), any())).thenReturn(
+        when(autocompleteService.lookupById(anyString())).thenReturn(Collections.emptyList());
+        when(dataUseMatcher.matchPurposeAndDatasetV2(any(DataUse.class), any(DataUse.class))).thenReturn(
             new ImmutablePair<>(Boolean.TRUE, Collections.emptyList())
         );
     }

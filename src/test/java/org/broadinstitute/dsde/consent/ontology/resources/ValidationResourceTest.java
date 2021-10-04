@@ -14,11 +14,8 @@ import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
 import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
 public class ValidationResourceTest {
 
     private ValidationResource validationResource;
