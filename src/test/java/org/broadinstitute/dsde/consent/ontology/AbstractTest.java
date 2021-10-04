@@ -1,9 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology;
 
 import com.google.common.io.Resources;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.mockito.Mockito;
-
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
@@ -11,6 +8,8 @@ import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
+import org.mockito.Mockito;
 
 
 /**

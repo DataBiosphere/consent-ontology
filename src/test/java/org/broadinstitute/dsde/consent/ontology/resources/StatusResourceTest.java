@@ -1,18 +1,16 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import com.codahale.metrics.health.HealthCheck.Result;
 import com.codahale.metrics.health.HealthCheckRegistry;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import javax.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import javax.ws.rs.core.Response;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 public class StatusResourceTest {
 

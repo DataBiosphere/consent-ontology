@@ -1,5 +1,12 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
+import static junit.framework.TestCase.assertTrue;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.MALE;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
@@ -8,11 +15,6 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestri
 import org.junit.Before;
 import org.junit.Test;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
-
-import static junit.framework.TestCase.assertTrue;
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
 
 public class OrTest {
 

@@ -1,6 +1,16 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import com.google.gson.Gson;
+import java.io.IOException;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Stream;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
@@ -13,19 +23,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Stream;
-
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 public class TextTranslationServiceImplTest extends AbstractTest {
 

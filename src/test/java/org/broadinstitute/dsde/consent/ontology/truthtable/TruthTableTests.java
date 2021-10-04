@@ -1,15 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
 import com.google.common.io.Resources;
-import org.broadinstitute.dsde.consent.ontology.AbstractTest;
-import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
-import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
-import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
-import org.junit.Assert;
-
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
+import org.broadinstitute.dsde.consent.ontology.AbstractTest;
+import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
+import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
+import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
+import org.junit.Assert;
 
 /**
  * See https://docs.google.com/document/d/1xyeYoIKBDFGAsQ_spoK5Ye5esMOXqpRBojd6ijZWJkk

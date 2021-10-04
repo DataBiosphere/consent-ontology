@@ -1,15 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+
+import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.junit.Assert;
 import org.junit.Test;
-
-import java.util.Collections;
-
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
 
 public class ConsentRestrictionBuilderTest {
 

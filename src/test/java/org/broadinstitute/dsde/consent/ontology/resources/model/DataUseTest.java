@@ -1,5 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.resources.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dropwizard.testing.junit.DropwizardClientRule;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
@@ -12,11 +17,6 @@ import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.parboiled.common.FileUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 @SuppressWarnings("FieldCanBeLocal")
 public class DataUseTest {

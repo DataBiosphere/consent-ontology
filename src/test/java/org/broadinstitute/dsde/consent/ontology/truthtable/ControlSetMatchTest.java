@@ -1,10 +1,18 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
-import org.broadinstitute.dsde.consent.ontology.datause.models.*;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CONTROL;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.POPULATION_STRUCTURE;
+
+import org.broadinstitute.dsde.consent.ontology.datause.models.And;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
 import org.junit.Test;
-
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
 
 public class ControlSetMatchTest extends TruthTableTests {
 

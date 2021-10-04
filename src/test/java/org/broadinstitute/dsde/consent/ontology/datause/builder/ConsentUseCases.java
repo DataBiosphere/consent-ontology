@@ -1,6 +1,11 @@
 package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
-import org.broadinstitute.dsde.consent.ontology.datause.models.*;
+import org.broadinstitute.dsde.consent.ontology.datause.models.And;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 
 /**
  * See TruthTableTests for the source of many of these tests. In most cases, the corresponding TT test will need to
@@ -71,5 +76,5 @@ public class ConsentUseCases {
         new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH),
         new Named(CANCER)
     );
-    
+
 }

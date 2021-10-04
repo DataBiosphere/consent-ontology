@@ -1,5 +1,13 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
+
+import java.util.ArrayList;
+import java.util.List;
+import javax.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.Before;
@@ -7,17 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 @SuppressWarnings("SimplifiableJUnitAssertion")
 @RunWith(MockitoJUnitRunner.class)
