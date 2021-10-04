@@ -18,8 +18,8 @@ import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 public class OrTest {
 
-    UseRestriction[] operands = new UseRestriction[2];
-    UseRestrictionVisitor visitor;
+    private final UseRestriction[] operands = new UseRestriction[2];
+    private UseRestrictionVisitor visitor;
     private Or or;
 
     @Before

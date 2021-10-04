@@ -18,7 +18,7 @@ import org.mockito.Mockito;
 public class OntologySearchResourceTest {
 
     @Mock
-    AutocompleteService autocompleteService;
+    private AutocompleteService autocompleteService;
 
     private OntologySearchResource resource;
     private final List<TermResource> nonEmptyTermList = new ArrayList<>();

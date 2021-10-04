@@ -21,11 +21,11 @@ import org.junit.Assert;
 @SuppressWarnings("UnstableApiUsage")
 public class TruthTableTests extends AbstractTest {
 
-    private Collection<URL> RESOURCES = Arrays.asList(
+    private final Collection<URL> RESOURCES = Arrays.asList(
         Resources.getResource("diseases.owl"),
         Resources.getResource("data-use.owl"));
 
-    private OntModelFactory ontModelFactory = OntModelFactory.INSTANCE;
+    private final OntModelFactory ontModelFactory = OntModelFactory.INSTANCE;
 
     void assertResponse(MatchPair pair, Boolean expected) {
         MatchMessage message = new MatchMessage(RESOURCES, pair);

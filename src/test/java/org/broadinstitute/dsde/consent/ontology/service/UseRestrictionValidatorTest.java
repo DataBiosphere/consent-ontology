@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.service.validate;
+package org.broadinstitute.dsde.consent.ontology.service;
 
 
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;

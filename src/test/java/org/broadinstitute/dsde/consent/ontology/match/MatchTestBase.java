@@ -20,10 +20,10 @@ import org.mockito.Mock;
  */
 abstract class MatchTestBase extends TruthTableTests {
 
-    private DataUse purpose;
-    private DataUse consent;
-    private Boolean expectedMatchResult;
-    private String testName;
+    private final DataUse purpose;
+    private final DataUse consent;
+    private final Boolean expectedMatchResult;
+    private final String testName;
 
     MatchTestBase(DataUse purpose, DataUse consent, Boolean expectedMatchResult, String testName) {
         this.purpose = purpose;

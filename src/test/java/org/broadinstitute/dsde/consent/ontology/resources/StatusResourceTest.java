@@ -14,9 +14,9 @@ import org.mockito.Mock;
 
 public class StatusResourceTest {
 
-    private Result deadlocks = Result.healthy();
-    private Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
-    private Result gcs = Result.healthy();
+    private final Result deadlocks = Result.healthy();
+    private final Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
+    private final Result gcs = Result.healthy();
 
     @Mock
     private HealthCheckRegistry healthChecks;

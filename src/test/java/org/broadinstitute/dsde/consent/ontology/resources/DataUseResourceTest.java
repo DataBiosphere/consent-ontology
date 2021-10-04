@@ -18,7 +18,7 @@ import org.junit.Test;
 public class DataUseResourceTest {
 
     private DataUseResource dataUseResource;
-    private String generalUse = "{ \"generalUse\": true }";
+    private final String generalUse = "{ \"generalUse\": true }";
 
     @Before
     public void setUp() {

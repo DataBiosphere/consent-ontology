@@ -12,8 +12,8 @@ import org.junit.Test;
 
 public class NamedVisitorTest {
 
-    NamedVisitor namedVisitor;
-    UseRestriction name;
+    private NamedVisitor namedVisitor;
+    private UseRestriction name;
 
     @Before
     public void setUp() {

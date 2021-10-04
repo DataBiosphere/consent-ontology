@@ -27,9 +27,9 @@ public class OntologySearchParentTest {
     private OntologySearchResource resource;
 
     // Construction of children and parents.
-    private static TermResource child = new TermResource();
-    private static TermResource parent1 = new TermResource();
-    private static TermResource parent2 = new TermResource();
+    private static final TermResource child = new TermResource();
+    private static final TermResource parent1 = new TermResource();
+    private static final TermResource parent2 = new TermResource();
 
     @Before
     public void setUp() throws Exception {

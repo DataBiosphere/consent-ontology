@@ -12,8 +12,8 @@ import org.junit.Test;
 
 public class ConsentRestrictionBuilderTest {
 
-    private UseRestrictionBuilder restrictionBuilder = new ConsentRestrictionBuilder();
-    private UseRestriction everything = new Everything();
+    private final UseRestrictionBuilder restrictionBuilder = new ConsentRestrictionBuilder();
+    private final UseRestriction everything = new Everything();
 
     @Test
     public void testGeneralUse() {

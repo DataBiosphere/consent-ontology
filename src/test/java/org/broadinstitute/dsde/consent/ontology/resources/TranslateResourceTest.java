@@ -17,7 +17,7 @@ import org.junit.Test;
 
 public class TranslateResourceTest {
 
-    private static TextTranslationService mockService = new MockTranslationService();
+    private static final TextTranslationService mockService = new MockTranslationService();
 
     @ClassRule
     public static final ResourceTestRule gRule = ResourceTestRule

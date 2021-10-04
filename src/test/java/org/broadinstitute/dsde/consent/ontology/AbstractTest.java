@@ -4,7 +4,6 @@ import com.google.common.io.Resources;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.security.GeneralSecurityException;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -17,7 +16,7 @@ import org.mockito.Mockito;
  */
 public class AbstractTest {
 
-    protected static StoreOntologyService getStorageServiceMock() throws GeneralSecurityException, IOException {
+    protected static StoreOntologyService getStorageServiceMock() throws IOException {
         URL urlOntologyConfiguration = Resources.getResource("ontologyConf.json");
         Collection<URL> ontologyUrls = Arrays.asList(
             Resources.getResource("diseases.owl"),

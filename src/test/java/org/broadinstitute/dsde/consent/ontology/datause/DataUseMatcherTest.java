@@ -29,7 +29,7 @@ public class DataUseMatcherTest {
     private static final String intestinalCancerNode = "http://purl.obolibrary.org/obo/DOID_10155";
 
     @Mock
-    AutocompleteService autocompleteService;
+    private AutocompleteService autocompleteService;
 
     @Before
     public void setUp() {
