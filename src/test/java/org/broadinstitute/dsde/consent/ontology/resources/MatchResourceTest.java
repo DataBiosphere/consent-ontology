@@ -3,7 +3,6 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
@@ -81,7 +80,7 @@ public class MatchResourceTest {
 
     @Test
     public void testInternalServerError() {
-        doThrow(new RuntimeException("Something went wrong")).when(dataUseMatcher).matchPurposeAndDatasetV2(any(), any());
+        doThrow(new RuntimeException("Something went wrong")).when(dataUseMatcher).matchPurposeAndDatasetV2(any(DataUse.class), any(DataUse.class));
         initResource();
         DataUse purpose = new DataUseBuilder().setDiseaseRestrictions(Collections.singletonList("http://purl.obolibrary.org/obo/DOID_162")).setMethodsResearch(true).build();
         DataUse dataset = new DataUseBuilder().setHmbResearch(true).build();
