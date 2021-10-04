@@ -13,6 +13,7 @@ import java.security.GeneralSecurityException;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class GCSHealthCheckTest {
 
@@ -23,7 +24,7 @@ public class GCSHealthCheckTest {
 
     @Before
     public void setUpClass() {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         healthCheck = new GCSHealthCheck(store);
     }
 

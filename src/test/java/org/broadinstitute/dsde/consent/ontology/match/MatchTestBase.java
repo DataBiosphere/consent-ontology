@@ -15,6 +15,7 @@ import java.util.Collections;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 /**
  * Created by davidan on 5/3/17.
@@ -38,7 +39,7 @@ abstract class MatchTestBase extends TruthTableTests {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         try {
             when(autocompleteService.lookupById(any())).thenReturn(Collections.emptyList());
         } catch (Exception e) {

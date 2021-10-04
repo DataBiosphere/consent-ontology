@@ -14,6 +14,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @SuppressWarnings("SimplifiableJUnitAssertion")
 public class OntologySearchParentTest {
@@ -30,7 +31,7 @@ public class OntologySearchParentTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         resource = new OntologySearchResource(api);
 
         parent1.setId("parent1");

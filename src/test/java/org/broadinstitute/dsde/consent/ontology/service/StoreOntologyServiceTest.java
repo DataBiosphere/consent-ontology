@@ -31,6 +31,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @RunWith(MockitoJUnitRunner.class)
 public class StoreOntologyServiceTest {
@@ -45,7 +46,7 @@ public class StoreOntologyServiceTest {
 
     @Before
     public void setUpClass() {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         storeOntologyService = new StoreOntologyService(store, "ontology", "ontology");
     }
 

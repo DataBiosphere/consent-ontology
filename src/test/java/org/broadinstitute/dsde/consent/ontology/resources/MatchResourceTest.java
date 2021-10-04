@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.util.Collections;
 import javax.ws.rs.core.Response;
@@ -38,7 +39,7 @@ public class MatchResourceTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         when(autocompleteService.lookupById(any())).thenReturn(Collections.emptyList());
         when(dataUseMatcher.matchPurposeAndDatasetV2(any(), any())).thenReturn(
             new ImmutablePair<>(Boolean.TRUE, Collections.emptyList())

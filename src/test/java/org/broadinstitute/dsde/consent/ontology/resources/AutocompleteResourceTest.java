@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
@@ -27,7 +28,7 @@ public class AutocompleteResourceTest {
 
     @Before
     public void setUp(){
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         autocompleteResource = new AutocompleteResource(apiMockUp);
     }
 

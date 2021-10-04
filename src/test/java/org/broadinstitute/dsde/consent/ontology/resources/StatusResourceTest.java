@@ -12,6 +12,7 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class StatusResourceTest {
 
@@ -23,7 +24,7 @@ public class StatusResourceTest {
     private HealthCheckRegistry healthChecks;
 
     private StatusResource initStatusResource(SortedMap<String, Result> checks) {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         when(healthChecks.runHealthChecks()).thenReturn(checks);
         return new StatusResource(healthChecks);
     }

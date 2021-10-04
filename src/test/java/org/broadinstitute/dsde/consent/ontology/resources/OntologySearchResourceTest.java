@@ -17,6 +17,7 @@ import java.util.List;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 @SuppressWarnings("SimplifiableJUnitAssertion")
 @RunWith(MockitoJUnitRunner.class)
@@ -31,7 +32,7 @@ public class OntologySearchResourceTest {
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         resource = new OntologySearchResource(autocompleteService);
         TermResource term = new TermResource();
         term.id = "DOID_4";

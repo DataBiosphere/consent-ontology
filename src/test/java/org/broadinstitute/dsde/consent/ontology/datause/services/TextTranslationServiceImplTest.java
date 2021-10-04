@@ -25,6 +25,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 public class TextTranslationServiceImplTest extends AbstractTest {
 
@@ -44,7 +45,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
         mockTerm.setId("term id");
         mockTerm.setLabel("term label");
         mockTerm.setDefinition("term definition");
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         Mockito.when(autocompleteService.lookupById(any())).thenReturn(Collections.singletonList(mockTerm));
         service = new TextTranslationServiceImpl(autocompleteService);
     }
