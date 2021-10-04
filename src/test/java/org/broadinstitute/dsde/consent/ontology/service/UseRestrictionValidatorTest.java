@@ -10,8 +10,6 @@ import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidator;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
