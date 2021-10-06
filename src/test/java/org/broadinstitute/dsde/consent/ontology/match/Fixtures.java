@@ -1,10 +1,9 @@
 package org.broadinstitute.dsde.consent.ontology.match;
 
-import org.broadinstitute.dsde.consent.ontology.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
-
 import java.util.Collections;
 import java.util.List;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 
 /**
  * Created by davidan on 5/2/17.

@@ -1,11 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.match;
 
+import java.util.Arrays;
+import java.util.Collection;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
-
-import java.util.Arrays;
-import java.util.Collection;
 
 @RunWith(Parameterized.class)
 public class MRPMatchTest extends MatchTestBase {

@@ -1,7 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -21,7 +22,6 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.matchers.Times;
 import org.testcontainers.containers.MockServerContainer;
@@ -36,11 +36,11 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
     public MockServerContainer container = new MockServerContainer(IMAGE);
 
     @Mock
-    ElasticSearchSupport elasticSearchSupport;
+    private ElasticSearchSupport elasticSearchSupport;
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex(INDEX_NAME);
         configuration.setServers(Collections.singletonList(container.getHost()));
@@ -100,7 +100,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
     @Test(expected = BadRequestException.class)
     public void testInvalidIdStringError() {
         mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
-        when(elasticSearchSupport.getEncodedEndpoint(any(), any())).thenThrow(new BadRequestException());
+        when(elasticSearchSupport.getEncodedEndpoint(anyString(), anyString())).thenThrow(new BadRequestException());
         autocompleteAPI.setElasticSearchSupport(elasticSearchSupport);
         autocompleteAPI.lookupById("cancer");
     }

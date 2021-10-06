@@ -1,22 +1,19 @@
-package org.broadinstitute.dsde.consent.ontology.service.validate;
+package org.broadinstitute.dsde.consent.ontology.service;
 
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
+
+import java.util.ArrayList;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidator;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.slf4j.Logger;
-
-import java.util.ArrayList;
-
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
 
 public class UseRestrictionValidatorTest extends AbstractTest {
 

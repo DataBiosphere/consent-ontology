@@ -1,5 +1,11 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.json.JSONException;
@@ -8,16 +14,11 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
-import static org.junit.Assert.*;
-
 @SuppressWarnings("SimplifiableJUnitAssertion")
 public class DataUseResourceTest {
 
     private DataUseResource dataUseResource;
-    private String generalUse = "{ \"generalUse\": true }";
+    private final String generalUse = "{ \"generalUse\": true }";
 
     @Before
     public void setUp() {

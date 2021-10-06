@@ -3,15 +3,14 @@ package org.broadinstitute.dsde.consent.ontology.service;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.elasticsearch.client.RestClient;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class ElasticSearchSupportTest {
 

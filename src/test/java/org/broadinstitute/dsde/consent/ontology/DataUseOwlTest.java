@@ -1,21 +1,24 @@
 package org.broadinstitute.dsde.consent.ontology;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
+
 import com.google.common.io.Resources;
+import java.net.URL;
+import java.util.Collection;
+import java.util.Collections;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Nothing;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
-import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
-import org.broadinstitute.dsde.consent.ontology.datause.models.*;
 import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
+import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
-
-import java.net.URL;
-import java.util.Collection;
-import java.util.Collections;
-
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
 
 
 public class DataUseOwlTest extends AbstractTest {

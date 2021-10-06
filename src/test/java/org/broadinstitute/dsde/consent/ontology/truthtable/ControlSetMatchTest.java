@@ -1,19 +1,27 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
-import org.broadinstitute.dsde.consent.ontology.datause.models.*;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CONTROL;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.POPULATION_STRUCTURE;
+
+import org.broadinstitute.dsde.consent.ontology.datause.models.And;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
 import org.junit.Test;
 
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
-
 public class ControlSetMatchTest extends TruthTableTests {
 
-    private UseRestriction darCSA = new And(
+    private final UseRestriction darCSA = new And(
         new Named(CONTROL),
         new Named("http://purl.obolibrary.org/obo/DOID_162")
     );
 
-    private UseRestriction darDefaultCSA = new And(
+    private final UseRestriction darDefaultCSA = new And(
         new And(
             new Not(new Named(METHODS_RESEARCH)),
             new Not(new Named(POPULATION_STRUCTURE)),
@@ -24,9 +32,9 @@ public class ControlSetMatchTest extends TruthTableTests {
 
     );
 
-    private UseRestriction darCSB = new Named("http://purl.obolibrary.org/obo/DOID_162");
+    private final UseRestriction darCSB = new Named("http://purl.obolibrary.org/obo/DOID_162");
 
-    private UseRestriction darDefaultCSB = new And(
+    private final UseRestriction darDefaultCSB = new And(
         new And(
             new Not(new Named(METHODS_RESEARCH)),
             new Not(new Named(POPULATION_STRUCTURE)),
@@ -36,9 +44,9 @@ public class ControlSetMatchTest extends TruthTableTests {
         new Named(NON_PROFIT)
     );
 
-    private UseRestriction darCSC = new Named(CONTROL);
+    private final UseRestriction darCSC = new Named(CONTROL);
 
-    private UseRestriction darDefaultCSC = new And(
+    private final UseRestriction darDefaultCSC = new And(
         new And(
             new Not(new Named(METHODS_RESEARCH)),
             new Not(new Named(POPULATION_STRUCTURE)),
@@ -48,7 +56,7 @@ public class ControlSetMatchTest extends TruthTableTests {
     );
 
     // Combined example from OD-329
-    private UseRestriction dulUC1 = new Or(
+    private final UseRestriction dulUC1 = new Or(
         new Named(AGGREGATE_RESEARCH),
         new Or(
             new Named(METHODS_RESEARCH),
@@ -57,7 +65,7 @@ public class ControlSetMatchTest extends TruthTableTests {
     );
 
     // Combined example from OD-335
-    private UseRestriction dulUC2 = new Or(
+    private final UseRestriction dulUC2 = new Or(
         new Or(
             new Named(AGGREGATE_RESEARCH),
             new Or(
@@ -78,7 +86,7 @@ public class ControlSetMatchTest extends TruthTableTests {
     );
 
     // Combined example from OD-336
-    private UseRestriction dulUC3 = new Or(
+    private final UseRestriction dulUC3 = new Or(
         new Named(AGGREGATE_RESEARCH),
         new Or(
             new Named(METHODS_RESEARCH),

@@ -1,7 +1,13 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.junit.Assert.assertEquals;
+
 import com.google.gson.Gson;
 import io.dropwizard.testing.junit.ResourceTestRule;
+import java.io.IOException;
+import javax.ws.rs.client.Entity;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
@@ -9,16 +15,9 @@ import org.broadinstitute.dsde.consent.ontology.service.MockTranslationService;
 import org.junit.ClassRule;
 import org.junit.Test;
 
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.io.IOException;
-
-import static org.junit.Assert.assertEquals;
-
 public class TranslateResourceTest {
 
-    private static TextTranslationService mockService = new MockTranslationService();
+    private static final TextTranslationService mockService = new MockTranslationService();
 
     @ClassRule
     public static final ResourceTestRule gRule = ResourceTestRule

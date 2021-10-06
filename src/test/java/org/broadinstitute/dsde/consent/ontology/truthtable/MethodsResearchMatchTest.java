@@ -1,19 +1,28 @@
 package org.broadinstitute.dsde.consent.ontology.truthtable;
 
-import org.broadinstitute.dsde.consent.ontology.datause.models.*;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.CONTROL;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.POPULATION_STRUCTURE;
+
+import org.broadinstitute.dsde.consent.ontology.datause.models.And;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
 import org.junit.Test;
 
-import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.*;
-
 public class MethodsResearchMatchTest extends TruthTableTests {
 
-    private UseRestriction darMRPA = new And(
+    private final UseRestriction darMRPA = new And(
         new Named(METHODS_RESEARCH),
         new Named("http://purl.obolibrary.org/obo/DOID_162")
     );
 
-    private UseRestriction darDefaultMRPA = new And(
+    private final UseRestriction darDefaultMRPA = new And(
         new And(
             new Named(METHODS_RESEARCH),
             new Not(new Named(POPULATION_STRUCTURE)),
@@ -23,9 +32,9 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         new Named(NON_PROFIT)
     );
 
-    private UseRestriction darMRPB = new Named("http://purl.obolibrary.org/obo/DOID_162");
+    private final UseRestriction darMRPB = new Named("http://purl.obolibrary.org/obo/DOID_162");
 
-    private UseRestriction darDefaultMRPB = new And(
+    private final UseRestriction darDefaultMRPB = new And(
         new And(
             new Not(new Named(METHODS_RESEARCH)),
             new Not(new Named(POPULATION_STRUCTURE)),
@@ -34,10 +43,10 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         new Named("http://purl.obolibrary.org/obo/DOID_162"),
         new Named(NON_PROFIT));
 
-    private UseRestriction darMRPC = new Named(METHODS_RESEARCH);
+    private final UseRestriction darMRPC = new Named(METHODS_RESEARCH);
 
 
-    private UseRestriction darDefaultMRPC = new And(
+    private final UseRestriction darDefaultMRPC = new And(
         new And(
             new Named(METHODS_RESEARCH),
             new Not(new Named(POPULATION_STRUCTURE)),
@@ -45,21 +54,21 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         ),
         new Named(NON_PROFIT));
 
-    private UseRestriction darCSA = new And(
+    private final UseRestriction darCSA = new And(
         new Named("http://purl.obolibrary.org/obo/DOID_4422"),
         new Named(CONTROL)
     );
 
-    private UseRestriction darCSC = new Named(CONTROL);
+    private final UseRestriction darCSC = new Named(CONTROL);
 
-    private UseRestriction darCSD = new And(
+    private final UseRestriction darCSD = new And(
         new Named("http://purl.obolibrary.org/obo/DOID_423"),
         new Named(CONTROL)
     );
 
 
     // Combined example from OD-329
-    private UseRestriction dulUC1 = new Or(
+    private final UseRestriction dulUC1 = new Or(
         new Named(AGGREGATE_RESEARCH),
         new Or(
             new Named(METHODS_RESEARCH),
@@ -68,10 +77,10 @@ public class MethodsResearchMatchTest extends TruthTableTests {
     );
 
     // Modified dul for Control Set Usage Prohibited
-    private UseRestriction mDulUC1 = new Named("http://purl.obolibrary.org/obo/DOID_162");
+    private final UseRestriction mDulUC1 = new Named("http://purl.obolibrary.org/obo/DOID_162");
 
     // Combined example from OD-330
-    private UseRestriction dulUC2 =
+    private final UseRestriction dulUC2 =
         new Or(
             new Named(AGGREGATE_RESEARCH),
             new Or(
@@ -84,13 +93,13 @@ public class MethodsResearchMatchTest extends TruthTableTests {
         );
 
     //Modified dul for Control Set Usage Prohibited
-    private UseRestriction mDulUC2 = new And(
+    private final UseRestriction mDulUC2 = new And(
         new Named("http://purl.obolibrary.org/obo/DOID_162"),
         new Not(new Named(CONTROL))
     );
 
     // Combined example from OD-331
-    private UseRestriction dulUC3 = new Or(
+    private final UseRestriction dulUC3 = new Or(
         new Named(AGGREGATE_RESEARCH),
         new Or(
             new And(
@@ -102,18 +111,18 @@ public class MethodsResearchMatchTest extends TruthTableTests {
     );
 
     // Modified dulUC3 for MRPC.
-    private UseRestriction mDulUC3 = new And(
+    private final UseRestriction mDulUC3 = new And(
         new Everything(),
         new Not(new Named(METHODS_RESEARCH))
     );
 
     //Modified dul for Control Set Usage Prohibited
-    private UseRestriction csdDulUC3 = new And(
+    private final UseRestriction csdDulUC3 = new And(
         new Named("http://purl.obolibrary.org/obo/DOID_162"),
         new Named(CONTROL));
 
     // Combined example from OD-332
-    private UseRestriction dulUC4 = new Or(
+    private final UseRestriction dulUC4 = new Or(
         new Named(AGGREGATE_RESEARCH),
         new Or(
             new Named(METHODS_RESEARCH),
@@ -122,7 +131,7 @@ public class MethodsResearchMatchTest extends TruthTableTests {
     );
 
     // Modified dulUC4 for Control Set Usage Prohibited
-    private UseRestriction mDulUC4 = new And(
+    private final UseRestriction mDulUC4 = new And(
         new Named("http://purl.obolibrary.org/obo/DOID_4422"),
         new Named(CONTROL));
 

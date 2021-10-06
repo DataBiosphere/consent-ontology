@@ -1,25 +1,21 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import com.google.api.client.http.HttpStatusCodes;
-import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
-import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-import org.mockito.runners.MockitoJUnitRunner;
-
-import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
-@RunWith(MockitoJUnitRunner.class)
+import com.google.api.client.http.HttpStatusCodes;
+import java.util.ArrayList;
+import javax.ws.rs.core.Response;
+import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
+import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
+
 public class ValidationResourceTest {
 
     private ValidationResource validationResource;
@@ -38,7 +34,7 @@ public class ValidationResourceTest {
 
     @Before
     public void setUp() {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         validationResource = new ValidationResource(validationService);
     }
 

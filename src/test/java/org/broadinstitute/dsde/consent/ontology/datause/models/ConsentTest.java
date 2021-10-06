@@ -1,14 +1,13 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.io.IOException;
-
 import static junit.framework.TestCase.assertNotNull;
 import static junit.framework.TestCase.assertNull;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
+
+import java.io.IOException;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class ConsentTest extends Consent {
 

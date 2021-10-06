@@ -1,5 +1,15 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.MockitoAnnotations.openMocks;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import javax.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
@@ -7,13 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
-
-import javax.ws.rs.core.Response;
-import java.util.*;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 @SuppressWarnings("SimplifiableJUnitAssertion")
 public class OntologySearchParentTest {
@@ -24,13 +27,13 @@ public class OntologySearchParentTest {
     private OntologySearchResource resource;
 
     // Construction of children and parents.
-    private static TermResource child = new TermResource();
-    private static TermResource parent1 = new TermResource();
-    private static TermResource parent2 = new TermResource();
+    private static final TermResource child = new TermResource();
+    private static final TermResource parent1 = new TermResource();
+    private static final TermResource parent2 = new TermResource();
 
     @Before
     public void setUp() throws Exception {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         resource = new OntologySearchResource(api);
 
         parent1.setId("parent1");

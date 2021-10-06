@@ -1,11 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import io.dropwizard.testing.junit.ResourceTestRule;
+import javax.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.ClassRule;
 import org.junit.Test;
-
-import javax.ws.rs.core.Response;
 
 public class VersionResourceTest {
 

@@ -1,16 +1,20 @@
 package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
-import org.broadinstitute.dsde.consent.ontology.datause.models.*;
+import java.util.Collections;
+import org.broadinstitute.dsde.consent.ontology.datause.models.And;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
+import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.util.Collections;
-
 @SuppressWarnings("SimplifiableJUnitAssertion")
 public class DARRestrictionBuilderTest {
 
-    private UseRestrictionBuilder restrictionBuilder = new DARRestrictionBuilder();
+    private final UseRestrictionBuilder restrictionBuilder = new DARRestrictionBuilder();
 
     @Test
     public void testGeneralUse() {

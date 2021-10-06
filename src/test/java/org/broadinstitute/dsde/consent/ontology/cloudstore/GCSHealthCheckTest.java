@@ -1,18 +1,17 @@
 package org.broadinstitute.dsde.consent.ontology.cloudstore;
 
-import com.codahale.metrics.health.HealthCheck;
-import com.google.api.services.storage.model.Bucket;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
+
+import com.codahale.metrics.health.HealthCheck;
+import com.google.api.services.storage.model.Bucket;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.Mock;
 
 public class GCSHealthCheckTest {
 
@@ -23,7 +22,7 @@ public class GCSHealthCheckTest {
 
     @Before
     public void setUpClass() {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         healthCheck = new GCSHealthCheck(store);
     }
 

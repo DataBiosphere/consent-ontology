@@ -1,29 +1,28 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import com.codahale.metrics.health.HealthCheck.Result;
 import com.codahale.metrics.health.HealthCheckRegistry;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import javax.ws.rs.core.Response;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
-
-import javax.ws.rs.core.Response;
-import java.util.SortedMap;
-import java.util.TreeMap;
-
-import static org.mockito.Mockito.when;
 
 public class StatusResourceTest {
 
-    private Result deadlocks = Result.healthy();
-    private Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
-    private Result gcs = Result.healthy();
+    private final Result deadlocks = Result.healthy();
+    private final Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
+    private final Result gcs = Result.healthy();
 
     @Mock
     private HealthCheckRegistry healthChecks;
 
     private StatusResource initStatusResource(SortedMap<String, Result> checks) {
-        MockitoAnnotations.initMocks(this);
+        openMocks(this);
         when(healthChecks.runHealthChecks()).thenReturn(checks);
         return new StatusResource(healthChecks);
     }
