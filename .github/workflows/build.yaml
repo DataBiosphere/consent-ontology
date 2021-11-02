@@ -6,12 +6,14 @@ on:
     - develop
     paths-ignore:
     - 'README.md'
+    - 'LICENSE.txt'
     - '.github/**'
   pull_request:
     branches:
     - develop
     paths-ignore:
     - 'README.md'
+    - 'LICENSE.txt'
 env:
   REGISTRY_HOST: gcr.io
   GOOGLE_PROJECT: broad-dsp-gcr-public
