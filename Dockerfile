@@ -1,5 +1,5 @@
 # Builder
-FROM eclipse-temurin:11-jdk-alpine AS build
+FROM maven:3.8.3-eclipse-temurin-11 AS build
 
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
