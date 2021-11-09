@@ -4,17 +4,15 @@ import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.google.inject.Inject;
 import java.util.LinkedHashMap;
-import org.broadinstitute.dsde.consent.ontology.OntologyApp;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
-import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
-import org.slf4j.Logger;
-
+import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.util.Map;
+import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
+import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
+import org.slf4j.Logger;
 
 @Path("status")
 public class StatusResource {
@@ -36,7 +34,7 @@ public class StatusResource {
     @Produces("application/json")
     public Response getStatus() {
         Map<String, HealthCheck.Result> results = healthChecks.runHealthChecks();
-        // Ontology can work in a degraded status so log errors at the warning level.
+        // Log errors at the warning level for follow-up
         results.entrySet().
                 stream().
                 filter(e -> !e.getValue().isHealthy()).
@@ -48,6 +46,7 @@ public class StatusResource {
         // Order is important. Put Ok and Degraded states at the beginning of the map and
         // add all other entries after that.
         Map<String, Object> formattedResults = new LinkedHashMap<>();
+        // Ontology can still work in a degraded status
         formattedResults.put(OK, true);
         HealthCheck.Result gcs = results.getOrDefault(GCSHealthCheck.NAME, HealthCheck.Result.unhealthy("Unable to access GCS"));
         HealthCheck.Result elasticSearch = results.getOrDefault(ElasticSearchHealthCheck.NAME, HealthCheck.Result.unhealthy("Unable to access ElasticSearch"));
