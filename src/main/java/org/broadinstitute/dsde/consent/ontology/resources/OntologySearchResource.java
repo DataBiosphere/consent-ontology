@@ -11,6 +11,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Path("/search")
@@ -26,20 +27,26 @@ public class OntologySearchResource {
     @GET
     @Produces("application/json")
     public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) throws IOException {
-        if (!queryTerm.isEmpty()) {
-            List<TermResource> result = service.lookupById(queryTerm);
-            if(!result.isEmpty()){
-                return Response.ok().entity(result).build();
+        String[] queries = queryTerm.split(",");
+        List<TermResource> allResults = new ArrayList<>();
+
+        for (String query : queries) {
+            if (!query.isEmpty()) {
+                List<TermResource> result = service.lookupById(query);
+                if (!result.isEmpty()) {
+                    allResults.addAll(result);
+                } else {
+                    return Response.status(Response.Status.NOT_FOUND)
+                            .entity(new ErrorResponse(" Supplied ID doesn't match any known ontology. ", Response.Status.NOT_FOUND.getStatusCode()))
+                            .build();
+                }
             } else {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .entity(new ErrorResponse(" Supplied ID doesn't match any known ontology. ", Response.Status.NOT_FOUND.getStatusCode()))
+                return Response
+                        .status(Response.Status.BAD_REQUEST)
+                        .entity(new ErrorResponse(" Ontology ID term cannot be empty. ", Response.Status.BAD_REQUEST.getStatusCode()))
                         .build();
             }
-        } else {
-            return Response
-                    .status(Response.Status.BAD_REQUEST)
-                    .entity(new ErrorResponse(" Ontology ID term cannot be empty. ", Response.Status.BAD_REQUEST.getStatusCode()))
-                    .build();
         }
+        return Response.ok().entity(allResults).build();
     }
 }
