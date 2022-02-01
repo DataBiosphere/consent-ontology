@@ -159,11 +159,19 @@ class ElasticSearchSupport {
     }
 
     String getEncodedEndpoint(String query, String index) {
+        String queryUrl = convertQueryToUrl(query);
         try {
-            return getTermPath(index) + "/" + java.net.URLEncoder.encode(query, "UTF-8");
+            return getTermPath(index) + "/" + java.net.URLEncoder.encode(queryUrl, "UTF-8");
         } catch (UnsupportedEncodingException e) {
             throw new BadRequestException(e);
         }
+    }
+
+    private String convertQueryToUrl(String query) {
+        if (query.substring(0, 4).equals("DOID")) {
+            return "http://purl.obolibrary.org/obo/" + query;
+        }
+        return query;
     }
 
 }
