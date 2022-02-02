@@ -11,8 +11,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -33,12 +31,12 @@ public class OntologySearchResource {
     public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) {
         if (queryTerm.isBlank()) {
             return Response
-                    .status(Response.Status.BAD_REQUEST.getStatusCode(), "Ontology ID term cannot be empty.")
+                    .status(Response.Status.BAD_REQUEST)
+                    .entity(new ErrorResponse("Ontology ID term cannot be empty.", Response.Status.BAD_REQUEST.getStatusCode()))
                     .build();
         }
 
         String[] queries = queryTerm.split(",");
-
         try {
             List<TermResource> results = new Streams.FailableStream<>(Arrays.stream(queries))
                     .filter(Objects::nonNull)
@@ -49,8 +47,8 @@ public class OntologySearchResource {
                     .collect(Collectors.toList());
             return checkOntologyRetrieval(results);
         } catch (Exception e) {
-            return Response
-                    .status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), "Ontology could not be successfully retrieved.")
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+                    .entity(new ErrorResponse("Ontology could not be successfully retrieved.", Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
                     .build();
         }
 
@@ -58,8 +56,8 @@ public class OntologySearchResource {
 
     private Response checkOntologyRetrieval(List<TermResource> results) {
         if (results.isEmpty()) {
-            return Response
-                    .status(Response.Status.NOT_FOUND.getStatusCode(), "Supplied IDs do not match any known ontology.")
+            return Response.status(Response.Status.NOT_FOUND)
+                    .entity(new ErrorResponse("Supplied IDs do not match any known ontologies.", Response.Status.NOT_FOUND.getStatusCode()))
                     .build();
         } else {
             return Response.ok().entity(results).build();
