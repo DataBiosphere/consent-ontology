@@ -17,7 +17,7 @@ import java.util.List;
 @Path("/search")
 public class OntologySearchResource {
 
-    private AutocompleteService service;
+    private final AutocompleteService service;
 
     @Inject
     public OntologySearchResource(AutocompleteService service) {
