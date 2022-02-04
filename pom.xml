@@ -17,7 +17,7 @@
         <owl.version>5.1.19</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.7.4</rdf4j-rio.version>
-        <swagger.ui.version>4.2.1</swagger.ui.version>
+        <swagger.ui.version>4.4.1</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -413,7 +413,7 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>7.16.3</version>
+            <version>7.17.0</version>
         </dependency>
 
         <dependency>
@@ -560,7 +560,7 @@
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.12.1</version>
+            <version>2.12.2</version>
         </dependency>
 
         <dependency>
@@ -707,7 +707,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>3.12.4</version>
+            <version>4.2.0</version>
             <scope>test</scope>
         </dependency>
 
