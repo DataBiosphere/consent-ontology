@@ -20,12 +20,9 @@ import org.slf4j.Logger;
 public class SwaggerResource {
 
     private final Logger log = Utils.getLogger(this.getClass());
-
-    // Default swagger ui library if not found in properties
-    // should not hard-code the actual version here!
     private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/latest/";
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
-    final static String MEDIA_TYPE_JS = new MediaType("application", "js").toString();
+    final static String MEDIA_TYPE_JS = new MediaType("application", "javascript").toString();
     final static String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
     private final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
 
