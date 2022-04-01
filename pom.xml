@@ -17,7 +17,7 @@
         <mockserver.version>5.13.0</mockserver.version>
         <owl.version>5.1.20</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
-        <rdf4j-rio.version>3.7.5</rdf4j-rio.version>
+        <rdf4j-rio.version>3.7.6</rdf4j-rio.version>
         <swagger.ui.version>4.8.1</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -158,7 +158,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.3.0</version>
                 <configuration>
                     <finalName>consent-ontology</finalName>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
@@ -287,7 +287,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>7.0.1</version>
+                <version>7.0.4</version>
                 <configuration>
                     <skipProvidedScope>true</skipProvidedScope>
                     <skipRuntimeScope>true</skipRuntimeScope>
@@ -392,7 +392,7 @@
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>1.33.2</version>
+            <version>1.33.4</version>
             <exclusions>
                 <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
                 <exclusion>
@@ -436,7 +436,7 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>8.1.1</version>
+            <version>8.1.2</version>
         </dependency>
 
         <dependency>
@@ -523,7 +523,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.2.1</version>
+            <version>2.13.2.2</version>
         </dependency>
 
         <!-- Addressing OWASP warning: https://nvd.nist.gov/vuln/detail/CVE-2020-25649 -->
