@@ -8,16 +8,16 @@
     <name>Consent Management: Ontology Services</name>
 
     <properties>
-        <dropwizard.version>2.0.28</dropwizard.version>
+        <dropwizard.version>2.1.0</dropwizard.version>
         <gatling.highcharts.version>3.7.6</gatling.highcharts.version>
         <gatling.plugin.version>4.1.3</gatling.plugin.version>
         <java.version>11</java.version>
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
-        <mockserver.version>5.13.0</mockserver.version>
+        <mockserver.version>5.13.2</mockserver.version>
         <owl.version>5.1.20</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
-        <rdf4j-rio.version>3.7.6</rdf4j-rio.version>
+        <rdf4j-rio.version>3.7.7</rdf4j-rio.version>
         <swagger.ui.version>4.8.1</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -210,7 +210,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
-                <version>0.8.7</version>
+                <version>0.8.8</version>
                 <executions>
                     <execution>
                         <id>prepare-agent</id>
@@ -287,7 +287,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>7.0.4</version>
+                <version>7.1.1</version>
                 <configuration>
                     <skipProvidedScope>true</skipProvidedScope>
                     <skipRuntimeScope>true</skipRuntimeScope>
@@ -392,7 +392,7 @@
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>1.33.4</version>
+            <version>1.35.1</version>
             <exclusions>
                 <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
                 <exclusion>
@@ -410,7 +410,7 @@
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-storage</artifactId>
-            <version>v1-rev20220210-1.32.1</version>
+            <version>v1-rev20220608-1.32.1</version>
         </dependency>
 
         <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
@@ -436,7 +436,7 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>8.1.2</version>
+            <version>8.2.3</version>
         </dependency>
 
         <dependency>
@@ -454,7 +454,7 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>9.1.0</version>
+            <version>9.2.0</version>
         </dependency>
 
         <dependency>
@@ -523,14 +523,14 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.2.2</version>
+            <version>2.13.3</version>
         </dependency>
 
         <!-- Addressing OWASP warning: https://nvd.nist.gov/vuln/detail/CVE-2020-25649 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.13.2</version>
+            <version>2.13.3</version>
         </dependency>
 
         <dependency>
@@ -738,7 +738,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mockserver</artifactId>
-            <version>1.16.3</version>
+            <version>1.17.2</version>
             <scope>test</scope>
         </dependency>
 
@@ -766,7 +766,7 @@
         <dependency>
             <groupId>org.javassist</groupId>
             <artifactId>javassist</artifactId>
-            <version>3.28.0-GA</version>
+            <version>3.29.0-GA</version>
         </dependency>
 
         <!-- java 11 requirement -->
