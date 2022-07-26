@@ -10,6 +10,7 @@ public class LivenessResourceTest {
         LivenessResource resource = new LivenessResource();
         Response response = resource.getStatus();
         assertEquals(200, response.getStatus());
+        assertEquals("Healthy!", response.getEntity());
     }
 
 }
