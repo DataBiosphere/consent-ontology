@@ -11,6 +11,7 @@ import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.filters.ResponseServerFilter;
 import org.broadinstitute.dsde.consent.ontology.resources.AutocompleteResource;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
+import org.broadinstitute.dsde.consent.ontology.resources.LivenessResource;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
 import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource;
 import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
@@ -57,6 +58,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(DataUseResource.class));
         env.jersey().register(injector.getInstance(SwaggerResource.class));
         env.jersey().register(injector.getInstance(VersionResource.class));
+        env.jersey().register(new LivenessResource());
 
         env.healthChecks().register(ElasticSearchHealthCheck.NAME, injector.getInstance(ElasticSearchHealthCheck.class));
         env.healthChecks().register(GCSHealthCheck.NAME, injector.getInstance(GCSHealthCheck.class));

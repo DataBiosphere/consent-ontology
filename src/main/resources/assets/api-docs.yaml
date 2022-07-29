@@ -263,6 +263,18 @@ paths:
         500:
           description: Some number of subsystems are not OK.
 
+  /liveness:
+    get:
+      summary: Liveness Endpoint
+      description: Liveness endpoint for conducting quick health checks on the application.
+      tags:
+        - Status
+      produces:
+        - text/plain
+      responses:
+        200:
+          description: Responds with 'Healthy' if endpoint is reachable.
+
   /version:
     get:
       summary: Current application version
