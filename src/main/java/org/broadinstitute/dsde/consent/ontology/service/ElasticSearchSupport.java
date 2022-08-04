@@ -75,7 +75,8 @@ class ElasticSearchSupport {
                  "must": {
                      "multi_match" : {
                      "query": "child",
-                     "type": "phrase_prefix",
+                     "type": "best_fields",
+                     "fuzziness": "AUTO",
                      "fields": [ "id^3", "label^2", "synonyms", "definition" ]
                      }
                  },
@@ -115,7 +116,8 @@ class ElasticSearchSupport {
         Map<String, Object> must = new HashMap<>();
         Map<String, Object> multiMatch = new LinkedHashMap<>(); // Preserve insert order
         multiMatch.put("query", term);
-        multiMatch.put("type", "phrase_prefix");
+        multiMatch.put("type", "best_fields");
+        multiMatch.put("fuzziness", "AUTO");
         multiMatch.put("fields", searchFields);
         must.put("multi_match", multiMatch);
         bool.put("must", must);
