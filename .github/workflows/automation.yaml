@@ -2,7 +2,7 @@ name: Maven
 on: [pull_request]
 jobs:
   package:
-    name: Package
+    name: Automation Tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
