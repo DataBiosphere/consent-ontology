@@ -26,4 +26,4 @@ jobs:
       - name: Format the results
         env:
           MAVEN_OPTS: -Dexec.mainClass="performance.ResultsFormatter" -Dexec.classpathScope=test
-        run: mvn compile exec:java
+        run: mvn test-compile exec:java
