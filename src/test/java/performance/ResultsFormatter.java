@@ -2,7 +2,6 @@ package performance;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
@@ -25,7 +24,7 @@ public class ResultsFormatter {
     Stats stats = gson.fromJson(reader, Stats.class);
 
     LinkedHashMap<String, TestRun> contents = stats.getContents();
-    contents.values().forEach(o -> System.out.println(o.toString()));
+    contents.values().forEach(o -> System.out.println(gson.toJson(o)));
     // TODO: Re-write the results into a BQ-import-friendly format
   }
 
