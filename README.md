@@ -3,7 +3,7 @@
 [![Build Status](https://circleci.com/gh/DataBiosphere/consent-ontology.svg?style=svg)](https://circleci.com/gh/DataBiosphere/consent-ontology)
 [![Coverage Status](https://coveralls.io/repos/github/DataBiosphere/consent-ontology/badge.svg?branch=develop)](https://coveralls.io/github/DataBiosphere/consent-ontology?branch=develop)
 
-The primary Ontology Service API layer for the Data Use Oversight System [DUOS](https://github.com/broadinstitute/consent-ui)
+The primary Ontology Service API layer for the Data Use Oversight System [DUOS](https://github.com/databiosphere/duos-ui)
 
 ## Data Use Oversight System
 
