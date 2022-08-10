@@ -20,10 +20,9 @@ jobs:
       - name: Run Gatling Tests
         run: |
           mvn -v
-          mvn clean gatling:test
+          mvn clean compile test-compile
+          mvn gatling:test
       - name: Copy stats to classpath
         run: cp target/gatling/testrunner-*/js/stats.json target/classes
       - name: Format the results
-        env:
-          MAVEN_OPTS: -Dexec.mainClass="performance.ResultsFormatter" -Dexec.classpathScope=test
-        run: mvn test-compile exec:java
+        run: mvn exec:java -Dexec.mainClass="performance.ResultsFormatter" -Dexec.classpathScope="test"
