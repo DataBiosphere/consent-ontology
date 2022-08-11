@@ -10,8 +10,14 @@ import javax.ws.rs.core.MediaType;
 
 public interface Endpoints {
 
-  Map<CharSequence, String> jsonHeaders = Map.of("Accept", MediaType.APPLICATION_JSON_TYPE.getType());
-  Map<CharSequence, String> plainTextHeaders = Map.of("Accept", MediaType.TEXT_PLAIN_TYPE.getType());
+  Map<CharSequence, String> jsonHeaders = Map.of(
+      "Accept", MediaType.APPLICATION_JSON_TYPE.getType(),
+      "X-App-ID", "DUOS"
+  );
+  Map<CharSequence, String> plainTextHeaders = Map.of(
+      "Accept", MediaType.TEXT_PLAIN_TYPE.getType(),
+      "X-App-ID", "DUOS"
+  );
 
   default HttpRequestActionBuilder autocomplete(String term) {
     return
@@ -29,7 +35,7 @@ public interface Endpoints {
 
   default HttpRequestActionBuilder dataUseTranslateConsent(String json) {
     return
-        http("Translate Consent")
+        http(String.format("Translate Consent DataUse to UseRestriction: %s", json))
             .post("/schemas/data-use/consent/translate")
             .body(StringBody(json))
             .headers(jsonHeaders);
@@ -37,7 +43,7 @@ public interface Endpoints {
 
   default HttpRequestActionBuilder dataUseTranslateDAR(String json) {
     return
-        http("Translate DAR")
+        http(String.format("Translate DAR DataUse to UseRestriction: %s", json))
             .post("/schemas/data-use/dar/translate")
             .body(StringBody(json))
             .headers(jsonHeaders);
@@ -46,7 +52,15 @@ public interface Endpoints {
   default HttpRequestActionBuilder dataUseTranslateFor(String translateFor, String json) {
     return
         http(String.format("Translate For: %s", translateFor))
-            .post(String.format("/translate?for%s", translateFor))
+            .post(String.format("/translate?for=%s", translateFor))
+            .body(StringBody(json))
+            .headers(plainTextHeaders);
+  }
+
+  default HttpRequestActionBuilder dataUseTranslateSummary(String json) {
+    return
+        http(String.format("Translate Summary: %s", json))
+            .post(String.format("/translate?for=%s", json))
             .body(StringBody(json))
             .headers(plainTextHeaders);
   }

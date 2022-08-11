@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Autocomplete;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
+import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseTranslate;
 
 
 /**
@@ -20,9 +21,11 @@ import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
 public class TestRunner extends Simulation {
 
   private final TestConfig config = new TestConfig();
+
   // Scenario Categories:
   private final Autocomplete autocomplete = new Autocomplete();
   private final DataUseSchema dataUseSchema = new DataUseSchema();
+  private final DataUseTranslate dataUseTranslate = new DataUseTranslate();
 
   private final HttpProtocolBuilder protocol = http
       .baseUrl(config.getBaseUrl())
@@ -34,7 +37,8 @@ public class TestRunner extends Simulation {
     setUp(
       Stream.of(
         autocomplete.scenarios,
-        dataUseSchema.scenarios)
+        dataUseSchema.scenarios,
+        dataUseTranslate.scenarios)
         .flatMap(List::stream)
         .map(scn -> scn.injectOpen(atOnceUsers(1)))
         .collect(Collectors.toList())
