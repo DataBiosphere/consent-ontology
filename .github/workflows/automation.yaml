@@ -24,4 +24,4 @@ jobs:
       - name: Copy stats to classpath
         run: cp target/gatling/testrunner-*/js/stats.json target/classes
       - name: Format the results
-        run: mvn exec:java -Dexec.mainClass="performance.ResultsFormatter" -Dexec.classpathScope="test"
+        run: mvn exec:java -Dexec.mainClass="org.broadinstitute.dsp.ontology.performance.ResultsFormatter" -Dexec.classpathScope="test"

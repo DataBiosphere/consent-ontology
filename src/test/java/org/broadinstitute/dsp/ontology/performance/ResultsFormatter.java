@@ -1,15 +1,14 @@
-package performance;
+package org.broadinstitute.dsp.ontology.performance;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Objects;
-import performance.Stats.TestRun;
+import org.broadinstitute.dsp.ontology.performance.Stats.TestRun;
 
 public class ResultsFormatter {
 
@@ -18,9 +17,8 @@ public class ResultsFormatter {
    * upload results to BQ to build up a history of timing results over time
    *
    * @param args CLI Arguments
-   * @throws Exception The exception
    */
-  public static void main(String[] args) throws Exception {
+  public static void main(String[] args) {
     // Look for the stats.json file
     InputStream is = ResultsFormatter.class.getClassLoader().getResourceAsStream("stats.json");
     assert (Objects.nonNull(is));

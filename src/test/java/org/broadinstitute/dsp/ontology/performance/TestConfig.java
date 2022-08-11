@@ -1,4 +1,4 @@
-package performance;
+package org.broadinstitute.dsp.ontology.performance;
 
 import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;

@@ -1,4 +1,4 @@
-package performance;
+package org.broadinstitute.dsp.ontology.performance;
 
 
 import static io.gatling.javaapi.core.CoreDsl.atOnceUsers;
@@ -9,7 +9,8 @@ import io.gatling.javaapi.http.HttpProtocolBuilder;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import performance.scenarios.Autocomplete;
+import org.broadinstitute.dsp.ontology.performance.scenarios.Autocomplete;
+import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
 
 
 /**
@@ -21,6 +22,7 @@ public class TestRunner extends Simulation {
   private final TestConfig config = new TestConfig();
   // Scenario Categories:
   private final Autocomplete autocomplete = new Autocomplete();
+  private final DataUseSchema dataUseSchema = new DataUseSchema();
 
   private final HttpProtocolBuilder protocol = http
       .baseUrl(config.getBaseUrl())
@@ -30,7 +32,9 @@ public class TestRunner extends Simulation {
 
   {
     setUp(
-      Stream.of(autocomplete.scenarios)
+      Stream.of(
+        autocomplete.scenarios,
+        dataUseSchema.scenarios)
         .flatMap(List::stream)
         .map(scn -> scn.injectOpen(atOnceUsers(1)))
         .collect(Collectors.toList())

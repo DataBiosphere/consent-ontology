@@ -1,4 +1,4 @@
-package performance.scenarios;
+package org.broadinstitute.dsp.ontology.performance.scenarios;
 
 import static io.gatling.javaapi.core.CoreDsl.scenario;
 import static io.gatling.javaapi.http.HttpDsl.status;
@@ -6,7 +6,7 @@ import static io.gatling.javaapi.http.HttpDsl.status;
 import com.google.api.client.http.HttpStatusCodes;
 import io.gatling.javaapi.core.ScenarioBuilder;
 import java.util.List;
-import performance.Endpoints;
+import org.broadinstitute.dsp.ontology.performance.Endpoints;
 
 public class Autocomplete implements Endpoints {
 

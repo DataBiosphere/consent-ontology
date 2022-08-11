@@ -1,4 +1,4 @@
-package performance;
+package org.broadinstitute.dsp.ontology.performance;
 
 
 import static io.gatling.javaapi.core.CoreDsl.StringBody;
