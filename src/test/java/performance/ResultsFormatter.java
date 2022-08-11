@@ -15,6 +15,7 @@ public class ResultsFormatter {
 
   /**
    * This class processes the results of a successful gatling test run. Future work will
+   * upload results to BQ to build up a history of timing results over time
    *
    * @param args CLI Arguments
    * @throws Exception The exception
