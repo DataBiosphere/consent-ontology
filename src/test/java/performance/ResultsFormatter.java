@@ -13,19 +13,21 @@ import performance.Stats.TestRun;
 
 public class ResultsFormatter {
 
+  /**
+   * This class processes the results of a successful gatling test run. Future work will
+   *
+   * @param args CLI Arguments
+   * @throws Exception The exception
+   */
   public static void main(String[] args) throws Exception {
     // Look for the stats.json file
-    URL resource = ResultsFormatter.class.getClassLoader().getResource("stats.json");
     InputStream is = ResultsFormatter.class.getClassLoader().getResourceAsStream("stats.json");
-    assert(Objects.nonNull(is));
-    System.out.println(resource);
+    assert (Objects.nonNull(is));
     Gson gson = new GsonBuilder().setPrettyPrinting().create();
     Reader reader = new InputStreamReader(is, StandardCharsets.UTF_8);
     Stats stats = gson.fromJson(reader, Stats.class);
-
     LinkedHashMap<String, TestRun> contents = stats.getContents();
     contents.values().forEach(o -> System.out.println(gson.toJson(o)));
-    // TODO: Re-write the results into a BQ-import-friendly format
   }
 
 }
