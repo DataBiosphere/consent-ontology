@@ -1,7 +1,7 @@
 # Local Development
 
-* Maven 3.5
-* Java 11
+* Maven 3.8
+* Java 17
 * Dropwizard Docs: http://www.dropwizard.io/
 
 ### Check out repository:
@@ -21,17 +21,13 @@ Ensure that your test environment supports that.
 
 #### Docker
 
-Consent-Ontology is packaged into a docker image that is stored in [Consent-Ontology Dockerhub Repo](https://hub.docker.com/r/broadinstitute/consent-ontology).
+Consent-Ontology is packaged into a docker image that is stored in GCR: `gcr.io/broad-dsp-gcr-public/consent-ontology`
 ```
-# to build the image
-./build.sh -d build
-
-# to build the image and push to dockerhub
-./build.sh -d push
-
-# to pull the image from dockerhub
-docker pull broadinstitute/consent-ontology
+# build the docker image
+docker build . -t ontology
 ```
+
+This image can then be run with the proper configuration files provided.
 
 ### Render Configs 
 Specific to internal Broad systems:
@@ -54,14 +50,11 @@ java -jar /path/to/consent-ontology.jar server /path/to/config/file
 Visit local swagger page: https://local.broadinstitute.org:28443/swagger/
 
 ### Debugging
-Port 5005 is open in the configured docker compose. 
+Port 7777 is open in the configured docker compose. 
 Set up a remote debug configuration pointing to `local.broadinstitute.org`
 and the defaults should be correct.
 
-Execute the `fizzed-watcher:run` maven task (under consent plugins) 
-to enable hot reloading of class and resource files.
-
-### Developing with a local Elastic Search instance:
+### Developing with a local ElasticSearch instance:
 
 Update the compose file to include a new section for an ES instance:
 ```
