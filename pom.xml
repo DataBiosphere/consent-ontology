@@ -9,8 +9,8 @@
 
     <properties>
         <dropwizard.version>2.1.1</dropwizard.version>
-        <gatling.highcharts.version>3.7.6</gatling.highcharts.version>
-        <gatling.plugin.version>4.1.3</gatling.plugin.version>
+        <gatling.highcharts.version>3.8.3</gatling.highcharts.version>
+        <gatling.plugin.version>4.2.5</gatling.plugin.version>
         <java.version>17</java.version>
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
