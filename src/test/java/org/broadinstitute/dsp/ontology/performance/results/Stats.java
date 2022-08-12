@@ -60,7 +60,7 @@ public class Stats {
   }
 
   public class OKCounts {
-    long total;
+    float total;
     long ok;
     long ko;
   }
