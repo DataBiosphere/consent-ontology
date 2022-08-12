@@ -25,7 +25,7 @@ public interface Endpoints {
 
   default HttpRequestActionBuilder dataUseTranslateConsent(String json) {
     return
-        http(String.format("Translate Consent DataUse to UseRestriction: %s", json))
+        http("Translate Consent DataUse to UseRestriction")
             .post("/schemas/data-use/consent/translate")
             .body(StringBody(json))
             .header("Accept", MediaType.APPLICATION_JSON);
@@ -33,7 +33,7 @@ public interface Endpoints {
 
   default HttpRequestActionBuilder dataUseTranslateDAR(String json) {
     return
-        http(String.format("Translate DAR DataUse to UseRestriction: %s", json))
+        http("Translate DAR DataUse to UseRestriction")
             .post("/schemas/data-use/dar/translate")
             .body(StringBody(json))
             .header("Accept", MediaType.APPLICATION_JSON);
@@ -49,7 +49,7 @@ public interface Endpoints {
 
   default HttpRequestActionBuilder dataUseTranslateSummary(String json) {
     return
-        http(String.format("Translate Summary: %s", json))
+        http("Translate Summary")
             .post("/translate/summary")
             .body(StringBody(json))
             .header("Accept", MediaType.APPLICATION_JSON)
