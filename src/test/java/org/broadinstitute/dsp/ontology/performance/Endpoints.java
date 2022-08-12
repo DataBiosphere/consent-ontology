@@ -5,32 +5,22 @@ import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
-import java.util.Map;
 import javax.ws.rs.core.MediaType;
 
 public interface Endpoints {
-
-  Map<CharSequence, String> jsonHeaders = Map.of(
-      "Accept", MediaType.APPLICATION_JSON_TYPE.getType(),
-      "X-App-ID", "DUOS"
-  );
-  Map<CharSequence, String> plainTextHeaders = Map.of(
-      "Accept", MediaType.TEXT_PLAIN_TYPE.getType(),
-      "X-App-ID", "DUOS"
-  );
 
   default HttpRequestActionBuilder autocomplete(String term) {
     return
         http(String.format("Autocomplete: %s", term))
             .get(String.format("/autocomplete?q=%s", term))
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder dataUseSchema() {
     return
         http("Data Use Schema")
             .get("/schemas/data-use")
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder dataUseTranslateConsent(String json) {
@@ -38,7 +28,7 @@ public interface Endpoints {
         http(String.format("Translate Consent DataUse to UseRestriction: %s", json))
             .post("/schemas/data-use/consent/translate")
             .body(StringBody(json))
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder dataUseTranslateDAR(String json) {
@@ -46,7 +36,7 @@ public interface Endpoints {
         http(String.format("Translate DAR DataUse to UseRestriction: %s", json))
             .post("/schemas/data-use/dar/translate")
             .body(StringBody(json))
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder dataUseTranslateFor(String translateFor, String json) {
@@ -54,15 +44,16 @@ public interface Endpoints {
         http(String.format("Translate For: %s", translateFor))
             .post(String.format("/translate?for=%s", translateFor))
             .body(StringBody(json))
-            .headers(plainTextHeaders);
+            .header("Accept", MediaType.TEXT_PLAIN);
   }
 
   default HttpRequestActionBuilder dataUseTranslateSummary(String json) {
     return
         http(String.format("Translate Summary: %s", json))
-            .post(String.format("/translate?for=%s", json))
+            .post("/translate/summary")
             .body(StringBody(json))
-            .headers(plainTextHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON)
+            .header("Content-Type", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder matchV1(String json) {
@@ -70,7 +61,8 @@ public interface Endpoints {
         http("Match V1")
             .post("/match/v1")
             .body(StringBody(json))
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON)
+            .header("Content-Type", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder matchV2(String json) {
@@ -78,28 +70,29 @@ public interface Endpoints {
         http("Match V2")
             .post("/match/v2")
             .body(StringBody(json))
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON)
+            .header("Content-Type", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder search(String term) {
     return
         http("Search")
             .get(String.format("/search?id=%s", term))
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder systemStatus() {
     return
         http("Status")
             .get("/status")
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder systemVersion() {
     return
         http("Version")
             .get("/version")
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
   default HttpRequestActionBuilder validate(String json) {
@@ -107,7 +100,7 @@ public interface Endpoints {
         http("Validate Use Restriction")
             .post("/validate/userestriction")
             .body(StringBody(json))
-            .headers(jsonHeaders);
+            .header("Accept", MediaType.APPLICATION_JSON);
   }
 
 }
