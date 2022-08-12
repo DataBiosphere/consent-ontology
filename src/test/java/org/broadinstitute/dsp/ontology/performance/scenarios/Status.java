@@ -10,7 +10,7 @@ import org.broadinstitute.dsp.ontology.performance.Endpoints;
 
 public class Status implements Endpoints {
 
-  public List<ScenarioBuilder> scenarios = List.of(
+  public List<ScenarioBuilder> tests = List.of(
       scenario("Liveness").exec(liveness().check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
       scenario("Status").exec(systemStatus().check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
       scenario("Version").exec(systemVersion().check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)

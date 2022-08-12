@@ -7,6 +7,12 @@ import static io.gatling.javaapi.http.HttpDsl.http;
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
 import javax.ws.rs.core.MediaType;
 
+/**
+ * This interface defines all possible endpoints in the Ontology system.
+ * Some endpoints require different accept/content-type headers so define those here.
+ * Each endpoint defined should cover a single use case. In the event of APIs having
+ * multiple inputs, there should be explicit methods for each variation.
+ */
 public interface Endpoints {
 
   default HttpRequestActionBuilder autocomplete(String term) {

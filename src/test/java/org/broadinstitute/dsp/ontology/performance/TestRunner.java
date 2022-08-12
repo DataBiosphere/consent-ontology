@@ -19,7 +19,8 @@ import org.broadinstitute.dsp.ontology.performance.scenarios.Validate;
 
 
 /**
- * This is the main entry point for integration tests
+ * This is the main entry point for integration/performance tests
+ * Headers common to all requests are defined here in the protocol builder.
  */
 public class TestRunner extends Simulation {
 
@@ -34,13 +35,13 @@ public class TestRunner extends Simulation {
   {
     setUp(
         Stream.of(
-                new Autocomplete().scenarios,
-                new DataUseSchema().scenarios,
-                new DataUseTranslate().scenarios,
-                new Matching().scenarios,
-                new Search().scenarios,
-                new Status().scenarios,
-                new Validate().scenarios
+                new Autocomplete().tests,
+                new DataUseSchema().tests,
+                new DataUseTranslate().tests,
+                new Matching().tests,
+                new Search().tests,
+                new Status().tests,
+                new Validate().tests
             )
             .flatMap(List::stream)
             .map(scn -> scn.injectOpen(atOnceUsers(1)))
