@@ -43,26 +43,32 @@ public class Stats {
 
   public class RunStats {
     String name;
-    OKCounts numberOfRequests;
-    OKCounts minResponseTime;
-    OKCounts maxResponseTime;
-    OKCounts meanResponseTime;
-    OKCounts standardDeviation;
-    OKCounts percentiles1;
-    OKCounts percentiles2;
-    OKCounts percentiles3;
-    OKCounts percentiles4;
+    OKCountsInt numberOfRequests;
+    OKCountsInt minResponseTime;
+    OKCountsInt maxResponseTime;
+    OKCountsInt meanResponseTime;
+    OKCountsInt standardDeviation;
+    OKCountsInt percentiles1;
+    OKCountsInt percentiles2;
+    OKCountsInt percentiles3;
+    OKCountsInt percentiles4;
     RunCountGroup group1;
     RunCountGroup group2;
     RunCountGroup group3;
     RunCountGroup group4;
-    OKCounts meanNumberOfRequestsPerSecond;
+    OKCountsFloat meanNumberOfRequestsPerSecond;
   }
 
-  public class OKCounts {
+  public class OKCountsInt {
+    int total;
+    int ok;
+    int ko;
+  }
+
+  public class OKCountsFloat {
     float total;
-    long ok;
-    long ko;
+    float ok;
+    float ko;
   }
 
   public class RunCountGroup {
