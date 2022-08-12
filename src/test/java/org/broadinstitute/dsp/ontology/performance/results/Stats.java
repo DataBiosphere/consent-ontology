@@ -1,4 +1,4 @@
-package org.broadinstitute.dsp.ontology.performance;
+package org.broadinstitute.dsp.ontology.performance.results;
 
 import com.google.gson.JsonObject;
 import java.util.LinkedHashMap;

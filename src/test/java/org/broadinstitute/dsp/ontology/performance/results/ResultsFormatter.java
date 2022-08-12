@@ -1,4 +1,4 @@
-package org.broadinstitute.dsp.ontology.performance;
+package org.broadinstitute.dsp.ontology.performance.results;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -8,7 +8,7 @@ import java.io.Reader;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Objects;
-import org.broadinstitute.dsp.ontology.performance.Stats.TestRun;
+import org.broadinstitute.dsp.ontology.performance.results.Stats.TestRun;
 
 public class ResultsFormatter {
 

@@ -1,5 +1,7 @@
 name: Maven
 on: [pull_request]
+# TODO: Instantiate a BEE environment to run tests against
+# TODO: Mark job as a failure if tests fail
 jobs:
   package:
     name: Automation Tests
@@ -24,4 +26,4 @@ jobs:
       - name: Copy stats to classpath
         run: cp target/gatling/testrunner-*/js/stats.json target/classes
       - name: Format the results
-        run: mvn exec:java -Dexec.mainClass="org.broadinstitute.dsp.ontology.performance.ResultsFormatter" -Dexec.classpathScope="test"
+        run: mvn exec:java -Dexec.mainClass="org.broadinstitute.dsp.ontology.performance.results.ResultsFormatter" -Dexec.classpathScope="test"
