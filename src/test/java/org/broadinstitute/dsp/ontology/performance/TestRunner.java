@@ -13,6 +13,7 @@ import org.broadinstitute.dsp.ontology.performance.scenarios.Autocomplete;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseTranslate;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Matching;
+import org.broadinstitute.dsp.ontology.performance.scenarios.Status;
 
 
 /**
@@ -34,7 +35,8 @@ public class TestRunner extends Simulation {
                 new Autocomplete().scenarios,
                 new DataUseSchema().scenarios,
                 new DataUseTranslate().scenarios,
-                new Matching().scenarios
+                new Matching().scenarios,
+                new Status().scenarios
             )
             .flatMap(List::stream)
             .map(scn -> scn.injectOpen(atOnceUsers(1)))

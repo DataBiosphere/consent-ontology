@@ -81,6 +81,13 @@ public interface Endpoints {
             .header("Accept", MediaType.APPLICATION_JSON);
   }
 
+  default HttpRequestActionBuilder liveness() {
+    return
+        http("Liveness")
+            .get("/liveness")
+            .header("Accept", MediaType.TEXT_PLAIN);
+  }
+
   default HttpRequestActionBuilder systemStatus() {
     return
         http("Status")
