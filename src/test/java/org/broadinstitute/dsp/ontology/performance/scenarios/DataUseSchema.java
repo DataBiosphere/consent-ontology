@@ -11,7 +11,7 @@ import org.broadinstitute.dsp.ontology.performance.Endpoints;
 public class DataUseSchema implements Endpoints {
 
   public List<ScenarioBuilder> scenarios = List.of(
-    scenario("Data Use Schema").exec(dataUseSchema().check(status().is(HttpStatusCodes.STATUS_CODE_OK)))
+    scenario("Data Use Schema").exec(dataUseSchema().check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)
   );
 
 }

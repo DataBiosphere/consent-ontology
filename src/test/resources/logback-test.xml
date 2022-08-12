@@ -10,6 +10,7 @@
     <logger name="org.mindswap.pellet.jena.graph.query" level="ERROR"/>
     <logger name="org.semanticweb" level="ERROR"/>
     <logger name="org.broadinstitute" level="INFO"/>
+    <logger name="io.gatling.http.engine.response" level="TRACE" />
 
     <root level="ERROR">
         <appender-ref ref="STDOUT" />
