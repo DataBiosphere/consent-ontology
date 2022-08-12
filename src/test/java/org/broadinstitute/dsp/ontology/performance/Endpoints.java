@@ -102,12 +102,13 @@ public interface Endpoints {
             .header("Accept", MediaType.APPLICATION_JSON);
   }
 
-  default HttpRequestActionBuilder validate(String json) {
+  default HttpRequestActionBuilder validateUseRestriction(String json) {
     return
         http("Validate Use Restriction")
             .post("/validate/userestriction")
             .body(StringBody(json))
-            .header("Accept", MediaType.APPLICATION_JSON);
+            .header("Accept", MediaType.APPLICATION_JSON)
+            .header("Content-Type", MediaType.APPLICATION_JSON);
   }
 
 }

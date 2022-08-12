@@ -14,6 +14,7 @@ import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseTranslate;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Matching;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Status;
+import org.broadinstitute.dsp.ontology.performance.scenarios.Validate;
 
 
 /**
@@ -36,7 +37,8 @@ public class TestRunner extends Simulation {
                 new DataUseSchema().scenarios,
                 new DataUseTranslate().scenarios,
                 new Matching().scenarios,
-                new Status().scenarios
+                new Status().scenarios,
+                new Validate().scenarios
             )
             .flatMap(List::stream)
             .map(scn -> scn.injectOpen(atOnceUsers(1)))
