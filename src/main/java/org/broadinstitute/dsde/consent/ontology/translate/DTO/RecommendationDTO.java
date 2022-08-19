@@ -1,4 +1,4 @@
-package org.broadinstitute.dsde.consent.ontology.translate.model;
+package org.broadinstitute.dsde.consent.ontology.translate.DTO;
 
 public class RecommendationDTO {
     private String title;

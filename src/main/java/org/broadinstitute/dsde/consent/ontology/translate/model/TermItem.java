@@ -1,9 +1,9 @@
 package org.broadinstitute.dsde.consent.ontology.translate.model;
 
-public class SearchItem {
+public class TermItem {
 
     private String[] keywords;
-    private String term;
+    private String title;
     private String url;
     private String category;
 
@@ -15,12 +15,12 @@ public class SearchItem {
         this.keywords = keywords;
     }
 
-    public String getTerm() {
-        return term;
+    public String getTitle() {
+        return title;
     }
 
-    public void setTerm(String term) {
-        this.term = term;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getUrl() {

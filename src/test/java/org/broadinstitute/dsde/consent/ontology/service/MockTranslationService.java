@@ -16,6 +16,11 @@ public class MockTranslationService implements TextTranslationService {
     }
 
     @Override
+    public String translateParagraph(String paragraph) {
+        return "{\"http://purl.obolibrary.org/obo/DUO_0000007\":{\"title\":\"Disease Specific Research\",\"category\":\"Data Use Permission\"}}";
+    }
+
+    @Override
     public String translatePurpose(String dataUse) {
         return "translated purpose";
     }

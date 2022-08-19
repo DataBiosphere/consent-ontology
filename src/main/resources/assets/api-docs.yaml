@@ -116,6 +116,27 @@ paths:
             $ref: '#/definitions/DataUseSummary'
         default:
           description: Unexpected error
+  /translate/paragraph:
+    get:
+      summary: Translates Paragraph to ontology recommendations
+      description: The Translate service for paragraphs will render an ontology recommendation for a given paragraph.
+      produces:
+        - application/json
+      parameters:
+        - name: paragraph
+          in: query
+          description: Paragraph to translate
+          type: string
+          required: true
+      tags:
+        - Translate
+      responses:
+        200:
+          description: Successful translation.
+          schema:
+            $ref: '#/definitions/DataUseRecommendation'
+        default:
+          description: Unexpected error
 
   /match:
     post:
@@ -364,6 +385,12 @@ definitions:
     description: JSON model of a set of data use questions and answers
     example:
       { "generalUse": false, "hmbResearch": true, "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602"] }
+
+  DataUseRecommendation:
+    type: object
+    description: JSON model of a set of data use recommendations
+    example:
+      { "http://purl.obolibrary.org/obo/DUO_0000042": { title: "General Research Use", "category", "Data Use Permission" } }
 
   DataUseMatchPair:
     type: object

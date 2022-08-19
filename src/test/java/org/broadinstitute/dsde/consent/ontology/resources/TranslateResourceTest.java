@@ -40,6 +40,18 @@ public class TranslateResourceTest {
     }
 
     @Test
+    public void testParagraphTranslate() throws IOException {
+        String paragraph = "This could be a disease or anything else.";
+        Response response = gRule.client().target("/translate/paragraph")
+                .queryParam("paragraph", paragraph)
+                .request(MediaType.APPLICATION_JSON_TYPE)
+                .accept(MediaType.TEXT_PLAIN_TYPE)
+                .get();
+        assertEquals(200, response.getStatus());
+        assertEquals(mockService.translateParagraph(paragraph), response.readEntity(String.class));
+    }
+
+    @Test
     public void testPurposeTranslate() throws IOException {
         DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
         Gson gson = new Gson();

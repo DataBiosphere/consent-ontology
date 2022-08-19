@@ -3,15 +3,16 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.broadinstitute.dsde.consent.ontology.translate.DTO.RecommendationDTO;
+import org.broadinstitute.dsde.consent.ontology.translate.service.Translate;
 import org.slf4j.Logger;
 
-import javax.ws.rs.Consumes;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
+import java.util.HashMap;
+
 
 @Path("/translate")
 public class TranslateResource {
@@ -51,6 +52,20 @@ public class TranslateResource {
                     entity("Error while translating: " + e.getMessage()).
                     build();
         }
+    }
+
+    @Path("paragraph")
+    @GET
+    public Response translateParagraph(@QueryParam("paragraph") String paragraph) throws Exception {
+        if (paragraph == null || paragraph.isEmpty()) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Missing parameter: paragraph").build();
+        }
+
+        Translate translate = new Translate("search-terms.json");
+
+        HashMap<String, RecommendationDTO> recommendations = translate.paragraph(paragraph);
+
+        return Response.ok().entity(recommendations).build();
     }
 
     /**

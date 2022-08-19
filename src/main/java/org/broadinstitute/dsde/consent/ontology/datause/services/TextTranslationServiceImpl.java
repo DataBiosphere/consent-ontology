@@ -90,6 +90,13 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     @Override
+    public String translateParagraph(String dataUseString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
+        return translate(dataUse, TranslateFor.PARAGRAPH);
+    }
+
+    @Override
     public String translatePurpose(String dataUseString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);

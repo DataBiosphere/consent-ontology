@@ -1,35 +1,39 @@
 package org.broadinstitute.dsde.consent.ontology.translate.service;
 
-import com.github.jsonldjava.shaded.com.google.common.reflect.TypeToken;
-import com.google.gson.Gson;
+import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.translate.DTO.RecommendationDTO;
 import org.broadinstitute.dsde.consent.ontology.translate.model.TermItem;
-import org.parboiled.common.FileUtils;
+import org.broadinstitute.dsde.consent.ontology.translate.utils.LoadUtils;
+import org.broadinstitute.dsde.consent.ontology.translate.utils.SearchUtils;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Pattern;
 
-public class TranslateParagraphService {
+public class Translate {
 
     String jsonFilePath;
 
-    public TranslateParagraphService(String jsonFilePath) {
+    public Translate(String jsonFilePath) {
         this.jsonFilePath = jsonFilePath;
     }
 
-    public HashMap<String, RecommendationDTO> translateParagraph(String paragraph) throws Exception {
-        List<TermItem> terms = loadTermsFromJson();
+    public HashMap<String, RecommendationDTO> paragraph(final String paragraph) throws Exception {
         HashMap<String, RecommendationDTO> recommendations = new HashMap<>();
 
-        for (TermItem term : terms) {
-            String title = term.getTitle();
-            String category = term.getCategory();
-            String url = term.getUrl();
-            String[] keywords = term.getKeywords();
+        if (Utils.isNullOrEmpty(paragraph) || Utils.isNullOrEmpty(jsonFilePath)) {
+            return recommendations;
+        }
 
-            for (String keyword :  keywords) {
-                boolean foundMatch = searchForKeyword(keyword, paragraph);
+        List<TermItem> terms = LoadUtils.termsFromLocalResourcesJSON(jsonFilePath);
+
+        for (TermItem term : terms) {
+            final String title = term.getTitle();
+            final String category = term.getCategory();
+            final String url = term.getUrl();
+            final String[] keywords = term.getKeywords();
+
+            for (String keyword : keywords) {
+                final boolean foundMatch = SearchUtils.searchForKeyword(keyword, paragraph);
 
                 if (foundMatch) {
                     RecommendationDTO recommendation = new RecommendationDTO();
@@ -45,21 +49,4 @@ public class TranslateParagraphService {
         return recommendations;
     }
 
-    private boolean searchForKeyword(String keyword, String paragraph) {
-        if (keyword == null || keyword.isEmpty()) {
-            return false;
-        }
-
-        return Pattern.compile(keyword, Pattern.CASE_INSENSITIVE).matcher(paragraph).find();
-    }
-
-    private List<TermItem> loadTermsFromJson() throws Exception {
-        try {
-            String searchTerms = FileUtils.readAllTextFromResource(this.jsonFilePath);
-            return new Gson().fromJson(searchTerms, new TypeToken<List<TermItem>>() {
-            }.getType());
-        } catch (Exception e) {
-            throw new Exception("Error loading terms from json file: " + jsonFilePath);
-        }
-    }
 }
