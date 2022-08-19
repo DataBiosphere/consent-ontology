@@ -65,7 +65,7 @@ public class TranslateResource {
 
         HashMap<String, RecommendationDTO> recommendations = translate.paragraph(paragraph);
 
-        return Response.ok().entity(recommendations).build();
+        return Response.ok(recommendations).build();
     }
 
     /**
