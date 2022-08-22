@@ -3,7 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 import com.google.inject.Inject;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
-import org.broadinstitute.dsde.consent.ontology.translate.DTO.RecommendationDTO;
+import org.broadinstitute.dsde.consent.ontology.translate.DTO.RecommendationDto;
 import org.broadinstitute.dsde.consent.ontology.translate.service.Translate;
 import org.slf4j.Logger;
 
@@ -57,15 +57,11 @@ public class TranslateResource {
     @Path("paragraph")
     @GET
     public Response translateParagraph(@QueryParam("paragraph") String paragraph) throws Exception {
-        if (paragraph == null || paragraph.isEmpty()) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Missing parameter: paragraph").build();
-        }
+        Translate translate = new Translate();
 
-        Translate translate = new Translate("search-terms.json");
+        HashMap<String, RecommendationDto> recommendations = translate.paragraph(paragraph);
 
-        HashMap<String, RecommendationDTO> recommendations = translate.paragraph(paragraph);
-
-        return Response.ok().entity(recommendations).build();
+        return Response.ok(recommendations).build();
     }
 
     /**
