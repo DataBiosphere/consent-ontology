@@ -10,6 +10,8 @@
     <properties>
         <dropwizard.version>2.1.1</dropwizard.version>
         <java.version>17</java.version>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
         <mockserver.version>5.13.2</mockserver.version>
@@ -91,7 +93,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <release>11</release>
+                  <release>17</release>
                 </configuration>
             </plugin>
 
