@@ -1,10 +1,19 @@
-FROM broadinstitute/scala-baseimage:jdk11-2.13.5-1.4.7
+FROM maven:3.8.6-eclipse-temurin-17
 
-COPY src /app/src
-COPY test.sh /app
-COPY project /app/project
-COPY build.sbt /app
+RUN mkdir -p /usr/src/app
 
-WORKDIR /app
+COPY ../.git /usr/src/app/.git
+COPY ../pom.xml /usr/src/app/pom.xml
+COPY ../src /usr/src/app/src
+COPY ../automation/test.sh /usr/src/app/test.sh
 
-ENTRYPOINT ["bash", "test.sh"]
+WORKDIR /usr/src/app
+
+RUN mvn -v
+RUN mvn clean compile --no-transfer-progress
+RUN mvn gatling:test
+RUN cp target/gatling/testrunner-*/js/stats.json target/classes
+RUN mvn exec:java -Dexec.mainClass="org.broadinstitute.dsp.ontology.performance.results.ResultsFormatter" -Dexec.classpathScope="test"
+
+#ENTRYPOINT ["bash", "test.sh"]
+#CMD ["ls", "-al", "target/classes"]

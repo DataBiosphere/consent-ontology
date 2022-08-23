@@ -4,46 +4,25 @@ Tests are designed to be run in two ways. Manually from the command line, or thr
 
 References:
 * [Gatling Documentation](https://gatling.io/docs/current/)
-* [Gatling SBT Plugin](https://github.com/gatling/gatling-sbt-plugin-demo)
-* [Consul Template](https://github.com/hashicorp/consul-template)
 
 ## Automated Testing (Local Development)
+ 
+Update the configuration for which environment to test against in `src/test/resources/performance.conf`
 
-Render configs for all cases below:
-```bash
-./render-local-env.sh [fc instance] [vault token] [env]
-```
-**Arguments:** (arguments are positional)
-* FC Instance 
-  * defaults to `fiab`
-  * can be `live`, `local`, or `fiab`
-* Vault Auth Token
-  * Defaults to reading it from the .vault-token via `$(cat ~/.vault-token)`.
-* env
-  * Environment of your FiaB; defaults to `dev`
-  
 Example for running tests locally against the dev environment:
-```bash
-./render-local-env.sh live ~/.vault-token dev
-```  
-
 
 ### Run all tests:
+From the project root directory:
 ```
-sbt clean gatling:test 
-```
-
-### Run specific tests:
-```
-sbt clean gatling:testOnly *.StatusScenarios 
+mvn clean gatling:test 
 ```
 
 ### Run all tests under docker:
+From the project root directory:
 ```
-docker build -t automation-ontology:latest .
-docker run automation-ontology
+docker build -t automation-ontology:latest -f ./automation/Dockerfile .
 ```
 
 ## Development
-To create new tests, use `StatusScenarios` as a model. All tests extending `Simulation` will be run 
-by default. `Requests` contains a summary of existing supported APIs. 
+To create new tests, use `Status` as a model. All tests extending `Simulation` will be run 
+by default. `Endpoints` contains a summary of existing supported APIs. 

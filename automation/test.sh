@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 set -e
-
-SBT_CMD=${1-"gatling:test"}
-echo $SBT_CMD
-
 set -o pipefail
 
-sbt clean "${SBT_CMD}"
+mvn gatling:test
 TEST_EXIT_CODE=$?
+
+cp target/gatling/testrunner-*/js/stats.json target/classes
+
+mvn exec:java -Dexec.mainClass="org.broadinstitute.dsp.ontology.performance.results.ResultsFormatter" -Dexec.classpathScope="test"
 
 if [[ $TEST_EXIT_CODE != 0 ]]; then exit $TEST_EXIT_CODE; fi
