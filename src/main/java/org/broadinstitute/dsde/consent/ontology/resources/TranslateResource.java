@@ -6,12 +6,10 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
-import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.translate.DTO.RecommendationDto;
 import org.broadinstitute.dsde.consent.ontology.translate.service.Translate;
 import org.slf4j.Logger;
 
-import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -24,11 +22,16 @@ import java.util.Map;
 public class TranslateResource {
 
     private final Logger log = Utils.getLogger(this.getClass());
-    private TextTranslationService translationService;
+    private final TextTranslationService translationService;
+    private final Translate translate;
+
+    private ObjectMapper mapper;
 
     @Inject
-    public TranslateResource(TextTranslationService translationService) {
+    public TranslateResource(TextTranslationService translationService, Translate translate, ObjectMapper mapper) {
         this.translationService = translationService;
+        this.translate = translate;
+        this.mapper = mapper;
     }
 
     @POST
@@ -63,11 +66,8 @@ public class TranslateResource {
     @Path("paragraph")
     @POST
     public Response translateParagraph(final String jsonString) throws Exception {
-        Translate translate = new Translate();
-        ObjectMapper mapper = new ObjectMapper();
-
-        Map<String, Object> body = mapper.readValue(jsonString, new TypeReference<>() {});
-        String paragraph = (String) body.get("paragraph");
+        final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {});
+        String paragraph = body.get("paragraph");
 
         if (StringUtils.isBlank(paragraph)) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();

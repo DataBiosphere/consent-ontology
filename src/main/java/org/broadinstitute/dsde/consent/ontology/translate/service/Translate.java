@@ -1,7 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.translate.service;
 
 import com.github.jsonldjava.shaded.com.google.common.reflect.TypeToken;
+import com.google.api.client.http.HttpResponse;
 import com.google.gson.Gson;
+import com.google.inject.Inject;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.translate.DTO.RecommendationDto;
 import org.broadinstitute.dsde.consent.ontology.translate.model.TermItem;
 import org.parboiled.common.FileUtils;
@@ -13,10 +16,18 @@ import org.apache.commons.lang3.StringUtils;
 
 public class Translate {
 
+    private final GCSStore gcsStore;
+
+    @Inject
+    public Translate(GCSStore gcsStore) {
+        this.gcsStore = gcsStore;
+    }
+
+
     public HashMap<String, RecommendationDto> paragraph(final String paragraph) throws Exception {
         HashMap<String, RecommendationDto> recommendations = new HashMap<>();
 
-        List<TermItem> terms = loadJSONFromResources();
+        List<TermItem> terms = loadJSONFromGoogleStorage();
 
         for (TermItem term : terms) {
             final String title = term.getTitle();
@@ -46,11 +57,12 @@ public class Translate {
         return StringUtils.containsIgnoreCase(targetText, keyword);
     }
 
-    private static List<TermItem> loadJSONFromResources() throws Exception {
+    private List<TermItem> loadJSONFromGoogleStorage() throws Exception {
+        HttpResponse response = gcsStore.getStorageDocument("search-terms.json");
+        String terms = response.parseAsString();
         try {
-            final String searchTerms = FileUtils.readAllTextFromResource("search-terms.json");
             return new Gson().fromJson(
-                    searchTerms,
+                    terms,
                     new TypeToken<List<TermItem>>() {
                     }.getType()
             );
