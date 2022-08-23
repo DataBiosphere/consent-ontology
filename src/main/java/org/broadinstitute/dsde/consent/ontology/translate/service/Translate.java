@@ -42,11 +42,11 @@ public class Translate {
         return recommendations;
     }
 
-    public static boolean searchForKeyword(final String keyword, final String targetText) {
+    private static boolean searchForKeyword(final String keyword, final String targetText) {
         return StringUtils.containsIgnoreCase(targetText, keyword);
     }
 
-    public static List<TermItem> loadJSONFromResources(final String jsonFilePath) throws Exception {
+    private static List<TermItem> loadJSONFromResources(final String jsonFilePath) throws Exception {
         try {
             final String searchTerms = FileUtils.readAllTextFromResource(jsonFilePath);
             return new Gson().fromJson(

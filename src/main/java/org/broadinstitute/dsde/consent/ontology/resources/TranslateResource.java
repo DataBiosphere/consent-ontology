@@ -1,17 +1,23 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
+import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.translate.DTO.RecommendationDto;
 import org.broadinstitute.dsde.consent.ontology.translate.service.Translate;
 import org.slf4j.Logger;
 
+import javax.validation.constraints.NotNull;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 
 @Path("/translate")
@@ -55,9 +61,17 @@ public class TranslateResource {
     }
 
     @Path("paragraph")
-    @GET
-    public Response translateParagraph(@QueryParam("paragraph") String paragraph) throws Exception {
+    @POST
+    public Response translateParagraph(final String jsonString) throws Exception {
         Translate translate = new Translate();
+        ObjectMapper mapper = new ObjectMapper();
+
+        Map<String, Object> body = mapper.readValue(jsonString, new TypeReference<>() {});
+        String paragraph = (String) body.get("paragraph");
+
+        if (StringUtils.isBlank(paragraph)) {
+            return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
+        }
 
         HashMap<String, RecommendationDto> recommendations = translate.paragraph(paragraph);
 

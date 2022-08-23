@@ -117,17 +117,18 @@ paths:
         default:
           description: Unexpected error
   /translate/paragraph:
-    get:
+    post:
       summary: Translates Paragraph to ontology recommendations
       description: The Translate service for paragraphs will render an ontology recommendation for a given paragraph.
+      parameters:
+        - name: body
+          in: body
+          description: Paragraph to translate
+          required: true
+          schema:
+            $ref: '#/definitions/TranslateParagraph'
       produces:
         - application/json
-      parameters:
-        - name: paragraph
-          in: query
-          description: Paragraph to translate
-          type: string
-          required: true
       tags:
         - Translate
       responses:
@@ -417,6 +418,13 @@ definitions:
         description: |
           Optional list of reasons why a match result may have failed. Only supported in
           in versions 2 and higher
+
+  TranslateParagraph:
+    type: object
+    properties:
+      paragraph:
+        description: The paragraph to translate
+        type: string
 
   Version:
     type: object
