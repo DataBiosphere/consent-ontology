@@ -16,7 +16,7 @@ public class Translate {
     public HashMap<String, RecommendationDto> paragraph(final String paragraph) throws Exception {
         HashMap<String, RecommendationDto> recommendations = new HashMap<>();
 
-        List<TermItem> terms = loadJSONFromResources("search-terms.json");
+        List<TermItem> terms = loadJSONFromResources();
 
         for (TermItem term : terms) {
             final String title = term.getTitle();
@@ -46,16 +46,16 @@ public class Translate {
         return StringUtils.containsIgnoreCase(targetText, keyword);
     }
 
-    private static List<TermItem> loadJSONFromResources(final String jsonFilePath) throws Exception {
+    private static List<TermItem> loadJSONFromResources() throws Exception {
         try {
-            final String searchTerms = FileUtils.readAllTextFromResource(jsonFilePath);
+            final String searchTerms = FileUtils.readAllTextFromResource("search-terms.json");
             return new Gson().fromJson(
                     searchTerms,
                     new TypeToken<List<TermItem>>() {
                     }.getType()
             );
         } catch (Exception e) {
-            throw new Exception("Error loading terms from json file: " + jsonFilePath, e);
+            throw new Exception("Error loading terms from json file: " + "search-terms.json", e);
         }
     }
 
