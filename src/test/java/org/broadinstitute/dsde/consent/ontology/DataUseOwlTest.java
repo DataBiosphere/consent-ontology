@@ -3,7 +3,7 @@ package org.broadinstitute.dsde.consent.ontology;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.mindswap.pellet.utils.ATermUtils.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.io.Resources;
 import java.net.URL;
@@ -34,7 +34,7 @@ public class DataUseOwlTest extends AbstractTest {
     }
 
     @AfterClass
-    public static void after() throws Exception {
+    public static void after() {
     }
 
 

@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mindswap.pellet.utils.ATermUtils.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
