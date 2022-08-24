@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import org.junit.jupiter.api.Test;
 
@@ -26,17 +26,17 @@ public class AndTest {
         );
 
         // Tests that order is not used in equals comparison
-        assertTrue(and1.equals(and2));
-        assertTrue(and2.equals(and1));
+        assertEquals(and1, and2);
+        assertEquals(and2, and1);
 
         // Tests that same number of elements, first having all elements in the second,
         // but the second doesn't have all elements of the first, will fail
-        assertFalse(and1.equals(and3));
-        assertFalse(and2.equals(and3));
+        assertNotEquals(and1, and3);
+        assertNotEquals(and2, and3);
 
         // For completeness' sake, check the inverse
-        assertFalse(and3.equals(and1));
-        assertFalse(and3.equals(and2));
+        assertNotEquals(and3, and1);
+        assertNotEquals(and3, and2);
 
     }
 

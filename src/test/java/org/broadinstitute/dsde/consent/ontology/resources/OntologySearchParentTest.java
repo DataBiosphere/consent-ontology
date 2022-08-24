@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mindswap.pellet.utils.ATermUtils.assertTrue;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.util.ArrayList;
@@ -84,7 +84,7 @@ public class OntologySearchParentTest {
         assertTrue(child.getDefinition().equals(term.getDefinition()));
         assertTrue(child.getSynonyms().equals(term.getSynonyms()));
 
-        assertEquals("Expected two parents", 2, term.getParents().size());
+        assertEquals(2, term.getParents().size(), "Expected two parents");
         term.getParents().sort(Comparator.comparingInt(TermParent::getOrder));
 
         TermParent actualParent1 = term.getParents().get(0);

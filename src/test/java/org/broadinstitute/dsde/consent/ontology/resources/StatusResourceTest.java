@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -8,7 +9,6 @@ import com.codahale.metrics.health.HealthCheckRegistry;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.ws.rs.core.Response;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
@@ -36,7 +36,7 @@ public class StatusResourceTest {
         StatusResource statusResource = initStatusResource(checks);
 
         Response response = statusResource.getStatus();
-        Assert.assertEquals(200, response.getStatus());
+        assertEquals(200, response.getStatus());
     }
 
     @Test
@@ -49,7 +49,7 @@ public class StatusResourceTest {
 
         Response response = statusResource.getStatus();
         // We still expect a 200 response, but expect a warning log
-        Assert.assertEquals(200, response.getStatus());
+        assertEquals(200, response.getStatus());
     }
 
     @Test
@@ -62,7 +62,7 @@ public class StatusResourceTest {
 
         Response response = statusResource.getStatus();
         // We still expect a 200 response, but expect a warning log
-        Assert.assertEquals(200, response.getStatus());
+        assertEquals(200, response.getStatus());
     }
 
     @Test
@@ -75,7 +75,7 @@ public class StatusResourceTest {
 
         Response response = statusResource.getStatus();
         // We still expect a 200 response, but expect a warning log
-        Assert.assertEquals(200, response.getStatus());
+        assertEquals(200, response.getStatus());
     }
 
 }

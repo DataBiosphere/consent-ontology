@@ -1,5 +1,9 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -8,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.elasticsearch.client.RestClient;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,21 +31,21 @@ public class ElasticSearchSupportTest {
     @Test
     public void testGetRestClient() {
         RestClient client = elasticSearchSupport.createRestClient(configuration);
-        Assertions.assertNotNull(client);
+        assertNotNull(client);
     }
 
     @Test
     public void testGetIndexPath() {
         String path = elasticSearchSupport.getIndexPath(configuration.getIndex());
-        Assertions.assertNotNull(path);
-        Assertions.assertTrue(path.contains(configuration.getIndex()));
+        assertNotNull(path);
+        assertTrue(path.contains(configuration.getIndex()));
     }
 
     @Test
     public void testGetClusterHealthPath() {
         String path = elasticSearchSupport.getClusterHealthPath();
-        Assertions.assertNotNull(path);
-        Assertions.assertTrue(path.contains("health"));
+        assertNotNull(path);
+        assertTrue(path.contains("health"));
     }
 
     @Test
@@ -52,29 +55,29 @@ public class ElasticSearchSupportTest {
         String query = elasticSearchSupport.buildFilterQuery(termId, filters);
 
         JsonObject jsonQuery = JsonParser.parseString(query).getAsJsonObject();
-        Assertions.assertTrue(jsonQuery.has("query"));
+        assertTrue(jsonQuery.has("query"));
 
         JsonObject joQuery = jsonQuery.getAsJsonObject("query");
-        Assertions.assertTrue(joQuery.has("bool"));
+        assertTrue(joQuery.has("bool"));
 
         JsonObject joBool = joQuery.getAsJsonObject("bool");
-        Assertions.assertTrue(joBool.has("must"));
-        Assertions.assertTrue(joBool.has("filter"));
+        assertTrue(joBool.has("must"));
+        assertTrue(joBool.has("filter"));
 
 
         JsonObject joMust = joBool.getAsJsonObject("must");
-        Assertions.assertTrue(joMust.has("multi_match"));
+        assertTrue(joMust.has("multi_match"));
 
         JsonObject joMultiMatch = joMust.getAsJsonObject("multi_match");
-        Assertions.assertTrue(joMultiMatch.has("query"));
-        Assertions.assertEquals(joMultiMatch.get("query").getAsString(), termId);
-        Assertions.assertTrue(joMultiMatch.has("type"));
-        Assertions.assertTrue(joMultiMatch.has("fields"));
-        Assertions.assertEquals(joMultiMatch.getAsJsonArray("fields").size(),
+        assertTrue(joMultiMatch.has("query"));
+        assertEquals(joMultiMatch.get("query").getAsString(), termId);
+        assertTrue(joMultiMatch.has("type"));
+        assertTrue(joMultiMatch.has("fields"));
+        assertEquals(joMultiMatch.getAsJsonArray("fields").size(),
             elasticSearchSupport.searchFields.length);
 
         JsonArray joFilter = joBool.getAsJsonArray("filter");
-        Assertions.assertEquals(2, joFilter.size());
+        assertEquals(2, joFilter.size());
 
     }
 

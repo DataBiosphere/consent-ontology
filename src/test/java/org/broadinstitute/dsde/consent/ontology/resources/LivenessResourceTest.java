@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import javax.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;

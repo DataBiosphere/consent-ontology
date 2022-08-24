@@ -3,14 +3,17 @@ package org.broadinstitute.dsde.consent.ontology.datause.models;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.MALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
@@ -47,25 +50,25 @@ public class OrTest {
     @Test
     public void testOrEqualsFalse() {
         Or newOr = new Or(new Everything(), new Nothing());
-        Assertions.assertNotEquals(or, newOr);
+        assertNotEquals(or, newOr);
     }
 
     @Test
     public void testOrEqualsTrue() {
         Or testObj = new Or(operands);
-        Assertions.assertEquals(or, testObj);
+        assertEquals(or, testObj);
     }
 
     @Test
     public void testCreateOntologicalRestriction() {
         OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
         OntClass ontClass = or.createOntologicalRestriction(model);
-        Assertions.assertNotNull(ontClass);
+        assertNotNull(ontClass);
     }
 
     @Test
     public void testVisitAndContinue() {
         visitor = new NamedVisitor();
-        Assertions.assertTrue(or.visitAndContinue(visitor));
+        assertTrue(or.visitAndContinue(visitor));
     }
 }

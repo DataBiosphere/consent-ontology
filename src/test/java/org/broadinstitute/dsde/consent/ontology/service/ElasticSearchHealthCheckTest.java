@@ -1,5 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -10,7 +12,6 @@ import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
@@ -63,45 +64,45 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
     public void testCheckTimeOut() {
         mockRequest("red", true);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        Assertions.assertFalse(result.isHealthy());
-        Assertions.assertTrue(result.getMessage().contains("HealthCheck timed out"));
+        assertFalse(result.isHealthy());
+        assertTrue(result.getMessage().contains("HealthCheck timed out"));
     }
 
     @Test
     public void testCheckStatusRed() {
         mockRequest("red", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        Assertions.assertFalse(result.isHealthy());
-        Assertions.assertTrue(result.getMessage().contains("ClusterHealth is RED"));
+        assertFalse(result.isHealthy());
+        assertTrue(result.getMessage().contains("ClusterHealth is RED"));
     }
 
     @Test
     public void testCheckStatusYellow() {
         mockRequest("yellow", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        Assertions.assertTrue(result.isHealthy());
-        Assertions.assertTrue(result.getMessage().contains("ClusterHealth is YELLOW"));
+        assertTrue(result.isHealthy());
+        assertTrue(result.getMessage().contains("ClusterHealth is YELLOW"));
     }
 
     @Test
     public void testCheckStatusOK() {
         mockRequest("green", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        Assertions.assertTrue(result.isHealthy());
+        assertTrue(result.isHealthy());
     }
 
     @Test
     public void testCheckDroppedConnection() {
         mockServerClient.when(request()).error(error().withDropConnection(true));
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        Assertions.assertFalse(result.isHealthy());
+        assertFalse(result.isHealthy());
     }
 
     @Test
     public void testErrorStatus() {
         mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_SERVER_ERROR));
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        Assertions.assertFalse(result.isHealthy());
+        assertFalse(result.isHealthy());
     }
 
 }

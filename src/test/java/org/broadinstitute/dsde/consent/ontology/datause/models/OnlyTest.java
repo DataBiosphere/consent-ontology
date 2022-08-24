@@ -1,10 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
-import static junit.framework.TestCase.assertNotNull;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.MALE;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -45,7 +45,7 @@ public class OnlyTest {
     @Test
     public void testOrEqualsFalse() {
         String testObj = "test";
-        assertFalse(only.getProperty().equals(testObj));
+        assertNotEquals(only.getProperty(), testObj);
     }
 
     @Test

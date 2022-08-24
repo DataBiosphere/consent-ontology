@@ -1,8 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models.visitor;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.MALE;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.broadinstitute.dsde.consent.ontology.datause.models.And;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Named;

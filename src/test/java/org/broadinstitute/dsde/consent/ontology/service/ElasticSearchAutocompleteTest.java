@@ -1,6 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import static org.junit.Assert.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mindswap.pellet.utils.ATermUtils.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
@@ -18,7 +20,6 @@ import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -58,8 +59,8 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
         mockServerClient.when(request(), Times.exactly(1)).error(error().withDropConnection(true));
         mockServerClient.when(request(), Times.exactly(1)).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
         List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
-        Assertions.assertEquals(1, termResource.size());
-        Assertions.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
+        assertEquals(1, termResource.size());
+        assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
@@ -67,8 +68,8 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
         mockServerClient.when(request(), Times.exactly(2)).error(error().withDropConnection(true));
         mockServerClient.when(request(), Times.exactly(1)).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
         List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
-        Assertions.assertEquals(1, termResource.size());
-        Assertions.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
+        assertEquals(1, termResource.size());
+        assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
@@ -118,24 +119,24 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
     public void testLookup() {
         mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
         List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
-        Assertions.assertEquals(1, termResource.size());
-        Assertions.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
+        assertEquals(1, termResource.size());
+        assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
     public void testLookupWithTags() {
         mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
         List<TermResource> termResource = autocompleteAPI.lookup(Collections.singletonList("tag"), "cancer", 1);
-        Assertions.assertEquals(1, termResource.size());
-        Assertions.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
+        assertEquals(1, termResource.size());
+        assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     @Test
     public void  testLookupById() {
         mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerGetJson));
         List<TermResource> termResource = autocompleteAPI.lookupById("http://purl.obolibrary.org/obo/DOID_162");
-        Assertions.assertEquals(1, termResource.size());
-        Assertions.assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
+        assertEquals(1, termResource.size());
+        assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
     }
 
     // mock response for a search

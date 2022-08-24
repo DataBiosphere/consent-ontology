@@ -4,8 +4,9 @@ package org.broadinstitute.dsde.consent.ontology.datause.models;
 import static junit.framework.TestCase.assertNotNull;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
@@ -46,13 +47,13 @@ public class SomeTest {
     @Test
     public void testOrEqualsFalse() {
         Some newSome = new Some("test", new Everything());
-        assertFalse(some.equals(newSome));
+        assertNotEquals(some, newSome);
     }
 
     @Test
     public void testOrEqualsTrue() {
         Some testObj = new Some(property, useRestriction);
-        assertTrue(some.equals(testObj));
+        assertEquals(some, testObj);
     }
 
     @Test

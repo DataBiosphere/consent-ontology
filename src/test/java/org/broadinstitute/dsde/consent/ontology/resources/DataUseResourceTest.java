@@ -1,8 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -10,7 +10,6 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -30,7 +29,7 @@ public class DataUseResourceTest {
         Response response = dataUseResource.getSchema();
         assertStatusAndHeader(response, Response.Status.OK, MediaType.APPLICATION_JSON);
         String content = response.getEntity().toString().trim();
-        Assert.assertTrue(content.contains("Data Use"));
+        assertTrue(content.contains("Data Use"));
         try {
             new JSONObject(content);
         } catch (JSONException e) {
@@ -58,9 +57,9 @@ public class DataUseResourceTest {
 
     @SuppressWarnings("SameParameterValue")
     private void assertStatusAndHeader(Response response, Response.Status status, String contentType) {
-        Assert.assertTrue(response.getStatus() == status.getStatusCode());
+        assertTrue(response.getStatus() == status.getStatusCode());
         Object header = response.getHeaders().get("Content-type");
-        Assert.assertTrue(header.toString().contains(contentType));
+        assertTrue(header.toString().contains(contentType));
     }
 
 }
