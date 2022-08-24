@@ -11,8 +11,8 @@ import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 public class OnlyTest {
@@ -23,7 +23,7 @@ public class OnlyTest {
     private UseRestriction useRestriction;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),

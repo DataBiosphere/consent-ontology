@@ -19,8 +19,8 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     public TextTranslationServiceImplTest() {
     }
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws IOException {
         TermResource mockTerm = new TermResource();
         mockTerm.setId("term id");

@@ -6,26 +6,26 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.testing.junit.DropwizardClientRule;
+import io.dropwizard.testing.junit5.DropwizardClientExtension;
+import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.parboiled.common.FileUtils;
 
-@SuppressWarnings("FieldCanBeLocal")
+@ExtendWith(DropwizardExtensionsSupport.class)
 public class DataUseTest {
 
     /**
      * This spins up a server so we can ensure that SchemaLoader will be able to resolve `data-use.json` URL
      */
-    @ClassRule
-    public static final DropwizardClientRule RULE = new DropwizardClientRule(new DataUseResource());
+    public static final DropwizardClientExtension RULE = new DropwizardClientExtension(new DataUseResource());
 
     private static ObjectMapper MAPPER;
     private static String DU_CONTENT;
@@ -33,7 +33,7 @@ public class DataUseTest {
     private static SchemaLoader LOADER;
     private static Schema DU_SCHEMA;
 
-    @BeforeClass
+    @BeforeAll
     public static void setUp() {
         MAPPER = new ObjectMapper();
         DU_CONTENT = FileUtils.readAllTextFromResource("data-use.json");

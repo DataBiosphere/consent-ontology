@@ -1,7 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -11,10 +9,10 @@ import com.google.api.client.http.HttpStatusCodes;
 import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.testcontainers.containers.MockServerContainer;
 
@@ -22,12 +20,11 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
 
     private ElasticSearchHealthCheck elasticSearchHealthCheck;
     private MockServerClient mockServerClient;
+    private final MockServerContainer container = new MockServerContainer(IMAGE);
 
-    @Rule
-    public MockServerContainer container = new MockServerContainer(IMAGE);
-
-    @Before
-    public void setUpClass() {
+    @BeforeEach
+    void setUpClass() {
+        container.start();
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex("test-ontology");
         configuration.setServers(Collections.singletonList("localhost"));
@@ -36,8 +33,8 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
         mockServerClient = new MockServerClient(container.getHost(), container.getServerPort());
     }
 
-    @After
-    public void shutDown() {
+    @AfterEach
+    void shutDown() {
         stop(container);
     }
 
@@ -66,45 +63,45 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
     public void testCheckTimeOut() {
         mockRequest("red", true);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        assertFalse(result.isHealthy());
-        assertTrue(result.getMessage().contains("HealthCheck timed out"));
+        Assertions.assertFalse(result.isHealthy());
+        Assertions.assertTrue(result.getMessage().contains("HealthCheck timed out"));
     }
 
     @Test
     public void testCheckStatusRed() {
         mockRequest("red", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        assertFalse(result.isHealthy());
-        assertTrue(result.getMessage().contains("ClusterHealth is RED"));
+        Assertions.assertFalse(result.isHealthy());
+        Assertions.assertTrue(result.getMessage().contains("ClusterHealth is RED"));
     }
 
     @Test
     public void testCheckStatusYellow() {
         mockRequest("yellow", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        assertTrue(result.isHealthy());
-        assertTrue(result.getMessage().contains("ClusterHealth is YELLOW"));
+        Assertions.assertTrue(result.isHealthy());
+        Assertions.assertTrue(result.getMessage().contains("ClusterHealth is YELLOW"));
     }
 
     @Test
     public void testCheckStatusOK() {
         mockRequest("green", false);
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        assertTrue(result.isHealthy());
+        Assertions.assertTrue(result.isHealthy());
     }
 
     @Test
     public void testCheckDroppedConnection() {
         mockServerClient.when(request()).error(error().withDropConnection(true));
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        assertFalse(result.isHealthy());
+        Assertions.assertFalse(result.isHealthy());
     }
 
     @Test
     public void testErrorStatus() {
         mockServerClient.when(request()).respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_SERVER_ERROR));
         HealthCheck.Result result = elasticSearchHealthCheck.check();
-        assertFalse(result.isHealthy());
+        Assertions.assertFalse(result.isHealthy());
     }
 
 }

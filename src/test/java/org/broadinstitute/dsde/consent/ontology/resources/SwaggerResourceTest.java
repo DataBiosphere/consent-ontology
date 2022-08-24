@@ -3,14 +3,14 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class SwaggerResourceTest {
 
     private SwaggerResource swaggerResource;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         swaggerResource = new SwaggerResource();
     }

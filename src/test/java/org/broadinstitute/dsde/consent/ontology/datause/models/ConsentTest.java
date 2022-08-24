@@ -7,7 +7,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestri
 
 import java.io.IOException;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ConsentTest extends Consent {
 

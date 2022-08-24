@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseValidator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class DataUseValidatorTest {
 

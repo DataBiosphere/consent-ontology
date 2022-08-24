@@ -1,8 +1,9 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import org.junit.Test;
-import javax.ws.rs.core.Response;
 import static org.junit.Assert.assertEquals;
+
+import javax.ws.rs.core.Response;
+import org.junit.jupiter.api.Test;
 
 public class LivenessResourceTest {
     @Test

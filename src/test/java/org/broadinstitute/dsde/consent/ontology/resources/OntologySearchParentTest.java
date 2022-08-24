@@ -13,8 +13,8 @@ import javax.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -31,7 +31,7 @@ public class OntologySearchParentTest {
     private static final TermResource parent1 = new TermResource();
     private static final TermResource parent2 = new TermResource();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         openMocks(this);
         resource = new OntologySearchResource(api);

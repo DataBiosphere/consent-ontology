@@ -15,8 +15,8 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 /**
@@ -31,7 +31,7 @@ public class DataUseMatcherTest {
     @Mock
     private AutocompleteService autocompleteService;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         openMocks(this);
         try {

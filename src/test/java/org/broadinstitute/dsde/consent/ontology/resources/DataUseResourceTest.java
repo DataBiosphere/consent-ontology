@@ -11,8 +11,8 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("SimplifiableJUnitAssertion")
 public class DataUseResourceTest {
@@ -20,7 +20,7 @@ public class DataUseResourceTest {
     private DataUseResource dataUseResource;
     private final String generalUse = "{ \"generalUse\": true }";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         dataUseResource = new DataUseResource();
     }

@@ -9,8 +9,8 @@ import com.codahale.metrics.health.HealthCheck;
 import com.google.api.services.storage.model.Bucket;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 public class GCSHealthCheckTest {
@@ -20,7 +20,7 @@ public class GCSHealthCheckTest {
     @Mock
     private GCSStore store;
 
-    @Before
+    @BeforeEach
     public void setUpClass() {
         openMocks(this);
         healthCheck = new GCSHealthCheck(store);

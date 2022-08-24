@@ -12,8 +12,8 @@ import java.util.ArrayList;
 import javax.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
 import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 public class ValidationResourceTest {
@@ -32,7 +32,7 @@ public class ValidationResourceTest {
                                     + "\"name\": \"http://purl.obolibrary.org/obo/DOID_162\""
                                     + "}]}";
 
-    @Before
+    @BeforeEach
     public void setUp() {
         openMocks(this);
         validationResource = new ValidationResource(validationService);

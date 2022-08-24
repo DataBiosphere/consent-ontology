@@ -7,15 +7,15 @@ import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestri
 import org.broadinstitute.dsde.consent.ontology.datause.models.And;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Named;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class NamedVisitorTest {
 
     private NamedVisitor namedVisitor;
     private UseRestriction name;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         name = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),

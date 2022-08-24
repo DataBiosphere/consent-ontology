@@ -9,7 +9,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("SimplifiableJUnitAssertion")
 public class DARRestrictionBuilderTest {
