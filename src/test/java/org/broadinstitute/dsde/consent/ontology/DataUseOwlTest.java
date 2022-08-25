@@ -2,6 +2,8 @@ package org.broadinstitute.dsde.consent.ontology;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.AGGREGATE_RESEARCH;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.google.common.io.Resources;
 import java.net.URL;
@@ -16,9 +18,8 @@ import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
 import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
 import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 
 public class DataUseOwlTest extends AbstractTest {
@@ -33,7 +34,7 @@ public class DataUseOwlTest extends AbstractTest {
     }
 
     @AfterClass
-    public static void after() throws Exception {
+    public static void after() {
     }
 
 
@@ -41,35 +42,35 @@ public class DataUseOwlTest extends AbstractTest {
     public void testNegativeMethodsAgainstInverse() throws Exception {
         UseRestriction consent = new Not(new Named(METHODS_RESEARCH));
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchMessage(resources, new MatchPair(methodsPurpose, consent)));
-        Assert.assertFalse(b);
+        assertFalse(b);
     }
 
     @Test
     public void testNegativeMethodsAgainstNothing() throws Exception {
         UseRestriction consent = new Nothing();
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchMessage(resources, new MatchPair(methodsPurpose, consent)));
-        Assert.assertFalse(b);
+        assertFalse(b);
     }
 
     @Test
     public void testPositiveAggregate() throws Exception {
         UseRestriction consent = new Everything();
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchMessage(resources, new MatchPair(aggregatePurpose, consent)));
-        Assert.assertTrue(b);
+        assertTrue(b);
     }
 
     @Test
     public void testNegativeAggregateAgainstInverse() throws Exception {
         UseRestriction consent = new Not(new Named(AGGREGATE_RESEARCH));
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchMessage(resources, new MatchPair(aggregatePurpose, consent)));
-        Assert.assertFalse(b);
+        assertFalse(b);
     }
 
     @Test
     public void testNegativeAggregateAgainstNothing() throws Exception {
         UseRestriction consent = new Nothing();
         Boolean b = ONT_MODEL_CACHE.matchPurpose(new MatchMessage(resources, new MatchPair(aggregatePurpose, consent)));
-        Assert.assertFalse(b);
+        assertFalse(b);
     }
 
 }

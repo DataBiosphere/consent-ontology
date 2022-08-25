@@ -12,7 +12,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ControlSetMatchTest extends TruthTableTests {
 

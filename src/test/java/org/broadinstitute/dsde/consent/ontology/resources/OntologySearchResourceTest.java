@@ -1,17 +1,17 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.util.ArrayList;
 import java.util.List;
 import javax.ws.rs.core.Response;
-
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -24,7 +24,7 @@ public class OntologySearchResourceTest {
     private final List<TermResource> nonEmptyTermList = new ArrayList<>();
     private final List<TermResource> emptyTermList = new ArrayList<>();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         openMocks(this);
         resource = new OntologySearchResource(autocompleteService);

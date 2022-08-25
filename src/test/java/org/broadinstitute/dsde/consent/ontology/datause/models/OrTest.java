@@ -1,19 +1,21 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
-import static junit.framework.TestCase.assertTrue;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.MALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 public class OrTest {
@@ -22,7 +24,7 @@ public class OrTest {
     private UseRestrictionVisitor visitor;
     private Or or;
 
-    @Before
+    @BeforeEach
     public void setUp() {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
@@ -38,21 +40,23 @@ public class OrTest {
         this.or = new Or(operands);
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testOperands() {
-        new Or(operands[0]);
+        assertThrows(IllegalArgumentException.class, () -> {
+            new Or(operands[0]);
+        });
     }
 
     @Test
     public void testOrEqualsFalse() {
         Or newOr = new Or(new Everything(), new Nothing());
-        assertFalse(or.equals(newOr));
+        assertNotEquals(or, newOr);
     }
 
     @Test
     public void testOrEqualsTrue() {
         Or testObj = new Or(operands);
-        assertTrue(or.equals(testObj));
+        assertEquals(or, testObj);
     }
 
     @Test

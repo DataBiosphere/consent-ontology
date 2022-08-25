@@ -1,18 +1,18 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
-import static junit.framework.TestCase.assertNotNull;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.MALE;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.hp.hpl.jena.ontology.OntClass;
 import com.hp.hpl.jena.ontology.OntModel;
 import com.hp.hpl.jena.rdf.model.ModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.UseRestrictionVisitor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mindswap.pellet.jena.PelletReasonerFactory;
 
 public class OnlyTest {
@@ -23,7 +23,7 @@ public class OnlyTest {
     private UseRestriction useRestriction;
 
 
-    @Before
+    @BeforeEach
     public void setUp() {
         UseRestriction and = new And(
             new Named("http://purl.obolibrary.org/obo/DOID_162"),
@@ -45,7 +45,7 @@ public class OnlyTest {
     @Test
     public void testOrEqualsFalse() {
         String testObj = "test";
-        assertFalse(only.getProperty().equals(testObj));
+        assertNotEquals(only.getProperty(), testObj);
     }
 
     @Test

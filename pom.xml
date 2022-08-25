@@ -93,18 +93,17 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.10.1</version>
                 <configuration>
-                    <release>17</release>
+                  <release>17</release>
                 </configuration>
             </plugin>
 
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.0.0-M7</version>
                 <configuration>
-                    <!-- @{argLine} is necessary here so that that the jacoco:prepare-agent output is included for tests -->
-                    <!-- illegal-access=permit required for java 11 -->
-                    <argLine>@{argLine} -Xmx1024m --illegal-access=permit</argLine>
+                    <!-- @{argLine} is necessary here so that the jacoco:prepare-agent output is included for tests -->
+                    <argLine>@{argLine} -Xmx1024m</argLine>
                     <systemPropertyVariables>
                         <java.util.logging.config.file>src/test/resources/logging.properties</java.util.logging.config.file>
                     </systemPropertyVariables>
@@ -489,12 +488,6 @@
             <artifactId>dropwizard-testing</artifactId>
             <version>${dropwizard.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Addressing OWASP warning: https://nvd.nist.gov/vuln/detail/CVE-2020-25649 -->
@@ -512,9 +505,17 @@
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.9.0</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -738,20 +739,6 @@
             <groupId>org.webjars</groupId>
             <artifactId>swagger-ui</artifactId>
             <version>${swagger.ui.version}</version>
-        </dependency>
-
-        <!-- java 11 requirement -->
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.29.0-GA</version>
-        </dependency>
-
-        <!-- java 11 requirement -->
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>3.3.0</version>
         </dependency>
 
     </dependencies>

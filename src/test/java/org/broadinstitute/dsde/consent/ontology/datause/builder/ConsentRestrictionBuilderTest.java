@@ -1,14 +1,16 @@
 package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.NON_PROFIT;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ConsentRestrictionBuilderTest {
 
@@ -20,7 +22,7 @@ public class ConsentRestrictionBuilderTest {
         DataUse dataUse = new DataUse();
         dataUse.setGeneralUse(true);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, everything);
+        assertEquals(restriction, everything);
     }
 
     /**
@@ -36,7 +38,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc1));
     }
@@ -50,7 +52,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setPopulationRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc2));
     }
@@ -64,7 +66,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setCommercialUse(true).
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc3));
     }
@@ -78,7 +80,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setGender("Male").
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc4));
     }
@@ -92,7 +94,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setPediatric(true).
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc5));
     }
@@ -106,7 +108,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setMethodsResearch(true).
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc6a));
     }
@@ -120,7 +122,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setMethodsResearch(false).
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc6b));
     }
@@ -134,7 +136,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setControlSetOption("Yes").
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc7a));
     }
@@ -148,7 +150,7 @@ public class ConsentRestrictionBuilderTest {
                 setGeneralUse(true).
                 setControlSetOption("No").
                 build();
-        Assert.assertEquals(
+        assertEquals(
                 restrictionBuilder.buildUseRestriction(dataUse),
                 restrictionBuilder.buildUseRestriction(mc7b));
     }
@@ -159,7 +161,7 @@ public class ConsentRestrictionBuilderTest {
                 setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, ConsentUseCases.MRPdulUC1);
+        assertEquals(restriction, ConsentUseCases.MRPdulUC1);
     }
 
     @Test
@@ -169,7 +171,7 @@ public class ConsentRestrictionBuilderTest {
                 setMethodsResearch(false).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, ConsentUseCases.MRPdulUC2);
+        assertEquals(restriction, ConsentUseCases.MRPdulUC2);
     }
 
     @Test
@@ -178,7 +180,7 @@ public class ConsentRestrictionBuilderTest {
                 setMethodsResearch(false).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, ConsentUseCases.MRPdulUC3);
+        assertEquals(restriction, ConsentUseCases.MRPdulUC3);
     }
 
     @Test
@@ -188,7 +190,7 @@ public class ConsentRestrictionBuilderTest {
                 setMethodsResearch(true).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, ConsentUseCases.MRPdulUC4);
+        assertEquals(restriction, ConsentUseCases.MRPdulUC4);
     }
 
     @Test
@@ -197,7 +199,7 @@ public class ConsentRestrictionBuilderTest {
                 setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER)).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, ConsentUseCases.CSdulUC1);
+        assertEquals(restriction, ConsentUseCases.CSdulUC1);
     }
 
     @Test
@@ -207,7 +209,7 @@ public class ConsentRestrictionBuilderTest {
                 setControlSetOption("Yes").
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, ConsentUseCases.CSdulUC2);
+        assertEquals(restriction, ConsentUseCases.CSdulUC2);
     }
 
     @Test
@@ -217,7 +219,7 @@ public class ConsentRestrictionBuilderTest {
                 setControlSetOption("No").
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertEquals(restriction, ConsentUseCases.CSdulUC3);
+        assertEquals(restriction, ConsentUseCases.CSdulUC3);
     }
 
     @Test
@@ -226,8 +228,8 @@ public class ConsentRestrictionBuilderTest {
                 setCommercialUse(true).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.toString().contains(NON_PROFIT));
-        Assert.assertTrue(restriction.toString().contains("\"type\":\"not\""));
+        assertTrue(restriction.toString().contains(NON_PROFIT));
+        assertTrue(restriction.toString().contains("\"type\":\"not\""));
     }
 
     @Test
@@ -236,8 +238,8 @@ public class ConsentRestrictionBuilderTest {
                 setCommercialUse(false).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.toString().contains(NON_PROFIT));
-        Assert.assertFalse(restriction.toString().contains("\"type\":\"not\""));
+        assertTrue(restriction.toString().contains(NON_PROFIT));
+        assertFalse(restriction.toString().contains("\"type\":\"not\""));
     }
 
     @Test
@@ -246,7 +248,7 @@ public class ConsentRestrictionBuilderTest {
                 setCommercialUse(null).
                 build();
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertFalse(restriction.toString().contains(NON_PROFIT));
+        assertFalse(restriction.toString().contains(NON_PROFIT));
     }
 
 }

@@ -1,8 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -19,8 +19,8 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
@@ -37,7 +37,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     public TextTranslationServiceImplTest() {
     }
 
-    @Before
+    @BeforeEach
     public void setUpClass() throws IOException {
         TermResource mockTerm = new TermResource();
         mockTerm.setId("term id");
