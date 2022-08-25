@@ -1,23 +1,30 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import io.dropwizard.testing.junit.ResourceTestRule;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.MockitoAnnotations.openMocks;
+
 import javax.ws.rs.core.Response;
-import org.junit.Assert;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 public class VersionResourceTest {
 
-    @ClassRule
-    public static final ResourceTestRule resources = ResourceTestRule.builder()
-            .addResource(new VersionResource())
-            .build();
+    VersionResource resource;
+    @BeforeEach
+    public void setUp(){
+        openMocks(this);
+        resource = new VersionResource();
+    }
 
 
     @Test
     public void testGetVersion() {
-        Response response = resources.target("/version").request().get();
-        Assert.assertEquals(200, response.getStatus());
+        try(Response response = resource.content()) {
+            assertEquals(200, response.getStatus());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
     }
 
 }

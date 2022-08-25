@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.util.ArrayList;
@@ -13,8 +13,8 @@ import javax.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -31,7 +31,7 @@ public class OntologySearchParentTest {
     private static final TermResource parent1 = new TermResource();
     private static final TermResource parent2 = new TermResource();
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         openMocks(this);
         resource = new OntologySearchResource(api);
@@ -84,7 +84,7 @@ public class OntologySearchParentTest {
         assertTrue(child.getDefinition().equals(term.getDefinition()));
         assertTrue(child.getSynonyms().equals(term.getSynonyms()));
 
-        assertEquals("Expected two parents", 2, term.getParents().size());
+        assertEquals(2, term.getParents().size(), "Expected two parents");
         term.getParents().sort(Comparator.comparingInt(TermParent::getOrder));
 
         TermParent actualParent1 = term.getParents().get(0);

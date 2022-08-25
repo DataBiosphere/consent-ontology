@@ -2,9 +2,9 @@ package org.broadinstitute.dsde.consent.ontology.service;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.METHODS_RESEARCH;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.RESEARCH_TYPE;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
@@ -24,8 +24,8 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
@@ -39,7 +39,7 @@ public class StoreOntologyServiceTest {
     CloudStore store;
     private StoreOntologyService storeOntologyService;
 
-    @Before
+    @BeforeEach
     public void setUpClass() {
         openMocks(this);
         storeOntologyService = new StoreOntologyService(store, "ontology", "ontology");

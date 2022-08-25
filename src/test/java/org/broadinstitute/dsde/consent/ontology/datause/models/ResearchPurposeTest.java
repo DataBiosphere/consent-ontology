@@ -1,13 +1,14 @@
 package org.broadinstitute.dsde.consent.ontology.datause.models;
 
-import static junit.framework.TestCase.assertNotNull;
-import static junit.framework.TestCase.assertNull;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.FEMALE;
 import static org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilderSupport.PEDIATRIC;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 public class ResearchPurposeTest extends ResearchPurpose {
 
@@ -21,14 +22,14 @@ public class ResearchPurposeTest extends ResearchPurpose {
     public void testEqualsFalseInstanceOf() {
         String test = "test";
         boolean result = equals(test);
-        Assert.assertFalse(result);
+        assertFalse(result);
     }
 
     @Test
     public void testEqualsInstanceOf() {
         ResearchPurpose researchPurpose = new ResearchPurpose();
         boolean result = equals(researchPurpose);
-        Assert.assertTrue(result);
+        assertTrue(result);
     }
 
     @Test
