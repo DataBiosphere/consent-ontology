@@ -8,28 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
-import com.google.api.client.http.HttpRequest;
 import com.google.api.client.http.HttpResponse;
-import com.google.api.client.http.HttpStatusCodes;
-import com.google.api.client.http.HttpTransport;
-import com.google.api.client.http.LowLevelHttpRequest;
-import com.google.api.client.http.LowLevelHttpResponse;
-import com.google.api.client.json.Json;
-import com.google.api.client.testing.http.HttpTesting;
-import com.google.api.client.testing.http.MockHttpTransport;
-import com.google.api.client.testing.http.MockLowLevelHttpRequest;
-import com.google.api.client.testing.http.MockLowLevelHttpResponse;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 
-public class StoreOntologyServiceTest {
+public class StoreOntologyServiceTest extends AbstractTest {
 
     private static final String content = "{\"name\":\"" + METHODS_RESEARCH + "\"}";
     private static final String urls = "{\"" + RESEARCH_TYPE + "\":\"" + METHODS_RESEARCH + "\"}";
@@ -47,7 +37,7 @@ public class StoreOntologyServiceTest {
 
     @Test
     public void testRetrieveConfigurationFile() throws Exception {
-        HttpResponse response = getHttpResponse(content);
+        HttpResponse response = getMockHttpResponse(content);
         when(store.getStorageDocument(Mockito.anyString())).thenReturn(response);
         String result = storeOntologyService.retrieveConfigurationFile();
         assertTrue(result.contains(content));
@@ -62,7 +52,7 @@ public class StoreOntologyServiceTest {
 
     @Test
     public void testRetrieveOntologyURLs() throws Exception {
-        HttpResponse httpResponse = getHttpResponse(urls);
+        HttpResponse httpResponse = getMockHttpResponse(urls);
         when(store.getStorageDocument(Mockito.anyString())).thenReturn(httpResponse);
         List<URL> urls = new ArrayList<>(storeOntologyService.retrieveOntologyURLs());
         assertFalse(urls.isEmpty());
@@ -71,29 +61,9 @@ public class StoreOntologyServiceTest {
 
     @Test
     public void testRetrieveOntologyURLWithInvalidFormat() throws Exception {
-        HttpResponse httpResponse = getHttpResponse(error);
+        HttpResponse httpResponse = getMockHttpResponse(error);
         when(store.getStorageDocument(Mockito.anyString())).thenReturn(httpResponse);
         assertTrue(storeOntologyService.retrieveOntologyURLs().isEmpty());
-    }
-
-    private HttpResponse getHttpResponse(String content) throws IOException {
-        HttpTransport transport = new MockHttpTransport() {
-            @Override
-            public LowLevelHttpRequest buildRequest(String method, String url) {
-                return new MockLowLevelHttpRequest() {
-                    @Override
-                    public LowLevelHttpResponse execute() {
-                        MockLowLevelHttpResponse response = new MockLowLevelHttpResponse();
-                        response.setStatusCode(HttpStatusCodes.STATUS_CODE_OK);
-                        response.setContentType(Json.MEDIA_TYPE);
-                        response.setContent(content);
-                        return response;
-                    }
-                };
-            }
-        };
-        HttpRequest request = transport.createRequestFactory().buildGetRequest(HttpTesting.SIMPLE_GENERIC_URL);
-        return request.execute();
     }
 
 }

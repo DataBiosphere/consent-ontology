@@ -1,24 +1,34 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
+import com.google.api.client.http.HttpResponse;
+import com.google.common.io.Resources;
 import com.google.gson.Gson;
 import java.io.IOException;
+import java.net.URL;
+import java.nio.charset.Charset;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.After;
+import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
+import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
+import org.broadinstitute.dsde.consent.ontology.model.TermItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -34,26 +44,37 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     @Mock
     private AutocompleteService autocompleteService;
 
-    public TextTranslationServiceImplTest() {
+    @Mock
+    private GCSStore gcsStore;
+
+    @Mock
+    private StoreOntologyService storeOntologyService = getStorageServiceMock();
+
+    public TextTranslationServiceImplTest() throws IOException {
     }
 
     @BeforeEach
-    public void setUpClass() throws IOException {
-        TermResource mockTerm = new TermResource();
-        mockTerm.setId("term id");
-        mockTerm.setLabel("term label");
-        mockTerm.setDefinition("term definition");
-        openMocks(this);
-        Mockito.when(autocompleteService.lookupById(any())).thenReturn(Collections.singletonList(mockTerm));
-        service = new TextTranslationServiceImpl(autocompleteService);
+    public void setUpClass() {
+      openMocks(this);
+      service = new TextTranslationServiceImpl(autocompleteService, gcsStore, storeOntologyService);
     }
 
-    @After
-    public void tearDownClass() {
+    private void initializeTerm() throws Exception {
+      TermResource mockTerm = new TermResource();
+      mockTerm.setId("term id");
+      mockTerm.setLabel("term label");
+      mockTerm.setDefinition("term definition");
+      when(autocompleteService.lookupById(any())).thenReturn(Collections.singletonList(mockTerm));
+    }
+
+    private HttpResponse loadTermItemsResponse() throws IOException {
+      URL searchTerm = Resources.getResource("search-terms.json");
+      return getMockHttpResponse(Resources.toString(searchTerm, Charset.defaultCharset()));
     }
 
     @Test
-    public void testTranslateSummary() {
+    public void testTranslateSummary() throws Exception {
+        initializeTerm();
         Gson gson = new Gson();
         DataUse dataUse = new DataUseBuilder().setGeneralUse(true).build();
         String dataUseString = gson.toJson(dataUse);
@@ -67,7 +88,8 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     }
 
     @Test
-    public void testDiseaseLookup() throws IOException {
+    public void testDiseaseLookup() throws Exception {
+        initializeTerm();
         Gson gson = new Gson();
         DataUse dataset = new DataUseBuilder().setDiseaseRestrictions(Collections.singletonList("term id")).build();
         String datasetString = gson.toJson(dataset);
@@ -79,7 +101,8 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     }
 
     @Test
-    public void testTranslateDataset() throws IOException {
+    public void testTranslateDataset() throws Exception {
+        initializeTerm();
         Gson gson = new Gson();
         DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
         String datasetString = gson.toJson(dataset);
@@ -87,6 +110,19 @@ public class TextTranslationServiceImplTest extends AbstractTest {
         log.info(translation);
         assertNotNull(translation);
         assertTrue(translation.contains("[GRU]"));
+    }
+
+    @Test
+    public void testTranslateParagraph() throws Exception {
+      HttpResponse response = loadTermItemsResponse();
+      when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
+      String mockParagraph = "GRU General research for some test with disease. This is not for profit.";
+
+      HashMap<String, Recommendation> translation = service.translateParagraph(mockParagraph);
+      assertEquals(3, translation.size());
+      assertEquals("General Research Use", translation.get("http://purl.obolibrary.org/obo/DUO_0000042").title());
+      assertEquals("Disease Specific Research", translation.get("http://purl.obolibrary.org/obo/DUO_0000007").title());
+      assertEquals("Not for Profit Organization Use Only", translation.get("http://purl.obolibrary.org/obo/DUO_0000045").title());
     }
 
     @Test
@@ -142,7 +178,8 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     }
 
     @Test
-    public void testTranslateCoverageFalse() throws IOException {
+    public void testTranslateCoverageFalse() throws Exception {
+        initializeTerm();
         Gson gson = new Gson();
         DataUse dataset = new DataUseBuilder()
                 .setGeneralUse(false)

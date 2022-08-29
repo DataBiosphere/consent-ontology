@@ -1,12 +1,13 @@
 package org.broadinstitute.dsde.consent.ontology;
 
 import com.codahale.metrics.health.HealthCheckRegistry;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.dropwizard.Configuration;
 import io.dropwizard.setup.Environment;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
@@ -17,10 +18,6 @@ import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplet
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
 import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidator;
-import org.broadinstitute.dsde.consent.ontology.translate.service.Translate;
-
-import java.io.IOException;
-import java.security.GeneralSecurityException;
 
 public class OntologyModule extends AbstractModule {
 
@@ -41,17 +38,7 @@ public class OntologyModule extends AbstractModule {
     @Provides
     @Singleton
     public TextTranslationService providesTextTranslationService() {
-        return new TextTranslationServiceImpl(providesAutocomplete());
-    }
-
-    @Provides
-    public Translate providesTranslate() {
-        return new Translate(providesGCSStore());
-    }
-
-    @Provides
-    public ObjectMapper providesObjectMapper() {
-        return new ObjectMapper();
+        return new TextTranslationServiceImpl(providesAutocomplete(), providesGCSStore(), providesStore());
     }
 
     @Provides

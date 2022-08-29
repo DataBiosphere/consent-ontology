@@ -1,21 +1,28 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jsonldjava.shaded.com.google.common.reflect.TypeToken;
+import com.google.api.client.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
+import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
+import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
+import org.broadinstitute.dsde.consent.ontology.model.TermItem;
 import org.slf4j.Logger;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -69,11 +76,14 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
-    private AutocompleteService autocompleteService;
+    private final AutocompleteService autocompleteService;
+
+  private final GCSStore gcsStore;
 
     @Inject
-    public TextTranslationServiceImpl(AutocompleteService autocompleteService) {
+    public TextTranslationServiceImpl(AutocompleteService autocompleteService, GCSStore gcsStore, StoreOntologyService storageService) {
         this.autocompleteService = autocompleteService;
+        this.gcsStore = gcsStore;
     }
 
     @Override
@@ -90,10 +100,8 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     @Override
-    public String translateParagraph(String dataUseString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
-        return translate(dataUse, TranslateFor.PARAGRAPH);
+    public HashMap<String, Recommendation> translateParagraph(String paragraph) throws Exception {
+        return paragraph(paragraph);
     }
 
     @Override
@@ -101,6 +109,53 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         ObjectMapper mapper = new ObjectMapper();
         DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
         return translate(dataUse, TranslateFor.PURPOSE);
+    }
+
+    public HashMap<String, Recommendation> paragraph(final String paragraph) throws Exception {
+      HashMap<String, Recommendation> recommendations = new HashMap<>();
+
+      List<TermItem> terms = loadTermsFromGoogleStorage();
+
+      for (TermItem term : terms) {
+        final String title = term.getTitle();
+        final String category = term.getCategory();
+        final String url = term.getUrl();
+        final String[] keywords = term.getKeywords();
+
+        for (String keyword : keywords) {
+          final boolean foundMatch = searchForKeyword(keyword, paragraph);
+
+          if (foundMatch) {
+            Recommendation recommendation = new Recommendation(
+                title,
+                category
+            );
+            if (!recommendations.containsKey(url)) {
+              recommendations.put(url, recommendation);
+            }
+          }
+        }
+      }
+
+      return recommendations;
+    }
+
+    private static boolean searchForKeyword(final String keyword, final String targetText) {
+      return StringUtils.containsIgnoreCase(targetText, keyword);
+    }
+
+    List<TermItem> loadTermsFromGoogleStorage() throws Exception {
+      HttpResponse response = gcsStore.getStorageDocument("ontology/search-terms.json");
+      String terms = response.parseAsString();
+      try {
+        return new Gson().fromJson(
+            terms,
+            new TypeToken<List<TermItem>>() {
+            }.getType()
+        );
+      } catch (Exception e) {
+        throw new Exception("Error loading terms from json file: " + "search-terms.json", e);
+      }
     }
 
     /**

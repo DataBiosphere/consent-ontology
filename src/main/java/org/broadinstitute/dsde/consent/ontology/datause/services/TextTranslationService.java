@@ -1,8 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
+import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 
 import java.io.IOException;
+import java.util.HashMap;
 
 public interface TextTranslationService {
 
@@ -12,7 +14,7 @@ public interface TextTranslationService {
 
     String translateDataset(String dataUse) throws IOException;
 
-    String translateParagraph(String paragraph) throws IOException;
+    HashMap<String, Recommendation> translateParagraph(String paragraph) throws Exception;
 
     String translatePurpose(String dataUse) throws IOException;
 
