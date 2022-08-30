@@ -14,7 +14,7 @@
         <maven.compiler.target>17</maven.compiler.target>
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
-        <mockserver.version>5.13.2</mockserver.version>
+        <mockserver.version>5.14.0</mockserver.version>
         <owl.version>5.1.20</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.7.7</rdf4j-rio.version>
@@ -278,7 +278,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>7.1.1</version>
+                <version>7.1.2</version>
                 <configuration>
                     <skipProvidedScope>true</skipProvidedScope>
                     <skipRuntimeScope>true</skipRuntimeScope>
@@ -740,12 +740,6 @@
             <artifactId>swagger-ui</artifactId>
             <version>${swagger.ui.version}</version>
         </dependency>
-      <dependency>
-        <groupId>org.junit.jupiter</groupId>
-        <artifactId>junit-jupiter</artifactId>
-        <version>RELEASE</version>
-        <scope>test</scope>
-      </dependency>
 
     </dependencies>
 </project>

@@ -391,7 +391,7 @@ definitions:
     type: object
     description: JSON model of a set of data use recommendations
     example:
-      { "http://purl.obolibrary.org/obo/DUO_0000042": { title: "General Research Use", "category", "Data Use Permission" } }
+      { "http://purl.obolibrary.org/obo/DUO_0000042": { "title": "General Research Use", "category": "Data Use Permission" } }
 
   DataUseMatchPair:
     type: object
@@ -425,6 +425,8 @@ definitions:
       paragraph:
         description: The paragraph to translate
         type: string
+    example:
+      { "paragraph": "GRU General research for some test with disease. This is not for profit." }
 
   Version:
     type: object

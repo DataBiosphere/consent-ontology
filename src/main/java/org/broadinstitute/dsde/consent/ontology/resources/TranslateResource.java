@@ -1,13 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService.TranslateFor.PARAGRAPH;
-
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import java.util.HashMap;
-import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -18,7 +13,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService.TranslateFor;
-import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseRecommendation;
+import org.broadinstitute.dsde.consent.ontology.model.TranslateParagraph;
 import org.slf4j.Logger;
 
 
@@ -67,14 +63,12 @@ public class TranslateResource {
     @Path("paragraph")
     @POST
     public Response translateParagraph(final String jsonString) throws Exception {
-        final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {});
-        String paragraph = body.get("paragraph");
-
-        if (StringUtils.isBlank(paragraph)) {
+        TranslateParagraph translate = mapper.readValue(jsonString, TranslateParagraph.class);
+        if (StringUtils.isBlank(translate.paragraph())) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
         }
-
-        return buildResponse(PARAGRAPH, paragraph);
+        DataUseRecommendation recommendation = translationService.translateParagraph(translate.paragraph());
+        return Response.ok().entity(recommendation).build();
     }
 
     /**
@@ -88,8 +82,8 @@ public class TranslateResource {
     private Response buildResponse(TranslateFor forParam, String dataUse) throws Exception {
         String result = switch(forParam) {
           case PARAGRAPH -> {
-            HashMap<String, Recommendation> response = translationService.translateParagraph(dataUse);
-            yield new Gson().toJson(response);
+            DataUseRecommendation recommendation = translationService.translateParagraph(dataUse);
+            yield new Gson().toJson(recommendation);
           }
           case PURPOSE -> translationService.translatePurpose(dataUse);
           case DATASET -> translationService.translateDataset(dataUse);

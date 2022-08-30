@@ -5,20 +5,6 @@ import com.github.jsonldjava.shaded.com.google.common.reflect.TypeToken;
 import com.google.api.client.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
-import org.broadinstitute.dsde.consent.ontology.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
-import org.broadinstitute.dsde.consent.ontology.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
-import org.broadinstitute.dsde.consent.ontology.model.TermItem;
-import org.slf4j.Logger;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -27,6 +13,19 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseRecommendation;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
+import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
+import org.broadinstitute.dsde.consent.ontology.model.TermItem;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
+import org.slf4j.Logger;
 
 public class TextTranslationServiceImpl implements TextTranslationService {
 
@@ -81,7 +80,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
   private final GCSStore gcsStore;
 
     @Inject
-    public TextTranslationServiceImpl(AutocompleteService autocompleteService, GCSStore gcsStore, StoreOntologyService storageService) {
+    public TextTranslationServiceImpl(AutocompleteService autocompleteService, GCSStore gcsStore) {
         this.autocompleteService = autocompleteService;
         this.gcsStore = gcsStore;
     }
@@ -100,7 +99,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     @Override
-    public HashMap<String, Recommendation> translateParagraph(String paragraph) throws Exception {
+    public DataUseRecommendation translateParagraph(String paragraph) throws Exception {
         return paragraph(paragraph);
     }
 
@@ -111,7 +110,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         return translate(dataUse, TranslateFor.PURPOSE);
     }
 
-    public HashMap<String, Recommendation> paragraph(final String paragraph) throws Exception {
+    private DataUseRecommendation paragraph(final String paragraph) throws Exception {
       HashMap<String, Recommendation> recommendations = new HashMap<>();
 
       List<TermItem> terms = loadTermsFromGoogleStorage();
@@ -137,7 +136,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         }
       }
 
-      return recommendations;
+      return new DataUseRecommendation(recommendations);
     }
 
     private static boolean searchForKeyword(final String keyword, final String targetText) {

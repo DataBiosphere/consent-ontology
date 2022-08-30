@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Stream;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
@@ -23,12 +22,10 @@ import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseRecommendation;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
-import org.broadinstitute.dsde.consent.ontology.model.TermItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -47,16 +44,13 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     @Mock
     private GCSStore gcsStore;
 
-    @Mock
-    private StoreOntologyService storeOntologyService = getStorageServiceMock();
-
     public TextTranslationServiceImplTest() throws IOException {
     }
 
     @BeforeEach
     public void setUpClass() {
       openMocks(this);
-      service = new TextTranslationServiceImpl(autocompleteService, gcsStore, storeOntologyService);
+      service = new TextTranslationServiceImpl(autocompleteService, gcsStore);
     }
 
     private void initializeTerm() throws Exception {
@@ -118,11 +112,11 @@ public class TextTranslationServiceImplTest extends AbstractTest {
       when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
       String mockParagraph = "GRU General research for some test with disease. This is not for profit.";
 
-      HashMap<String, Recommendation> translation = service.translateParagraph(mockParagraph);
-      assertEquals(3, translation.size());
-      assertEquals("General Research Use", translation.get("http://purl.obolibrary.org/obo/DUO_0000042").title());
-      assertEquals("Disease Specific Research", translation.get("http://purl.obolibrary.org/obo/DUO_0000007").title());
-      assertEquals("Not for Profit Organization Use Only", translation.get("http://purl.obolibrary.org/obo/DUO_0000045").title());
+      DataUseRecommendation recommendation = service.translateParagraph(mockParagraph);
+      assertEquals(3, recommendation.recommendations().size());
+      assertEquals("General Research Use", recommendation.recommendations().get("http://purl.obolibrary.org/obo/DUO_0000042").title());
+      assertEquals("Disease Specific Research", recommendation.recommendations().get("http://purl.obolibrary.org/obo/DUO_0000007").title());
+      assertEquals("Not for Profit Organization Use Only", recommendation.recommendations().get("http://purl.obolibrary.org/obo/DUO_0000045").title());
     }
 
     @Test
