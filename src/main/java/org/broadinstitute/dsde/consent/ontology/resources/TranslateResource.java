@@ -67,8 +67,7 @@ public class TranslateResource {
         if (StringUtils.isBlank(translate.paragraph())) {
             return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
         }
-        DataUseRecommendation recommendation = translationService.translateParagraph(translate.paragraph());
-        return Response.ok().entity(recommendation).build();
+        return buildResponse(TranslateFor.PARAGRAPH, translate.paragraph());
     }
 
     /**
@@ -83,7 +82,7 @@ public class TranslateResource {
         String result = switch(forParam) {
           case PARAGRAPH -> {
             DataUseRecommendation recommendation = translationService.translateParagraph(dataUse);
-            yield new Gson().toJson(recommendation);
+            yield new Gson().toJson(recommendation.recommendations());
           }
           case PURPOSE -> translationService.translatePurpose(dataUse);
           case DATASET -> translationService.translateDataset(dataUse);
