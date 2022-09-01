@@ -391,8 +391,7 @@ definitions:
     type: object
     description: JSON model of a set of data use recommendations
     example:
-      { "http://purl.obolibrary.org/obo/DUO_0000042": { title: "General Research Use", "category", "Data Use Permission" } }
-
+      { "http://purl.obolibrary.org/obo/DUO_0000042": {"title": "General Research Use", "category": "Data Use Permission" } }
   DataUseMatchPair:
     type: object
     description: JSON model of research purpose and dataset
