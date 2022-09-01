@@ -38,7 +38,7 @@ public class OntologyModule extends AbstractModule {
     @Provides
     @Singleton
     public TextTranslationService providesTextTranslationService() {
-        return new TextTranslationServiceImpl(providesAutocomplete(), providesGCSStore(), providesStore());
+        return new TextTranslationServiceImpl(providesAutocomplete(), providesGCSStore());
     }
 
     @Provides

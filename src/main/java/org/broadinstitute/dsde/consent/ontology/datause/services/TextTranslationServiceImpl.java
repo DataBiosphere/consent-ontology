@@ -14,7 +14,6 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 import org.broadinstitute.dsde.consent.ontology.model.TermItem;
 import org.slf4j.Logger;
@@ -81,7 +80,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
   private final GCSStore gcsStore;
 
     @Inject
-    public TextTranslationServiceImpl(AutocompleteService autocompleteService, GCSStore gcsStore, StoreOntologyService storageService) {
+    public TextTranslationServiceImpl(AutocompleteService autocompleteService, GCSStore gcsStore) {
         this.autocompleteService = autocompleteService;
         this.gcsStore = gcsStore;
     }
@@ -111,7 +110,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         return translate(dataUse, TranslateFor.PURPOSE);
     }
 
-    public HashMap<String, Recommendation> paragraph(final String paragraph) throws Exception {
+    private HashMap<String, Recommendation> paragraph(final String paragraph) throws Exception {
       HashMap<String, Recommendation> recommendations = new HashMap<>();
 
       List<TermItem> terms = loadTermsFromGoogleStorage();

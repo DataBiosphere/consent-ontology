@@ -28,7 +28,6 @@ import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
-import org.broadinstitute.dsde.consent.ontology.model.TermItem;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -56,7 +55,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     @BeforeEach
     public void setUpClass() {
       openMocks(this);
-      service = new TextTranslationServiceImpl(autocompleteService, gcsStore, storeOntologyService);
+      service = new TextTranslationServiceImpl(autocompleteService, gcsStore);
     }
 
     private void initializeTerm() throws Exception {
@@ -70,6 +69,10 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     private HttpResponse loadTermItemsResponse() throws IOException {
       URL searchTerm = Resources.getResource("search-terms.json");
       return getMockHttpResponse(Resources.toString(searchTerm, Charset.defaultCharset()));
+    }
+
+    private String getTitle(HashMap<String, Recommendation> translation, String urlKey) {
+      return translation.get(urlKey).title();
     }
 
     @Test
@@ -113,17 +116,46 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     }
 
     @Test
-    public void testTranslateParagraph() throws Exception {
+    public void testTranslateParagraphNormal() throws Exception {
+      // Given
       HttpResponse response = loadTermItemsResponse();
       when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
-      String mockParagraph = "GRU General research for some test with disease. This is not for profit.";
 
-      HashMap<String, Recommendation> translation = service.translateParagraph(mockParagraph);
-      assertEquals(3, translation.size());
-      assertEquals("General Research Use", translation.get("http://purl.obolibrary.org/obo/DUO_0000042").title());
-      assertEquals("Disease Specific Research", translation.get("http://purl.obolibrary.org/obo/DUO_0000007").title());
-      assertEquals("Not for Profit Organization Use Only", translation.get("http://purl.obolibrary.org/obo/DUO_0000045").title());
+      // When
+      String mockParagraph = "GRU General research for some test with disease. This is not for profit.";
+      HashMap<String, Recommendation> translationNormal = service.translateParagraph(mockParagraph);
+
+      String gruTitle = getTitle(translationNormal, "http://purl.obolibrary.org/obo/DUO_0000042");
+      String dsTitle = getTitle(translationNormal, "http://purl.obolibrary.org/obo/DUO_0000007");
+      String npuTitle = getTitle(translationNormal, "http://purl.obolibrary.org/obo/DUO_0000045");
+
+      // Then
+      assertEquals(3, translationNormal.size());
+      assertEquals("General Research Use", gruTitle);
+      assertEquals("Disease Specific Research", dsTitle);
+      assertEquals("Not for Profit Organization Use Only", npuTitle);
     }
+
+  @Test
+  public void testTranslateParagraphMixed() throws Exception {
+    // Given
+    HttpResponse response = loadTermItemsResponse();
+    when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
+
+    // When
+    String mockParagraph = "GrU geNEraL ResEArCh fOr some tesT wiTH DiseaSE. ThiS IS noT fOr pROFIT.";
+    HashMap<String, Recommendation> translation = service.translateParagraph(mockParagraph);
+
+    String gruTitle = getTitle(translation, "http://purl.obolibrary.org/obo/DUO_0000042");
+    String dsTitle = getTitle(translation, "http://purl.obolibrary.org/obo/DUO_0000007");
+    String npuTitle = getTitle(translation, "http://purl.obolibrary.org/obo/DUO_0000045");
+
+    // Then
+    assertEquals(3, translation.size());
+    assertEquals("General Research Use", gruTitle);
+    assertEquals("Disease Specific Research", dsTitle);
+    assertEquals("Not for Profit Organization Use Only", npuTitle);
+  }
 
     @Test
     public void testTranslatePurpose() throws IOException {
