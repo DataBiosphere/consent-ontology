@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.datause.api;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.net.SocketTimeoutException;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
@@ -145,9 +146,11 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                                         document.getValues(FIELD_SYNONYM)));
                     }
                 });
-            } catch (MalformedURLException e) {
+            } catch (MalformedURLException | SocketTimeoutException e) {
+                // These checks are run on app initialization and do not
+                // represent a fatal failure of the application.
+                // Log errors and continue with app startup.
                 log.error("Unable to parse string to url: " + e.getMessage());
-                throw new RuntimeException(e);
             }
         }
     }
