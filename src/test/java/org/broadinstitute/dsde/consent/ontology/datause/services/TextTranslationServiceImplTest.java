@@ -24,10 +24,9 @@ import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
+import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -45,9 +44,6 @@ public class TextTranslationServiceImplTest extends AbstractTest {
 
     @Mock
     private GCSStore gcsStore;
-
-    @Mock
-    private StoreOntologyService storeOntologyService = getStorageServiceMock();
 
     public TextTranslationServiceImplTest() throws IOException {
     }
