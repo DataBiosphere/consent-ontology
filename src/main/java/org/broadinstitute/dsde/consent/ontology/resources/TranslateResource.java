@@ -66,15 +66,21 @@ public class TranslateResource {
 
     @Path("paragraph")
     @POST
-    public Response translateParagraph(final String jsonString) throws Exception {
-        final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {});
-        String paragraph = body.get("paragraph");
-
-        if (StringUtils.isBlank(paragraph)) {
-            return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
+    public Response translateParagraph(final String jsonString) {
+        try {
+          final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {});
+          String paragraph = body.get("paragraph");
+          if (StringUtils.isBlank(paragraph)) {
+              return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
+          }
+          return buildResponse(PARAGRAPH, paragraph);
+        } catch (Exception e) {
+          String message = "Server Error translating paragraph";
+          log.error(message, e);
+          return Response
+            .status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message)
+            .build();
         }
-
-        return buildResponse(PARAGRAPH, paragraph);
     }
 
     /**
