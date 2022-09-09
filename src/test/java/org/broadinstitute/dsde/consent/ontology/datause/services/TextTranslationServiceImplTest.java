@@ -14,8 +14,6 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -73,7 +71,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     public void testDiseaseLookup() throws Exception {
         initializeTerm();
         Gson gson = new Gson();
-        DataUse dataset = new DataUseBuilder().setDiseaseRestrictions(Collections.singletonList("term id")).build();
+        DataUse dataset = new DataUseBuilder().setDiseaseRestrictions(List.of("term id")).build();
         String datasetString = gson.toJson(dataset);
         String translation = service.translateDataset(datasetString);
         log.info(translation);
@@ -153,13 +151,13 @@ public class TextTranslationServiceImplTest extends AbstractTest {
         DataUse dataset = new DataUseBuilder()
                 .setGeneralUse(true)
                 .setHmbResearch(true)
-                .setDiseaseRestrictions(Collections.singletonList("disease"))
+                .setDiseaseRestrictions(List.of("disease"))
                 .setMethodsResearch(true)
                 .setControlSetOption("Yes")
                 .setCommercialUse(true)
                 .setGender("Male")
                 .setPediatric(true)
-                .setPopulationRestrictions(Collections.singletonList("population"))
+                .setPopulationRestrictions(List.of("population"))
                 .setAddiction(true)
                 .setAggregateResearch("Yes")
                 .setCloudStorage("Yes")
@@ -195,13 +193,13 @@ public class TextTranslationServiceImplTest extends AbstractTest {
         DataUse dataset = new DataUseBuilder()
                 .setGeneralUse(false)
                 .setHmbResearch(false)
-                .setDiseaseRestrictions(Collections.singletonList("disease"))
+                .setDiseaseRestrictions(List.of("disease"))
                 .setMethodsResearch(false)
                 .setControlSetOption("No")
                 .setCommercialUse(false)
                 .setGender("Male")
                 .setPediatric(false)
-                .setPopulationRestrictions(Collections.singletonList("population"))
+                .setPopulationRestrictions(List.of("population"))
                 .setAddiction(false)
                 .setAggregateResearch("No")
                 .setCloudStorage("No")
@@ -251,7 +249,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
       mockTerm.setId("term id");
       mockTerm.setLabel("term label");
       mockTerm.setDefinition("term definition");
-      when(autocompleteService.lookupById(any())).thenReturn(Collections.singletonList(mockTerm));
+      when(autocompleteService.lookupById(any())).thenReturn(List.of(mockTerm));
     }
 
     private HttpResponse loadTermItemsResponse() throws IOException {
