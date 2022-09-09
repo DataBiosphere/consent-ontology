@@ -45,30 +45,12 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     @Mock
     private GCSStore gcsStore;
 
-    public TextTranslationServiceImplTest() {
-    }
+    public TextTranslationServiceImplTest() {}
 
     @BeforeEach
     public void setUpClass() {
       openMocks(this);
       service = new TextTranslationServiceImpl(autocompleteService, gcsStore);
-    }
-
-    private void initializeTerm() throws Exception {
-      TermResource mockTerm = new TermResource();
-      mockTerm.setId("term id");
-      mockTerm.setLabel("term label");
-      mockTerm.setDefinition("term definition");
-      when(autocompleteService.lookupById(any())).thenReturn(Collections.singletonList(mockTerm));
-    }
-
-    private HttpResponse loadTermItemsResponse() throws IOException {
-      URL searchTerm = Resources.getResource("search-terms.json");
-      return getMockHttpResponse(Resources.toString(searchTerm, Charset.defaultCharset()));
-    }
-
-    private String getTitle(HashMap<String, Recommendation> translation, String urlKey) {
-      return translation.get(urlKey).title();
     }
 
     @Test
@@ -259,6 +241,25 @@ public class TextTranslationServiceImplTest extends AbstractTest {
         log.info(translation);
         assertNotNull(translation);
         assertTrue(translation.contains("[GRU]"));
+    }
+
+  /** Helper Methods **/
+
+  private void initializeTerm() throws Exception {
+      TermResource mockTerm = new TermResource();
+      mockTerm.setId("term id");
+      mockTerm.setLabel("term label");
+      mockTerm.setDefinition("term definition");
+      when(autocompleteService.lookupById(any())).thenReturn(Collections.singletonList(mockTerm));
+    }
+
+    private HttpResponse loadTermItemsResponse() throws IOException {
+      URL searchTerm = Resources.getResource("search-terms.json");
+      return getMockHttpResponse(Resources.toString(searchTerm, Charset.defaultCharset()));
+    }
+
+    private String getTitle(HashMap<String, Recommendation> translation, String urlKey) {
+      return translation.get(urlKey).title();
     }
 
 }
