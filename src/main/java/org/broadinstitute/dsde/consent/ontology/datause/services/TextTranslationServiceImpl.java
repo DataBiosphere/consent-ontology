@@ -115,6 +115,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
       List<TermItem> terms = loadTermsFromGoogleStorage();
 
+      if (terms.isEmpty()) {
+        throw new Exception("Unable to process search terms");
+      }
+
       for (TermItem term : terms) {
         final String title = term.getTitle();
         final String category = term.getCategory();
@@ -143,18 +147,19 @@ public class TextTranslationServiceImpl implements TextTranslationService {
       return StringUtils.containsIgnoreCase(targetText, keyword);
     }
 
-    List<TermItem> loadTermsFromGoogleStorage() throws Exception {
-      HttpResponse response = gcsStore.getStorageDocument("ontology/search-terms.json");
-      String terms = response.parseAsString();
+    private List<TermItem> loadTermsFromGoogleStorage() {
       try {
+        HttpResponse response = gcsStore.getStorageDocument("ontology/search-terms.json");
+        String terms = response.parseAsString();
         return new Gson().fromJson(
             terms,
             new TypeToken<List<TermItem>>() {
             }.getType()
         );
       } catch (Exception e) {
-        throw new Exception("Error loading terms from json file: " + "search-terms.json", e);
+        log.error("Error processing search terms from GCS: " + e.getMessage());
       }
+      return List.of();
     }
 
     /**
