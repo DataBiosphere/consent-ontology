@@ -17,6 +17,7 @@ import java.nio.charset.Charset;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 import org.broadinstitute.dsde.consent.ontology.AbstractTest;
 import org.broadinstitute.dsde.consent.ontology.Utils;
@@ -101,7 +102,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
 
       // When
       String mockParagraph = "GRU General research for some test with disease. This is not for profit.";
-      HashMap<String, Recommendation> translationNormal = service.translateParagraph(mockParagraph);
+      Map<String, Recommendation> translationNormal = service.translateParagraph(mockParagraph);
 
       String gruTitle = getTitle(translationNormal, "http://purl.obolibrary.org/obo/DUO_0000042");
       String dsTitle = getTitle(translationNormal, "http://purl.obolibrary.org/obo/DUO_0000007");
@@ -122,7 +123,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
 
     // When
     String mockParagraph = "GrU geNEraL ResEArCh fOr some tesT wiTH DiseaSE. ThiS IS noT fOr pROFIT.";
-    HashMap<String, Recommendation> translation = service.translateParagraph(mockParagraph);
+    Map<String, Recommendation> translation = service.translateParagraph(mockParagraph);
 
     String gruTitle = getTitle(translation, "http://purl.obolibrary.org/obo/DUO_0000042");
     String dsTitle = getTitle(translation, "http://purl.obolibrary.org/obo/DUO_0000007");
@@ -258,7 +259,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
       return getMockHttpResponse(Resources.toString(searchTerm, Charset.defaultCharset()));
     }
 
-    private String getTitle(HashMap<String, Recommendation> translation, String urlKey) {
+    private String getTitle(Map<String, Recommendation> translation, String urlKey) {
       return translation.get(urlKey).title();
     }
 

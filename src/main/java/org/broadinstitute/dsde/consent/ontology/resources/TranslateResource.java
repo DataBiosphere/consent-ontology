@@ -94,7 +94,7 @@ public class TranslateResource {
     private Response buildResponse(TranslateFor forParam, String dataUse) throws Exception {
         String result = switch(forParam) {
           case PARAGRAPH -> {
-            HashMap<String, Recommendation> response = translationService.translateParagraph(dataUse);
+            Map<String, Recommendation> response = translationService.translateParagraph(dataUse);
             yield new Gson().toJson(response);
           }
           case PURPOSE -> translationService.translatePurpose(dataUse);

@@ -5,6 +5,15 @@ import com.github.jsonldjava.shaded.com.google.common.reflect.TypeToken;
 import com.google.api.client.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.stream.Collectors;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
@@ -12,20 +21,11 @@ import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
-import org.broadinstitute.dsde.consent.ontology.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 import org.broadinstitute.dsde.consent.ontology.model.TermItem;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class TextTranslationServiceImpl implements TextTranslationService {
 
@@ -99,7 +99,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     @Override
-    public HashMap<String, Recommendation> translateParagraph(String paragraph) throws Exception {
+    public Map<String, Recommendation> translateParagraph(String paragraph) throws IOException {
         return paragraph(paragraph);
     }
 
@@ -110,13 +110,13 @@ public class TextTranslationServiceImpl implements TextTranslationService {
         return translate(dataUse, TranslateFor.PURPOSE);
     }
 
-    private HashMap<String, Recommendation> paragraph(final String paragraph) throws Exception {
-      HashMap<String, Recommendation> recommendations = new HashMap<>();
+    private Map<String, Recommendation> paragraph(final String paragraph) throws IOException {
+      Map<String, Recommendation> recommendations = new HashMap<>();
 
       List<TermItem> terms = loadTermsFromGoogleStorage();
 
       if (terms.isEmpty()) {
-        throw new Exception("Unable to process search terms");
+        throw new IOException("Unable to process search terms");
       }
 
       for (TermItem term : terms) {
