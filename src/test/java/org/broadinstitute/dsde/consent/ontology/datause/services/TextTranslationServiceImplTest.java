@@ -45,7 +45,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
     @Mock
     private GCSStore gcsStore;
 
-    public TextTranslationServiceImplTest() throws IOException {
+    public TextTranslationServiceImplTest() {
     }
 
     @BeforeEach
