@@ -154,7 +154,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             }.getType()
         );
       } catch (Exception e) {
-        log.error("Error processing search terms from GCS: " + e.getMessage());
+        log.error("Error processing search terms from GCS: " + e);
       }
       return List.of();
     }
