@@ -127,15 +127,12 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
         for (String keyword : keywords) {
           final boolean foundMatch = searchForKeyword(keyword, paragraph);
-
           if (foundMatch) {
-            Recommendation recommendation = new Recommendation(
+            recommendations.computeIfAbsent(url, key -> new Recommendation(
                 title,
                 category
-            );
-            if (!recommendations.containsKey(url)) {
-              recommendations.put(url, recommendation);
-            }
+            ));
+            break;
           }
         }
       }
