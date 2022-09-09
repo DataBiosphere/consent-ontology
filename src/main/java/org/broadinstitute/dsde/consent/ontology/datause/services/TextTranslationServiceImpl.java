@@ -77,7 +77,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
     private final AutocompleteService autocompleteService;
 
-  private final GCSStore gcsStore;
+    private final GCSStore gcsStore;
 
     @Inject
     public TextTranslationServiceImpl(AutocompleteService autocompleteService, GCSStore gcsStore) {
