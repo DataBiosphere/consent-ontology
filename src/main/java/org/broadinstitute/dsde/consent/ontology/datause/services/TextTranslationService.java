@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import java.util.Map;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
 import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 
@@ -19,4 +20,5 @@ public interface TextTranslationService {
 
     String translatePurpose(String dataUse) throws IOException;
 
+    String translate(DataUse dataUse, TranslateFor translateFor);
 }
