@@ -100,17 +100,6 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
     @Override
     public Map<String, Recommendation> translateParagraph(String paragraph) throws IOException {
-        return paragraph(paragraph);
-    }
-
-    @Override
-    public String translatePurpose(String dataUseString) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
-        return translate(dataUse, TranslateFor.PURPOSE);
-    }
-
-    private Map<String, Recommendation> paragraph(final String paragraph) throws IOException {
       Map<String, Recommendation> recommendations = new HashMap<>();
 
       List<TermItem> terms = loadTermsFromGoogleStorage();
@@ -138,6 +127,13 @@ public class TextTranslationServiceImpl implements TextTranslationService {
       }
 
       return recommendations;
+    }
+
+    @Override
+    public String translatePurpose(String dataUseString) throws IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
+        return translate(dataUse, TranslateFor.PURPOSE);
     }
 
     private static boolean searchForKeyword(final String keyword, final String targetText) {
