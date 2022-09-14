@@ -6,10 +6,13 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.google.gson.Gson;
+import java.util.HashMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
@@ -56,6 +59,28 @@ public class TranslateResourceTest {
         } catch (Exception e) {
             fail(e.getMessage());
         }
+    }
+
+    @Test
+    public void testTranslateParagraphBadRequest() {
+      try (Response response = resource.translateParagraph("{}")) {
+        assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+      }
+    }
+
+    @Test
+    public void testTranslateParagraphServerError() {
+      try (Response response = resource.translateParagraph("")) {
+        assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+      }
+    }
+
+    @Test
+    public void testTranslateParagraph() throws Exception {
+      when(service.translateParagraph(any())).thenReturn(new HashMap<>());
+      try (Response response = resource.translateParagraph("{\"paragraph\":\"Not for Profit\"}")) {
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+      }
     }
 
 }
