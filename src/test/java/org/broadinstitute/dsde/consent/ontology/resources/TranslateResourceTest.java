@@ -14,6 +14,7 @@ import java.util.HashMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.junit.jupiter.api.BeforeEach;
@@ -38,7 +39,7 @@ public class TranslateResourceTest {
         DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
         spy(service);
         try (Response response = resource.translate(
-            TextTranslationService.TranslateFor.DATASET.name(),
+            TranslateFor.DATASET.name(),
             gson.toJson(datause))) {
             assertEquals(200, response.getStatus());
             verify(service, atLeastOnce()).translateDataset(any());
@@ -52,7 +53,7 @@ public class TranslateResourceTest {
         DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
         spy(service);
         try (Response response = resource.translate(
-            TextTranslationService.TranslateFor.PURPOSE.name(),
+            TranslateFor.PURPOSE.name(),
             gson.toJson(datause))) {
             assertEquals(200, response.getStatus());
             verify(service, atLeastOnce()).translatePurpose(any());

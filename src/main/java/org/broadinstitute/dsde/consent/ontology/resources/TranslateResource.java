@@ -1,12 +1,12 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService.TranslateFor.PARAGRAPH;
+
+import static org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor.PARAGRAPH;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import java.util.HashMap;
 import java.util.Map;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -17,7 +17,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
-import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService.TranslateFor;
+import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 import org.slf4j.Logger;
 
@@ -53,7 +53,7 @@ public class TranslateResource {
   @Consumes(MediaType.APPLICATION_JSON)
   public Response translate(@QueryParam("for") String forParam, String restriction) {
     try {
-      TranslateFor translateFor = TranslateFor.valueOf(forParam);
+      TranslateFor translateFor = TranslateFor.find(forParam);
       return buildResponse(translateFor, restriction);
     } catch (Exception e) {
       log.error("Error while translating", e);

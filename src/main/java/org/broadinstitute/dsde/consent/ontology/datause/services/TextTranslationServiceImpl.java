@@ -18,6 +18,7 @@ import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.Utils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
+import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
