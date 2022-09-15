@@ -2,7 +2,18 @@ package org.broadinstitute.dsde.consent.ontology.datause.api;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
@@ -21,20 +32,9 @@ import org.semanticweb.owlapi.model.OWLLiteral;
 import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
+import org.semanticweb.owlapi.model.UnloadableImportException;
 import org.semanticweb.owlapi.search.EntitySearcher;
 import org.slf4j.Logger;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Singleton
 public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
@@ -146,7 +146,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                                         document.getValues(FIELD_SYNONYM)));
                     }
                 });
-            } catch (MalformedURLException | SocketTimeoutException e) {
+            } catch (MalformedURLException | SocketTimeoutException | UnloadableImportException e) {
                 // These checks are run on app initialization and do not
                 // represent a fatal failure of the application.
                 // Log errors and continue with app startup.
