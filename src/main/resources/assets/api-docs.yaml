@@ -286,8 +286,8 @@ paths:
           description: Some number of subsystems are not OK.
   /status/error:
     get:
-      summary: Generate a logged 500 error
-      description: Generate a logged 500 error
+      summary: Generate a logged error
+      description: Generate a logged error
       parameters:
         - in: query
           name: message
