@@ -17,7 +17,7 @@ import java.util.stream.Stream;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
 import org.apache.lucene.document.TextField;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.semanticweb.owlapi.apibinding.OWLManager;
@@ -34,12 +34,9 @@ import org.semanticweb.owlapi.model.OWLOntologyCreationException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.model.UnloadableImportException;
 import org.semanticweb.owlapi.search.EntitySearcher;
-import org.slf4j.Logger;
 
 @Singleton
-public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
-
-    private final Logger log = Utils.getLogger(this.getClass());
+public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI, OntologyLogger {
 
     private static final String FIELD_ID = "id";
     private static final String FIELD_COMMENT = "comment";
@@ -150,7 +147,7 @@ public class LuceneOntologyTermSearchAPI implements OntologyTermSearchAPI {
                 // These checks are run on app initialization and do not
                 // represent a fatal failure of the application.
                 // Log errors and continue with app startup.
-                log.error("Unable to parse string to url: " + e.getMessage());
+                logException("Unable to parse string to url", e);
             }
         }
     }

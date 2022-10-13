@@ -8,20 +8,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.dropwizard.lifecycle.Managed;
-import org.apache.commons.io.IOUtils;
-import org.apache.http.entity.ContentType;
-import org.apache.http.nio.entity.NStringEntity;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.broadinstitute.dsde.consent.ontology.model.TermParent;
-import org.broadinstitute.dsde.consent.ontology.model.TermResource;
-import org.eclipse.jetty.http.HttpMethod;
-import org.elasticsearch.client.Request;
-import org.elasticsearch.client.Response;
-import org.elasticsearch.client.RestClient;
-import org.slf4j.Logger;
-
-import javax.ws.rs.InternalServerErrorException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -29,10 +15,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import javax.ws.rs.InternalServerErrorException;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.entity.ContentType;
+import org.apache.http.nio.entity.NStringEntity;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
+import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
+import org.broadinstitute.dsde.consent.ontology.model.TermParent;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
+import org.eclipse.jetty.http.HttpMethod;
+import org.elasticsearch.client.Request;
+import org.elasticsearch.client.Response;
+import org.elasticsearch.client.RestClient;
 
-public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
+public class ElasticSearchAutocomplete implements AutocompleteService, Managed, OntologyLogger {
 
-    private final Logger log = Utils.getLogger(this.getClass());
     private static final String GET = HttpMethod.GET.asString();
     private final ElasticSearchConfiguration configuration;
     private Gson gson = new GsonBuilder().create();
@@ -86,7 +83,7 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
                 termList.add(filterThin(resource, thinFilter));
             }
         } else {
-            log.error("Unable to parse 'hits' from: " + jsonResponse);
+            logError("Unable to parse 'hits' from: " + jsonResponse);
         }
         return termList;
     }
@@ -121,14 +118,14 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed {
 
     private JsonObject parseResponseToJson(Response response) {
         if (response.getStatusLine().getStatusCode() != 200) {
-            log.error("Invalid search request: " + response.getStatusLine().getReasonPhrase());
+            logError("Invalid search request: " + response.getStatusLine().getReasonPhrase());
             throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
         }
         try {
             String stringResponse = IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());
             return JsonParser.parseString(stringResponse).getAsJsonObject();
         } catch (Exception e) {
-            log.error("Unable to parse response: ", e);
+            logException("Unable to parse response: ", e);
             throw new InternalServerErrorException(e);
         }
     }

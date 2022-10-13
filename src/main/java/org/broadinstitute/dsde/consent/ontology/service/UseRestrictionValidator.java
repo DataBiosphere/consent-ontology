@@ -2,24 +2,21 @@ package org.broadinstitute.dsde.consent.ontology.service;
 
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
 import com.google.inject.Inject;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.datause.api.OntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.models.OntologyTerm;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.datause.models.visitor.NamedVisitor;
 import org.broadinstitute.dsde.consent.ontology.enumerations.UseRestrictionKeys;
 import org.broadinstitute.dsde.consent.ontology.model.ValidationResponse;
-import org.slf4j.Logger;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+public class UseRestrictionValidator implements UseRestrictionValidationService, OntologyLogger {
 
-public class UseRestrictionValidator implements UseRestrictionValidationService {
-
-    private final Logger log = Utils.getLogger(this.getClass());
     private OntologyTermSearchAPI ontologyTermSearchAPI;
 
     @Inject
@@ -29,7 +26,7 @@ public class UseRestrictionValidator implements UseRestrictionValidationService 
 
     @Override
     public ValidationResponse validateUseRestriction(String useRestriction) throws Exception {
-        log.debug("Received use restriction: " + useRestriction);
+        logDebug("Received use restriction: " + useRestriction);
         ValidationResponse isValid = new ValidationResponse(true, useRestriction);
         try {
             UseRestriction restriction = UseRestriction.parse(useRestriction);

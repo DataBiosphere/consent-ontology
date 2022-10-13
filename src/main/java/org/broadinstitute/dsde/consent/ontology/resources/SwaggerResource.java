@@ -12,14 +12,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.parboiled.common.FileUtils;
-import org.slf4j.Logger;
 
 @Path("/")
-public class SwaggerResource {
+public class SwaggerResource implements OntologyLogger {
 
-    private final Logger log = Utils.getLogger(this.getClass());
     private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/latest/";
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
     final static String MEDIA_TYPE_JS = new MediaType("application", "javascript").toString();
@@ -36,12 +34,12 @@ public class SwaggerResource {
                 if (StringUtils.isNotEmpty(p.getProperty("swagger.ui.path"))) {
                     swaggerResource = p.getProperty("swagger.ui.path");
                 } else {
-                    log.warn("swagger.ui.path is not configured correctly, defaulting to: " + DEFAULT_LIB);
+                    logWarn("swagger.ui.path is not configured correctly, defaulting to: " + DEFAULT_LIB);
                     swaggerResource = DEFAULT_LIB;
                 }
             } catch (Exception e) {
-                log.warn(e.getMessage());
-                log.warn("Defaulting to: " + DEFAULT_LIB);
+                logException(e);
+                logWarn("Defaulting to: " + DEFAULT_LIB);
                 swaggerResource = DEFAULT_LIB;
             }
         }

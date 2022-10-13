@@ -10,22 +10,18 @@ import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.services.storage.Storage;
 import com.google.api.services.storage.StorageScopes;
 import com.google.api.services.storage.model.Bucket;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguration;
-import org.slf4j.Logger;
-
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
+import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguration;
 
-public class GCSStore implements CloudStore {
+public class GCSStore implements CloudStore, OntologyLogger {
     private final static HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
     private StoreConfiguration sConfig;
     private HttpRequestFactory requestFactory;
-
-    private final Logger log = Utils.getLogger(this.getClass());
 
     public GCSStore(StoreConfiguration config) throws GeneralSecurityException, IOException {
         sConfig = config;
@@ -43,7 +39,7 @@ public class GCSStore implements CloudStore {
                 fromStream(new FileInputStream(sConfig.getPassword())).
                 createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
         } catch (Exception e) {
-            log.error("Error on GCS Store initialization. Service won't work: " + e);
+            logException("Error on GCS Store initialization. Service won't work", e);
             throw new RuntimeException(e);
         }
         return credential;

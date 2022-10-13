@@ -15,17 +15,15 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
-import org.slf4j.Logger;
 
 
 @Path("/translate")
-public class TranslateResource {
+public class TranslateResource implements OntologyLogger {
 
-  private final Logger log = Utils.getLogger(this.getClass());
   private final TextTranslationService translationService;
   private final ObjectMapper mapper = new ObjectMapper();
 
@@ -41,7 +39,7 @@ public class TranslateResource {
     try {
       return Response.ok().entity(translationService.translateDataUseSummary(restriction)).build();
     } catch (Exception e) {
-      log.error("Error while translating", e);
+      logException("Error while translating", e);
       return Response.
           status(Response.Status.INTERNAL_SERVER_ERROR).
           entity("Error while translating: " + e.getMessage()).
@@ -56,7 +54,7 @@ public class TranslateResource {
       TranslateFor translateFor = TranslateFor.find(forParam);
       return buildResponse(translateFor, restriction);
     } catch (Exception e) {
-      log.error("Error while translating", e);
+      logException("Error while translating", e);
       return Response.
           status(Response.Status.INTERNAL_SERVER_ERROR).
           entity("Error while translating: " + e.getMessage()).
@@ -76,7 +74,7 @@ public class TranslateResource {
           return buildResponse(PARAGRAPH, paragraph);
         } catch (Exception e) {
           String message = "Server Error translating paragraph";
-          log.error(message, e);
+          logException(message, e);
           return Response
             .status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message)
             .build();

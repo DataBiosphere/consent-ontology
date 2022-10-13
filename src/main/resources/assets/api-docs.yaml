@@ -284,6 +284,23 @@ paths:
           description: All systems are OK
         500:
           description: Some number of subsystems are not OK.
+  /status/error:
+    get:
+      summary: Generate a logged 500 error
+      description: Generate a logged 500 error
+      parameters:
+        - in: query
+          name: message
+          description: Message to log as an error
+          required: false
+          type: string
+      tags:
+        - Status
+      responses:
+        200:
+          description: Error successfully logged
+        500:
+          description: Other error
 
   /liveness:
     get:

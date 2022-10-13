@@ -8,26 +8,31 @@ import java.util.Map;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
-import org.slf4j.Logger;
 
 @Path("status")
-public class StatusResource {
+public class StatusResource implements OntologyLogger {
 
     public static final String OK = "ok";
     public static final String DEGRADED = "degraded";
     public static final String SYSTEMS = "systems";
-
-    private final Logger log = Utils.getLogger(this.getClass());
-
     private final HealthCheckRegistry healthChecks;
 
     @Inject
     public StatusResource(HealthCheckRegistry healthChecks) {
         this.healthChecks = healthChecks;
+    }
+
+    @GET
+    @Produces("application/json")
+    @Path("error")
+    public Response error(@QueryParam("message") String message) {
+      logException(new Exception(String.format("Logged Exception: %s", message)));
+      return Response.ok().build();
     }
 
     @GET
@@ -38,7 +43,7 @@ public class StatusResource {
         results.entrySet().
                 stream().
                 filter(e -> !e.getValue().isHealthy()).
-                forEach(e -> log.warn("Error in service " + e.getKey() + ": " + formatResultError(e.getValue())));
+                forEach(e -> logWarn("Error in service " + e.getKey() + ": " + formatResultError(e.getValue())));
         return Response.ok(formatResults(results)).build();
     }
 
@@ -55,7 +60,7 @@ public class StatusResource {
         formattedResults.put(SYSTEMS, results);
         return formattedResults;
     }
-    
+
     private String formatResultError(HealthCheck.Result result) {
         if (result.getMessage() != null) {
             return result.getMessage();

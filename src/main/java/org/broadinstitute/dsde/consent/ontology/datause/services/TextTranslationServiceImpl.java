@@ -16,7 +16,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
@@ -26,11 +26,8 @@ import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 import org.broadinstitute.dsde.consent.ontology.model.TermItem;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.slf4j.Logger;
 
-public class TextTranslationServiceImpl implements TextTranslationService {
-
-    private final Logger log = Utils.getLogger(this.getClass());
+public class TextTranslationServiceImpl implements TextTranslationService, OntologyLogger {
 
     private static final String YES = "Yes";
     private static final String FEMALE = "Female";
@@ -151,7 +148,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
             }.getType()
         );
       } catch (Exception e) {
-        log.error("Error processing search terms from GCS: " + e);
+        logException("Error processing search terms from GCS", e);
       }
       return List.of();
     }
@@ -184,10 +181,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                     if (!terms.isEmpty()) {
                         labels.add(terms.get(0).label);
                     } else {
-                        log.warn("No terms returned for: " + r);
+                        logWarn("No terms returned for: " + r);
                     }
                 } catch (IOException e) {
-                    log.warn("Unable to retrieve term id: " + r);
+                    logWarn("Unable to retrieve term id: " + r);
                 }
             });
             if (!labels.isEmpty()) {
@@ -255,7 +252,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                 String date = DATE_FORMAT.format(dataUse.getDateRestriction());
                 secondary.add(new DataUseElement("TS", String.format(DATE_POS, date)));
             } catch (IllegalArgumentException e) {
-                log.warn("Invalid date format for: " + dataUse.getDateRestriction());
+                logWarn("Invalid date format for: " + dataUse.getDateRestriction());
             }
         }
         if (Optional.ofNullable(dataUse.getAggregateResearch()).orElse("na").equalsIgnoreCase(YES)) {
@@ -334,10 +331,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                     if (!terms.isEmpty()) {
                         labels.add(terms.get(0).label);
                     } else {
-                        log.warn("No terms returned for: " + r);
+                        logWarn("No terms returned for: " + r);
                     }
                 } catch (IOException e) {
-                    log.warn("Unable to retrieve term id: " + r);
+                    logWarn("Unable to retrieve term id: " + r);
                 }
             });
             if (!labels.isEmpty()) {
@@ -401,7 +398,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                 String date = DATE_FORMAT.format(dataUse.getDateRestriction());
                 summary.add(String.format(DATE_POS, date));
             } catch (IllegalArgumentException e) {
-                log.warn("Invalid date format for: " + dataUse.getDateRestriction());
+                logWarn("Invalid date format for: " + dataUse.getDateRestriction());
             }
         }
         if (Optional.ofNullable(dataUse.getAggregateResearch()).orElse("na").equalsIgnoreCase(YES)) {
