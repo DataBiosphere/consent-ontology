@@ -31,7 +31,7 @@ public class StatusResource implements OntologyLogger {
     @Produces("application/json")
     @Path("error")
     public Response error(@QueryParam("message") String message) {
-      logException(new Exception(String.format("Logged Exception: %s", message)));
+      logError(String.format("Logged Exception: %s", message));
       return Response.ok().build();
     }
 
