@@ -1,11 +1,17 @@
 package org.broadinstitute.dsde.consent.ontology;
 
+import com.google.common.util.concurrent.UncaughtExceptionHandlers;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import io.dropwizard.Application;
 import io.dropwizard.assets.AssetsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.sentry.Sentry;
+import io.sentry.SentryLevel;
+import java.util.EnumSet;
+import javax.servlet.DispatcherType;
+import javax.servlet.FilterRegistration;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.filters.ResponseServerFilter;
@@ -17,29 +23,32 @@ import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource
 import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
 import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
-import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
 import org.broadinstitute.dsde.consent.ontology.resources.ValidationResource;
+import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
-import org.dhatim.dropwizard.sentry.logging.SentryBootstrap;
-import org.dhatim.dropwizard.sentry.logging.UncaughtExceptionHandlers;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
-
-import javax.servlet.DispatcherType;
-import javax.servlet.FilterRegistration;
-import java.util.EnumSet;
 
 /**
  * Top-level entry point to the entire application.
- *
+ * <p>
  * See the Dropwizard docs here:
- * https://www.dropwizard.io/
+ * <a href="https://www.dropwizard.io/">...</a>
  */
 public class OntologyApp extends Application<OntologyConfiguration> {
 
     public static void main(String[] args) throws Exception {
         String dsn = System.getProperties().getProperty("sentry.dsn");
         if (StringUtils.isNotBlank(dsn)) {
-            SentryBootstrap.Builder.withDsn(dsn).bootstrap();
+            Sentry.init(config -> {
+              config.setDsn(dsn);
+              config.setDiagnosticLevel(SentryLevel.ERROR);
+              config.setServerName("Ontology");
+              config.addContextTag("Ontology");
+              config.addInAppInclude("org.broadinstitute");
+              config.addInAppExclude("org.mindswap");
+              config.addInAppExclude("org.semanticweb");
+              config.addInAppExclude("com.hp");
+            });
             Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
         }
         new OntologyApp().run(args);
