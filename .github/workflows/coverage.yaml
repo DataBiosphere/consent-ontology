@@ -26,7 +26,7 @@ jobs:
       - name: Test Only
         if: github.actor == 'dependabot[bot]'
         env:
-          MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
+          MAVEN_OPTS: -Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
         run: mvn clean test --batch-mode
       - name: Test Report
         if: github.actor != 'dependabot[bot]'
