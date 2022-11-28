@@ -15,7 +15,7 @@ jobs:
           java-version: 17
       - name: Run Report
         run: |
-          mvn -v
+          mvn -v --batch-mode
           mvn dependency-check:check --batch-mode
       - name: Archive Report
         uses: actions/upload-artifact@v3

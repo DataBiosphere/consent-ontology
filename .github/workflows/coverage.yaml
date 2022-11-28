@@ -34,6 +34,6 @@ jobs:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
           MAVEN_OPTS: -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
         run: |
-          mvn -v
+          mvn -v --batch-mode
           mvn clean jacoco:prepare-agent test jacoco:report --batch-mode
           mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN --batch-mode
