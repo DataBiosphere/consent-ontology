@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Properties;
 import java.util.UUID;
 import java.util.function.Predicate;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
 import org.mindswap.pellet.PelletOptions;
@@ -23,13 +23,10 @@ import org.semanticweb.owlapi.model.OWLOntology;
 import org.semanticweb.owlapi.model.OWLOntologyAlreadyExistsException;
 import org.semanticweb.owlapi.model.OWLOntologyManager;
 import org.semanticweb.owlapi.search.EntitySearcher;
-import org.slf4j.Logger;
 
-public enum OntModelFactory {
+public enum OntModelFactory implements OntologyLogger {
 
   INSTANCE;
-
-  private final Logger log = Utils.getLogger(this.getClass());
 
   @SuppressWarnings("unused")
   public final Boolean matchPurpose(MatchMessage message) throws Exception {
@@ -48,7 +45,7 @@ public enum OntModelFactory {
     try {
       ((PelletInfGraph) model.getGraph()).classify();
     } catch (NullPointerException e) {
-      log.warn("Non-fatal exception classifying: " + e.getMessage());
+      logWarn("Non-fatal exception classifying: " + e.getMessage());
     }
     OntClass reclassifiedConsentClass = model.getOntClass(consentId);
     return purpose.hasSuperClass(reclassifiedConsentClass);
@@ -67,13 +64,13 @@ public enum OntModelFactory {
     OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
     OntModel model = ModelFactory.createOntologyModel(PelletReasonerFactory.THE_SPEC);
     for (URL resource : resources) {
-      log.debug("Loading resource: " + resource);
+      logDebug("Loading resource: " + resource);
       try (InputStream is = resource.openStream()) {
         OWLOntology ontology;
         try {
           ontology = manager.loadOntologyFromOntologyDocument(is);
         } catch (OWLOntologyAlreadyExistsException e) {
-          log.warn("Duplicate ontology exists, skipping this one: " + e.getMessage());
+          logWarn("Duplicate ontology exists, skipping this one: " + e.getMessage());
           break;
         }
         HashMap<String, OWLAnnotationProperty> annotationProperties = new HashMap<>();
@@ -90,7 +87,7 @@ public enum OntModelFactory {
               boolean anyDeprecated = owlClass.annotationPropertiesInSignature()
                   .anyMatch(hasDeprecated);
               if (anyDeprecated) {
-                log.info("Class has deprecated terms: " + owlClass);
+                logInfo("Class has deprecated terms: " + owlClass);
               }
               // Do not load deprecated classes.
               if (!anyDeprecated) {

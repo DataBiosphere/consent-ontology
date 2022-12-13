@@ -1,56 +1,87 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.atLeastOnce;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.google.gson.Gson;
-import io.dropwizard.testing.junit.ResourceTestRule;
-import java.io.IOException;
-import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.MediaType;
+import java.util.HashMap;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
+import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
-import org.broadinstitute.dsde.consent.ontology.service.MockTranslationService;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 public class TranslateResourceTest {
 
-    private static final TextTranslationService mockService = new MockTranslationService();
+    @Mock
+    private TextTranslationService service;
+    private final Gson gson = new Gson();
+    private TranslateResource resource;
 
-    @ClassRule
-    public static final ResourceTestRule gRule = ResourceTestRule
-            .builder()
-            .addResource(new TranslateResource(mockService))
-            .build();
-
-    @Test
-    public void testDatasetTranslate() throws IOException {
-        DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-        Gson gson = new Gson();
-        Response response =
-                gRule.client().target("/translate")
-                        .queryParam("for", TextTranslationService.TranslateFor.DATASET.name())
-                        .request(MediaType.APPLICATION_JSON_TYPE)
-                        .accept(MediaType.TEXT_PLAIN_TYPE)
-                        .post(Entity.json(gson.toJson(datause)));
-        assertEquals(200, response.getStatus());
-        assertEquals(response.readEntity(String.class), mockService.translateDataset(""));
+    @BeforeEach
+    public void setUp(){
+        openMocks(this);
+        resource = new TranslateResource(service);
     }
 
     @Test
-    public void testPurposeTranslate() throws IOException {
+    public void testDatasetTranslate() {
         DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-        Gson gson = new Gson();
-        Response response =
-                gRule.client().target("/translate")
-                        .queryParam("for", TextTranslationService.TranslateFor.PURPOSE.name())
-                        .request(MediaType.APPLICATION_JSON_TYPE)
-                        .accept(MediaType.TEXT_PLAIN_TYPE)
-                        .post(Entity.json(gson.toJson(datause)));
-        assertEquals(200, response.getStatus());
-        assertEquals(response.readEntity(String.class), mockService.translatePurpose(""));
+        spy(service);
+        try (Response response = resource.translate(
+            TranslateFor.DATASET.name(),
+            gson.toJson(datause))) {
+            assertEquals(200, response.getStatus());
+            verify(service, atLeastOnce()).translateDataset(any());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testPurposeTranslate() {
+        DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
+        spy(service);
+        try (Response response = resource.translate(
+            TranslateFor.PURPOSE.name(),
+            gson.toJson(datause))) {
+            assertEquals(200, response.getStatus());
+            verify(service, atLeastOnce()).translatePurpose(any());
+        } catch (Exception e) {
+            fail(e.getMessage());
+        }
+    }
+
+    @Test
+    public void testTranslateParagraphBadRequest() {
+      try (Response response = resource.translateParagraph("{}")) {
+        assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+      }
+    }
+
+    @Test
+    public void testTranslateParagraphServerError() {
+      try (Response response = resource.translateParagraph("")) {
+        assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
+      }
+    }
+
+    @Test
+    public void testTranslateParagraph() throws Exception {
+      when(service.translateParagraph(any())).thenReturn(new HashMap<>());
+      try (Response response = resource.translateParagraph("{\"paragraph\":\"Not for Profit\"}")) {
+        assertEquals(Status.OK.getStatusCode(), response.getStatus());
+      }
     }
 
 }

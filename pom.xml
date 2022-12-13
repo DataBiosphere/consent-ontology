@@ -8,7 +8,7 @@
     <name>Consent Management: Ontology Services</name>
 
     <properties>
-        <dropwizard.version>2.1.1</dropwizard.version>
+        <dropwizard.version>2.1.4</dropwizard.version>
         <gatling.highcharts.version>3.8.3</gatling.highcharts.version>
         <gatling.plugin.version>4.2.5</gatling.plugin.version>
         <java.version>17</java.version>
@@ -16,11 +16,11 @@
         <maven.compiler.target>17</maven.compiler.target>
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
-        <mockserver.version>5.13.2</mockserver.version>
+        <mockserver.version>5.14.0</mockserver.version>
         <owl.version>5.1.20</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.7.7</rdf4j-rio.version>
-        <swagger.ui.version>4.8.1</swagger.ui.version>
+        <swagger.ui.version>4.14.0</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -109,7 +109,7 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
                 <configuration>
-                    <!-- @{argLine} is necessary here so that that the jacoco:prepare-agent output is included for tests -->
+                    <!-- @{argLine} is necessary here so that the jacoco:prepare-agent output is included for tests -->
                     <!-- illegal-access=permit required for java 11 -->
                     <argLine>@{argLine} -Xmx1024m --illegal-access=permit</argLine>
                     <systemPropertyVariables>
@@ -124,7 +124,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.3.0</version>
                 <configuration>
                     <archive>
                         <manifest>
@@ -139,7 +139,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.0</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
@@ -160,7 +160,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.1</version>
                 <configuration>
                     <finalName>consent-ontology</finalName>
                     <createDependencyReducedPom>true</createDependencyReducedPom>
@@ -289,7 +289,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>7.1.1</version>
+                <version>7.4.1</version>
                 <configuration>
                     <skipProvidedScope>true</skipProvidedScope>
                     <skipRuntimeScope>true</skipRuntimeScope>
@@ -338,15 +338,9 @@
         </dependency>
 
         <dependency>
-            <groupId>org.dhatim</groupId>
-            <artifactId>dropwizard-sentry</artifactId>
-            <version>2.0.22</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>ch.qos.logback</groupId>
-                    <artifactId>logback-classic</artifactId>
-                </exclusion>
-            </exclusions>
+            <groupId>io.sentry</groupId>
+            <artifactId>sentry</artifactId>
+            <version>6.9.2</version>
         </dependency>
 
         <dependency>
@@ -388,13 +382,13 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.9.1</version>
+            <version>2.10</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>1.35.2</version>
+            <version>2.1.1</version>
             <exclusions>
                 <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
                 <exclusion>
@@ -419,7 +413,7 @@
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
+            <version>4.5.14</version>
             <exclusions>
                 <exclusion>
                     <groupId>commons-codec</groupId>
@@ -438,7 +432,7 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>8.3.3</version>
+            <version>8.5.3</version>
         </dependency>
 
         <dependency>
@@ -456,7 +450,7 @@
         <dependency>
             <groupId>org.apache.lucene</groupId>
             <artifactId>lucene-core</artifactId>
-            <version>9.3.0</version>
+            <version>9.4.2</version>
         </dependency>
 
         <dependency>
@@ -473,21 +467,10 @@
             <version>${dropwizard.version}</version>
             <exclusions>
                 <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-                <exclusion>
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-databind</artifactId>
                 </exclusion>
             </exclusions>
-        </dependency>
-
-        <!-- https://www.sourceclear.com/vulnerability-database/security/denial-of-service-dos-/java/sid-22499 -->
-        <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.30</version>
         </dependency>
 
         <dependency>
@@ -513,32 +496,34 @@
             <artifactId>dropwizard-testing</artifactId>
             <version>${dropwizard.version}</version>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>junit</groupId>
-                    <artifactId>junit</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <!-- Addressing OWASP warning: https://nvd.nist.gov/vuln/detail/CVE-2020-25649 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
+            <version>2.13.4.2</version>
         </dependency>
 
         <!-- Addressing OWASP warning: https://nvd.nist.gov/vuln/detail/CVE-2020-25649 -->
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.13.3</version>
+            <version>2.14.1</version>
         </dependency>
 
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.13.2</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.9.1</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-params</artifactId>
+            <version>5.9.1</version>
+            <scope>test</scope>
         </dependency>
 
         <dependency>
@@ -740,7 +725,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mockserver</artifactId>
-            <version>1.17.3</version>
+            <version>1.17.6</version>
             <scope>test</scope>
         </dependency>
 
@@ -762,20 +747,6 @@
             <groupId>org.webjars</groupId>
             <artifactId>swagger-ui</artifactId>
             <version>${swagger.ui.version}</version>
-        </dependency>
-
-        <!-- java 11 requirement -->
-        <dependency>
-            <groupId>org.javassist</groupId>
-            <artifactId>javassist</artifactId>
-            <version>3.29.0-GA</version>
-        </dependency>
-
-        <!-- java 11 requirement -->
-        <dependency>
-            <groupId>cglib</groupId>
-            <artifactId>cglib-nodep</artifactId>
-            <version>3.3.0</version>
         </dependency>
 
     </dependencies>

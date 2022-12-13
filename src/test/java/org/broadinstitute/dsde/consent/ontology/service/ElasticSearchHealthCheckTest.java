@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.service;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
@@ -11,10 +11,9 @@ import com.google.api.client.http.HttpStatusCodes;
 import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockserver.client.MockServerClient;
 import org.testcontainers.containers.MockServerContainer;
 
@@ -22,12 +21,11 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
 
     private ElasticSearchHealthCheck elasticSearchHealthCheck;
     private MockServerClient mockServerClient;
+    private final MockServerContainer container = new MockServerContainer(IMAGE);
 
-    @Rule
-    public MockServerContainer container = new MockServerContainer(IMAGE);
-
-    @Before
-    public void setUpClass() {
+    @BeforeEach
+    void setUpClass() {
+        container.start();
         ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
         configuration.setIndex("test-ontology");
         configuration.setServers(Collections.singletonList("localhost"));
@@ -36,8 +34,8 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
         mockServerClient = new MockServerClient(container.getHost(), container.getServerPort());
     }
 
-    @After
-    public void shutDown() {
+    @AfterEach
+    void shutDown() {
         stop(container);
     }
 

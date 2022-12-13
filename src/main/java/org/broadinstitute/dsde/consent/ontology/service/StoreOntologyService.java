@@ -3,10 +3,6 @@ package org.broadinstitute.dsde.consent.ontology.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.HttpResponse;
 import com.google.api.client.http.HttpResponseException;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
-import org.slf4j.Logger;
-
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -15,14 +11,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.CloudStore;
 
 /**
  * Created by SantiagoSaucedo on 3/11/2016.
  */
 @SuppressWarnings("FieldCanBeLocal")
-public class StoreOntologyService {
+public class StoreOntologyService implements OntologyLogger {
 
-    private final Logger log = Utils.getLogger(this.getClass());
     private final ObjectMapper MAPPER = new ObjectMapper();
     private final CloudStore store;
     private final String bucketSubdirectory;
@@ -42,9 +39,9 @@ public class StoreOntologyService {
             return response.parseAsString();
         } catch (Exception e) {
             if (e instanceof HttpResponseException && ((HttpResponseException) e).getStatusCode() == 404) {
-                log.error("Storage service did not find Ontology configuration file: " + suffix);
+                logError("Storage service did not find Ontology configuration file: " + suffix);
             } else {
-                log.error("Problem with storage service. " + e.getMessage());
+                logException("Problem with storage service.", e);
             }
         }
         return "";
@@ -57,7 +54,7 @@ public class StoreOntologyService {
                 try {
                     return new URL(str);
                 } catch (MalformedURLException e) {
-                    log.error("Unable to convert key name to url: " + str);
+                    logError("Unable to convert key name to url: " + str);
                 }
                 return null;
             }).

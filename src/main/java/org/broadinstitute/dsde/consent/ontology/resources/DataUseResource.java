@@ -1,15 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentRestrictionBuilder;
-import org.broadinstitute.dsde.consent.ontology.datause.builder.DARRestrictionBuilder;
-import org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilder;
-import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
-import org.broadinstitute.dsde.consent.ontology.model.DataUse;
-import org.parboiled.common.FileUtils;
-import org.slf4j.Logger;
-
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
@@ -17,11 +8,16 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
+import org.broadinstitute.dsde.consent.ontology.datause.builder.ConsentRestrictionBuilder;
+import org.broadinstitute.dsde.consent.ontology.datause.builder.DARRestrictionBuilder;
+import org.broadinstitute.dsde.consent.ontology.datause.builder.UseRestrictionBuilder;
+import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.parboiled.common.FileUtils;
 
 @Path("/schemas")
-public class DataUseResource {
-
-    private final Logger log = Utils.getLogger(this.getClass());
+public class DataUseResource implements OntologyLogger {
 
     @GET
     @Path("/data-use")
@@ -68,7 +64,7 @@ public class DataUseResource {
             UseRestriction restriction = builder.buildUseRestriction(schema);
             return Response.ok().entity(restriction).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
-            log.error(e.getMessage());
+            logException(e);
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e).type(MediaType.APPLICATION_JSON).build();
         }
     }

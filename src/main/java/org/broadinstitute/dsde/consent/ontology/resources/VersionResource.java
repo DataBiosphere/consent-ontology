@@ -1,25 +1,16 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import org.apache.commons.io.IOUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.model.Version;
-import org.slf4j.Logger;
-
+import java.nio.charset.Charset;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
-import java.nio.charset.Charset;
-import java.util.Objects;
-import java.util.Optional;
+import org.apache.commons.io.IOUtils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
+import org.broadinstitute.dsde.consent.ontology.model.Version;
 
 @Path("/version")
-public class VersionResource {
-
-    private final Logger log = Utils.getLogger(this.getClass());
+public class VersionResource implements OntologyLogger {
 
     @GET
     @Produces("application/json")
@@ -32,7 +23,7 @@ public class VersionResource {
         try {
             return IOUtils.resourceToString("/git.properties", Charset.defaultCharset());
         } catch (Exception e) {
-            log.error(e.getMessage());
+            logException(e);
         }
         return null;
     }

@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
@@ -17,8 +17,8 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 public class MatchResourceTest {
@@ -34,7 +34,7 @@ public class MatchResourceTest {
 
     private MatchResource resource;
 
-    @Before
+    @BeforeEach
     public void setUp() throws Exception {
         openMocks(this);
         when(autocompleteService.lookupById(anyString())).thenReturn(Collections.emptyList());

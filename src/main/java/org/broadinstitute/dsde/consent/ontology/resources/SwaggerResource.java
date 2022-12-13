@@ -12,14 +12,12 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
 import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.parboiled.common.FileUtils;
-import org.slf4j.Logger;
 
 @Path("/")
-public class SwaggerResource {
+public class SwaggerResource implements OntologyLogger {
 
-    private final Logger log = Utils.getLogger(this.getClass());
     private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/latest/";
     final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
     final static String MEDIA_TYPE_JS = new MediaType("application", "javascript").toString();
@@ -36,12 +34,12 @@ public class SwaggerResource {
                 if (StringUtils.isNotEmpty(p.getProperty("swagger.ui.path"))) {
                     swaggerResource = p.getProperty("swagger.ui.path");
                 } else {
-                    log.warn("swagger.ui.path is not configured correctly, defaulting to: " + DEFAULT_LIB);
+                    logWarn("swagger.ui.path is not configured correctly, defaulting to: " + DEFAULT_LIB);
                     swaggerResource = DEFAULT_LIB;
                 }
             } catch (Exception e) {
-                log.warn(e.getMessage());
-                log.warn("Defaulting to: " + DEFAULT_LIB);
+                logException(e);
+                logWarn("Defaulting to: " + DEFAULT_LIB);
                 swaggerResource = DEFAULT_LIB;
             }
         }
@@ -71,6 +69,8 @@ public class SwaggerResource {
         String mediaType = getMediaTypeFromPath(path);
         if (path.isEmpty() || path.equals("index.html")) {
             response = Response.ok().entity(getIndex(swaggerResource)).type(mediaType).build();
+        } else if (path.contains("swagger-initializer.js")) {
+          response = Response.ok().entity(getInitializer()).type(MEDIA_TYPE_JS).build();
         } else {
             mediaType = getMediaTypeFromPath(path);
             Object content;
@@ -89,41 +89,44 @@ public class SwaggerResource {
     }
 
     private String getMediaTypeFromPath(String path) {
-        String mediaType;
-        switch (StringUtils.substringAfterLast(path, ".")) {
-            case "css":
-                mediaType = MEDIA_TYPE_CSS;
-                break;
-            case "js":
-                mediaType = MEDIA_TYPE_JS;
-                break;
-            case "png":
-                mediaType = MEDIA_TYPE_PNG;
-                break;
-            case "gif":
-                mediaType = MEDIA_TYPE_GIF;
-                break;
-            default:
-                mediaType = MediaType.TEXT_HTML;
-                break;
-        }
-        return mediaType;
+      return switch (StringUtils.substringAfterLast(path, ".")) {
+        case "css" -> MEDIA_TYPE_CSS;
+        case "js" -> MEDIA_TYPE_JS;
+        case "png" -> MEDIA_TYPE_PNG;
+        case "gif" -> MEDIA_TYPE_GIF;
+        default -> MediaType.TEXT_HTML;
+      };
     }
 
-    private String getIndex(String swaggerResource) {
-        String content = FileUtils.readAllTextFromResource(swaggerResource + "index.html");
-        return content
-            .replace("url: \"https://petstore.swagger.io/v2/swagger.json\"",
-                " syntaxHighlight: {\n" +
-                    "          activated: false,\n" +
-                    "          theme: \"agate\"\n" +
-                    "        },\n" +
-                    "        docExpansion: 'none',\n" +
-                    "        displayRequestDuration: true,\n" +
-                    "        tryItOutEnabled: true,\n" +
-                    "        operationsSorter: 'alpha',\n" +
-                    "        tagsSorter: 'alpha',\n" +
-                    "        url: '/api-docs/api-docs.yaml'\n");
-    }
+  private String getIndex(String swaggerResource) {
+    return FileUtils.readAllTextFromResource(swaggerResource + "index.html");
+  }
+
+  private String getInitializer() {
+    return """
+            window.onload = function() {
+              const ui = SwaggerUIBundle({
+                syntaxHighlight: false,
+                docExpansion: "none",
+                displayRequestDuration: true,
+                tryItOutEnabled: true,
+                operationsSorter: "alpha",
+                apisSorter: "alpha",
+                tagsSorter: "alpha",
+                url: "/api-docs/api-docs.yaml",
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                  SwaggerUIBundle.presets.apis,
+                  SwaggerUIStandalonePreset
+                ],
+                plugins: [
+                  SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout"
+              });
+            };
+            """;
+  }
 
 }

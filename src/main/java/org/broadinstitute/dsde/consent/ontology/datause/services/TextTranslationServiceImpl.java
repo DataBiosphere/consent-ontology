@@ -1,29 +1,33 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.jsonldjava.shaded.com.google.common.reflect.TypeToken;
+import com.google.api.client.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
-import org.apache.commons.lang3.BooleanUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.Utils;
-import org.broadinstitute.dsde.consent.ontology.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
-import org.broadinstitute.dsde.consent.ontology.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.slf4j.Logger;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
+import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
+import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
+import org.broadinstitute.dsde.consent.ontology.model.DataUse;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseElement;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseSummary;
+import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
+import org.broadinstitute.dsde.consent.ontology.model.TermItem;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
-public class TextTranslationServiceImpl implements TextTranslationService {
-
-    private final Logger log = Utils.getLogger(this.getClass());
+public class TextTranslationServiceImpl implements TextTranslationService, OntologyLogger {
 
     private static final String YES = "Yes";
     private static final String FEMALE = "Female";
@@ -69,11 +73,14 @@ public class TextTranslationServiceImpl implements TextTranslationService {
 
     private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("MM/dd/yyyy");
 
-    private AutocompleteService autocompleteService;
+    private final AutocompleteService autocompleteService;
+
+    private final GCSStore gcsStore;
 
     @Inject
-    public TextTranslationServiceImpl(AutocompleteService autocompleteService) {
+    public TextTranslationServiceImpl(AutocompleteService autocompleteService, GCSStore gcsStore) {
         this.autocompleteService = autocompleteService;
+        this.gcsStore = gcsStore;
     }
 
     @Override
@@ -90,10 +97,60 @@ public class TextTranslationServiceImpl implements TextTranslationService {
     }
 
     @Override
+    public Map<String, Recommendation> translateParagraph(String paragraph) throws IOException {
+      Map<String, Recommendation> recommendations = new HashMap<>();
+
+      List<TermItem> terms = loadTermsFromGoogleStorage();
+
+      if (terms.isEmpty()) {
+        throw new IOException("Unable to process search terms");
+      }
+
+      for (TermItem term : terms) {
+        final String title = term.getTitle();
+        final String category = term.getCategory();
+        final String url = term.getUrl();
+        final String[] keywords = term.getKeywords();
+
+        for (String keyword : keywords) {
+          final boolean foundMatch = searchForKeyword(keyword, paragraph);
+          if (foundMatch) {
+            recommendations.computeIfAbsent(url, key -> new Recommendation(
+                title,
+                category
+            ));
+            break;
+          }
+        }
+      }
+
+      return recommendations;
+    }
+
+    @Override
     public String translatePurpose(String dataUseString) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
         return translate(dataUse, TranslateFor.PURPOSE);
+    }
+
+    private static boolean searchForKeyword(final String keyword, final String targetText) {
+      return StringUtils.containsIgnoreCase(targetText, keyword);
+    }
+
+    private List<TermItem> loadTermsFromGoogleStorage() {
+      try {
+        HttpResponse response = gcsStore.getStorageDocument("ontology/search-terms.json");
+        String terms = response.parseAsString();
+        return new Gson().fromJson(
+            terms,
+            new TypeToken<List<TermItem>>() {
+            }.getType()
+        );
+      } catch (Exception e) {
+        logException("Error processing search terms from GCS", e);
+      }
+      return List.of();
     }
 
     /**
@@ -124,10 +181,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                     if (!terms.isEmpty()) {
                         labels.add(terms.get(0).label);
                     } else {
-                        log.warn("No terms returned for: " + r);
+                        logWarn("No terms returned for: " + r);
                     }
                 } catch (IOException e) {
-                    log.warn("Unable to retrieve term id: " + r);
+                    logWarn("Unable to retrieve term id: " + r);
                 }
             });
             if (!labels.isEmpty()) {
@@ -195,7 +252,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                 String date = DATE_FORMAT.format(dataUse.getDateRestriction());
                 secondary.add(new DataUseElement("TS", String.format(DATE_POS, date)));
             } catch (IllegalArgumentException e) {
-                log.warn("Invalid date format for: " + dataUse.getDateRestriction());
+                logWarn("Invalid date format for: " + dataUse.getDateRestriction());
             }
         }
         if (Optional.ofNullable(dataUse.getAggregateResearch()).orElse("na").equalsIgnoreCase(YES)) {
@@ -274,10 +331,10 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                     if (!terms.isEmpty()) {
                         labels.add(terms.get(0).label);
                     } else {
-                        log.warn("No terms returned for: " + r);
+                        logWarn("No terms returned for: " + r);
                     }
                 } catch (IOException e) {
-                    log.warn("Unable to retrieve term id: " + r);
+                    logWarn("Unable to retrieve term id: " + r);
                 }
             });
             if (!labels.isEmpty()) {
@@ -341,7 +398,7 @@ public class TextTranslationServiceImpl implements TextTranslationService {
                 String date = DATE_FORMAT.format(dataUse.getDateRestriction());
                 summary.add(String.format(DATE_POS, date));
             } catch (IllegalArgumentException e) {
-                log.warn("Invalid date format for: " + dataUse.getDateRestriction());
+                logWarn("Invalid date format for: " + dataUse.getDateRestriction());
             }
         }
         if (Optional.ofNullable(dataUse.getAggregateResearch()).orElse("na").equalsIgnoreCase(YES)) {

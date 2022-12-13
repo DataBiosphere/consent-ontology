@@ -116,6 +116,28 @@ paths:
             $ref: '#/definitions/DataUseSummary'
         default:
           description: Unexpected error
+  /translate/paragraph:
+    post:
+      summary: Translates Paragraph to ontology recommendations
+      description: The Translate service for paragraphs will render an ontology recommendation for a given paragraph.
+      parameters:
+        - name: body
+          in: body
+          description: Paragraph to translate
+          required: true
+          schema:
+            $ref: '#/definitions/TranslateParagraph'
+      produces:
+        - application/json
+      tags:
+        - Translate
+      responses:
+        200:
+          description: Successful translation.
+          schema:
+            $ref: '#/definitions/DataUseRecommendation'
+        default:
+          description: Unexpected error
 
   /match:
     post:
@@ -262,6 +284,23 @@ paths:
           description: All systems are OK
         500:
           description: Some number of subsystems are not OK.
+  /status/error:
+    get:
+      summary: Generate a logged error
+      description: Generate a logged error
+      parameters:
+        - in: query
+          name: message
+          description: Message to log as an error
+          required: false
+          type: string
+      tags:
+        - Status
+      responses:
+        200:
+          description: Error successfully logged
+        500:
+          description: Other error
 
   /liveness:
     get:
@@ -365,6 +404,11 @@ definitions:
     example:
       { "generalUse": false, "hmbResearch": true, "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602"] }
 
+  DataUseRecommendation:
+    type: object
+    description: JSON model of a set of data use recommendations
+    example:
+      { "http://purl.obolibrary.org/obo/DUO_0000042": {"title": "General Research Use", "category": "Data Use Permission" } }
   DataUseMatchPair:
     type: object
     description: JSON model of research purpose and dataset
@@ -390,6 +434,13 @@ definitions:
         description: |
           Optional list of reasons why a match result may have failed. Only supported in
           in versions 2 and higher
+
+  TranslateParagraph:
+    type: object
+    properties:
+      paragraph:
+        description: The paragraph to translate
+        type: string
 
   Version:
     type: object

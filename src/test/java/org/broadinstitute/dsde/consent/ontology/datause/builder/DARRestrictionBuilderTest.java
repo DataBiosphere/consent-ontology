@@ -1,5 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.builder;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.util.Collections;
 import org.broadinstitute.dsde.consent.ontology.datause.models.And;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
@@ -8,8 +10,7 @@ import org.broadinstitute.dsde.consent.ontology.datause.models.Not;
 import org.broadinstitute.dsde.consent.ontology.datause.models.Or;
 import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 @SuppressWarnings("SimplifiableJUnitAssertion")
 public class DARRestrictionBuilderTest {
@@ -21,7 +22,7 @@ public class DARRestrictionBuilderTest {
         DataUse dataUse = new DataUse();
         dataUse.setGeneralUse(true);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(new Everything()));
+        assertTrue(restriction.equals(new Everything()));
     }
 
     @Test
@@ -42,7 +43,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setPsychologicalTraits(false);
         dataUse.setNonBiomedical(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(
+        assertTrue(restriction.equals(
             new And(
                 new And(
                     new Not(new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH)),
@@ -76,7 +77,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setPsychologicalTraits(false);
         dataUse.setNonBiomedical(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(
+        assertTrue(restriction.equals(
             new And(
                 new And(
                     new Not(new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH)),
@@ -110,7 +111,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setPsychologicalTraits(false);
         dataUse.setNonBiomedical(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(
+        assertTrue(restriction.equals(
             new And(
                 new And(
                     new Not(new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH)),
@@ -144,7 +145,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setPsychologicalTraits(false);
         dataUse.setNonBiomedical(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(
+        assertTrue(restriction.equals(
             new And(
                 new And(
                     new Not(new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH)),
@@ -178,7 +179,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setPsychologicalTraits(false);
         dataUse.setNonBiomedical(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(
+        assertTrue(restriction.equals(
             new And(
                 new And(
                     new Not(new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH)),
@@ -214,7 +215,7 @@ public class DARRestrictionBuilderTest {
         dataUse.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_9854");
         dataUse.getDiseaseRestrictions().add("http://purl.obolibrary.org/obo/DOID_0050738");
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(
+        assertTrue(restriction.equals(
             new And(
                 new And(
                     new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH),
@@ -250,7 +251,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setPsychologicalTraits(false);
         dataUse.setNonBiomedical(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(
+        assertTrue(restriction.equals(
             new And(
                 new And(
                     new Not(new Named(UseRestrictionBuilderSupport.METHODS_RESEARCH)),
@@ -270,7 +271,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setMethodsResearch(true);
         dataUse.setCommercialUse(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(DARUseCases.darDefaultMRPA));
+        assertTrue(restriction.equals(DARUseCases.darDefaultMRPA));
     }
 
     @Test
@@ -279,7 +280,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER));
         dataUse.setCommercialUse(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(DARUseCases.darDefaultMRPB));
+        assertTrue(restriction.equals(DARUseCases.darDefaultMRPB));
     }
 
     @Test
@@ -288,7 +289,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setMethodsResearch(true);
         dataUse.setCommercialUse(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(DARUseCases.darDefaultMRPC));
+        assertTrue(restriction.equals(DARUseCases.darDefaultMRPC));
     }
 
     @Test
@@ -298,7 +299,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setControlSetOption("Yes");
         dataUse.setCommercialUse(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(DARUseCases.darDefaultCSA));
+        assertTrue(restriction.equals(DARUseCases.darDefaultCSA));
     }
 
     @Test
@@ -307,7 +308,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setDiseaseRestrictions(Collections.singletonList(ConsentUseCases.CANCER));
         dataUse.setCommercialUse(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(DARUseCases.darDefaultCSB));
+        assertTrue(restriction.equals(DARUseCases.darDefaultCSB));
     }
 
     @Test
@@ -316,7 +317,7 @@ public class DARRestrictionBuilderTest {
         dataUse.setControlSetOption("Yes");
         dataUse.setCommercialUse(false);
         UseRestriction restriction = restrictionBuilder.buildUseRestriction(dataUse);
-        Assert.assertTrue(restriction.equals(DARUseCases.darDefaultCSC));
+        assertTrue(restriction.equals(DARUseCases.darDefaultCSC));
     }
 
 }

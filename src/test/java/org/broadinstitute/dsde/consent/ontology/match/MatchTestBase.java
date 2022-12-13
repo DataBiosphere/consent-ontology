@@ -33,7 +33,7 @@ abstract class MatchTestBase extends TruthTableTests {
     }
 
     @Mock
-    AutocompleteService autocompleteService;
+    private AutocompleteService autocompleteService;
 
     @Before
     public void setUp() {
