@@ -11,5 +11,6 @@ statistics over time.
 3. Run gatling tests against that environment: `mvn gatling:test`
 4. Optional: Run the results formatter to parse the generated `stats.json` into a BQ-import-friendly format: `mvn compile -Dexec.mainClass="org.broadinstitute.dsp.ontology.performance.results.ResultsFormatter" -Dexec.classpathScope="test" exec:java`
 
-## Nightly
-These tests are configured to run against the `perf` environment by default and post results to QA
+## TODO
+We need to run these tests against an on-demand environment. Capabilities for that are in development now.
+Test results will then need to be pushed to a QA BQ database where daily test result reports are generated.
