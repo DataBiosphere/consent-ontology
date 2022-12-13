@@ -12,5 +12,6 @@ statistics over time.
 4. Optional: Run the results formatter to parse the generated `stats.json` into a BQ-import-friendly format: `mvn compile -Dexec.mainClass="org.broadinstitute.dsp.ontology.performance.results.ResultsFormatter" -Dexec.classpathScope="test" exec:java`
 
 ## TODO
-We need to run these tests against an on-demand environment. Capabilities for that are in development now.
-Test results will then need to be pushed to a QA BQ database where daily test result reports are generated.
+1. We need to run these tests against an on-demand environment. Capabilities for that are in development now.
+2. Test results will then need to be pushed to a QA BQ database where daily test result reports are generated.
+3. Remove all `/automation` code.
