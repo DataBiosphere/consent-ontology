@@ -23,4 +23,3 @@ contribute to this project.
 
 ## Local Development
 See [DEVNOTES.md](docs/DEVNOTES.md) to run locally.
-
