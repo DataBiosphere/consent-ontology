@@ -17,6 +17,7 @@ import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.filters.ResponseServerFilter;
 import org.broadinstitute.dsde.consent.ontology.resources.AutocompleteResource;
 import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
+import org.broadinstitute.dsde.consent.ontology.resources.ErrorResource;
 import org.broadinstitute.dsde.consent.ontology.resources.LivenessResource;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
 import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource;
@@ -26,6 +27,7 @@ import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 import org.broadinstitute.dsde.consent.ontology.resources.ValidationResource;
 import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
+import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 /**
@@ -58,7 +60,15 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     public void run(OntologyConfiguration config, Environment env) {
 
         Injector injector = Guice.createInjector(new OntologyModule(config, env));
+
+        // Custom Error handling. Expand to include other codes when necessary
+        final ErrorPageErrorHandler errorHandler = new ErrorPageErrorHandler();
+        errorHandler.addErrorPage(404, "/error/404");
+        env.getApplicationContext().setErrorHandler(errorHandler);
         env.jersey().register(ResponseServerFilter.class);
+        env.jersey().register(ErrorResource.class);
+
+        // Register standard application resources.
         env.jersey().register(injector.getInstance(AutocompleteResource.class));
         env.jersey().register(injector.getInstance(MatchResource.class));
         env.jersey().register(injector.getInstance(TranslateResource.class));
