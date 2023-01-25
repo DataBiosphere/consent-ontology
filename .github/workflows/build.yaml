@@ -30,20 +30,20 @@ jobs:
     - name: Construct tags
       id: construct-tags
       run: |
-        SHA_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:${{ env.sha }}"
+        SHA_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:${{ steps.short-sha.outputs.sha }}"
         ENVIRONMENT_TAG=""
         if ${{ github.event_name == 'pull_request'}}; then
-          ENVIRONMENT_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:pr-${{ env.sha }}"
+          ENVIRONMENT_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:pr-${{ steps.short-sha.outputs.sha }}"
         elif ${{github.event_name == 'push' }}; then
           ENVIRONMENT_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:dev"
         fi
-        echo "sha-tag=$SHA_TAG" >> $GITHUB_ENV
-        echo "environment-tag=$ENVIRONMENT_TAG" >> $GITHUB_ENV
+        echo "sha-tag=$SHA_TAG" >> $GITHUB_OUTPUT
+        echo "environment-tag=$ENVIRONMENT_TAG" >> $GITHUB_OUTPUT
     - name: Build Image
       run: |
         docker build \
-        -t ${{ env.sha-tag }} \
-        -t ${{ env.environment-tag }} \
+        -t ${{ steps.construct-tags.outputs.sha-tag }} \
+        -t ${{ steps.construct-tags.outputs.environment-tag }} \
         .
     - name: Log Github Actor
       run: echo "${{ github.actor }}"
@@ -58,8 +58,8 @@ jobs:
     - name: Push Image to GCR
       if: github.actor != 'dependabot[bot]'
       run: |
-        docker push ${{ env.sha-tag }}
-        docker push ${{ env.environment-tag }}
+        docker push ${{ steps.construct-tags.outputs.sha-tag }}
+        docker push ${{ steps.construct-tags.outputs.environment-tag }}
     - name: Notify Slack
       # only notify for develop branch build
       if: github.event_name == 'push'
