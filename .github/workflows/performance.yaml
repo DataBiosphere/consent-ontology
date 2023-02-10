@@ -1,7 +1,8 @@
 name: Maven Performance Tests
 on:
   workflow_run:
-    workflows: ["Tag, Build and Push Image"]
+    workflows:
+      - Tag, Build and Push Image
     types:
       - completed
 # TODO: Instantiate a BEE environment to run tests against
