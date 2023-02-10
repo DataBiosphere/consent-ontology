@@ -16,8 +16,8 @@
         <maven.compiler.target>17</maven.compiler.target>
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
-        <mockserver.version>5.14.0</mockserver.version>
-        <owl.version>5.1.20</owl.version>
+        <mockserver.version>5.15.0</mockserver.version>
+        <owl.version>5.5.0</owl.version>
         <pellet.version>2.3.6-ansell</pellet.version>
         <rdf4j-rio.version>3.7.7</rdf4j-rio.version>
         <swagger.ui.version>4.14.0</swagger.ui.version>
@@ -107,7 +107,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.0.0-M7</version>
+                <version>3.0.0-M8</version>
                 <configuration>
                     <!-- @{argLine} is necessary here so that the jacoco:prepare-agent output is included for tests -->
                     <argLine>@{argLine} -Xmx1024m</argLine>
@@ -138,7 +138,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-dependency-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.0</version>
                 <executions>
                     <execution>
                         <id>copy-dependencies</id>
@@ -288,7 +288,7 @@
             <plugin>
                 <groupId>org.owasp</groupId>
                 <artifactId>dependency-check-maven</artifactId>
-                <version>7.4.1</version>
+                <version>8.0.2</version>
                 <configuration>
                     <skipProvidedScope>true</skipProvidedScope>
                     <skipRuntimeScope>true</skipRuntimeScope>
@@ -339,7 +339,7 @@
         <dependency>
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
-            <version>6.9.2</version>
+            <version>6.13.0</version>
         </dependency>
 
         <dependency>
@@ -381,13 +381,13 @@
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
-            <version>2.10</version>
+            <version>2.10.1</version>
         </dependency>
 
         <dependency>
             <groupId>com.google.api-client</groupId>
             <artifactId>google-api-client</artifactId>
-            <version>2.1.1</version>
+            <version>2.2.0</version>
             <exclusions>
                 <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
                 <exclusion>
@@ -431,7 +431,7 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>8.5.3</version>
+            <version>8.6.1</version>
         </dependency>
 
         <dependency>
@@ -501,7 +501,7 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.4.2</version>
+            <version>2.13.5</version>
         </dependency>
 
         <!-- Addressing OWASP warning: https://nvd.nist.gov/vuln/detail/CVE-2020-25649 -->
@@ -514,14 +514,14 @@
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
-            <version>5.9.1</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
-            <version>5.9.1</version>
+            <version>5.9.2</version>
             <scope>test</scope>
         </dependency>
 
