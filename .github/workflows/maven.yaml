@@ -1,4 +1,4 @@
-name: Maven
+name: Maven Package
 on: [pull_request]
 jobs:
   package:

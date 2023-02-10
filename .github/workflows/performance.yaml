@@ -1,4 +1,4 @@
-name: Maven
+name: Maven Performance Tests
 on:
   workflow_run:
     workflows: ["Tag, Build and Push Image"]
