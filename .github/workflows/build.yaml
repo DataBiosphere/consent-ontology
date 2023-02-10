@@ -1,4 +1,5 @@
-name: Build
+name: Tag, Build and Push Image
+
 on:
   push:
     branches:
