@@ -31,3 +31,7 @@ jobs:
   #    types:
   #      - completed
   #    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+
+# Relevant docs for future development:
+# * https://docs.github.com/en/actions/managing-workflow-runs/manually-running-a-workflow
+# * https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#workflow_run
