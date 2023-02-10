@@ -1,14 +1,9 @@
 name: Performance
 on: workflow_dispatch
-#  workflow_run:
-#    workflows: [Build]
-#    types:
-#      - completed
 jobs:
   performance-tests:
     name: Performance/Smoke Tests
     runs-on: ubuntu-latest
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -28,4 +23,11 @@ jobs:
           mvn clean gatling:test --no-transfer-progress
 
 # TODO: Instantiate a BEE environment to run tests against
-# TODO: Mark job as a failure if tests fail
+# TODO: Upload test results to QA BQ
+# TODO: Move this to be dependent on build.yaml.
+# ... this can't be done until this is on the default branch
+  #  workflow_run:
+  #    workflows: [Build]
+  #    types:
+  #      - completed
+  #    if: ${{ github.event.workflow_run.conclusion == 'success' }}
