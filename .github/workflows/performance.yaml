@@ -1,0 +1,25 @@
+name: Maven
+on: [pull_request]
+# TODO: Instantiate a BEE environment to run tests against
+# TODO: Mark job as a failure if tests fail
+jobs:
+  package:
+    name: Performance/Smoke Tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: 17
+      - uses: actions/cache@v3
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      - name: Run Gatling Tests
+        run: |
+          mvn -v
+          mvn clean gatling:test --no-transfer-progress
