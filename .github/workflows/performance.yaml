@@ -1,9 +1,13 @@
 name: Maven
-on: [pull_request]
+on:
+  workflow_run:
+    workflows: ["Tag, Build and Push Image"]
+    types:
+      - completed
 # TODO: Instantiate a BEE environment to run tests against
 # TODO: Mark job as a failure if tests fail
 jobs:
-  package:
+  performance-tests:
     name: Performance/Smoke Tests
     runs-on: ubuntu-latest
     steps:
