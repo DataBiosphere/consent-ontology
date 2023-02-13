@@ -21,7 +21,7 @@ public class Matching implements Endpoints {
           "name": "http://purl.obolibrary.org/obo/DOID_162"
         }
       }
-            """;
+      """;
   private final String v2MatchPair = """
       {
         "purpose": {
@@ -34,7 +34,9 @@ public class Matching implements Endpoints {
       """;
 
   public List<ScenarioBuilder> tests = List.of(
-      scenario("Match V1").exec(matchV1(v1MatchPair).check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
-      scenario("Match V2").exec(matchV2(v2MatchPair).check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)
+      scenario("Match V1").exec(
+          matchV1(v1MatchPair).check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
+      scenario("Match V2").exec(
+          matchV2(v2MatchPair).check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)
   );
 }
