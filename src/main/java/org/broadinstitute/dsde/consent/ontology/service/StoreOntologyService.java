@@ -47,21 +47,6 @@ public class StoreOntologyService implements OntologyLogger {
         return "";
     }
 
-    public Collection<URL> retrieveOntologyURLs() throws IOException {
-        return retrieveConfigurationKeys().
-            stream().
-            map(str -> {
-                try {
-                    return new URL(str);
-                } catch (MalformedURLException e) {
-                    logError("Unable to convert key name to url: " + str);
-                }
-                return null;
-            }).
-            filter(Objects::nonNull).
-            collect(Collectors.toList());
-    }
-
     public Collection<String> retrieveConfigurationKeys() throws IOException {
         return retrieveConfigurationMap().keySet();
     }

@@ -2,40 +2,28 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
-import java.net.URL;
-import java.util.Collection;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.container.AsyncResponse;
-import javax.ws.rs.container.Suspended;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.broadinstitute.dsde.consent.ontology.model.MatchMessage;
-import org.broadinstitute.dsde.consent.ontology.model.MatchPair;
-import org.broadinstitute.dsde.consent.ontology.service.OntModelFactory;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPair;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 
 @Path("/match")
 @Consumes("application/json")
 @Produces("application/json")
 public class MatchResource {
 
-    private final StoreOntologyService storeOntologyService;
     private final DataUseMatcher dataUseMatcher;
-    private final OntModelFactory ontModelFactory = OntModelFactory.INSTANCE;
 
     @Inject
-    MatchResource(DataUseMatcher dataUseMatcher, StoreOntologyService storeOntologyService) {
+    MatchResource(DataUseMatcher dataUseMatcher) {
         this.dataUseMatcher = dataUseMatcher;
-        this.storeOntologyService = storeOntologyService;
     }
 
     /**
@@ -73,40 +61,6 @@ public class MatchResource {
             return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON).build();
         } catch (Exception e) {
             return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
-        }
-    }
-
-    /**
-     * V1 pointer to original implementation of matching logic. Should remain supported until no longer in use.
-     *
-     * @param response AsyncResponse
-     * @param matchPair MatchPair
-     * @throws Exception The Exception
-     */
-    @Deprecated
-    @Path("/v1")
-    @POST
-    public void matchV1(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
-        match(response, matchPair);
-    }
-
-    /**
-     * Original implementation of matching logic. Should remain supported until no longer in use.
-     *
-     * @param response AsyncResponse
-     * @param matchPair MatchPair
-     * @throws Exception The Exception
-     */
-    @Deprecated
-    @POST
-    public void match(@Suspended final AsyncResponse response, final MatchPair matchPair) throws Exception {
-        Collection<URL> urls = storeOntologyService.retrieveOntologyURLs();
-        final MatchMessage matchMessage = new MatchMessage(urls, matchPair);
-        try {
-            Boolean match = ontModelFactory.matchPurpose(matchMessage);
-            response.resume(ImmutableMap.of("result", match, "matchPair", matchPair));
-        } catch (Exception e) {
-            response.resume(new WebApplicationException(e));
         }
     }
 

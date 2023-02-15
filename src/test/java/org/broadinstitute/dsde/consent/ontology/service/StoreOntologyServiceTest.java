@@ -50,20 +50,4 @@ public class StoreOntologyServiceTest extends AbstractTest {
         assertTrue(result.isEmpty());
     }
 
-    @Test
-    public void testRetrieveOntologyURLs() throws Exception {
-        HttpResponse httpResponse = getMockHttpResponse(urls);
-        when(store.getStorageDocument(Mockito.anyString())).thenReturn(httpResponse);
-        List<URL> urls = new ArrayList<>(storeOntologyService.retrieveOntologyURLs());
-        assertFalse(urls.isEmpty());
-        assertEquals(urls.get(0), new URL(RESEARCH_TYPE));
-    }
-
-    @Test
-    public void testRetrieveOntologyURLWithInvalidFormat() throws Exception {
-        HttpResponse httpResponse = getMockHttpResponse(error);
-        when(store.getStorageDocument(Mockito.anyString())).thenReturn(httpResponse);
-        assertTrue(storeOntologyService.retrieveOntologyURLs().isEmpty());
-    }
-
 }

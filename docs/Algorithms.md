@@ -6,6 +6,7 @@ and a Consent on a dataset. Both Purpose and Consent are structured objects whic
 matching at scale. 
 
 ## Version 1
+### Deprecated & Removed
 The original version of the algorithm uses an ontology tree to match a purpose and consent. First, we 
 construct a composite ontology tree from:
 
