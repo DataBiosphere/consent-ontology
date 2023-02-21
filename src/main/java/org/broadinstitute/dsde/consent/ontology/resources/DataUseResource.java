@@ -20,10 +20,10 @@ import org.parboiled.common.FileUtils;
 public class DataUseResource implements OntologyLogger {
 
     @GET
-    @Path("/data-use")
+    @Path("/data-use-v3")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSchema() {
-        String content = FileUtils.readAllTextFromResource("data-use.json");
+        String content = FileUtils.readAllTextFromResource("data-use-v3.json");
         return Response.ok().entity(content).type(MediaType.APPLICATION_JSON).build();
     }
 
