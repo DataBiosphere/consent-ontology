@@ -5,15 +5,8 @@
   "version": 2,
   "type": "object",
   "dependencies": {
-    "recontactingDataSubjects": {
-      "oneOf": [
-        {"required": ["recontactMay"]},
-        {"required": ["recontactMust"]}
-      ]
-    },
     "otherRestrictions": {
       "anyOf": [
-        {"required": ["cloudStorage"]},
         {"required": ["ethicsApprovalRequired"]},
         {"required": ["collaboratorRequired"]},
         {"required": ["geographicalRestrictions"]},
@@ -31,12 +24,6 @@
         "type": "string",
         "uniqueItems": true
       }
-    },
-    "recontactMay": {
-      "type": "string"
-    },
-    "recontactMust": {
-      "type": "string"
     },
     "hmbResearch": {
       "type": "boolean"
@@ -67,10 +54,6 @@
     },
     "geneticStudiesOnly": {
       "type": "boolean"
-    },
-    "cloudStorage": {
-      "type": "string",
-      "enum": ["Yes", "No", "Unspecified"]
     },
     "publicationResults": {
       "type": "boolean"
