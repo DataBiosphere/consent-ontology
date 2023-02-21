@@ -11,18 +11,6 @@ class MatchScenarios extends Simulation with TestRunner {
 
   runScenarios(
     List(
-      GroupedScenario("Match: v1: DOID_162") {
-        exec(
-          Requests.matchV1(MatchBodyFactory.v1_162)
-            .check(jsonPath("$.result").find.is("true"))
-        )
-      },
-      GroupedScenario("Match: v1: Mismatch"){
-        exec(
-          Requests.matchV1(MatchBodyFactory.v1_EVPurpose_NonEVConsent)
-            .check(jsonPath("$.result").find.is("false"))
-        )
-      },
       GroupedScenario("Match: v2: GeneralUse"){
         exec(
           Requests.matchV2(MatchBodyFactory.v2GeneralUse)

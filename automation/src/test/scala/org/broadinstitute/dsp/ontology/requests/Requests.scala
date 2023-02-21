@@ -72,25 +72,6 @@ object Requests {
       .check(status.is(session => 200))
   }
 
-  def matchNoV1(json: String): HttpRequestBuilder = {
-    http("Match")
-      .post(s"/match")
-      .headers(TestConfig.jsonHeader)
-      .body(StringBody(json))
-      .asJson
-      .check(status.is(session => 200))
-  }
-
-  // '{ "purpose": { "type": "everything" }, "consent": { "type": "everything" } }' is a good example
-  def matchV1(json: String): HttpRequestBuilder = {
-    http("Match V1")
-      .post(s"/match/v1")
-      .headers(TestConfig.jsonHeader)
-      .body(StringBody(json))
-      .asJson
-      .check(status.is(session => 200))
-  }
-
   // '{ "purpose": {"hmbResearch": true}, "consent": {"generalUse": true} }' is a good example
   def matchV2(json: String): HttpRequestBuilder = {
     http("Match V2")
