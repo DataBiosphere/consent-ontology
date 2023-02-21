@@ -24,6 +24,18 @@ paths:
         default:
           description: Unexpected error
 
+  /schemas/data-use-v3:
+    get:
+      summary: Data Use Questions and Answers V3
+      description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
+      tags:
+        - Data Use
+      responses:
+        200:
+          description: The json representation for all data use questions + answers
+        default:
+          description: Unexpected error
+
   /schemas/data-use/consent/translate:
     post:
       summary: Translate Data Use JSON into a 'Consent' Use Restriction
