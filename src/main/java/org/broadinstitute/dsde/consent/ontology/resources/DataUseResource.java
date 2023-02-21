@@ -20,13 +20,19 @@ import org.parboiled.common.FileUtils;
 public class DataUseResource implements OntologyLogger {
 
     @GET
-    @Path("/data-use-v3")
+    @Path("/data-use")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSchema() {
+        String content = FileUtils.readAllTextFromResource("data-use.json");
+        return Response.ok().entity(content).type(MediaType.APPLICATION_JSON).build();
+    }
+    @GET
+    @Path("/data-use-v3")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSchemaV3() {
         String content = FileUtils.readAllTextFromResource("data-use-v3.json");
         return Response.ok().entity(content).type(MediaType.APPLICATION_JSON).build();
     }
-
     /**
      * This endpoint will take any valid form of json string that models DataUse and generate a Consent
      * UseRestriction using current business rules.
