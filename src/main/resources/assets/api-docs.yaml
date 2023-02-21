@@ -26,7 +26,7 @@ paths:
 
   /schemas/data-use-v3:
     get:
-      summary: Data Use Questions and Answers V3
+      summary: Data Use Questions and Answers Version 3
       description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
       tags:
         - Data Use
