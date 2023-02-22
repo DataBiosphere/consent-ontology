@@ -37,6 +37,9 @@
     "commercialUse": {
       "type": "boolean"
     },
+    "NPU": {
+      "type": "boolean"
+    },
     "other": {
       "type": "string"
     },
