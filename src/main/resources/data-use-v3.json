@@ -11,6 +11,11 @@
         {"required": ["collaboratorRequired"]},
         {"required": ["geographicalRestrictions"]},
         {"required": ["other"]}
+      ],
+      "oneOf": [
+        {"required":  ["generalUse"]},
+        {"required" : ["diseaseRestrictions"]},
+        {"required" : ["hmbResearch"]}
       ]
     }
   },
@@ -37,7 +42,7 @@
     "commercialUse": {
       "type": "boolean"
     },
-    "NPU": {
+    "nonProfitUse": {
       "type": "boolean"
     },
     "other": {
