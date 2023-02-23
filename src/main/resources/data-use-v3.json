@@ -1,0 +1,74 @@
+{
+  "id": "https://consent-ontology.dsde-prod.broadinstitute.org/schemas/data-use",
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Data Use Schema V3",
+  "version": 2,
+  "type": "object",
+  "dependencies": {
+    "otherRestrictions": {
+      "anyOf": [
+        {"required": ["ethicsApprovalRequired"]},
+        {"required": ["collaboratorRequired"]},
+        {"required": ["geographicalRestrictions"]},
+        {"required": ["other"]}
+      ],
+      "oneOf": [
+        {"required":  ["generalUse"]},
+        {"required" : ["diseaseRestrictions"]},
+        {"required" : ["hmbResearch"]}
+      ]
+    }
+  },
+  "properties": {
+    "generalUse": {
+      "type": "boolean"
+    },
+    "diseaseRestrictions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "uniqueItems": true
+      }
+    },
+    "hmbResearch": {
+      "type": "boolean"
+    },
+    "populationOriginsAncestry": {
+      "type": "boolean"
+    },
+    "methodsResearch": {
+      "type": "boolean"
+    },
+    "commercialUse": {
+      "type": "boolean"
+    },
+    "nonProfitUse": {
+      "type": "boolean"
+    },
+    "other": {
+      "type": "string"
+    },
+    "secondaryOther": {
+      "type": "string"
+    },
+    "ethicsApprovalRequired": {
+      "type": "boolean"
+    },
+    "collaboratorRequired": {
+      "type": "boolean"
+    },
+    "geographicalRestrictions": {
+      "type": "string"
+    },
+    "geneticStudiesOnly": {
+      "type": "boolean"
+    },
+    "publicationResults": {
+      "type": "boolean"
+    },
+    "publicationMoratorium": {
+      "type": "string",
+      "format": "date"
+    }
+  }
+}
