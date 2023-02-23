@@ -40,7 +40,6 @@ public class AbstractTest {
         Mockito.when(storeServiceMock.retrieveConfigurationFile()).
             thenReturn(Resources.toString(urlOntologyConfiguration, Charset.defaultCharset()));
         Mockito.when(storeServiceMock.retrieveConfigurationKeys()).thenReturn(ontologyStrings);
-        Mockito.when(storeServiceMock.retrieveOntologyURLs()).thenReturn(ontologyUrls);
         return storeServiceMock;
     }
 

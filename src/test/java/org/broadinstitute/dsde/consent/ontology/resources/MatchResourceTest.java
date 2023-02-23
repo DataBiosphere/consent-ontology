@@ -45,7 +45,7 @@ public class MatchResourceTest {
 
     private void initResource() {
         dataUseMatcher.setAutocompleteService(autocompleteService);
-        resource = new MatchResource(dataUseMatcher, storeOntologyService);
+        resource = new MatchResource(dataUseMatcher);
     }
 
     @Test

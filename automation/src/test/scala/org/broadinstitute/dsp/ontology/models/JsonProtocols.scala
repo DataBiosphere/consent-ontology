@@ -9,7 +9,6 @@ import org.broadinstitute.dsp.ontology.models.MatchModels._
 
 object JsonProtocols extends DefaultJsonProtocol {
     implicit val dataUseTranslationFormat: RootJsonFormat[DataUseTranslation] = rootFormat(lazyFormat(jsonFormat4(DataUseTranslation)))
-    implicit val v1MatchBodyFormat: JsonFormat[V1MatchBody] = jsonFormat2(V1MatchBody)
     implicit val v2MatchBodyFormat: JsonFormat[V2MatchBody] = jsonFormat2(V2MatchBody)
 
     implicit object DataUseFormat extends JsonFormat[DataUse] {

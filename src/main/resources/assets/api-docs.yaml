@@ -151,48 +151,6 @@ paths:
         default:
           description: Unexpected error
 
-  /match:
-    post:
-      summary: Match UseRestriction Consent and Research Purpose
-      description: The Match service will render a response of true or false between a Consent and a Research Purpose.
-      parameters:
-        - name: body
-          in: body
-          description: Consent and Purpose Use Restrictions.
-          required: true
-          schema:
-            $ref: '#/definitions/MatchPair'
-      tags:
-        - Match
-      responses:
-        200:
-          description: Match Result.
-          schema:
-            $ref: '#/definitions/MatchPairResult'
-        500:
-          description: Internal Server Error
-
-  /match/v1:
-    post:
-      summary: Match UseRestriction Consent and Research Purpose
-      description: The Match service will render a response of true or false between a Consent and a Research Purpose.
-      parameters:
-        - name: body
-          in: body
-          description: Consent and Purpose Use Restrictions.
-          required: true
-          schema:
-            $ref: '#/definitions/MatchPair'
-      tags:
-        - Match
-      responses:
-        200:
-          description: Match Result.
-          schema:
-            $ref: '#/definitions/MatchPairResult'
-        500:
-          description: Internal Server Error
-
   /match/v2:
     post:
       summary: Match DataUse Purpose and Consent
