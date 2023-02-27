@@ -24,7 +24,19 @@ paths:
         default:
           description: Unexpected error
 
-  /schemas/data-use-v3:
+  /schemas/data-use/v2:
+    get:
+      summary: Data Use Questions and Answers
+      description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
+      tags:
+        - Data Use
+      responses:
+        200:
+          description: The json representation for all data use questions + answers
+        default:
+          description: Unexpected error
+
+  /schemas/data-use/v3:
     get:
       summary: Data Use Questions and Answers Version 3
       description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
