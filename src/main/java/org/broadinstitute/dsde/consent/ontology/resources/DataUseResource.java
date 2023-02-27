@@ -26,8 +26,16 @@ public class DataUseResource implements OntologyLogger {
         String content = FileUtils.readAllTextFromResource("data-use.json");
         return Response.ok().entity(content).type(MediaType.APPLICATION_JSON).build();
     }
+
     @GET
-    @Path("/data-use-v3")
+    @Path("/data-use/v2")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getSchemaV2() {
+        return getSchema();
+    }
+
+    @GET
+    @Path("/data-use/v3")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getSchemaV3() {
         String content = FileUtils.readAllTextFromResource("data-use-v3.json");
