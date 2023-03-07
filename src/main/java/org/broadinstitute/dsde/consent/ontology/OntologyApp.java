@@ -46,9 +46,6 @@ public class OntologyApp extends Application<OntologyConfiguration> {
               config.setServerName("Ontology");
               config.addContextTag("Ontology");
               config.addInAppInclude("org.broadinstitute");
-              config.addInAppExclude("org.mindswap");
-              config.addInAppExclude("org.semanticweb");
-              config.addInAppExclude("com.hp");
             });
             Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
         }

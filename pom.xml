@@ -444,12 +444,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.apache.lucene</groupId>
-            <artifactId>lucene-core</artifactId>
-            <version>9.5.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-dependencies</artifactId>
             <version>${dropwizard.version}</version>
@@ -520,53 +514,6 @@
             <artifactId>junit-jupiter-params</artifactId>
             <version>5.9.2</version>
             <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>com.hp.hpl.jena</groupId>
-            <artifactId>jena</artifactId>
-            <version>${jena.version}</version>
-            <exclusions>
-                <!-- The default version included with Jena doesn't parse java version > 1.8.0_265 -->
-                <exclusion>
-                    <groupId>com.ibm.icu</groupId>
-                    <artifactId>icu4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>xerces</groupId>
-                    <artifactId>xercesImpl</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>log4j</groupId>
-                    <artifactId>log4j</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.hp.hpl.jena</groupId>
-                    <artifactId>iri</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.hp.hpl.jena</groupId>
-                    <artifactId>jena</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.hp.hpl.jena</groupId>
-                    <artifactId>arq</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-log4j12</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.slf4j</groupId>
-                    <artifactId>slf4j-api</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>2.12.2</version>
         </dependency>
 
         <dependency>
