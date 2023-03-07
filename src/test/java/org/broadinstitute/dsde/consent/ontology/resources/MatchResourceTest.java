@@ -16,7 +16,6 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -25,9 +24,6 @@ public class MatchResourceTest {
 
     @Mock
     private AutocompleteService autocompleteService;
-
-    @Mock
-    private StoreOntologyService storeOntologyService;
 
     @Mock
     private final DataUseMatcher dataUseMatcher = new DataUseMatcher();

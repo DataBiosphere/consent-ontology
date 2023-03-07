@@ -24,7 +24,6 @@ import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource
 import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
 import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
-import org.broadinstitute.dsde.consent.ontology.resources.ValidationResource;
 import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
@@ -34,7 +33,7 @@ import org.eclipse.jetty.servlets.CrossOriginFilter;
  * Top-level entry point to the entire application.
  * <p>
  * See the Dropwizard docs here:
- * <a href="https://www.dropwizard.io/">...</a>
+ * <a href="https://www.dropwizard.io/">Dropwizard</a>
  */
 public class OntologyApp extends Application<OntologyConfiguration> {
 
@@ -72,7 +71,6 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         env.jersey().register(injector.getInstance(AutocompleteResource.class));
         env.jersey().register(injector.getInstance(MatchResource.class));
         env.jersey().register(injector.getInstance(TranslateResource.class));
-        env.jersey().register(injector.getInstance(ValidationResource.class));
         env.jersey().register(injector.getInstance(OntologySearchResource.class));
         env.jersey().register(injector.getInstance(DataUseResource.class));
         env.jersey().register(injector.getInstance(SwaggerResource.class));

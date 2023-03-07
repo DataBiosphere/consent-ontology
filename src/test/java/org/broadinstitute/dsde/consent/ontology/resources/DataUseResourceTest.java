@@ -1,13 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import org.broadinstitute.dsde.consent.ontology.datause.models.Everything;
-import org.broadinstitute.dsde.consent.ontology.datause.models.UseRestriction;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +14,6 @@ import org.junit.jupiter.api.Test;
 public class DataUseResourceTest {
 
     private DataUseResource dataUseResource;
-    private final String generalUse = "{ \"generalUse\": true }";
 
     @BeforeEach
     public void setUp() {
@@ -35,24 +31,6 @@ public class DataUseResourceTest {
         } catch (JSONException e) {
             fail("The response entity is not valid json");
         }
-    }
-
-    @Test
-    public void testConsent() {
-        Response response = dataUseResource.translateConsent(generalUse);
-        UseRestriction restriction = (UseRestriction) response.getEntity();
-        assertNotNull(restriction);
-        assertTrue(restriction.equals(new Everything()));
-        assertStatusAndHeader(response, Response.Status.OK, MediaType.APPLICATION_JSON);
-    }
-
-    @Test
-    public void testDAR() {
-        Response response = dataUseResource.translateDAR(generalUse);
-        UseRestriction restriction = (UseRestriction) response.getEntity();
-        assertNotNull(restriction);
-        assertTrue(restriction.equals(new Everything()));
-        assertStatusAndHeader(response, Response.Status.OK, MediaType.APPLICATION_JSON);
     }
 
     @SuppressWarnings("SameParameterValue")
