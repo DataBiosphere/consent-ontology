@@ -48,48 +48,6 @@ paths:
         default:
           description: Unexpected error
 
-  /schemas/data-use/consent/translate:
-    post:
-      summary: Translate Data Use JSON into a 'Consent' Use Restriction
-      description: Translate a Data Use JSON to a 'Consent' Use Restriction
-      tags:
-        - Data Use
-      parameters:
-        - name: jsonString
-          in: body
-          description: JSON formatted Data Use object
-          required: true
-          schema:
-            $ref: '#/definitions/DataUse'
-      responses:
-        200:
-          description: The use restriction in consent format
-        400:
-          description: invalid data use schema format
-        default:
-          description: Unexpected error
-
-  /schemas/data-use/dar/translate:
-    post:
-      summary: Translate Data Use JSON into a 'Data Access Request' Use Restriction
-      description: Translate a Data Use JSON to a 'Data Access Request' Use Restriction
-      tags:
-        - Data Use
-      parameters:
-        - name: jsonString
-          in: body
-          description: JSON formatted Data Use object
-          required: true
-          schema:
-            $ref: '#/definitions/DataUse'
-      responses:
-        200:
-          description: The use restriction in data access request format
-        400:
-          description: invalid data use schema format
-        default:
-          description: Unexpected error
-
   /translate:
     post:
       summary: Translate Data Use JSON into plain English
@@ -185,25 +143,6 @@ paths:
           description: Bad Request if either purpose or consent are not provided.
         500:
           description: Internal Server Error
-
-  /validate/userestriction:
-      post:
-        summary: validate
-        description: The Validate service will check If the posted Use Restriction has the correct format and content.
-        parameters:
-          - name: body
-            in: body
-            description: Restriction
-            required: true
-            schema:
-              $ref: '#/definitions/Restriction'
-        tags:
-          - Validate
-        responses:
-          200:
-            description: Successful validation. True for valid restriction and False for invalid.
-          default:
-            description: Unexpected error
 
   /autocomplete:
     get:
@@ -311,41 +250,6 @@ paths:
           description: Internal Server Error
 
 definitions:
-  Restriction:
-    type: object
-    description: |
-      A structured data use Restriction that can describe either a research purpose or a consented
-      dataset. Terms are constructed according to rules defined here:
-      https://github.com/DataBiosphere/consent-ontology/blob/develop/docs/UseRestrictionGrammar.md
-    example:
-      { "type": "named", "name": "http://purl.obolibrary.org/obo/DOID_162" }
-    properties:
-      type:
-        type: string
-        description: 'Connector (and, or)'
-      operands:
-        type: array
-        items:
-          type: string
-        description: Array of ontologies.
-
-  MatchPair:
-    type: object
-    properties:
-      purpose:
-        description: Data Use Restriction of the research purpose
-        $ref: '#/definitions/Restriction'
-      consent:
-        description: Data Use Restriction of the consented dataset
-        $ref: '#/definitions/Restriction'
-
-  MatchPairResult:
-    type: object
-    properties:
-      result:
-        type: boolean
-      matchPair:
-        $ref: '#/definitions/MatchPair'
 
   DataUseElement:
     type: object

@@ -5,10 +5,6 @@
         </encoder>
     </appender>
 
-    <logger name="com.hp.hpl.jena" level="ERROR"/>
-    <logger name="org.mindswap" level="ERROR"/>
-    <logger name="org.mindswap.pellet.jena.graph.query" level="ERROR"/>
-    <logger name="org.semanticweb" level="ERROR"/>
     <logger name="org.broadinstitute" level="INFO"/>
     <!-- Set to TRACE to see full requests/responses for Gatling test runs -->
     <logger name="io.gatling.http.engine.response" level="INFO" />

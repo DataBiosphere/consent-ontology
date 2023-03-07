@@ -10,14 +10,10 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSStore;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
-import org.broadinstitute.dsde.consent.ontology.datause.api.LuceneOntologyTermSearchAPI;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplete;
-import org.broadinstitute.dsde.consent.ontology.service.StoreOntologyService;
-import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidationService;
-import org.broadinstitute.dsde.consent.ontology.service.UseRestrictionValidator;
 
 public class OntologyModule extends AbstractModule {
 
@@ -43,23 +39,8 @@ public class OntologyModule extends AbstractModule {
 
     @Provides
     @Singleton
-    public UseRestrictionValidationService providesUseRestrictionValidationService() {
-        LuceneOntologyTermSearchAPI service = new LuceneOntologyTermSearchAPI(providesStore());
-        return new UseRestrictionValidator(service);
-    }
-
-    @Provides
-    @Singleton
     public AutocompleteService providesAutocomplete() {
         return new ElasticSearchAutocomplete(config.getElasticSearchConfiguration());
-    }
-
-    @Provides
-    @Singleton
-    public StoreOntologyService providesStore() {
-        return new StoreOntologyService(providesGCSStore(),
-            config.getStoreOntologyConfiguration().getBucketSubdirectory(),
-            config.getStoreOntologyConfiguration().getConfigurationFileName());
     }
 
     @Provides

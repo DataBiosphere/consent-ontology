@@ -32,25 +32,6 @@ object Requests {
         .check(status.is(session => 200))
     )
 
-    // '{ "generalUse": true }' is a good example
-    def dataUseTranslateConsent(json: String): HttpRequestBuilder = {
-      http("Translate Consent")
-        .post("/schemas/data-use/consent/translate")
-        .headers(TestConfig.jsonHeader)
-        .body(StringBody(json))
-        .asJson
-        .check(status.is(session => 200))
-    }
-
-    // '{ "generalUse": true }' is a good example
-    def dataUseTranslateDAR(json: String): HttpRequestBuilder = {
-      http("Translate DAR")
-        .post("/schemas/data-use/dar/translate")
-        .headers(TestConfig.jsonHeader)
-        .body(StringBody(json))
-        .asJson
-        .check(status.is(session => 200))
-    }
   }
 
   // ('dataset' || 'purpose') and '{ "generalUse": true }' are good examples
@@ -103,16 +84,6 @@ object Requests {
       .headers(TestConfig.jsonHeader)
       .check(status.is(session => 200))
   )
-
-  // '{ "type": "everything" }' is a good example
-  def validate(json: String): HttpRequestBuilder = {
-    http("Validate Use Restriction")
-      .post("/validate/userestriction")
-      .headers(TestConfig.jsonHeader)
-      .body(StringBody(json))
-      .asJson
-      .check(status.is(session => 200))
-  }
 
   private def encode(term: String): String = {
     URLEncoder.encode(term, "UTF-8")

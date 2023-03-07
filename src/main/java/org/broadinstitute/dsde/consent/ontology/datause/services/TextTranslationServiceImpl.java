@@ -1,7 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.jsonldjava.shaded.com.google.common.reflect.TypeToken;
+import com.google.common.reflect.TypeToken;
 import com.google.api.client.http.HttpResponse;
 import com.google.gson.Gson;
 import com.google.inject.Inject;

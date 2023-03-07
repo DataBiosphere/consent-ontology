@@ -20,7 +20,6 @@ logging:
       layout:
         type: json
   loggers:
-    "org.semanticweb": ERROR
 
 elasticSearch:
   servers:
