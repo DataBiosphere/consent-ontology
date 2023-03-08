@@ -1,0 +1,479 @@
+openapi: 3.0.1
+info:
+  description: A set of web-services related to ontology information.
+  license:
+    name: BSD
+    url: http://opensource.org/licenses/BSD-3-Clause
+  termsOfService: https://github.com/DataBiosphere/consent-ontology
+  title: Ontology Services
+  version: 0.0.1
+servers:
+- url: /
+paths:
+  /schemas/data-use:
+    get:
+      description: JSON representation of data use questions + answers for use in
+        defining structured data use restrictions and data access requests.
+      responses:
+        "200":
+          content: {}
+          description: The json representation for all data use questions + answers
+        default:
+          content: {}
+          description: Unexpected error
+      summary: Data Use Questions and Answers
+      tags:
+      - Data Use
+      x-accepts: application/json
+  /schemas/data-use/v2:
+    get:
+      description: JSON representation of data use questions + answers for use in
+        defining structured data use restrictions and data access requests.
+      responses:
+        "200":
+          content: {}
+          description: The json representation for all data use questions + answers
+        default:
+          content: {}
+          description: Unexpected error
+      summary: Data Use Questions and Answers
+      tags:
+      - Data Use
+      x-accepts: application/json
+  /schemas/data-use/v3:
+    get:
+      description: JSON representation of data use questions + answers for use in
+        defining structured data use restrictions and data access requests.
+      responses:
+        "200":
+          content: {}
+          description: The json representation for all data use questions + answers
+        default:
+          content: {}
+          description: Unexpected error
+      summary: Data Use Questions and Answers Version 3
+      tags:
+      - Data Use
+      x-accepts: application/json
+  /validation/data-use/V3:
+    get:
+      description: The Validate service will check If the posted Use Restriction has
+        the correct format and content.
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/DataUse'
+        description: Data Use V3
+        required: true
+      responses:
+        "200":
+          content: {}
+          description: Successful validation. True for valid restriction and False
+            for invalid.
+        default:
+          content: {}
+          description: Unexpected error
+      summary: validate
+      tags:
+      - validate
+      x-codegen-request-body-name: body
+      x-contentType: '*/*'
+      x-accepts: application/json
+  /translate:
+    post:
+      description: The Translate service will render an English-language version of
+        a research purpose or dataset.
+      parameters:
+      - description: Either 'dataset' or 'purpose'
+        explode: true
+        in: query
+        name: for
+        required: true
+        schema:
+          enum:
+          - dataset
+          - purpose
+          type: string
+        style: form
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/DataUse'
+        description: DataUse
+        required: true
+      responses:
+        "200":
+          content: {}
+          description: Successful translation.
+        default:
+          content: {}
+          description: Unexpected error
+      summary: Translate Data Use JSON into plain English
+      tags:
+      - Data Use
+      - Translate
+      x-codegen-request-body-name: body
+      x-contentType: '*/*'
+      x-accepts: application/json
+  /translate/summary:
+    post:
+      description: The Translate service will render an structured summary with consent
+        codes
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/DataUse'
+        description: DataUse
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataUseSummary'
+          description: Successful translation.
+        default:
+          content: {}
+          description: Unexpected error
+      summary: Translate Data Use JSON into Data Use Summary JSON
+      tags:
+      - Data Use
+      - Translate
+      x-codegen-request-body-name: body
+      x-contentType: '*/*'
+      x-accepts: application/json
+  /translate/paragraph:
+    post:
+      description: The Translate service for paragraphs will render an ontology recommendation
+        for a given paragraph.
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/TranslateParagraph'
+        description: Paragraph to translate
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DataUseRecommendation'
+          description: Successful translation.
+        default:
+          content: {}
+          description: Unexpected error
+      summary: Translates Paragraph to ontology recommendations
+      tags:
+      - Translate
+      x-codegen-request-body-name: body
+      x-contentType: '*/*'
+      x-accepts: application/json
+  /match/v2:
+    post:
+      description: Determine if a Research Purpose and Consent logically match.
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/DataUseMatchPair'
+        description: Research Purpose and Dataset DataUse pair.
+        required: true
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/DataUseMatchPairResult'
+          description: Successful matching.
+        "400":
+          content: {}
+          description: Bad Request if either purpose or consent are not provided.
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Match DataUse Purpose and Consent
+      tags:
+      - Match
+      x-codegen-request-body-name: body
+      x-contentType: '*/*'
+      x-accepts: '*/*'
+  /autocomplete:
+    get:
+      description: Ontologies can be queried based on term; type and count. This provides
+        an easy filtering mechanism that allows users to select ontology terms that
+        are applicable to consents or research purposes.
+      parameters:
+      - description: The query term (word fragment) which the service should try and
+          complete.
+        explode: true
+        in: query
+        name: q
+        required: true
+        schema:
+          type: string
+        style: form
+      - description: An optional list (comma-separated) of term types; if specified
+          only those types will be searched for autocomplete suggestions. If left
+          unspecified all available types will be searched. Available values for this
+          service will initially be disease and organization.
+        explode: true
+        in: query
+        name: types
+        required: false
+        schema:
+          type: string
+        style: form
+      - description: An optional limit on the number of autosuggested results that
+          are returned. Default value is 20.
+        explode: true
+        in: query
+        name: count
+        required: false
+        schema:
+          type: number
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: Array of results.
+        default:
+          content: {}
+          description: Unexpected error
+      summary: autocomplete
+      tags:
+      - Autocomplete
+      x-accepts: application/json
+  /search:
+    get:
+      description: Find ontologies based on the id.
+      parameters:
+      - description: The ontology id which the service us to find it (e.g. http://purl.obolibrary.org/obo/DOID_162).
+        explode: true
+        in: query
+        name: id
+        required: true
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: The given id was found. Term result with parent information.
+        "400":
+          content: {}
+          description: Bad request.
+        "404":
+          content: {}
+          description: The given id was not found.
+        default:
+          content: {}
+          description: Unexpected error
+      summary: search
+      tags:
+      - Search
+      x-accepts: application/json
+  /status:
+    get:
+      description: A detailed description of the various subsystem statuses that Ontology
+        relies upon.
+      responses:
+        "200":
+          content: {}
+          description: All systems are OK
+        "500":
+          content: {}
+          description: Some number of subsystems are not OK.
+      summary: System Health Status
+      tags:
+      - Status
+      x-accepts: application/json
+  /status/error:
+    get:
+      description: Generate a logged error
+      parameters:
+      - description: Message to log as an error
+        explode: true
+        in: query
+        name: message
+        required: false
+        schema:
+          type: string
+        style: form
+      responses:
+        "200":
+          content: {}
+          description: Error successfully logged
+        "500":
+          content: {}
+          description: Other error
+      summary: Generate a logged error
+      tags:
+      - Status
+      x-accepts: application/json
+  /liveness:
+    get:
+      description: Liveness endpoint for conducting quick health checks on the application.
+      responses:
+        "200":
+          content: {}
+          description: Responds with 'Healthy' if endpoint is reachable.
+      summary: Liveness Endpoint
+      tags:
+      - Status
+      x-accepts: application/json
+  /version:
+    get:
+      description: The current short hash and version of the application.
+      responses:
+        "200":
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Version'
+          description: Successful Response
+        "500":
+          content: {}
+          description: Internal Server Error
+      summary: Current application version
+      tags:
+      - Status
+      x-accepts: '*/*'
+components:
+  schemas:
+    DataUseElement:
+      description: Individual element of a DataUseSummary object
+      example:
+        code: GRU
+        description: Data is available for general research use. [GRU]
+      properties:
+        code:
+          description: Consent Code
+          type: string
+        description:
+          description: Consent Code Description
+          type: string
+      type: object
+    DataUseSummary:
+      description: Structured summary of a DataUse object
+      example:
+        primary:
+        - code: GRU
+        - description: Data is available for general research use. [GRU]
+        secondary:
+        - code: OTHER
+        - description: Data storage on the cloud is prohibited.
+      properties:
+        primary:
+          description: List of primary consent codes
+          items:
+            $ref: '#/components/schemas/DataUseElement'
+          type: array
+        secondary:
+          description: List of secondary consent codes
+          items:
+            $ref: '#/components/schemas/DataUseElement'
+          type: array
+      type: object
+    DataUse:
+      description: JSON model of a set of data use questions and answers
+      example:
+        generalUse: false
+        hmbResearch: true
+        diseaseRestrictions:
+        - http://purl.obolibrary.org/obo/DOID_602
+      type: object
+    DataUseRecommendation:
+      description: JSON model of a set of data use recommendations
+      example:
+        http://purl.obolibrary.org/obo/DUO_0000042:
+          title: General Research Use
+          category: Data Use Permission
+      type: object
+    DataUseMatchPair:
+      description: JSON model of research purpose and dataset
+      example:
+        purpose:
+          generalUse: false
+          hmbResearch: true
+          diseaseRestrictions:
+          - http://purl.obolibrary.org/obo/DOID_602
+        consent:
+          generalUse: false
+          hmbResearch: true
+          diseaseRestrictions:
+          - http://purl.obolibrary.org/obo/DOID_602
+      properties:
+        purpose:
+          description: JSON model of a set of data use questions and answers
+          example:
+            generalUse: false
+            hmbResearch: true
+            diseaseRestrictions:
+            - http://purl.obolibrary.org/obo/DOID_602
+          type: object
+        consent:
+          description: JSON model of a set of data use questions and answers
+          example:
+            generalUse: false
+            hmbResearch: true
+            diseaseRestrictions:
+            - http://purl.obolibrary.org/obo/DOID_602
+          type: object
+      type: object
+    DataUseMatchPairResult:
+      example:
+        result: true
+        failureReasons:
+        - failureReasons
+        - failureReasons
+        matchPair:
+          purpose:
+            generalUse: false
+            hmbResearch: true
+            diseaseRestrictions:
+            - http://purl.obolibrary.org/obo/DOID_602
+          consent:
+            generalUse: false
+            hmbResearch: true
+            diseaseRestrictions:
+            - http://purl.obolibrary.org/obo/DOID_602
+      properties:
+        result:
+          description: Result of the match algorithm on the provided purpose and dataset
+          type: boolean
+        matchPair:
+          $ref: '#/components/schemas/DataUseMatchPair'
+        failureReasons:
+          description: |
+            Optional list of reasons why a match result may have failed. Only supported in
+            in versions 2 and higher
+          items:
+            type: string
+          type: array
+      type: object
+    TranslateParagraph:
+      example:
+        paragraph: paragraph
+      properties:
+        paragraph:
+          description: The paragraph to translate
+          type: string
+      type: object
+    Version:
+      example:
+        version: version
+        hash: hash
+      properties:
+        hash:
+          description: Current short hash of this version
+          type: string
+        version:
+          description: Current version
+          type: string
+      type: object
+x-original-swagger-version: "2.0"
+

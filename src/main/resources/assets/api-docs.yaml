@@ -48,6 +48,26 @@ paths:
         default:
           description: Unexpected error
 
+  /validation/data-use/V3:
+    get:
+      summary: validate
+      description: The Validate service will check If the posted Use Restriction has the correct format and content.
+      parameters:
+        - name: body
+          in: body
+          description: Data Use V3
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
+      tags:
+        - validate
+      responses:
+        200:
+          description: Successful validation. True for valid restriction and False for invalid.
+        default:
+          description: Unexpected error
+
+
   /translate:
     post:
       summary: Translate Data Use JSON into plain English

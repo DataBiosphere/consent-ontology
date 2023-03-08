@@ -14,6 +14,9 @@ import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslation
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationServiceImpl;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplete;
+import org.broadinstitute.dsde.consent.ontology.service.dataUseValidationService;
+//import org.broadinstitute.dsde.consent.ontology.service.dataUseValidator;
+
 
 public class OntologyModule extends AbstractModule {
 
