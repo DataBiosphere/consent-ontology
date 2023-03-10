@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.ws.rs.BadRequestException;
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.concurrent.ExecutionException;
 
@@ -61,13 +60,13 @@ public class JsonSchemaUtil {
   /**
    * Compares an instance of a data use object to the data use V3 schema
    *
-   * @param dataUseInstance The string instance of a data use object
+   * @param dataUseV3Instance The string instance of a data use object
    * @return True if the instance validates, false otherwise
    */
 
-  public List<String> validateDataUseV3Schema(String dataUseInstance) {
+  public List<String> validateDataUseV3Schema(String dataUseV3Instance) {
     try {
-      JSONObject jsonSubject = new JSONObject(dataUseInstance);
+      JSONObject jsonSubject = new JSONObject(dataUseV3Instance);
       Schema schema = getDataUseInstance();
       schema.validate(jsonSubject);
       return List.of();

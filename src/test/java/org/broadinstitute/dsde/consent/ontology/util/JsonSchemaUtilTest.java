@@ -13,7 +13,7 @@ public class JsonSchemaUtilTest {
 
   private static JsonSchemaUtil schemaUtil;
 
-  private final String dataUseInstance = """
+  private final String dataUseV3Instance = """
       {
       "generalUse": true,
       "diseaseRestrictions":
@@ -47,7 +47,7 @@ public class JsonSchemaUtilTest {
 
   @Test
   public void testIsValidDataUseV3Object_case1() {
-    List<String> errors = schemaUtil.validateDataUseV3Schema(dataUseInstance);
+    List<String> errors = schemaUtil.validateDataUseV3Schema(dataUseV3Instance);
     assertTrue(errors.isEmpty());
   }
 }
