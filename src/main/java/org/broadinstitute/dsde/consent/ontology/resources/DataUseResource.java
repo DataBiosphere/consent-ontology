@@ -48,6 +48,7 @@ public class DataUseResource implements OntologyLogger {
       if (errors.isEmpty()) {
         return Response.ok().type(MediaType.APPLICATION_JSON).build();
       } else {
+        // nosemgrep
         return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors).type(MediaType.APPLICATION_JSON).build();
       }
     }

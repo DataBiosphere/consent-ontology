@@ -4,21 +4,11 @@
   "title": "Data Use Schema V3",
   "version": 2,
   "type": "object",
-  "dependencies": {
-    "otherRestrictions": {
-      "anyOf": [
-        {"required": ["ethicsApprovalRequired"]},
-        {"required": ["collaboratorRequired"]},
-        {"required": ["geographicalRestrictions"]},
-        {"required": ["other"]}
-      ],
-      "oneOf": [
-        {"required":  ["generalUse"]},
-        {"required" : ["diseaseRestrictions"]},
-        {"required" : ["hmbResearch"]}
-      ]
-    }
-  },
+  "anyOf": [
+    {"required":  ["generalUse"]},
+    {"required" : ["diseaseRestrictions"]},
+    {"required" : ["hmbResearch"]}
+  ],
   "properties": {
     "generalUse": {
       "type": "boolean"

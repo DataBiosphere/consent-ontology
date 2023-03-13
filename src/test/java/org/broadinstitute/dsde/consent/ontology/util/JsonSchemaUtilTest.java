@@ -16,7 +16,7 @@ public class JsonSchemaUtilTest {
   private final String dataUseV3Instance = """
       {
       "generalUse": true,
-      "diseaseRestrictions":
+      "diseaseRestrictions": [],
       "hmbResearch": true,
       "populationOriginsAncestry": true,
       "methodsResearch": true,
