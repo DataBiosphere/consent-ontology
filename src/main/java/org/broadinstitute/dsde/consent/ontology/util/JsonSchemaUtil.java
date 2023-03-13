@@ -9,16 +9,14 @@ import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 
 import javax.ws.rs.BadRequestException;
 import java.nio.charset.Charset;
 import java.util.concurrent.ExecutionException;
 
-public class JsonSchemaUtil {
+public class JsonSchemaUtil implements OntologyLogger{
 
-  private final Logger logger = LoggerFactory.getLogger(this.getClass());
   private final LoadingCache<String, String> cache;
   private final String dataUseSchemaV3 = "/data-use-v3.json";
 
@@ -36,7 +34,7 @@ public class JsonSchemaUtil {
     try {
       return cache.get(dataUseSchemaV3);
     } catch (ExecutionException ee) {
-      logger.error("Unable to load the data use schema V3: " + ee.getMessage());
+      logError("Unable to load the data use schema V3: " + ee.getMessage());
       return null;
     }
   }
@@ -59,34 +57,22 @@ public class JsonSchemaUtil {
 
   /**
    * Compares an instance of a data use object to the data use V3 schema
-   *
    * @param dataUseV3Instance The string instance of a data use object
    * @return True if the instance validates, false otherwise
    */
-
   public List<String> validateDataUseV3Schema(String dataUseV3Instance) {
     try {
       JSONObject jsonSubject = new JSONObject(dataUseV3Instance);
       Schema schema = getDataUseInstance();
       schema.validate(jsonSubject);
       return List.of();
-    } catch (
-        ExecutionException ee) {
-      logger.error("Unable to load the data use schema: " + ee.getMessage());
+    } catch (ExecutionException ee) {
+      logError("Unable to load the data use schema: " + ee.getMessage());
       return List.of(ee.getMessage());
     } catch (ValidationException ve) {
-      if (logger.isDebugEnabled()) {
-        logger.debug("Provided instance does not validate: " + ve.getMessage());
-      }
-      if (logger.isTraceEnabled()) {
-        for (String m : ve.getAllMessages()) {
-          logger.trace("Validation error: " + m);
-        }
-      }
+      logDebug("Provided instance does not validate: " + ve.getMessage());
       return ve.getAllMessages();
     } catch (Exception e) {
-      throw new BadRequestException("Invalid schema");
-    }
-
+      throw new BadRequestException("Invalid schema");}
   }
 }
