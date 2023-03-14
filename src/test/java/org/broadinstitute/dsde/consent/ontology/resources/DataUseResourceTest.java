@@ -62,7 +62,13 @@ public class DataUseResourceTest {
 
     @Test
     public void testValidateSchemaV3GoodRequest(){
-      try (Response response = dataUseResource.validateSchemaV3("")) {
+      try (Response response = dataUseResource.validateSchemaV3("""
+          {
+          "generalUse": true,
+          "diseaseRestrictions": ["test"],
+          "hmbResearch": true,
+          }
+          """)) {
         assertEquals(Status.OK.getStatusCode(), response.getStatus());
       }
     }
