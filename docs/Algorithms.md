@@ -153,3 +153,82 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 		</tr>	
 	</tbody>
 </table>
+
+## Version 3
+This version of the algorithm uses a custom set of business rules to match a research purpose and consented dataset. 
+In determining a postive match between research purpose and consented dataset, we make sure that the consented
+dataset matches **ALL** conditions specified in the research purpose.  
+
+This was originally developed for [FireCloud](https://api.firecloud.org/) and is the basis for the Data Catalog search ruleset. 
+This version makes use of [Consent Codes](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1005772)
+as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human Disease Ontology](https://www.ebi.ac.uk/ols/ontologies/doid).
+
+<table>
+	<thead>
+		<tr>
+			<th>If my Research Purpose has...</th>
+			<th>What datasets should I see?</th>
+			<th>Related DUL question</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Disease focused research (i.e. <strong>DS-X</strong>)</td>
+			<td>
+				<ul>
+					<li>Any dataset with <strong>GRU</strong>=true</li>
+					<li>Any dataset with <strong>HMB</strong>=true</li>
+					<li>Any dataset tagged to this disease (<strong>DS-X</strong>) exactly or a parent disease of <strong>DS-X</strong></li>
+				</ul>	
+			</td>	
+			<td>
+				<ul>
+					<li>Data is available for future general research use</li>
+					<li>Future use is limited for health/medical/biomedical research</li>
+					<li>Future use is limited to research involving the following disease area(s) <strong>DS-X</strong></li>					
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Methods development/Validation study</td>
+			<td>
+				<ul>
+					<li>Any dataset with <strong>GRU</strong>=true</li>
+					<li>Any dataset where <strong>NMDS</strong> is false</li>
+					<li>Any dataset where <strong>NMDS</strong> is true AND <strong>DS-X</strong> match</li>
+				</ul>	
+			</td>	
+			<td>
+				<ul>
+					<li>Future use for methods research (analytic/software/technology development) outside the bounds of the other specified restrictions is prohibited <strong>NMDS</strong></li>
+				</ul>						
+			</td>
+		</tr>
+		<tr>
+			<td>Study population origins or ancestry</td>
+			<td>
+				<ul>
+					<li>Any dataset tagged with <strong>GRU</strong></li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li>Future use is limited to research involving a specific population POA</li>
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Commercial purpose/by a commercial entity</td>
+			<td>
+				<ul>
+					<li>Any dataset where <strong>NPU</strong> and <strong>NCU</strong> are both false</li>
+				</ul>			
+			</td>
+			<td>
+				<ul>
+					<li>Future commercial use is prohibited <strong>NCU</strong>. Future use by for-profit entities is prohibited <strong>NPU</strong></li>
+				</ul>			
+			</td>
+		</tr>
+	</tbody>
+</table>
