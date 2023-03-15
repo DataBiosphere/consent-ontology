@@ -117,4 +117,13 @@ public interface Endpoints {
             .header("Content-Type", MediaType.APPLICATION_JSON);
   }
 
+  default HttpRequestActionBuilder validateDataUseV3(String json) {
+    return
+        http("Validate Data Use")
+            .post("/data-use/v3")
+            .body(StringBody(json))
+            .header("Accept", MediaType.APPLICATION_JSON)
+            .header("Content-Type", MediaType.APPLICATION_JSON);
+  }
+
 }

@@ -47,6 +47,23 @@ paths:
           description: The json representation for all data use questions + answers
         default:
           description: Unexpected error
+    post:
+      summary: Validate Data Use Terms
+      description: Checks if the Data Use terms has the correct format and context
+      parameters:
+        - name: body
+          in: body
+          description: DataUseV3
+          required: true
+          schema:
+            $ref: '#/definitions/DataUse'
+      tags:
+        - Data Use
+      responses:
+        200:
+          description: Successful.
+        400:
+          description: Bad Request if data use term is invalid or required terms are missing.
 
   /translate:
     post:
