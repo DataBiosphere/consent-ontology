@@ -56,7 +56,7 @@ paths:
           description: DataUseV3
           required: true
           schema:
-            $ref: '#/definitions/DataUse'
+            $ref: '#/definitions/DataUseV3'
       tags:
         - Data Use
       responses:
@@ -306,6 +306,12 @@ definitions:
     description: JSON model of a set of data use questions and answers
     example:
       { "generalUse": false, "hmbResearch": true, "diseaseRestrictions": ["http://purl.obolibrary.org/obo/DOID_602"] }
+
+  DataUseV3:
+    type: object
+    description: JSON model of a set of data use questions and answers
+    example:
+      { "generalUse": false, "hmbResearch": true, "nonProfitUse": false }
 
   DataUseRecommendation:
     type: object
