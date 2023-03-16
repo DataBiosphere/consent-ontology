@@ -209,7 +209,6 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>
 				<ul>
 					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
-					<li>Any dataset tagged with <strong>DS</strong>=true</li>
 					<li>Any dataset tagged with <strong>POA</strong>=true</li>
 					<li>Any dataset tagged with <strong>HMB</strong>=true</li>			
 				</ul>	
