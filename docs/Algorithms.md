@@ -176,8 +176,8 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>General Research Use (i.e. <strong>GRU</strong>)</td>
 			<td>
 				<ul>
-					<li>Any dataset with <strong>GRU</strong>=true</li>
-					<li>Any dataset with <strong>HMB</strong>=true</li>
+					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
+					<li>Any dataset tagged with <strong>HMB</strong>=true</li>
 				</ul>	
 			</td>	
 			<td>
@@ -192,7 +192,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>Disease focused research (i.e. <strong>DS-X</strong>)</td>
 			<td>
 				<ul>
-					<li>Any dataset with <strong>GRU</strong>=true</li>
+					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
 					<li>Any dataset tagged to this disease (<strong>DS-X</strong>) exactly or a parent disease of <strong>DS-X</strong></li>
 				</ul>	
 			</td>	
@@ -208,10 +208,10 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>Methods development (i.e. <strong>MDS</strong>)</td>
 			<td>
 				<ul>
-					<li>Any dataset with <strong>GRU</strong>=true</li>
-					<li>Any dataset with <strong>DS</strong>=true</li>
-					<li>Any dataset with <strong>POA</strong>=true</li>
-					<li>Any dataset with <strong>HMB</strong>=true</li>			
+					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
+					<li>Any dataset tagged with <strong>DS</strong>=true</li>
+					<li>Any dataset tagged with <strong>POA</strong>=true</li>
+					<li>Any dataset tagged with <strong>HMB</strong>=true</li>			
 				</ul>	
 			</td>	
 			<td>
