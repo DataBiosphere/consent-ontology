@@ -205,7 +205,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			</td>
 		</tr>
 		<tr>
-			<td>Methods development/Validation study</td>
+			<td>Methods development (i.e. <strong>MDS</strong>)</td>
 			<td>
 				<ul>
 					<li>Any dataset with <strong>GRU</strong>=true</li>
@@ -221,7 +221,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			</td>
 		</tr>
 		<tr>
-			<td>Study population origins or ancestry</td>
+			<td>Study population origins or ancestry (i.e. <strong>POA</strong>)</td>
 			<td>
 				<ul>
 					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
@@ -247,7 +247,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			</td>
 		</tr>
 		<tr>
-			<td>Use of data is limited to health/medical/biomedical purposes, not including population origins or ancestry</td>
+			<td>Use of data is limited to health/medical/biomedical purposes, not including population origins or ancestry (i.e. <strong>HMB</strong>)</td>
 			<td>
 				<ul>
 					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
