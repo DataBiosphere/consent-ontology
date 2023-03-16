@@ -173,11 +173,26 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 	</thead>
 	<tbody>
 		<tr>
-			<td>Disease focused research (i.e. <strong>DS-X</strong>)</td>
+			<td>General Research Use (i.e. <strong>GRU</strong>)</td>
 			<td>
 				<ul>
 					<li>Any dataset with <strong>GRU</strong>=true</li>
 					<li>Any dataset with <strong>HMB</strong>=true</li>
+				</ul>	
+			</td>	
+			<td>
+				<ul>
+					<li>Data is available for future general research use</li>
+					<li>Future use is limited for health/medical/biomedical research</li>
+					<li>Future use is limited to research involving the following disease area(s) <strong>DS-X</strong></li>					
+				</ul>
+			</td>
+		</tr>
+		<tr>
+			<td>Disease focused research (i.e. <strong>DS-X</strong>)</td>
+			<td>
+				<ul>
+					<li>Any dataset with <strong>GRU</strong>=true</li>
 					<li>Any dataset tagged to this disease (<strong>DS-X</strong>) exactly or a parent disease of <strong>DS-X</strong></li>
 				</ul>	
 			</td>	
@@ -194,8 +209,9 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>
 				<ul>
 					<li>Any dataset with <strong>GRU</strong>=true</li>
-					<li>Any dataset where <strong>NMDS</strong> is false</li>
-					<li>Any dataset where <strong>NMDS</strong> is true AND <strong>DS-X</strong> match</li>
+					<li>Any dataset with <strong>DS</strong>=true</li>
+					<li>Any dataset with <strong>POA</strong>=true</li>
+					<li>Any dataset with <strong>HMB</strong>=true</li>			
 				</ul>	
 			</td>	
 			<td>
@@ -208,7 +224,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>Study population origins or ancestry</td>
 			<td>
 				<ul>
-					<li>Any dataset tagged with <strong>GRU</strong></li>
+					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
 				</ul>
 			</td>
 			<td>
@@ -228,6 +244,21 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 				<ul>
 					<li>Future commercial use is prohibited <strong>NCU</strong>. Future use by for-profit entities is prohibited <strong>NPU</strong></li>
 				</ul>			
+			</td>
+		</tr>
+		<tr>
+			<td>Use of data is limited to health/medical/biomedical purposes, not including population origins or ancestry</td>
+			<td>
+				<ul>
+					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
+					<li>Any dataset tagged with <strong>HMB</strong>=true</li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li>Data is available for future general research use</li>
+					<li>Future use is limited for health/medical/biomedical research</li>
+				</ul>
 			</td>
 		</tr>
 	</tbody>
