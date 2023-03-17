@@ -157,11 +157,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 ## Version 3
 This version of the algorithm uses a custom set of business rules to match a research purpose and consented dataset. 
 In determining a postive match between research purpose and consented dataset, we make sure that the consented
-dataset matches **ALL** conditions specified in the research purpose.  
-
-This was originally developed for [FireCloud](https://api.firecloud.org/) and is the basis for the Data Catalog search ruleset. 
-This version makes use of [Consent Codes](https://journals.plos.org/plosgenetics/article?id=10.1371/journal.pgen.1005772)
-as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human Disease Ontology](https://www.ebi.ac.uk/ols/ontologies/doid).
+dataset matches **ALL** conditions specified in the research purpose.
 
 <table>
 	<thead>
@@ -184,7 +180,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>
 				<ul>
           <li>If the dataset's Primary DUO terms is DS-, and the DAR's Primary DUO term (aka Permission) is the DS- or a subclass then <strong>Approve</strong></li>
-					<li>If the dataset's Primary DUO terms is DS-, and the DAR's Primary DUO term (aka Permission) is GRU, HMB, POA, MDS then <strong>Deny</strong></li>
+					<li>If the dataset's Primary DUO terms is DS-, and the DAR's Primary DUO term (aka Permission) is GRU, HMB, POA then <strong>Deny</strong></li>
 					<li>If the dataset's Primary DUO terms is DS-, and the DAR's Primary DUO term (aka Permission) is NOT the DS- or a subclass then <strong>Deny</strong></li>			
 				</ul>
 			</td>
@@ -194,6 +190,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>
 				<ul>
 					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
+          <li>Any dataset tagged with <strong>DS-X</strong>=true</li>
 					<li>Any dataset tagged with <strong>POA</strong>=true</li>
 					<li>Any dataset tagged with <strong>HMB</strong>=true</li>			
 				</ul>	
@@ -210,6 +207,7 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 			<td>
 				<ul>
 					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
+          <li>Any dataset tagged with <strong>POA</strong>=true</li>
 				</ul>
 			</td>
 			<td>
@@ -237,12 +235,11 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 				<ul>
 					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
 					<li>Any dataset tagged with <strong>HMB</strong>=true</li>
-          <li>Any dataset tagged with <strong>DS-X</strong>=true</li>
 				</ul>
 			</td>
 			<td>
 				<ul>
-					<li>If the dataset's Primary DUO terms is HMB, and the DAR's Primary DUO term (aka Permission) is HMB, DS, MDS then <strong>Approve</strong></li>
+					<li>If the dataset's Primary DUO terms is HMB, and the DAR's Primary DUO term (aka Permission) is HMB, MDS then <strong>Approve</strong></li>
 				</ul>
 			</td>
 		</tr>
