@@ -12,11 +12,10 @@ import java.util.stream.Stream;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Autocomplete;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseTranslate;
+import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseV3;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Matching;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Search;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Status;
-import org.broadinstitute.dsp.ontology.performance.scenarios.Validate;
-import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseV3;
 
 
 /**
@@ -42,7 +41,6 @@ public class TestRunner extends Simulation {
                 new Matching().tests,
                 new Search().tests,
                 new Status().tests,
-                new Validate().tests,
                 new DataUseV3().tests
             )
             .flatMap(List::stream)
