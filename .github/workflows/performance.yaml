@@ -16,6 +16,13 @@ jobs:
         run: |
           mvn -v
           mvn clean gatling:test --no-transfer-progress
+      - name: Format Gatling Tests
+        run: |
+          mv ./target/gatling/testrunner* ./target/gatling/test
+          cp ./target/gatling/test/js/stats.json ./src/test/resources
+          cp ./target/gatling/test/simulation.log ./src/test/resources
+          mvn test-compile
+          mvn exec:java -Dexec.mainClass=org.broadinstitute.dsp.ontology.performance.parsers.LogParser -Dexec.classpathScope=test
 
 # TODO: Instantiate a BEE environment to run tests against
 # TODO: Upload test results to QA BQ
