@@ -180,7 +180,6 @@ dataset matches **ALL** conditions specified in the research purpose.
 			<td>
 				<ul>
           <li>If the dataset's Primary DUO terms is DS-, and the DAR's Primary DUO term (aka Permission) is the DS- or a subclass then <strong>Approve</strong></li>
-					<li>If the dataset's Primary DUO terms is DS-, and the DAR's Primary DUO term (aka Permission) is GRU, HMB, POA then <strong>Deny</strong></li>
 					<li>If the dataset's Primary DUO terms is DS-, and the DAR's Primary DUO term (aka Permission) is NOT the DS- or a subclass then <strong>Deny</strong></li>			
 				</ul>
 			</td>
