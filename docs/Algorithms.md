@@ -9,6 +9,7 @@ matching at scale.
 
 <details>
 <summary>View</summary>
+
 This version of the algorithm uses a custom set of business rules to match a research purpose and consented dataset. 
 In determining a postive match between research purpose and consented dataset, we make sure that the consented
 dataset matches **ALL** conditions specified in the research purpose.
@@ -103,6 +104,7 @@ dataset matches **ALL** conditions specified in the research purpose.
 ### Abstain from Decision
 
 Describes the involvement of studies that <strong>will not</strong> result in a decision from the DUOS algorithm.
+
 <table>
 	<thead>
 		<tr>
@@ -198,8 +200,10 @@ Describes the involvement of studies that <strong>will not</strong> result in a 
 </details>
 
 ## Version 2
+
 <details>
 <summary>View</summary>
+
 This version of the algorithm uses a custom set of business rules to match a research purpose and consented dataset. 
 In determining a postive match between research purpose and consented dataset, we make sure that the consented
 dataset matches **ALL** conditions specified in the research purpose.  
@@ -335,10 +339,12 @@ as developed for the GA4GH as well as Disease Codes (**DS-X**) from the [Human D
 </details>
 
 ## Version 1
+
 <details>
 <summary>View</summary>
 
 ### Deprecated & Removed
+
 The original version of the algorithm uses an ontology tree to match a purpose and consent. First, we 
 construct a composite ontology tree from:
 
