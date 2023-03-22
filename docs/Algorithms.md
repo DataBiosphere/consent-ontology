@@ -103,99 +103,25 @@ dataset matches **ALL** conditions specified in the research purpose.
 
 ### Abstain from Decision
 
-Describes the involvement of studies that <strong>will not</strong> result in a decision from the DUOS algorithm.
+Due to the variety of sensitive research areas, ethical reasons, and areas where categorization is not possible, the DUOS system will <strong>not</strong> render a decision in the following cases.
 
-<table>
-	<thead>
-		<tr>
-			<th>If the DAR aims to involve...</th>
-			<th>Abstain due to</th>
-      <th>Requirements</th>
-		</tr>
-	</thead>
-  <tbody>
-    <tr>
-			<td>
-				<ul>
-          <li>Other</li>
-        </ul>	
-			</td>
-      <td>
-        <li>DAR cannot be described in DUO</li>
-      </td>
-      <td>
-        <li>NA</li>
-      </td>
-    </tr>
-    <tr>
-			<td>
-				<ul>
-          <li>Geographical Restrictions (i.e. <strong>GS-</strong>)</li>
-          <li>Public Moratorium/Embargo (i.e. <strong>MOR</strong>)</li>
-        </ul>	
-			</td>
-      <td>
-        <li>GS-, MOR are poorly defined and infrequently (never)</li>
-        <li>More detail/data needed</li>
-      </td>
-      <td>
-        <li>No requirement in DAR or Algorithm</li>
-      </td>
-    </tr>
-    <tr>
-			<td>
-				<ul>
-          <li>Genetic Studies Only (i.e. <strong>GSO</strong>)</li>
-          <li>Publication Required (i.e. <strong>PUB</strong>)</li>
-        </ul>	
-			</td>
-      <td>
-        <li>Not used in algorithmic decision-making</li>
-      </td>
-      <td>
-        <li>Assent in the DAR form</li>
-      </td>
-    </tr>
-    <tr>
-			<td>
-				<ul>
-          <li>Collabration Required (i.e. <strong>COL</strong>)</li>
-          <li>Ethics Approval Required (i.e. <strong>IRB</strong>)</li>
-        </ul>	
-			</td>
-      <td>
-        <li>DAR includes uploaded documents</li>
-        <li>Upload in the DAR form results in trigger a bypass of the algorithm</li>
-      </td>
-      <td>
-        <li>Manual review of documents</li>
-      </td>
-    </tr>
-     <tr>
-			<td>
-        <details>
-        <summary> Any of the following</summary>
-					<li>Limitation to one gender</li>
-          <li>Restricted to a pediatric population (under the age of 18)</li>
-					<li>Illegal behaviors (violence, domestic abuse, prostitution, sexual victimization)</li>
-          <li>Alcohol or drug abuse, or abuse of other addictive products</li>
-          <li>Sexual preferences or sexually transmitted diseases</li>
-          <li>Any stigmatizing illnesses</li>
-          <li>Vulnerable populations as defined in 456 CFR (children, prisoners, pregnant women, mentally disabled persons, or ["SIGNIFICANTLY"] economically or educationally disadvantaged persons)</li>
-          <li>Population Origins/Migration patterns (Answer is pre-determined based on selections made in Step 2)</li>
-          <li>Psychological traits, including intelligence, attention, emotion</li>
-          <li>Ethnicity, race, or gender with genotypic or other phenotypic variables, for purposes beyond biomedical or health-related research, or in ways that are not easily related to Health</li>
-        </details>
-			</td>
-      <td>
-        <li>Ethical considerations</li>
-      </td>
-      <td>
-        <li>NA</li>
-      </td>
-    </tr>
-  <tbody>
-</table>
+<li>Other</li>
+<li>Geographical Restrictions (i.e. <strong>GS-</strong>)</li>
+<li>Public Moratorium/Embargo (i.e. <strong>MOR</strong>)</li>
+<li>Genetic Studies Only (i.e. <strong>GSO</strong>)</li>
+<li>Publication Required (i.e. <strong>PUB</strong>)</li>
+<li>Collabration Required (i.e. <strong>COL</strong>)</li>
+<li>Ethics Approval Required (i.e. <strong>IRB</strong>)</li>
+<li>Limitation to one gender</li>
+<li>Restricted to a pediatric population (under the age of 18)</li>
+<li>Illegal behaviors (violence, domestic abuse, prostitution, sexual victimization)</li>
+<li>Alcohol or drug abuse, or abuse of other addictive products</li>
+<li>Sexual preferences or sexually transmitted diseases</li>
+<li>Any stigmatizing illnesses</li>
+<li>Vulnerable populations as defined in 456 CFR (children, prisoners, pregnant women, mentally disabled persons, or ["SIGNIFICANTLY"] economically or educationally disadvantaged persons)</li>
+<li>Population Origins/Migration patterns</li>
+<li>Psychological traits, including intelligence, attention, emotion</li>
+<li>Ethnicity, race, or gender with genotypic or other phenotypic variables, for purposes beyond biomedical or health-related research, or in ways that are not easily related to Health</li>
 
 </details>
 
