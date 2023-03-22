@@ -89,6 +89,11 @@ public class DataUseMatchCasesV3 {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
+    // short-circuit if no disease focused research
+    if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
     // short-circuit if there is a disease match
     if (diseaseMatch) {
       return ImmutablePair.of(true, Collections.emptyList());
@@ -145,6 +150,11 @@ public class DataUseMatchCasesV3 {
       failures.add(NCU_F1);
     }
 
+    // Short circuit if dataset is not NPU
+    if (getNullableOrFalse(!dataset.getNonProfitUse())) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
     return ImmutablePair.of(failures.isEmpty(), failures);
   }
 
@@ -177,9 +187,7 @@ public class DataUseMatchCasesV3 {
     }
     if (purposeHMB && datasetHMB) {
       return ImmutablePair.of(true, Collections.emptyList());
-    }
-
-    else {
+    } else {
       return ImmutablePair.of(false, Collections.singletonList(HMB_F2));
     }
 
@@ -194,13 +202,4 @@ public class DataUseMatchCasesV3 {
   private static boolean getNullableOrFalse(Boolean bool) {
     return Optional.ofNullable(bool).orElse(false);
   }
-
-  /**
-   * @param yesOrNo nullable string value
-   * @return boolean True if "yes", false otherwise
-   */
-  private static boolean getNullable(String yesOrNo) {
-    return Optional.ofNullable(yesOrNo).orElse("no").equalsIgnoreCase("yes");
-  }
-
 }

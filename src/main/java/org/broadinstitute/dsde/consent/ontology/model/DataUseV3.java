@@ -113,7 +113,7 @@ public class DataUseV3 {
     }
 
     @JsonProperty("commercialUse")
-    public Boolean getNonProfitUseUse() {
+    public Boolean getNonProfitUse() {
     return nonProfitUse;
   }
 
