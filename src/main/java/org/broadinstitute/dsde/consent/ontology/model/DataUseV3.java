@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
@@ -112,13 +113,13 @@ public class DataUseV3 {
         this.commercialUse = commercialUse;
     }
 
-    @JsonProperty("commercialUse")
+    @JsonProperty("nonProfitUse")
     public Boolean getNonProfitUse() {
     return nonProfitUse;
   }
 
     @JsonProperty("nonProfitUse")
-    public void setNonProfitUseUse(Boolean nonProfitUse) {
+    public void setNonProfitUse(Boolean nonProfitUse) {
     this.nonProfitUse = nonProfitUse;
   }
 
@@ -310,11 +311,19 @@ public class DataUseV3 {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DataUseV3) == false) {
+        if (!(other instanceof DataUseV3)) {
             return false;
         }
         DataUseV3 rhs = ((DataUseV3) other);
-        return (((((((((((((((((((((((((((((((((((((((this.commercialUse == rhs.commercialUse)||((this.commercialUse!= null)&&this.commercialUse.equals(rhs.commercialUse)))&&((this.nonProfitUse == rhs.nonProfitUse)||((this.nonProfitUse!= null)&&this.nonProfitUse.equals(rhs.nonProfitUse)))&&((this.other == rhs.other)||((this.other!= null)&&this.other.equals(rhs.other))))&&((this.geneticStudiesOnly == rhs.geneticStudiesOnly)||((this.geneticStudiesOnly!= null)&&this.geneticStudiesOnly.equals(rhs.geneticStudiesOnly))))&&((this.generalUse == rhs.generalUse)||((this.generalUse!= null)&&this.generalUse.equals(rhs.generalUse))))&&((this.publicationResults == rhs.publicationResults)||((this.publicationResults!= null)&&this.publicationResults.equals(rhs.publicationResults))))&&((this.diseaseRestrictions == rhs.diseaseRestrictions)||((this.diseaseRestrictions!= null)&&this.diseaseRestrictions.equals(rhs.diseaseRestrictions))))&&((this.methodsResearch == rhs.methodsResearch)||((this.methodsResearch!= null)&&this.methodsResearch.equals(rhs.methodsResearch))))&&((this.publicationMoratorium == rhs.publicationMoratorium)||((this.publicationMoratorium!= null)&&this.publicationMoratorium.equals(rhs.publicationMoratorium))))&&((this.collaboratorRequired == rhs.collaboratorRequired)||((this.collaboratorRequired!= null)&&this.collaboratorRequired.equals(rhs.collaboratorRequired))))&&((this.populationOriginsAncestry == rhs.populationOriginsAncestry)||((this.populationOriginsAncestry!= null)&&this.populationOriginsAncestry.equals(rhs.populationOriginsAncestry))))&&((this.ethicsApprovalRequired == rhs.ethicsApprovalRequired)||((this.ethicsApprovalRequired!= null)&&this.ethicsApprovalRequired.equals(rhs.ethicsApprovalRequired))))&&((this.secondaryOther == rhs.secondaryOther)||((this.secondaryOther!= null)&&this.secondaryOther.equals(rhs.secondaryOther))))&&((this.hmbResearch == rhs.hmbResearch)||((this.hmbResearch!= null)&&this.hmbResearch.equals(rhs.hmbResearch))))&&((this.geographicalRestrictions == rhs.geographicalRestrictions)||((this.geographicalRestrictions!= null)&&this.geographicalRestrictions.equals(rhs.geographicalRestrictions))))))))))))))))))))))))))));
+        return Objects.equals(this.commercialUse,
+            rhs.commercialUse) && Objects.equals(this.nonProfitUse, rhs.nonProfitUse)
+            && Objects.equals(
+            this.other, rhs.other) && Objects.equals(this.generalUse, rhs.generalUse)
+            && Objects.equals(this.diseaseRestrictions, rhs.diseaseRestrictions) && Objects.equals(
+            this.methodsResearch, rhs.methodsResearch) && Objects.equals(
+            this.populationOriginsAncestry, rhs.populationOriginsAncestry) && Objects.equals(
+            this.secondaryOther, rhs.secondaryOther) && Objects.equals(this.hmbResearch,
+            rhs.hmbResearch);
     }
 
 }

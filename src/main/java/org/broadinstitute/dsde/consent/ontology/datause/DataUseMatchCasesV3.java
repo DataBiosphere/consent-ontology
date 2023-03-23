@@ -74,23 +74,28 @@ public class DataUseMatchCasesV3 {
    *      Any dataset where DS-X match
    */
   static ImmutablePair<Boolean, List<String>> matchMDS(DataUseV3 purpose, DataUseV3 dataset, boolean diseaseMatch) {
+    // short-circuit if no disease focused research
+    if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
+    boolean purposeMDS = getNullableOrFalse(purpose.getMethodsResearch());
+    boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
+    boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
+    boolean datasetPOA = getNullableOrFalse(dataset.getPopulationOriginsAncestry());
+
     // short-circuit if dataset is GRU
-    if (getNullableOrFalse(dataset.getGeneralUse())) {
+    if (datasetGRU) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
     // short-circuit if dataset is HMB
-    if (getNullableOrFalse(dataset.getHmbResearch())) {
+    if (purposeMDS && datasetHMB) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
     // short-circuit if dataset is POA
-    if (getNullableOrFalse(dataset.getPopulationOriginsAncestry())) {
-      return ImmutablePair.of(true, Collections.emptyList());
-    }
-
-    // short-circuit if no disease focused research
-    if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
+    if (purposeMDS && datasetPOA) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
@@ -110,13 +115,22 @@ public class DataUseMatchCasesV3 {
    *      Any dataset tagged with POA
    */
   static ImmutablePair<Boolean, List<String>> matchPOA(DataUseV3 purpose, DataUseV3 dataset) {
-    // short-circuit if dataset is GRU
-    if (getNullableOrFalse(dataset.getGeneralUse())) {
+    // short-circuit if no POA clause
+    if (purpose.getPopulationOriginsAncestry() == null) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
-    // short-circuit if no POA clause
-    if (purpose.getPopulationOriginsAncestry() == null) {
+    boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
+    boolean datasetPOA = getNullableOrFalse(dataset.getPopulationOriginsAncestry());
+    boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
+
+    // short-circuit if dataset is GRU
+    if (datasetGRU) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
+    // short-circuit if dataset is POA
+    if (purposePOA && datasetPOA) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
@@ -137,25 +151,33 @@ public class DataUseMatchCasesV3 {
    *      Any dataset where NPU and NCU are both false
    */
   static ImmutablePair<Boolean, List<String>> matchCommercial(DataUseV3 purpose, DataUseV3 dataset) {
-    // short-circuit if no commercial clause
-    if (purpose.getCommercialUse() == null || dataset.getCommercialUse() == null) {
+    // short-circuit if no commercial/ non-profit clauses
+    if (purpose.getCommercialUse() == null){
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+    if (dataset.getCommercialUse() == null && dataset.getNonProfitUse() == null){
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
     List<String> failures = new ArrayList<>();
     boolean purposeCommercial = getNullableOrFalse(purpose.getCommercialUse());
     boolean datasetCommercial = getNullableOrFalse(dataset.getCommercialUse());
+    boolean datasetNPU = getNullableOrFalse(dataset.getNonProfitUse());
 
     if (purposeCommercial && !datasetCommercial) {
       failures.add(NCU_F1);
     }
 
-    // Short circuit if dataset is not NPU
-    if (getNullableOrFalse(!dataset.getNonProfitUse())) {
-      return ImmutablePair.of(true, Collections.emptyList());
+    if ((purposeCommercial && datasetNPU)){
+      failures.add(NCU_F1);
     }
 
-    return ImmutablePair.of(failures.isEmpty(), failures);
+    // short circuit if dataset is not NCU OR not NPU
+    if ((purposeCommercial && datasetCommercial)) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    } else {
+      return ImmutablePair.of(failures.isEmpty(), failures);
+    }
   }
 
   /**
@@ -182,9 +204,12 @@ public class DataUseMatchCasesV3 {
       return ImmutablePair.of(false, Collections.singletonList(HMB_F1));
     }
 
-    if (purposeHMB && datasetGRU) {
+    // short-circuit if dataset is GRU
+    if (datasetGRU) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
+
+    // short-circuit if dataset is HMB
     if (purposeHMB && datasetHMB) {
       return ImmutablePair.of(true, Collections.emptyList());
     } else {

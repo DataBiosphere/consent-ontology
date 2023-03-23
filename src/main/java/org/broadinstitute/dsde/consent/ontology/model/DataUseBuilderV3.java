@@ -42,6 +42,11 @@ public class DataUseBuilderV3 {
     return this;
   }
 
+  public DataUseBuilderV3 setNonProfitUse(Boolean nonProfitUse) {
+    du.setNonProfitUse(nonProfitUse);
+    return this;
+  }
+
   public DataUseBuilderV3 setMethodsResearch(Boolean methodsResearch) {
     du.setMethodsResearch(methodsResearch);
     return this;
