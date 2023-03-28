@@ -39,6 +39,36 @@ dataset matches **ALL** conditions specified in the research purpose.
 				</ul>
 			</td>
 		</tr>
+    <tr>
+			<td>Use of data is limited to health/medical/biomedical purposes, not including population origins or ancestry (i.e. <strong>HMB</strong>)</td>
+			<td>
+				<ul>
+					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
+					<li>Any dataset tagged with <strong>HMB</strong>=true</li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+					<li><strong>Approve</strong> if the dataset's Primary DUO terms are HMB, GRU</li>
+          <li><strong>Deny</strong> if the dataset's Primary DUO terms are DS-, POA</li>
+				</ul>
+			</td>
+		</tr>
+    <tr>
+			<td>Study population origins or ancestry (i.e. <strong>POA</strong>)</td>
+			<td>
+				<ul>
+					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
+          <li>Any dataset tagged with <strong>POA</strong>=true</li>
+				</ul>
+			</td>
+			<td>
+				<ul>
+          <li><strong>Approve</strong> if the dataset's Primary DUO terms are GRU, POA</li>
+          <li><strong>Deny</strong> if the dataset's Primary DUO terms are DS-, HMB</li>
+				</ul>
+			</td>
+		</tr>
 		<tr>
 			<td>Methods development (i.e. <strong>MDS</strong>)</td>
 			<td>
@@ -56,21 +86,6 @@ dataset matches **ALL** conditions specified in the research purpose.
 			</td>
 		</tr>
 		<tr>
-			<td>Study population origins or ancestry (i.e. <strong>POA</strong>)</td>
-			<td>
-				<ul>
-					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
-          <li>Any dataset tagged with <strong>POA</strong>=true</li>
-				</ul>
-			</td>
-			<td>
-				<ul>
-          <li><strong>Approve</strong> if the dataset's Primary DUO terms are GRU, POA</li>
-          <li><strong>Deny</strong> if the dataset's Primary DUO terms are DS-, HMB</li>
-				</ul>
-			</td>
-		</tr>
-		<tr>
 			<td>Commercial purpose/by a commercial entity</td>
 			<td>
 				<ul>
@@ -81,21 +96,6 @@ dataset matches **ALL** conditions specified in the research purpose.
 				<ul>
           <li><strong>Deny</strong> if the dataset's Primary DUO terms are Non-profit use(NPU), Non-commercial use (NCU)</li>
 				</ul>			
-			</td>
-		</tr>
-		<tr>
-			<td>Use of data is limited to health/medical/biomedical purposes, not including population origins or ancestry (i.e. <strong>HMB</strong>)</td>
-			<td>
-				<ul>
-					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
-					<li>Any dataset tagged with <strong>HMB</strong>=true</li>
-				</ul>
-			</td>
-			<td>
-				<ul>
-					<li><strong>Approve</strong> if the dataset's Primary DUO terms are HMB, GRU</li>
-          <li><strong>Deny</strong> if the dataset's Primary DUO terms are DS-, POA</li>
-				</ul>
 			</td>
 		</tr>
 	</tbody>
