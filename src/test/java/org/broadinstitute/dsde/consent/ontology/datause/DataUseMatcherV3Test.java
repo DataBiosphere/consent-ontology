@@ -27,16 +27,6 @@ public class DataUseMatcherV3Test {
   @Mock
   private AutocompleteService autocompleteService;
 
-  @BeforeEach
-  public void setUp() {
-    openMocks(this);
-    try {
-      when(autocompleteService.lookupById(any())).thenReturn(Collections.emptyList());
-    } catch (Exception e) {
-      //
-    }
-  }
-
   @Test
   public void testDiseaseMatching_positive() throws Exception {
     DataUseV3 dataset = new DataUseBuilderV3()

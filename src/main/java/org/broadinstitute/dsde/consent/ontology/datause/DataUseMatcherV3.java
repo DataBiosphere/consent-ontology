@@ -17,11 +17,11 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchCommercial;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchDiseases;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchHMB;
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchMDS;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchPOA;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchMDS;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchCommercial;
 
 public class DataUseMatcherV3 {
 
@@ -48,10 +48,11 @@ public class DataUseMatcherV3 {
 
     ImmutablePair<Boolean, List<String>> diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
     final List<ImmutablePair<Boolean, List<String>>> matchReasons = new ArrayList<>();
+    matchReasons.add(diseaseMatch);
     matchReasons.add(matchDiseases(purpose, dataset, purposeDiseaseIdMap));
     matchReasons.add(matchHMB(purpose, dataset));
-    matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getLeft()));
     matchReasons.add(matchPOA(purpose, dataset));
+    matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getLeft()));
     matchReasons.add(matchCommercial(purpose, dataset));
     final Boolean match = matchReasons.stream().
         map(ImmutablePair::getLeft).
@@ -80,7 +81,7 @@ public class DataUseMatcherV3 {
     List<String> purposeTermIdList = autocompleteService.lookupById(purposeDiseaseId)
         .stream()
         .filter(Objects::nonNull)
-        .filter(t -> t.getParents() != null && !t.getParents().isEmpty())
+        .filter(t -> Objects.nonNull(t.getParents()) && !t.getParents().isEmpty())
         .flatMap(t -> t.parents.stream())
         .map(p -> p.id)
         .collect(Collectors.toList());

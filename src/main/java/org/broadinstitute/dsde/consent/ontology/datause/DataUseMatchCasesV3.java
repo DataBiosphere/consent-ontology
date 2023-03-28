@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 
 public class DataUseMatchCasesV3 {
@@ -116,7 +117,7 @@ public class DataUseMatchCasesV3 {
    */
   static ImmutablePair<Boolean, List<String>> matchPOA(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit if no POA clause
-    if (purpose.getPopulationOriginsAncestry() == null) {
+    if (Objects.isNull(purpose.getPopulationOriginsAncestry())) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
@@ -152,10 +153,10 @@ public class DataUseMatchCasesV3 {
    */
   static ImmutablePair<Boolean, List<String>> matchCommercial(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit if no commercial/ non-profit clauses
-    if (purpose.getCommercialUse() == null){
+    if (Objects.isNull(purpose.getCommercialUse())){
       return ImmutablePair.of(true, Collections.emptyList());
     }
-    if (dataset.getCommercialUse() == null && dataset.getNonProfitUse() == null){
+    if ((Objects.isNull(dataset.getCommercialUse())) && (Objects.isNull(dataset.getNonProfitUse()))){
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
@@ -191,7 +192,7 @@ public class DataUseMatchCasesV3 {
    */
   static ImmutablePair<Boolean, List<String>> matchHMB(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit hmb if not set
-    if (purpose.getHmbResearch() == null && dataset.getHmbResearch() == null) {
+    if (Objects.isNull(purpose.getHmbResearch())&& (Objects.isNull(dataset.getHmbResearch()))) {
       return ImmutablePair.of(true, Collections.emptyList());
     }
 
