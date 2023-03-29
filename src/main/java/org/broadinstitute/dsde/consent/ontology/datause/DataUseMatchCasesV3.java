@@ -17,6 +17,10 @@ public class DataUseMatchCasesV3 {
   private static final String MDS_F1 = "The Methods development Research Purpose does not match the Disease-Specific data use limitations.";
   private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
   private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commercial Use data use limitation.";
+  private static final String Abstain = "The Research Purpose does not result in DUOS Decision.";
+  private static final String doNotAbstain = "The Research Purpose will result in DUOS Decision.";
+
+
 
   /**
    * RP: Disease Focused Research
@@ -59,6 +63,80 @@ public class DataUseMatchCasesV3 {
       if (!match) {
         failures.add(String.format(DS_F2,  entry.getKey()));
       }
+    }
+
+    return ImmutablePair.of(failures.isEmpty(), failures);
+  }
+
+  /**
+   * RP: HMB
+   * Datasets:
+   *      Any dataset tagged with GRU
+   *      Any dataset tagged with HMB
+   *
+   * @param purpose The data use object representing the Research Purpose
+   * @param dataset The data use object representing the Dataset
+   */
+  static ImmutablePair<Boolean, List<String>> matchHMB(DataUseV3 purpose, DataUseV3 dataset) {
+    // short-circuit hmb if not set
+    if (Objects.isNull(purpose.getHmbResearch())&& (Objects.isNull(dataset.getHmbResearch()))) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
+    boolean purposeGRU = getNullableOrFalse(purpose.getGeneralUse());
+    boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
+    boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
+    boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
+
+    if (datasetHMB && purposeGRU) {
+      return ImmutablePair.of(false, Collections.singletonList(HMB_F1));
+    }
+
+    // short-circuit if dataset is GRU
+    if (datasetGRU) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
+    // short-circuit if dataset is HMB
+    if (purposeHMB && datasetHMB) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    } else {
+      return ImmutablePair.of(false, Collections.singletonList(HMB_F2));
+    }
+
+  }
+
+  /**
+   * RP: Study population origins or ancestry
+   * Future use is limited to research involving a specific population [POA]
+   * Datasets:
+   *      Any dataset tagged with GRU
+   *      Any dataset tagged with POA
+   */
+  static ImmutablePair<Boolean, List<String>> matchPOA(DataUseV3 purpose, DataUseV3 dataset) {
+    // short-circuit if no POA clause
+    if (Objects.isNull(purpose.getPopulationOriginsAncestry())) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
+    boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
+    boolean datasetPOA = getNullableOrFalse(dataset.getPopulationOriginsAncestry());
+    boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
+
+    // short-circuit if dataset is GRU
+    if (datasetGRU) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
+    // short-circuit if dataset is POA
+    if (purposePOA && datasetPOA) {
+      return ImmutablePair.of(true, Collections.emptyList());
+    }
+
+    List<String> failures = new ArrayList<>();
+    if (!(purpose.getPopulationOriginsAncestry() &&
+        getNullableOrFalse(dataset.getGeneralUse()))) {
+      failures.add(POA_F1);
     }
 
     return ImmutablePair.of(failures.isEmpty(), failures);
@@ -109,42 +187,6 @@ public class DataUseMatchCasesV3 {
   }
 
   /**
-   * RP: Study population origins or ancestry
-   * Future use is limited to research involving a specific population [POA]
-   * Datasets:
-   *      Any dataset tagged with GRU
-   *      Any dataset tagged with POA
-   */
-  static ImmutablePair<Boolean, List<String>> matchPOA(DataUseV3 purpose, DataUseV3 dataset) {
-    // short-circuit if no POA clause
-    if (Objects.isNull(purpose.getPopulationOriginsAncestry())) {
-      return ImmutablePair.of(true, Collections.emptyList());
-    }
-
-    boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
-    boolean datasetPOA = getNullableOrFalse(dataset.getPopulationOriginsAncestry());
-    boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
-
-    // short-circuit if dataset is GRU
-    if (datasetGRU) {
-      return ImmutablePair.of(true, Collections.emptyList());
-    }
-
-    // short-circuit if dataset is POA
-    if (purposePOA && datasetPOA) {
-      return ImmutablePair.of(true, Collections.emptyList());
-    }
-
-    List<String> failures = new ArrayList<>();
-    if (!(purpose.getPopulationOriginsAncestry() &&
-        getNullableOrFalse(dataset.getGeneralUse()))) {
-      failures.add(POA_F1);
-    }
-
-    return ImmutablePair.of(failures.isEmpty(), failures);
-  }
-
-  /**
    * RP: Commercial purpose/by a commercial entity
    * Future commercial use is prohibited [NCU]
    * Future use by for-profit entities is prohibited [NPU]
@@ -182,41 +224,41 @@ public class DataUseMatchCasesV3 {
   }
 
   /**
-   * RP: HMB
-   * Datasets:
-   *      Any dataset tagged with GRU
-   *      Any dataset tagged with HMB
+   * DUOS Algorithm: Abstain From Decision
+   * Due to the variety of sensitive research areas, ethical reasons, and areas where categorization is not possible,
+   * the DUOS system will not render a decision in any of the cases not addressed in the methods above.
    *
-   * @param purpose The data use object representing the Research Purpose
-   * @param dataset The data use object representing the Dataset
+   * RP: Not GRU, DS-X, POA, MDS, Commercial
    */
-  static ImmutablePair<Boolean, List<String>> matchHMB(DataUseV3 purpose, DataUseV3 dataset) {
-    // short-circuit hmb if not set
-    if (Objects.isNull(purpose.getHmbResearch())&& (Objects.isNull(dataset.getHmbResearch()))) {
-      return ImmutablePair.of(true, Collections.emptyList());
-    }
 
-    boolean purposeGRU = getNullableOrFalse(purpose.getGeneralUse());
+  static ImmutablePair<Boolean, List<String>> abstainDecision(DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap, boolean diseaseMatch) {
+    // Valid RPs
+    boolean purposeDSX = getNullable(purpose.getDiseaseRestrictions().toString());
     boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
-    boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
-    boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
+    boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
+    boolean purposeMDS = getNullableOrFalse(purpose.getMethodsResearch());
+    boolean purposeCommercial = getNullableOrFalse(purpose.getCommercialUse());
 
-    if (datasetHMB && purposeGRU) {
-      return ImmutablePair.of(false, Collections.singletonList(HMB_F1));
+    // If RP is valid then call that method
+    if (purposeDSX){
+      return matchDiseases(purpose, dataset, purposeDiseaseIdMap);
     }
-
-    // short-circuit if dataset is GRU
-    if (datasetGRU) {
-      return ImmutablePair.of(true, Collections.emptyList());
+    if (purposeHMB){
+      return matchHMB(purpose, dataset);
     }
-
-    // short-circuit if dataset is HMB
-    if (purposeHMB && datasetHMB) {
-      return ImmutablePair.of(true, Collections.emptyList());
-    } else {
-      return ImmutablePair.of(false, Collections.singletonList(HMB_F2));
+    if (purposePOA){
+      return matchPOA(purpose, dataset);
     }
-
+    if (purposeMDS){
+      return matchMDS(purpose, dataset, diseaseMatch);
+    }
+    if (purposeCommercial){
+      return matchCommercial(purpose, dataset);
+    }
+    // If RP is not valid then abstain from decision
+    else{
+      return ImmutablePair.of(null, Collections.singletonList(doNotAbstain));
+    }
   }
 
   // Helper Methods
@@ -227,5 +269,13 @@ public class DataUseMatchCasesV3 {
    */
   private static boolean getNullableOrFalse(Boolean bool) {
     return Optional.ofNullable(bool).orElse(false);
+  }
+
+  /**
+   * @param yesOrNo nullable string value
+   * @return boolean True if "yes", false otherwise
+   */
+  private static boolean getNullable(String yesOrNo) {
+    return Optional.ofNullable(yesOrNo).orElse("no").equalsIgnoreCase("yes");
   }
 }

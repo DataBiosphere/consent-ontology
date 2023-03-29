@@ -22,6 +22,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchPOA;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchMDS;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchCommercial;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.abstainDecision;
 
 public class DataUseMatcherV3 {
 
@@ -54,6 +55,7 @@ public class DataUseMatcherV3 {
     matchReasons.add(matchPOA(purpose, dataset));
     matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getLeft()));
     matchReasons.add(matchCommercial(purpose, dataset));
+    matchReasons.add(abstainDecision(purpose, dataset, purposeDiseaseIdMap, diseaseMatch.getLeft()));
     final Boolean match = matchReasons.stream().
         map(ImmutablePair::getLeft).
         allMatch(BooleanUtils::isTrue);

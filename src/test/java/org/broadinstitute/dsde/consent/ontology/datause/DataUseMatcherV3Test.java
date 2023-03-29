@@ -14,6 +14,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -205,6 +206,19 @@ public class DataUseMatcherV3Test {
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setGeneralUse(true).build();
     assertNegative(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_case_1() {
+    DataUseV3 purposeHMB = new DataUseBuilderV3().setHmbResearch(false).build();
+    DataUseV3 purposePOA = new DataUseBuilderV3().setPopulationOriginsAncestry(false).build();
+    DataUseV3 purposeMDS = new DataUseBuilderV3().setMethodsResearch(false).build();
+    DataUseV3 purposeCommercial = new DataUseBuilderV3().setCommercialUse(false).build();
+  }
+
+  @Test
+  public void testAbstainDecision_case_2() {
+    DataUseV3 purpose1 = new DataUseBuilderV3().setHmbResearch(true).build();
   }
 
   private void assertPositive(DataUseV3 purpose, DataUseV3 dataset) {
