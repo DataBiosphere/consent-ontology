@@ -76,13 +76,13 @@ dataset matches **ALL** conditions specified in the research purpose.
 					<li>Any dataset tagged with <strong>GRU</strong>=true</li>
           <li>Any dataset tagged with <strong>DS-X</strong>=true</li>
 					<li>Any dataset tagged with <strong>POA</strong>=true</li>
-					<li>Any dataset tagged with <strong>HMB</strong>=true</li>			
+					<li>Any dataset tagged with <strong>HMB</strong>=true</li>
 				</ul>	
 			</td>	
 			<td>
 				<ul>
           <li><strong>Approve</strong> if the dataset's Primary DUO terms are GRU, DS-, HMB, POA</li>
-				</ul>						
+				</ul>
 			</td>
 		</tr>
 		<tr>
@@ -90,12 +90,12 @@ dataset matches **ALL** conditions specified in the research purpose.
 			<td>
 				<ul>
 					<li>Any dataset where <strong>NPU</strong> and <strong>NCU</strong> are both false</li>
-				</ul>			
+				</ul>
 			</td>
 			<td>
 				<ul>
           <li><strong>Deny</strong> if the dataset's Primary DUO terms are Non-profit use(NPU), Non-commercial use (NCU)</li>
-				</ul>			
+				</ul>
 			</td>
 		</tr>
 	</tbody>
