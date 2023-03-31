@@ -6,6 +6,7 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilderV3;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
+//import org.junit.jupiter.api.AssertFalse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,6 +28,16 @@ public class DataUseMatcherV3Test {
 
   @Mock
   private AutocompleteService autocompleteService;
+
+  @BeforeEach
+  public void setUp() {
+    openMocks(this);
+    try {
+      when(autocompleteService.lookupById(any())).thenReturn(Collections.emptyList());
+    } catch (Exception e) {
+      //
+    }
+  }
 
   @Test
   public void testDiseaseMatching_positive() throws Exception {
@@ -210,15 +221,23 @@ public class DataUseMatcherV3Test {
 
   @Test
   public void testAbstainDecision_case_1() {
-    DataUseV3 purposeHMB = new DataUseBuilderV3().setHmbResearch(false).build();
-    DataUseV3 purposePOA = new DataUseBuilderV3().setPopulationOriginsAncestry(false).build();
-    DataUseV3 purposeMDS = new DataUseBuilderV3().setMethodsResearch(false).build();
-    DataUseV3 purposeCommercial = new DataUseBuilderV3().setCommercialUse(false).build();
+    DataUseV3 purpose = new DataUseBuilderV3().setOther(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
   }
 
   @Test
   public void testAbstainDecision_case_2() {
-    DataUseV3 purpose1 = new DataUseBuilderV3().setHmbResearch(true).build();
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertPositive(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_case_3() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(false).build();
+    assertNegative(purpose, dataset);
   }
 
   private void assertPositive(DataUseV3 purpose, DataUseV3 dataset) {
@@ -231,6 +250,12 @@ public class DataUseMatcherV3Test {
     ImmutablePair<Boolean, List<String>> match = matchPurposeAndDataset(purpose, dataset);
     assertFalse(match.getLeft());
     assertFalse(match.getRight().isEmpty());
+  }
+
+  private void assertAbstain(DataUseV3 purpose, DataUseV3 dataset) {
+    ImmutablePair<Boolean, List<String>> match = matchPurposeAndDataset(purpose, dataset);
+    assertNull(match.getLeft());
+    assertNull(match.getRight());
   }
 
   private ImmutablePair<Boolean, List<String>> matchPurposeAndDataset(DataUseV3 purpose, DataUseV3 dataset) {

@@ -1,5 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
+import javassist.compiler.ast.Pair;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import java.util.ArrayList;
@@ -18,9 +19,6 @@ public class DataUseMatchCasesV3 {
   private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
   private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commercial Use data use limitation.";
   private static final String Abstain = "The Research Purpose does not result in DUOS Decision.";
-  private static final String doNotAbstain = "The Research Purpose will result in DUOS Decision.";
-
-
 
   /**
    * RP: Disease Focused Research
@@ -231,33 +229,49 @@ public class DataUseMatchCasesV3 {
    * RP: Not GRU, DS-X, POA, MDS, Commercial
    */
 
-  static ImmutablePair<Boolean, List<String>> abstainDecision(DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap, boolean diseaseMatch) {
+  static ImmutablePair<Boolean, List<String>> abstainDecision (
+      DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap, boolean diseaseMatch) {
     // Valid RPs
-    boolean purposeDSX = getNullable(purpose.getDiseaseRestrictions().toString());
+    boolean purposeDSX = getNullableOrFalse(!purpose.getDiseaseRestrictions().isEmpty());
     boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
     boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
     boolean purposeMDS = getNullableOrFalse(purpose.getMethodsResearch());
     boolean purposeCommercial = getNullableOrFalse(purpose.getCommercialUse());
+    boolean purposeOther = getNullableOrFalse(purpose.getOther());
+
+    System.out.println("hi");
+    System.out.println(purposeOther);
 
     // If RP is valid then call that method
     if (purposeDSX){
+      System.out.println("here");
       return matchDiseases(purpose, dataset, purposeDiseaseIdMap);
     }
     if (purposeHMB){
+      System.out.println("here");
       return matchHMB(purpose, dataset);
     }
     if (purposePOA){
+      System.out.println("here");
       return matchPOA(purpose, dataset);
     }
     if (purposeMDS){
+      System.out.println("here");
       return matchMDS(purpose, dataset, diseaseMatch);
     }
     if (purposeCommercial){
+      System.out.println("here");
       return matchCommercial(purpose, dataset);
     }
-    // If RP is not valid then abstain from decision
-    else{
-      return ImmutablePair.of(null, Collections.singletonList(doNotAbstain));
+    if (purposeOther){
+      System.out.println("here");
+      return ImmutablePair.nullPair();
+    } else {
+      System.out.println("hey");
+      Objects.isNull(true);
+      System.out.println(purpose);
+      return ImmutablePair.nullPair();
+      //return ImmutablePair.of(null, Collections.singletonList(Abstain));
     }
   }
 
@@ -269,13 +283,5 @@ public class DataUseMatchCasesV3 {
    */
   private static boolean getNullableOrFalse(Boolean bool) {
     return Optional.ofNullable(bool).orElse(false);
-  }
-
-  /**
-   * @param yesOrNo nullable string value
-   * @return boolean True if "yes", false otherwise
-   */
-  private static boolean getNullable(String yesOrNo) {
-    return Optional.ofNullable(yesOrNo).orElse("no").equalsIgnoreCase("yes");
   }
 }
