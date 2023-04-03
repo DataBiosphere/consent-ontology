@@ -4,6 +4,8 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.MatchResult;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.MatchResultType;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
@@ -11,6 +13,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -37,18 +40,18 @@ public class DataUseMatcherV3 {
   }
 
   // Matching Algorithm
-  public ImmutablePair<Boolean, List<String>> matchPurposeAndDatasetV3(DataUseV3 purpose, DataUseV3 dataset) {
+  public MatchResult matchPurposeAndDatasetV3(DataUseV3 purpose, DataUseV3 dataset) {
     Map<String, List<String>> purposeDiseaseIdMap;
     try {
       purposeDiseaseIdMap = generatePurposeDiseaseIdMap(purpose.getDiseaseRestrictions());
     } catch (Exception e) {
       String purposeRestrictions = StringUtils.join(purpose.getDiseaseRestrictions(), ", ");
       List<String> errors = Arrays.asList(e.getMessage(), "Error found in one of the purpose terms: " + purposeRestrictions);
-      return ImmutablePair.of(false, errors);
+      return MatchResult.from(MatchResultType.DENY, errors);
     }
 
-    ImmutablePair<Boolean, List<String>> diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
-    final List<ImmutablePair<Boolean, List<String>>> matchReasons = new ArrayList<>();
+    MatchResult diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
+    final List<MatchResult> matchReasons = new ArrayList<>();
     matchReasons.add(diseaseMatch);
     matchReasons.add(matchDiseases(purpose, dataset, purposeDiseaseIdMap));
     matchReasons.add(matchHMB(purpose, dataset));
@@ -56,15 +59,21 @@ public class DataUseMatcherV3 {
     matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getLeft()));
     matchReasons.add(matchCommercial(purpose, dataset));
     matchReasons.add(abstainDecision(purpose, dataset, purposeDiseaseIdMap, diseaseMatch.getLeft()));
-    final Boolean match = matchReasons.stream().
-        map(ImmutablePair::getLeft).
-        allMatch(BooleanUtils::isTrue);
+    final boolean match = matchReasons.stream().
+        map(MatchResult::getLeft).
+        allMatch(MatchResult::isTrue);
     final List<String> reasons = matchReasons.stream().
-        map(ImmutablePair::getRight).
+        map(MatchResult::getRight).
         flatMap(Collection::stream).
         filter(StringUtils::isNotBlank).
         collect(Collectors.toList());
-    return ImmutablePair.of(match, reasons);
+    if (match)
+      return MatchResult.from(MatchResultType.APPROVE, reasons);
+    if(!match){
+      return MatchResult.from(MatchResultType.DENY, reasons);
+    } else{
+      return MatchResult.from(MatchResultType.ABSTAIN, reasons);
+    }
   }
 
   // Helper methods

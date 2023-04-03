@@ -1,7 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import javassist.compiler.ast.Pair;
-import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,23 +31,23 @@ public class DataUseMatchCasesV3 {
    * @param dataset The data use object representing the Dataset
    * @param purposeDiseaseIdMap is a map of each purpose term id to a list of that term's parent term ids
    */
-  static ImmutablePair<Boolean, List<String>> matchDiseases(
+  static MatchResult matchDiseases(
       DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap) {
     // short-circuit if no disease focused research
     if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
     // short-circuit if dataset is GRU
     if (getNullableOrFalse(dataset.getGeneralUse())) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
     // short-circuit if dataset is HMB
     if (getNullableOrFalse(dataset.getHmbResearch())) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
     // short-circuit if no diseases specified in the purpose, but the dataset specifies diseases
     if (!dataset.getDiseaseRestrictions().isEmpty() && purpose.getDiseaseRestrictions().isEmpty()) {
-      return ImmutablePair.of(false, Collections.singletonList(DS_F1));
+      return MatchResult.from(MatchResultType.DENY, Collections.singletonList(DS_F1));
     }
 
     // We want all-purpose disease IDs to be a subclass of any dataset disease ID
@@ -63,7 +61,7 @@ public class DataUseMatchCasesV3 {
       }
     }
 
-    return ImmutablePair.of(failures.isEmpty(), failures);
+    return MatchResult.from(MatchResultType.DENY, failures);
   }
 
   /**
@@ -75,10 +73,10 @@ public class DataUseMatchCasesV3 {
    * @param purpose The data use object representing the Research Purpose
    * @param dataset The data use object representing the Dataset
    */
-  static ImmutablePair<Boolean, List<String>> matchHMB(DataUseV3 purpose, DataUseV3 dataset) {
+  static MatchResult matchHMB(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit hmb if not set
     if (Objects.isNull(purpose.getHmbResearch())&& (Objects.isNull(dataset.getHmbResearch()))) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     boolean purposeGRU = getNullableOrFalse(purpose.getGeneralUse());
@@ -87,21 +85,20 @@ public class DataUseMatchCasesV3 {
     boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
 
     if (datasetHMB && purposeGRU) {
-      return ImmutablePair.of(false, Collections.singletonList(HMB_F1));
+      return MatchResult.from(MatchResultType.DENY, Collections.singletonList(HMB_F1));
     }
 
     // short-circuit if dataset is GRU
     if (datasetGRU) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     // short-circuit if dataset is HMB
     if (purposeHMB && datasetHMB) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     } else {
-      return ImmutablePair.of(false, Collections.singletonList(HMB_F2));
+      return MatchResult.from(MatchResultType.DENY, Collections.singletonList(HMB_F2));
     }
-
   }
 
   /**
@@ -111,10 +108,10 @@ public class DataUseMatchCasesV3 {
    *      Any dataset tagged with GRU
    *      Any dataset tagged with POA
    */
-  static ImmutablePair<Boolean, List<String>> matchPOA(DataUseV3 purpose, DataUseV3 dataset) {
+  static MatchResult matchPOA(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit if no POA clause
     if (Objects.isNull(purpose.getPopulationOriginsAncestry())) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
@@ -123,12 +120,12 @@ public class DataUseMatchCasesV3 {
 
     // short-circuit if dataset is GRU
     if (datasetGRU) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     // short-circuit if dataset is POA
     if (purposePOA && datasetPOA) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     List<String> failures = new ArrayList<>();
@@ -137,7 +134,7 @@ public class DataUseMatchCasesV3 {
       failures.add(POA_F1);
     }
 
-    return ImmutablePair.of(failures.isEmpty(), failures);
+    return MatchResult.from(MatchResultType.DENY, failures);
   }
 
   /**
@@ -150,10 +147,10 @@ public class DataUseMatchCasesV3 {
    *      Any dataset where POA = true
    *      Any dataset where DS-X match
    */
-  static ImmutablePair<Boolean, List<String>> matchMDS(DataUseV3 purpose, DataUseV3 dataset, boolean diseaseMatch) {
+  static MatchResult matchMDS(DataUseV3 purpose, DataUseV3 dataset, MatchResultType diseaseMatch) {
     // short-circuit if no disease focused research
     if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     boolean purposeMDS = getNullableOrFalse(purpose.getMethodsResearch());
@@ -163,24 +160,24 @@ public class DataUseMatchCasesV3 {
 
     // short-circuit if dataset is GRU
     if (datasetGRU) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     // short-circuit if dataset is HMB
     if (purposeMDS && datasetHMB) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     // short-circuit if dataset is POA
     if (purposeMDS && datasetPOA) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     // short-circuit if there is a disease match
     if (diseaseMatch) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     } else {
-      return ImmutablePair.of(false, Collections.singletonList(MDS_F1));
+      return MatchResult.from(MatchResultType.DENY, Collections.singletonList(MDS_F1));
     }
   }
 
@@ -191,13 +188,13 @@ public class DataUseMatchCasesV3 {
    * Datasets:
    *      Any dataset where NPU and NCU are both false
    */
-  static ImmutablePair<Boolean, List<String>> matchCommercial(DataUseV3 purpose, DataUseV3 dataset) {
+  static MatchResult matchCommercial(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit if no commercial/ non-profit clauses
     if (Objects.isNull(purpose.getCommercialUse())){
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
     if ((Objects.isNull(dataset.getCommercialUse())) && (Objects.isNull(dataset.getNonProfitUse()))){
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     List<String> failures = new ArrayList<>();
@@ -215,9 +212,9 @@ public class DataUseMatchCasesV3 {
 
     // short circuit if dataset is not NCU OR not NPU
     if ((purposeCommercial && datasetCommercial)) {
-      return ImmutablePair.of(true, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     } else {
-      return ImmutablePair.of(failures.isEmpty(), failures);
+      return MatchResult.from(MatchResultType.DENY, failures);
     }
   }
 
@@ -229,49 +226,33 @@ public class DataUseMatchCasesV3 {
    * RP: Not GRU, DS-X, POA, MDS, Commercial
    */
 
-  static ImmutablePair<Boolean, List<String>> abstainDecision (
-      DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap, boolean diseaseMatch) {
+  static MatchResult abstainDecision (
+      DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap, MatchResultType diseaseMatch) {
     // Valid RPs
     boolean purposeDSX = getNullableOrFalse(!purpose.getDiseaseRestrictions().isEmpty());
     boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
     boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
     boolean purposeMDS = getNullableOrFalse(purpose.getMethodsResearch());
     boolean purposeCommercial = getNullableOrFalse(purpose.getCommercialUse());
-    boolean purposeOther = getNullableOrFalse(purpose.getOther());
-
-    System.out.println("hi");
-    System.out.println(purposeOther);
 
     // If RP is valid then call that method
     if (purposeDSX){
-      System.out.println("here");
       return matchDiseases(purpose, dataset, purposeDiseaseIdMap);
     }
     if (purposeHMB){
-      System.out.println("here");
       return matchHMB(purpose, dataset);
     }
     if (purposePOA){
-      System.out.println("here");
       return matchPOA(purpose, dataset);
     }
     if (purposeMDS){
-      System.out.println("here");
       return matchMDS(purpose, dataset, diseaseMatch);
     }
     if (purposeCommercial){
-      System.out.println("here");
       return matchCommercial(purpose, dataset);
     }
-    if (purposeOther){
-      System.out.println("here");
-      return ImmutablePair.nullPair();
-    } else {
-      System.out.println("hey");
-      Objects.isNull(true);
-      System.out.println(purpose);
-      return ImmutablePair.nullPair();
-      //return ImmutablePair.of(null, Collections.singletonList(Abstain));
+    else {
+      return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(Abstain));
     }
   }
 
@@ -284,4 +265,44 @@ public class DataUseMatchCasesV3 {
   private static boolean getNullableOrFalse(Boolean bool) {
     return Optional.ofNullable(bool).orElse(false);
   }
+
+  enum MatchResultType {
+    APPROVE,
+    DENY,
+    ABSTAIN
+  }
+
+  public class MatchResult {
+
+    private MatchResultType matchResultType;
+    private List<String> message;
+    private MatchResultType left;
+    private List<String> right;
+
+    private MatchResult(MatchResultType matchResultType, List<String> message) {
+      this.matchResultType = matchResultType;
+      this.message = message;
+    }
+    public MatchResultType getMatchResultType() {
+      return matchResultType;
+    }
+    public List<String> getMessage() {
+      return message;
+    }
+    public static MatchResult from(MatchResultType matchResultType, List<String> message){
+      return new MatchResult(matchResultType, message);
+    }
+    public MatchResultType getLeft() {
+      return this.left;
+    }
+
+    public List<String> getRight() {
+      return this.right;
+    }
+
+    public static boolean isTrue(MatchResultType resultType) {
+      return MatchResultType.APPROVE.equals(resultType);
+    }
+  }
+
 }

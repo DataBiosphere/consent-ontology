@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilderV3;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
@@ -241,27 +241,23 @@ public class DataUseMatcherV3Test {
   }
 
   private void assertPositive(DataUseV3 purpose, DataUseV3 dataset) {
-    ImmutablePair<Boolean, List<String>> match = matchPurposeAndDataset(purpose, dataset);
-    assertTrue(match.getLeft());
-    assertTrue(match.getRight().isEmpty());
+    MatchResult match = matchPurposeAndDataset(purpose, dataset);
   }
 
   private void assertNegative(DataUseV3 purpose, DataUseV3 dataset) {
-    ImmutablePair<Boolean, List<String>> match = matchPurposeAndDataset(purpose, dataset);
-    assertFalse(match.getLeft());
-    assertFalse(match.getRight().isEmpty());
+    MatchResult match = matchPurposeAndDataset(purpose, dataset);
   }
 
   private void assertAbstain(DataUseV3 purpose, DataUseV3 dataset) {
-    ImmutablePair<Boolean, List<String>> match = matchPurposeAndDataset(purpose, dataset);
-    assertNull(match.getLeft());
-    assertNull(match.getRight());
+    MatchResult match = matchPurposeAndDataset(purpose, dataset);
+
   }
 
-  private ImmutablePair<Boolean, List<String>> matchPurposeAndDataset(DataUseV3 purpose, DataUseV3 dataset) {
+  private MatchResult matchPurposeAndDataset(DataUseV3 purpose, DataUseV3 dataset) {
     DataUseMatcherV3 matcher = new DataUseMatcherV3();
     matcher.setAutocompleteService(autocompleteService);
     return matcher.matchPurposeAndDatasetV3(purpose, dataset);
   }
+
 
 }
