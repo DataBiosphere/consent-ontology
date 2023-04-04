@@ -242,15 +242,20 @@ public class DataUseMatcherV3Test {
 
   private void assertPositive(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
+    assertTrue(match.getLeft());
+    assertTrue(match.getRight().isEmpty());
   }
 
   private void assertNegative(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
+    assertFalse(match.getLeft());
+    assertFalse(match.getRight().isEmpty());
   }
 
   private void assertAbstain(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
-
+    assertNull(match.getLeft());
+    assertNull(match.getRight());
   }
 
   private MatchResult matchPurposeAndDataset(DataUseV3 purpose, DataUseV3 dataset) {

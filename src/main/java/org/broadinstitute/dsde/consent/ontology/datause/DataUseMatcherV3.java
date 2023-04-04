@@ -61,19 +61,13 @@ public class DataUseMatcherV3 {
     matchReasons.add(abstainDecision(purpose, dataset, purposeDiseaseIdMap, diseaseMatch.getLeft()));
     final boolean match = matchReasons.stream().
         map(MatchResult::getLeft).
-        allMatch(MatchResult::isTrue);
+        allMatch(MatchResultType.isApprove());
     final List<String> reasons = matchReasons.stream().
         map(MatchResult::getRight).
         flatMap(Collection::stream).
         filter(StringUtils::isNotBlank).
         collect(Collectors.toList());
-    if (match)
-      return MatchResult.from(MatchResultType.APPROVE, reasons);
-    if(!match){
-      return MatchResult.from(MatchResultType.DENY, reasons);
-    } else{
-      return MatchResult.from(MatchResultType.ABSTAIN, reasons);
-    }
+    return MatchResult.from(match, reasons);
   }
 
   // Helper methods

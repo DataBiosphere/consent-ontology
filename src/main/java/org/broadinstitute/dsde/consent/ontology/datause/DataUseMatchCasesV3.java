@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
 
 public class DataUseMatchCasesV3 {
   private static final String HMB_F1 = "The GRU Research Purpose does not match the HMB data use limitations.";
@@ -269,13 +270,12 @@ public class DataUseMatchCasesV3 {
   enum MatchResultType {
     APPROVE,
     DENY,
-    ABSTAIN
+    ABSTAIN;
   }
 
   public class MatchResult {
-
-    private MatchResultType matchResultType;
-    private List<String> message;
+    private final MatchResultType matchResultType;
+    private final List<String> message;
     private MatchResultType left;
     private List<String> right;
 
@@ -300,8 +300,8 @@ public class DataUseMatchCasesV3 {
       return this.right;
     }
 
-    public static boolean isTrue(MatchResultType resultType) {
-      return MatchResultType.APPROVE.equals(resultType);
+    public static MatchResultType isApprove() {
+      return MatchResultType.APPROVE;
     }
   }
 
