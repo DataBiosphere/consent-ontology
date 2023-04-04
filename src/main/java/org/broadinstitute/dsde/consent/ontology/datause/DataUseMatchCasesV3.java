@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.function.Predicate;
 
 public class DataUseMatchCasesV3 {
   private static final String HMB_F1 = "The GRU Research Purpose does not match the HMB data use limitations.";
@@ -175,7 +174,7 @@ public class DataUseMatchCasesV3 {
     }
 
     // short-circuit if there is a disease match
-    if (diseaseMatch) {
+    if (diseaseMatch == MatchResultType.APPROVE) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     } else {
       return MatchResult.from(MatchResultType.DENY, Collections.singletonList(MDS_F1));
@@ -267,42 +266,5 @@ public class DataUseMatchCasesV3 {
     return Optional.ofNullable(bool).orElse(false);
   }
 
-  enum MatchResultType {
-    APPROVE,
-    DENY,
-    ABSTAIN;
-  }
-
-  public class MatchResult {
-    private final MatchResultType matchResultType;
-    private final List<String> message;
-    private MatchResultType left;
-    private List<String> right;
-
-    private MatchResult(MatchResultType matchResultType, List<String> message) {
-      this.matchResultType = matchResultType;
-      this.message = message;
-    }
-    public MatchResultType getMatchResultType() {
-      return matchResultType;
-    }
-    public List<String> getMessage() {
-      return message;
-    }
-    public static MatchResult from(MatchResultType matchResultType, List<String> message){
-      return new MatchResult(matchResultType, message);
-    }
-    public MatchResultType getLeft() {
-      return this.left;
-    }
-
-    public List<String> getRight() {
-      return this.right;
-    }
-
-    public static MatchResultType isApprove() {
-      return MatchResultType.APPROVE;
-    }
-  }
 
 }

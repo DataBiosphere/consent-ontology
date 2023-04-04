@@ -1,12 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilderV3;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-//import org.junit.jupiter.api.AssertFalse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -14,6 +12,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.Abstain;
+import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.Approve;
+import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.Deny;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -242,20 +243,20 @@ public class DataUseMatcherV3Test {
 
   private void assertPositive(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
-    assertTrue(match.getLeft());
+    assertTrue(Approve(match.getLeft()));
     assertTrue(match.getRight().isEmpty());
   }
 
   private void assertNegative(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
-    assertFalse(match.getLeft());
+    assertFalse(Deny(match.getLeft()));
     assertFalse(match.getRight().isEmpty());
   }
 
   private void assertAbstain(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
-    assertNull(match.getLeft());
-    assertNull(match.getRight());
+    assertTrue(Abstain(match.getLeft()));
+    assertFalse(match.getRight().isEmpty());
   }
 
   private MatchResult matchPurposeAndDataset(DataUseV3 purpose, DataUseV3 dataset) {

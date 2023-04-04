@@ -1,11 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import com.google.inject.Inject;
-import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.MatchResult;
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.MatchResultType;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
@@ -13,12 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchDiseases;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchHMB;
@@ -59,15 +55,24 @@ public class DataUseMatcherV3 {
     matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getLeft()));
     matchReasons.add(matchCommercial(purpose, dataset));
     matchReasons.add(abstainDecision(purpose, dataset, purposeDiseaseIdMap, diseaseMatch.getLeft()));
-    final boolean match = matchReasons.stream().
-        map(MatchResult::getLeft).
-        allMatch(MatchResultType.isApprove());
+    final Stream<MatchResultType> match = matchReasons.stream().
+        map(MatchResult::getLeft);
     final List<String> reasons = matchReasons.stream().
         map(MatchResult::getRight).
         flatMap(Collection::stream).
         filter(StringUtils::isNotBlank).
         collect(Collectors.toList());
-    return MatchResult.from(match, reasons);
+    // if all items match, decision is APPROVED
+    if (match.allMatch(MatchResult.isApprove())) {
+      return MatchResult.from(MatchResultType.APPROVE, reasons);
+    }
+    // if not, determine whether DENY or ABSTAIN
+    else{
+      if (match.anyMatch(MatchResult.isDeny())){
+        return MatchResult.from(MatchResultType.DENY, reasons);
+      }
+      return MatchResult.from(MatchResultType.ABSTAIN, reasons);
+    }
   }
 
   // Helper methods
