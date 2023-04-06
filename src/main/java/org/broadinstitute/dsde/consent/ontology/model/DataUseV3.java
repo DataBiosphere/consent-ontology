@@ -45,7 +45,7 @@ public class DataUseV3 {
     @JsonProperty("methodsResearch")
     private Boolean methodsResearch;
     @JsonProperty("other")
-    private Boolean other;
+    private String other;
     @JsonProperty("secondaryOther")
     private String secondaryOther;
     @JsonProperty("ethicsApprovalRequired")
@@ -132,12 +132,12 @@ public class DataUseV3 {
     }
 
     @JsonProperty("other")
-    public Boolean getOther() {
+    public String getOther() {
         return other;
     }
 
     @JsonProperty("other")
-    public void setOther(boolean other) {
+    public void setOther(String other) {
         this.other = other;
     }
 

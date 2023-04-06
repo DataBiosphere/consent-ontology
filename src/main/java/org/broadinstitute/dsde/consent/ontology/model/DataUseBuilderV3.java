@@ -52,7 +52,7 @@ public class DataUseBuilderV3 {
     return this;
   }
 
-  public DataUseBuilderV3 setOther(boolean other) {
+  public DataUseBuilderV3 setOther(String other) {
     du.setOther(other);
     return this;
   }
