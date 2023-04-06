@@ -56,4 +56,8 @@ public class DataUseBuilderV3 {
     du.setOther(other);
     return this;
   }
+  public DataUseBuilderV3 setCollaboratorRequired(boolean collaboratorRequired) {
+    du.setCollaboratorRequired(collaboratorRequired);
+    return this;
+  }
 }

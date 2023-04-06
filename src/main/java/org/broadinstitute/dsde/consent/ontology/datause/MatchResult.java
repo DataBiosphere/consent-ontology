@@ -6,8 +6,6 @@ public class MatchResult {
 
   private final MatchResultType matchResultType;
   private final List<String> message;
-  private MatchResultType left;
-  private List<String> right;
 
   private MatchResult(MatchResultType matchResultType, List<String> message) {
     this.matchResultType = matchResultType;
@@ -25,20 +23,5 @@ public class MatchResult {
   public static MatchResult from(MatchResultType matchResultType,
       List<String> message) {
     return new MatchResult(matchResultType, message);
-  }
-
-  public MatchResultType getLeft() {
-    return this.left;
-  }
-
-  public List<String> getRight() {
-    return this.right;
-  }
-
-  public static MatchResultType isApprove() {
-    return MatchResultType.APPROVE;
-  }
-  public static MatchResultType isDeny() {
-    return MatchResultType.DENY;
   }
 }

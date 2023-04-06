@@ -61,7 +61,11 @@ public class DataUseMatchCasesV3 {
       }
     }
 
-    return MatchResult.from(MatchResultType.DENY, failures);
+    if (failures.isEmpty()) {
+      return MatchResult.from(MatchResultType.APPROVE, failures);
+    } else {
+      return MatchResult.from(MatchResultType.DENY, failures);
+    }
   }
 
   /**
@@ -230,16 +234,20 @@ public class DataUseMatchCasesV3 {
       DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap, MatchResultType diseaseMatch) {
     // Valid RPs
     boolean purposeDSX = getNullableOrFalse(!purpose.getDiseaseRestrictions().isEmpty());
+    boolean datasetDSX = getNullableOrFalse(!dataset.getDiseaseRestrictions().isEmpty());
     boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
     boolean purposePOA = getNullableOrFalse(purpose.getPopulationOriginsAncestry());
     boolean purposeMDS = getNullableOrFalse(purpose.getMethodsResearch());
     boolean purposeCommercial = getNullableOrFalse(purpose.getCommercialUse());
+    boolean purposeGRU = getNullableOrFalse(purpose.getGeneralUse());
 
     // If RP is valid then call that method
     if (purposeDSX){
       return matchDiseases(purpose, dataset, purposeDiseaseIdMap);
+    } else if (datasetDSX) {
+      return MatchResult.from(MatchResultType.DENY, Collections.singletonList(DS_F1));
     }
-    if (purposeHMB){
+    if (purposeHMB || purposeGRU){
       return matchHMB(purpose, dataset);
     }
     if (purposePOA){
@@ -251,9 +259,10 @@ public class DataUseMatchCasesV3 {
     if (purposeCommercial){
       return matchCommercial(purpose, dataset);
     }
-    else {
-      return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(Abstain));
-    }
+    // certain cases are deny i.e. disease restrictions are empty
+    // all else are abstained
+    return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(Abstain));
+
   }
 
   // Helper Methods

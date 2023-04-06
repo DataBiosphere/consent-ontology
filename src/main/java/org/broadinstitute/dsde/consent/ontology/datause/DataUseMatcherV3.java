@@ -52,27 +52,29 @@ public class DataUseMatcherV3 {
     matchReasons.add(matchDiseases(purpose, dataset, purposeDiseaseIdMap));
     matchReasons.add(matchHMB(purpose, dataset));
     matchReasons.add(matchPOA(purpose, dataset));
-    matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getLeft()));
+    matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getMatchResultType()));
     matchReasons.add(matchCommercial(purpose, dataset));
-    matchReasons.add(abstainDecision(purpose, dataset, purposeDiseaseIdMap, diseaseMatch.getLeft()));
-    final Stream<MatchResultType> match = matchReasons.stream().
-        map(MatchResult::getLeft);
+    matchReasons.add(abstainDecision(purpose, dataset, purposeDiseaseIdMap, diseaseMatch.getMatchResultType()));
+    final boolean allMatch = matchReasons.stream().
+        map(MatchResult::getMatchResultType).
+        allMatch(rt -> rt.equals(MatchResultType.APPROVE));
+    final boolean anyMatch = matchReasons.stream().
+        map(MatchResult::getMatchResultType).
+        anyMatch(rt -> rt.equals(MatchResultType.ABSTAIN));
     final List<String> reasons = matchReasons.stream().
-        map(MatchResult::getRight).
+        map(MatchResult::getMessage).
         flatMap(Collection::stream).
         filter(StringUtils::isNotBlank).
         collect(Collectors.toList());
     // if all items match, decision is APPROVED
-    if (match.allMatch(MatchResult.isApprove())) {
+    if (allMatch) {
       return MatchResult.from(MatchResultType.APPROVE, reasons);
     }
     // if not, determine whether DENY or ABSTAIN
-    else{
-      if (match.anyMatch(MatchResult.isDeny())){
-        return MatchResult.from(MatchResultType.DENY, reasons);
-      }
+    if (anyMatch){
       return MatchResult.from(MatchResultType.ABSTAIN, reasons);
     }
+    return MatchResult.from(MatchResultType.DENY, reasons);
   }
 
   // Helper methods
