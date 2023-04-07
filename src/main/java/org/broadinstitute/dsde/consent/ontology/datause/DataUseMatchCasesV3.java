@@ -259,10 +259,7 @@ public class DataUseMatchCasesV3 {
     if (purposeCommercial){
       return matchCommercial(purpose, dataset);
     }
-    // certain cases are deny i.e. disease restrictions are empty
-    // all else are abstained
     return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(Abstain));
-
   }
 
   // Helper Methods

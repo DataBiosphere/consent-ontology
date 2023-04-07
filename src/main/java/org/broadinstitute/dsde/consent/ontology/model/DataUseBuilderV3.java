@@ -56,6 +56,17 @@ public class DataUseBuilderV3 {
     du.setOther(other);
     return this;
   }
+
+  public DataUseBuilderV3 setSecondaryOther(String secondaryOther) {
+    du.setSecondaryOther(secondaryOther);
+    return this;
+  }
+
+  public DataUseBuilderV3 setEthicsApprovalRequired(Boolean ethicsApprovalRequired) {
+    du.setEthicsApprovalRequired(ethicsApprovalRequired);
+    return this;
+  }
+
   public DataUseBuilderV3 setCollaboratorRequired(boolean collaboratorRequired) {
     du.setCollaboratorRequired(collaboratorRequired);
     return this;

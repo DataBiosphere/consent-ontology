@@ -220,8 +220,28 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testAbstainDecision_case_1() {
+  public void testAbstainDecision_COL() {
     DataUseV3 purpose = new DataUseBuilderV3().setCollaboratorRequired(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+  @Test
+  public void testAbstainDecision_Other() {
+    DataUseV3 purpose = new DataUseBuilderV3().setOther("other").build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_SecondaryOther() {
+    DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("secondary other").build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_ethicsApprovalRequired() {
+    DataUseV3 purpose = new DataUseBuilderV3().setEthicsApprovalRequired(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
