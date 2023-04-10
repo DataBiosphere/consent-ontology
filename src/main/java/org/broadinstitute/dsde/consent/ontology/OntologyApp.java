@@ -20,6 +20,7 @@ import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
 import org.broadinstitute.dsde.consent.ontology.resources.ErrorResource;
 import org.broadinstitute.dsde.consent.ontology.resources.LivenessResource;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
+import org.broadinstitute.dsde.consent.ontology.resources.MatchResourceV3;
 import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource;
 import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
 import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;
@@ -67,6 +68,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         // Register standard application resources.
         env.jersey().register(injector.getInstance(AutocompleteResource.class));
         env.jersey().register(injector.getInstance(MatchResource.class));
+        env.jersey().register(injector.getInstance(MatchResourceV3.class));
         env.jersey().register(injector.getInstance(TranslateResource.class));
         env.jersey().register(injector.getInstance(OntologySearchResource.class));
         env.jersey().register(injector.getInstance(DataUseResource.class));

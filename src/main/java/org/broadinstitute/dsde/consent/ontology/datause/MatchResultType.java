@@ -3,7 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.datause;
 import java.util.function.Predicate;
 import java.util.regex.MatchResult;
 
-enum MatchResultType implements Predicate<MatchResultType> {
+public enum MatchResultType implements Predicate<MatchResultType> {
   APPROVE,
   DENY,
   ABSTAIN;

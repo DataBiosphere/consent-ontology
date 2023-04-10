@@ -161,6 +161,29 @@ paths:
         500:
           description: Internal Server Error
 
+  /match/v3:
+    post:
+      summary: Match DataUse Purpose and Consent V3
+      description: Determine if a Research Purpose and Consent logically match.
+      parameters:
+        - name: body
+          in: body
+          description: Research Purpose and Dataset DataUse pair.
+          required: true
+          schema:
+            $ref: '#/definitions/DataUseMatchPairV3'
+      tags:
+        - Match
+      responses:
+        200:
+          description: Successful matching.
+          schema:
+            $ref: '#/definitions/DataUseMatchPairResultV3'
+        400:
+          description: Bad Request if either purpose or consent are not provided.
+        500:
+          description: Internal Server Error
+
   /autocomplete:
     get:
       summary: autocomplete

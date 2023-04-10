@@ -80,6 +80,15 @@ public interface Endpoints {
             .header("Content-Type", MediaType.APPLICATION_JSON);
   }
 
+  default HttpRequestActionBuilder matchV3(String json) {
+    return
+        http("Match V3")
+            .post("/match/v3")
+            .body(StringBody(json))
+            .header("Accept", MediaType.APPLICATION_JSON)
+            .header("Content-Type", MediaType.APPLICATION_JSON);
+  }
+
   default HttpRequestActionBuilder search(String term) {
     return
         http("Search")
