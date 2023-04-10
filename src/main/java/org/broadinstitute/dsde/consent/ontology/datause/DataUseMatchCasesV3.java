@@ -37,11 +37,11 @@ public class DataUseMatchCasesV3 {
     if (purpose.getDiseaseRestrictions().isEmpty() && dataset.getDiseaseRestrictions().isEmpty()) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
-    // short-circuit if dataset is GRU
+    // Approve dataset GRU condition
     if (getNullableOrFalse(dataset.getGeneralUse())) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
-    // short-circuit if dataset is HMB
+    // Approve dataset HMB condition
     if (getNullableOrFalse(dataset.getHmbResearch())) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
@@ -61,11 +61,7 @@ public class DataUseMatchCasesV3 {
       }
     }
 
-    if (failures.isEmpty()) {
-      return MatchResult.from(MatchResultType.APPROVE, failures);
-    } else {
-      return MatchResult.from(MatchResultType.DENY, failures);
-    }
+    return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY, failures);
   }
 
   /**
@@ -88,16 +84,17 @@ public class DataUseMatchCasesV3 {
     boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
     boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
 
+    // Deny purpose GRU condition
     if (datasetHMB && purposeGRU) {
       return MatchResult.from(MatchResultType.DENY, Collections.singletonList(HMB_F1));
     }
 
-    // short-circuit if dataset is GRU
+    // Approve dataset GRU condition
     if (datasetGRU) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
-    // short-circuit if dataset is HMB
+    // Approve dataset HMB condition
     if (purposeHMB && datasetHMB) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     } else {
@@ -122,12 +119,12 @@ public class DataUseMatchCasesV3 {
     boolean datasetPOA = getNullableOrFalse(dataset.getPopulationOriginsAncestry());
     boolean datasetGRU = getNullableOrFalse(dataset.getGeneralUse());
 
-    // short-circuit if dataset is GRU
+    // Approve dataset GRU condition
     if (datasetGRU) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
-    // short-circuit if dataset is POA
+    // Approve dataset POA condition
     if (purposePOA && datasetPOA) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
@@ -162,17 +159,17 @@ public class DataUseMatchCasesV3 {
     boolean datasetHMB = getNullableOrFalse(dataset.getHmbResearch());
     boolean datasetPOA = getNullableOrFalse(dataset.getPopulationOriginsAncestry());
 
-    // short-circuit if dataset is GRU
+    // Approve dataset GRU condition
     if (datasetGRU) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
-    // short-circuit if dataset is HMB
+    // Approve dataset HMB condition
     if (purposeMDS && datasetHMB) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
-    // short-circuit if dataset is POA
+    // Approve dataset POA condition
     if (purposeMDS && datasetPOA) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
@@ -214,7 +211,7 @@ public class DataUseMatchCasesV3 {
       failures.add(NCU_F1);
     }
 
-    // short circuit if dataset is not NCU OR not NPU
+    // Approve if dataset is not NCU OR not NPU
     if ((purposeCommercial && datasetCommercial)) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     } else {

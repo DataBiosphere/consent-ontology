@@ -4,17 +4,14 @@ import com.google.inject.Inject;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
+import org.broadinstitute.dsde.consent.ontology.util.DataUseUtil;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchDiseases;
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchHMB;
@@ -24,22 +21,18 @@ import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.abstainDecision;
 
 public class DataUseMatcherV3 {
-
-  private AutocompleteService autocompleteService;
-
-  public DataUseMatcherV3() {
-  }
-
+  public DataUseMatcherV3() {}
+  private DataUseUtil dataUseUtil = new DataUseUtil();
   @Inject
   public void setAutocompleteService(AutocompleteService autocompleteService) {
-    this.autocompleteService = autocompleteService;
+    dataUseUtil.setAutocompleteService(autocompleteService);
   }
 
   // Matching Algorithm
   public MatchResult matchPurposeAndDatasetV3(DataUseV3 purpose, DataUseV3 dataset) {
     Map<String, List<String>> purposeDiseaseIdMap;
     try {
-      purposeDiseaseIdMap = generatePurposeDiseaseIdMap(purpose.getDiseaseRestrictions());
+      purposeDiseaseIdMap = dataUseUtil.generatePurposeDiseaseIdMap(purpose.getDiseaseRestrictions());
     } catch (Exception e) {
       String purposeRestrictions = StringUtils.join(purpose.getDiseaseRestrictions(), ", ");
       List<String> errors = Arrays.asList(e.getMessage(), "Error found in one of the purpose terms: " + purposeRestrictions);
@@ -76,29 +69,4 @@ public class DataUseMatcherV3 {
     }
     return MatchResult.from(MatchResultType.DENY, reasons);
   }
-
-  // Helper methods
-
-  // Get a map of disease term to list of parent term ids (which also includes disease term id)
-  private Map<String, List<String>> generatePurposeDiseaseIdMap(List<String> diseaseRestrictions) throws IOException {
-    Map<String, List<String>> map = new HashMap<>();
-    for (String r : diseaseRestrictions) {
-      map.put(r, getParentTermIds(r));
-    }
-    return map;
-  }
-
-  // Get a list of term ids that represent a disease term + all parent ids
-  private List<String> getParentTermIds(String purposeDiseaseId) throws IOException {
-    List<String> purposeTermIdList = autocompleteService.lookupById(purposeDiseaseId)
-        .stream()
-        .filter(Objects::nonNull)
-        .filter(t -> Objects.nonNull(t.getParents()) && !t.getParents().isEmpty())
-        .flatMap(t -> t.parents.stream())
-        .map(p -> p.id)
-        .collect(Collectors.toList());
-    purposeTermIdList.add(purposeDiseaseId);
-    return purposeTermIdList;
-  }
-
 }

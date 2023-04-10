@@ -213,9 +213,23 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testHMB_negative() {
+  public void testHMB_negative_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setGeneralUse(true).build();
+    assertDeny(purpose, dataset);
+  }
+
+  @Test
+  public void testHMB_negative_case_2() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(Collections.singletonList(cancerNode)).build();
+    assertDeny(purpose, dataset);
+  }
+
+  @Test
+  public void testHMB_negative_case_3() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     assertDeny(purpose, dataset);
   }
 
