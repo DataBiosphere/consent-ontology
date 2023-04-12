@@ -67,7 +67,6 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         // Register standard application resources.
         env.jersey().register(injector.getInstance(AutocompleteResource.class));
         env.jersey().register(injector.getInstance(MatchResource.class));
-        env.jersey().register(injector.getInstance(MatchResourceV3.class));
         env.jersey().register(injector.getInstance(TranslateResource.class));
         env.jersey().register(injector.getInstance(OntologySearchResource.class));
         env.jersey().register(injector.getInstance(DataUseResource.class));
