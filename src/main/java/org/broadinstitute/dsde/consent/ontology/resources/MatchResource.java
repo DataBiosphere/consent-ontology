@@ -10,7 +10,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.apache.commons.text.StringEscapeUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
@@ -19,7 +18,6 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV3;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
-import org.broadinstitute.dsde.consent.ontology.util.DataUseUtil;
 
 @Path("/match")
 @Consumes("application/json")
