@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
+import org.apache.commons.text.StringEscapeUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
@@ -13,6 +14,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.Collections;
 import java.util.List;
 
 @Path("/match")
@@ -42,7 +44,8 @@ public class MatchResourceV3 {
       if (purpose != null && dataset != null) {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
-        List<String> failures = matchResult.getMessage();
+        List<String> failures = Collections.singletonList(StringEscapeUtils.unescapeJava(
+            String.valueOf(matchResult.getMessage())));
         return Response
             .ok()
             .entity(ImmutableMap.of(
