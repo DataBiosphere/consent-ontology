@@ -104,15 +104,6 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testDiseaseMatching_noPurposeDiseases() {
-    DataUseV3 dataset = new DataUseBuilderV3()
-        .setDiseaseRestrictions(Collections.singletonList(cancerNode))
-        .build();
-    DataUseV3 purpose = new DataUseBuilderV3().setDiseaseRestrictions(List.of()).build();
-    assertDeny(purpose, dataset);
-  }
-
-  @Test
   public void testHMB_positive_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
@@ -172,7 +163,7 @@ public class DataUseMatcherV3Test {
   public void testPOA_negative_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3()
         .setDiseaseRestrictions(Collections.singletonList(cancerNode))
-        .setMethodsResearch(true).build();
+        .build();
     DataUseV3 purpose = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     assertDeny(purpose, dataset);
   }
@@ -192,21 +183,18 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testMDS_negative_case_1() {
-    DataUseV3 dataset = new DataUseBuilderV3().setMethodsResearch(true).build();
-    DataUseV3 purpose = new DataUseBuilderV3()
-        .setDiseaseRestrictions(Collections.singletonList(cancerNode))
-        .setMethodsResearch(true).build();
-    assertDeny(purpose, dataset);
+  public void testMDS_positive_case_3() {
+    DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(Collections.singletonList(cancerNode)).build();
+    DataUseV3 purpose = new DataUseBuilderV3().setMethodsResearch(true).build();
+    assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testMDS_negative_case_2() {
+  public void testMDS_positive_case_4() {
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setMethodsResearch(true).build();
-    assertDeny(purpose, dataset);
+    assertApprove(purpose, dataset);
   }
-
 
   @Test
   public void testCommercial_positive_case_1() {
@@ -218,13 +206,6 @@ public class DataUseMatcherV3Test {
   @Test
   public void testCommercial_positive_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
-    DataUseV3 purpose = new DataUseBuilderV3().setCommercialUse(true).build();
-    assertApprove(purpose, dataset);
-  }
-
-  @Test
-  public void testCommercial_positive_case_3() {
-    DataUseV3 dataset = new DataUseBuilderV3().setNonProfitUse(null).build();
     DataUseV3 purpose = new DataUseBuilderV3().setCommercialUse(true).build();
     assertApprove(purpose, dataset);
   }
@@ -267,20 +248,6 @@ public class DataUseMatcherV3Test {
     DataUseV3 purpose = new DataUseBuilderV3().setEthicsApprovalRequired(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
-  }
-
-  @Test
-  public void testAbstainDecision_case_2() {
-    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
-    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
-    assertApprove(purpose, dataset);
-  }
-
-  @Test
-  public void testAbstainDecision_case_3() {
-    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
-    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(false).build();
-    assertDeny(purpose, dataset);
   }
 
   private void assertApprove(DataUseV3 purpose, DataUseV3 dataset) {

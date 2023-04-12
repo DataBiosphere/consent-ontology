@@ -42,7 +42,6 @@ public class DataUseMatcherV3 {
     MatchResult diseaseMatch = matchDiseases(purpose, dataset, purposeDiseaseIdMap);
     final List<MatchResult> matchReasons = new ArrayList<>();
     matchReasons.add(diseaseMatch);
-    matchReasons.add(matchDiseases(purpose, dataset, purposeDiseaseIdMap));
     matchReasons.add(matchHMB(purpose, dataset));
     matchReasons.add(matchPOA(purpose, dataset));
     matchReasons.add(matchMDS(purpose, dataset, diseaseMatch.getMatchResultType()));
