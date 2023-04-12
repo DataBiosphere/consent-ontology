@@ -20,7 +20,6 @@ import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
 import org.broadinstitute.dsde.consent.ontology.resources.ErrorResource;
 import org.broadinstitute.dsde.consent.ontology.resources.LivenessResource;
 import org.broadinstitute.dsde.consent.ontology.resources.MatchResource;
-import org.broadinstitute.dsde.consent.ontology.resources.MatchResourceV3;
 import org.broadinstitute.dsde.consent.ontology.resources.OntologySearchResource;
 import org.broadinstitute.dsde.consent.ontology.resources.StatusResource;
 import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;

@@ -28,7 +28,7 @@ public class MatchResourceV3Test {
   @Mock
   private final DataUseMatcherV3 dataUseMatcherV3 = new DataUseMatcherV3();
 
-  private MatchResourceV3 resource;
+  private MatchResource resource;
 
   @BeforeEach
   public void setUp() throws Exception {
@@ -41,7 +41,7 @@ public class MatchResourceV3Test {
 
   private void initResource() {
     dataUseMatcherV3.setAutocompleteService(autocompleteService);
-    resource = new MatchResourceV3(dataUseMatcherV3);
+    resource = new MatchResource(dataUseMatcherV3);
   }
 
   @Test
