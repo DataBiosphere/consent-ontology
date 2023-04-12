@@ -102,7 +102,7 @@ public class MatchResource {
             .ok()
             .entity(ImmutableMap.of(
                 "result", match,
-                "matchPair", StringEscapeUtils.unescapeJson(String.valueOf(matchPair)),
+                "matchPair", v3pair,
                 "failureReasons", failures))
             .type(MediaType.APPLICATION_JSON)
             .build();
