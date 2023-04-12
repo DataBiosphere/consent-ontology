@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import java.util.List;
 import javax.ws.rs.Consumes;
@@ -87,9 +88,11 @@ public class MatchResource {
    */
   @Path("/v3")
   @POST
-  public Response matchDataUseV3(final DataUseMatchPairV3 matchPair) {
-    DataUseV3 purpose = matchPair.getPurpose();
-    DataUseV3 dataset = matchPair.getConsent();
+  public Response matchDataUseV3(String matchPair) {
+    String sanitized = StringEscapeUtils.unescapeJson(matchPair);
+    DataUseMatchPairV3 v3pair = new Gson().fromJson(sanitized, DataUseMatchPairV3.class);
+    DataUseV3 purpose = v3pair.getPurpose();
+    DataUseV3 dataset = v3pair.getConsent();
     try {
       if (purpose != null && dataset != null) {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);

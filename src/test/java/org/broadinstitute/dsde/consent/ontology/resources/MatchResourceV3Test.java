@@ -50,7 +50,7 @@ public class MatchResourceV3Test {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
-    Response response = resource.matchDataUseV3(pair);
+    Response response = resource.matchDataUseV3(pair.toString());
     assertEquals(200, response.getStatus());
   }
 
@@ -60,7 +60,7 @@ public class MatchResourceV3Test {
     DataUseV3 purpose = null;
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
-    Response response = resource.matchDataUseV3(pair);
+    Response response = resource.matchDataUseV3(pair.toString());
     assertEquals(400, response.getStatus());
   }
 
@@ -70,7 +70,7 @@ public class MatchResourceV3Test {
     DataUseV3 purpose = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseV3 dataset = null;
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
-    Response response = resource.matchDataUseV3(pair);
+    Response response = resource.matchDataUseV3(pair.toString());
     assertEquals(400, response.getStatus());
   }
 
@@ -81,7 +81,7 @@ public class MatchResourceV3Test {
     DataUseV3 purpose = new DataUseBuilderV3().setDiseaseRestrictions(Collections.singletonList("http://purl.obolibrary.org/obo/DOID_162")).setMethodsResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
-    Response response = resource.matchDataUseV3(pair);
+    Response response = resource.matchDataUseV3(pair.toString());
     assertEquals(500, response.getStatus());
   }
 
