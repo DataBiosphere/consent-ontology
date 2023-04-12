@@ -6,6 +6,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Data Use Schema V3
@@ -133,7 +134,7 @@ public class DataUseV3 {
 
     @JsonProperty("other")
     public String getOther() {
-        return other;
+        return StringEscapeUtils.unescapeJson(other);
     }
 
     @JsonProperty("other")
@@ -143,7 +144,7 @@ public class DataUseV3 {
 
     @JsonProperty("secondaryOther")
     public String getSecondaryOther() {
-        return secondaryOther;
+        return StringEscapeUtils.unescapeJson(secondaryOther);
     }
 
     @JsonProperty("secondaryOther")
@@ -173,7 +174,7 @@ public class DataUseV3 {
 
     @JsonProperty("geographicalRestrictions")
     public String getGeographicalRestrictions() {
-        return geographicalRestrictions;
+        return StringEscapeUtils.unescapeJson(geographicalRestrictions);
     }
 
     @JsonProperty("geographicalRestrictions")
@@ -203,7 +204,7 @@ public class DataUseV3 {
 
     @JsonProperty("publicationMoratorium")
     public String getPublicationMoratorium() {
-        return publicationMoratorium;
+        return StringEscapeUtils.unescapeJson(publicationMoratorium);
     }
 
     @JsonProperty("publicationMoratorium")
