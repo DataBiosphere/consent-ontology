@@ -6,7 +6,6 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Data Use Schema V3
@@ -134,7 +133,7 @@ public class DataUseV3 {
 
     @JsonProperty("other")
     public String getOther() {
-        return StringEscapeUtils.unescapeJson(other);
+        return other;
     }
 
     @JsonProperty("other")
@@ -144,7 +143,7 @@ public class DataUseV3 {
 
     @JsonProperty("secondaryOther")
     public String getSecondaryOther() {
-        return StringEscapeUtils.unescapeJson(secondaryOther);
+        return secondaryOther;
     }
 
     @JsonProperty("secondaryOther")
@@ -174,7 +173,7 @@ public class DataUseV3 {
 
     @JsonProperty("geographicalRestrictions")
     public String getGeographicalRestrictions() {
-        return StringEscapeUtils.unescapeJson(geographicalRestrictions);
+        return geographicalRestrictions;
     }
 
     @JsonProperty("geographicalRestrictions")
@@ -204,7 +203,7 @@ public class DataUseV3 {
 
     @JsonProperty("publicationMoratorium")
     public String getPublicationMoratorium() {
-        return StringEscapeUtils.unescapeJson(publicationMoratorium);
+        return publicationMoratorium;
     }
 
     @JsonProperty("publicationMoratorium")
@@ -216,63 +215,63 @@ public class DataUseV3 {
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(DataUseV3.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
-        sb.append(StringEscapeUtils.unescapeJson("generalUse"));
+        sb.append("generalUse");
         sb.append('=');
         sb.append((Objects.isNull(this.generalUse)?"<null>":this.generalUse));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("hmbResearch"));
+        sb.append("hmbResearch");
         sb.append('=');
         sb.append((Objects.isNull(this.hmbResearch)?"<null>":this.hmbResearch));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("diseaseRestrictions"));
+        sb.append("diseaseRestrictions");
         sb.append('=');
         sb.append((Objects.isNull(this.diseaseRestrictions)?"<null>":this.diseaseRestrictions));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("populationOriginsAncestry"));
+        sb.append("populationOriginsAncestry");
         sb.append('=');
         sb.append((Objects.isNull(this.populationOriginsAncestry)?"<null>":this.populationOriginsAncestry));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("commercialUse"));
+        sb.append("commercialUse");
         sb.append('=');
         sb.append((Objects.isNull(this.commercialUse)?"<null>":this.commercialUse));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("nonProfitUse"));
+        sb.append("nonProfitUse");
         sb.append('=');
         sb.append((Objects.isNull(this.nonProfitUse)?"<null>":this.nonProfitUse));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("methodsResearch"));
+        sb.append("methodsResearch");
         sb.append('=');
         sb.append((Objects.isNull(this.methodsResearch)?"<null>":this.methodsResearch));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("other"));
+        sb.append("other");
         sb.append('=');
         sb.append((Objects.isNull(this.other)?"<null>":this.other));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("secondaryOther"));
+        sb.append("secondaryOther");
         sb.append('=');
         sb.append((Objects.isNull(this.secondaryOther)?"<null>":this.secondaryOther));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("ethicsApprovalRequired"));
+        sb.append("ethicsApprovalRequired");
         sb.append('=');
         sb.append((Objects.isNull(this.ethicsApprovalRequired)?"<null>":this.ethicsApprovalRequired));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("collaboratorRequired"));
+        sb.append("collaboratorRequired");
         sb.append('=');
         sb.append((Objects.isNull(this.collaboratorRequired)?"<null>":this.collaboratorRequired));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("geographicalRestrictions"));
+        sb.append("geographicalRestrictions");
         sb.append('=');
         sb.append((Objects.isNull(this.geographicalRestrictions)?"<null>":this.geographicalRestrictions));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("geneticStudiesOnly"));
+        sb.append("geneticStudiesOnly");
         sb.append('=');
         sb.append((Objects.isNull(this.geneticStudiesOnly)?"<null>":this.geneticStudiesOnly));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("publicationResults"));
+        sb.append("publicationResults");
         sb.append('=');
         sb.append((Objects.isNull(this.publicationResults)?"<null>":this.publicationResults));
         sb.append(',');
-        sb.append(StringEscapeUtils.unescapeJson("publicationMoratorium"));
+        sb.append("publicationMoratorium");
         sb.append('=');
         sb.append((Objects.isNull(this.publicationMoratorium)?"<null>":this.publicationMoratorium));
         sb.append(',');

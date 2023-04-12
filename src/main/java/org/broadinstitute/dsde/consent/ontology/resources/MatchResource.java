@@ -10,6 +10,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
+import org.apache.commons.text.StringEscapeUtils;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
@@ -98,7 +99,7 @@ public class MatchResource {
             .ok()
             .entity(ImmutableMap.of(
                 "result", match,
-                "matchPair", matchPair,
+                "matchPair", StringEscapeUtils.unescapeJson(String.valueOf(matchPair)),
                 "failureReasons", failures))
             .type(MediaType.APPLICATION_JSON)
             .build();
