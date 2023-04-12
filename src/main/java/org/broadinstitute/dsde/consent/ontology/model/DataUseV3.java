@@ -6,6 +6,7 @@ import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Data Use Schema V3
@@ -280,7 +281,7 @@ public class DataUseV3 {
         } else {
             sb.append(']');
         }
-        return sb.toString();
+        return StringEscapeUtils.unescapeJson(sb.toString());
     }
 
     @Override
