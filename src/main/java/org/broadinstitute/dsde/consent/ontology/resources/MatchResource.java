@@ -98,12 +98,13 @@ public class MatchResource {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
         List<String> failures = DataUseUtil.sanitize(matchResult.getMessage());
-        return Response
-            .ok()
-            .entity(ImmutableMap.of(
+        ImmutableMap result = ImmutableMap.of(
                 "result", match,
                 "matchPair", v3pair,
-                "failureReasons", failures))
+                "failureReasons", failures);
+        return Response
+            .ok()
+            .entity(result)
             .type(MediaType.APPLICATION_JSON)
             .build();
       }
