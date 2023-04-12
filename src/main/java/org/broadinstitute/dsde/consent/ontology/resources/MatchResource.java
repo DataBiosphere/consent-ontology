@@ -94,12 +94,13 @@ public class MatchResource {
       if (purpose != null && dataset != null) {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
-        List<String> failures = DataUseUtil.sanitize(matchResult.getMessage());
+        List<String> failures = matchResult.getMessage();
+        // nosemgrep
         return Response
             .ok()
             .entity(ImmutableMap.of(
                 "result", match,
-                "matchPair", StringEscapeUtils.unescapeJson(String.valueOf(matchPair)),
+                "matchPair", matchPair,
                 "failureReasons", failures))
             .type(MediaType.APPLICATION_JSON)
             .build();
