@@ -2,7 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.datause;
 
 import java.util.List;
 
-public class MatchResult {
+public final class MatchResult {
 
   private final MatchResultType matchResultType;
   private final List<String> message;

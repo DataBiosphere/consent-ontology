@@ -38,5 +38,14 @@ public final class DataUseUtil {
     return purposeTermIdList;
   }
 
+  public static List<String> sanitize(List<String> strings) {
+    if (strings != null) {
+      for(int i = 0; i < strings.size(); ++i) {
+        strings.set(i, strings.get(i) == null ? null : (strings.get(i)).trim());
+      }
+    }
+
+    return strings;
+  }
 
 }
