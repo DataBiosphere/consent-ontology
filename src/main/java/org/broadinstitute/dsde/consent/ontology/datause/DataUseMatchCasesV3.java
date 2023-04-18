@@ -16,7 +16,7 @@ public class DataUseMatchCasesV3 {
   private static final String MDS_F1 = "The Methods development Research Purpose does not match the Disease-Specific data use limitations.";
   private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
   private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commercial Use data use limitation.";
-  private static final String Abstain = "The Research Purpose does not result in DUOS Decision.";
+  private static final String ABSTAIN = "The Research Purpose does not result in DUOS Decision.";
 
   /**
    * RP: Disease Focused Research
@@ -290,7 +290,7 @@ public class DataUseMatchCasesV3 {
     if (purposeCommercial){
       return matchCommercial(purpose, dataset);
     }
-    return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(Abstain));
+    return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(ABSTAIN));
   }
 
   // Helper Methods
