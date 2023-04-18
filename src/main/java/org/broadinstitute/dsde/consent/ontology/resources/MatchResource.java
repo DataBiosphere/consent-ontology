@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.common.collect.ImmutableMap;
-import com.google.inject.Inject;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -28,12 +27,9 @@ public class MatchResource {
 
     private DataUseMatcherV3 dataUseMatcherV3;
 
-    @Inject
     MatchResource(DataUseMatcher dataUseMatcher) {
         this.dataUseMatcher = dataUseMatcher;
     }
-
-    @Inject
     MatchResource(DataUseMatcherV3 dataUseMatcherV3) {
       this.dataUseMatcherV3 = dataUseMatcherV3;
     }
