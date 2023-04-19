@@ -2,11 +2,10 @@ package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-
-
 
 /**
  * Data Use Schema V3
@@ -112,13 +111,13 @@ public class DataUseV3 {
         this.commercialUse = commercialUse;
     }
 
-    @JsonProperty("commercialUse")
-    public Boolean getNonProfitUseUse() {
+    @JsonProperty("nonProfitUse")
+    public Boolean getNonProfitUse() {
     return nonProfitUse;
   }
 
     @JsonProperty("nonProfitUse")
-    public void setNonProfitUseUse(Boolean nonProfitUse) {
+    public void setNonProfitUse(Boolean nonProfitUse) {
     this.nonProfitUse = nonProfitUse;
   }
 
@@ -218,63 +217,63 @@ public class DataUseV3 {
         sb.append(DataUseV3.class.getName()).append('@').append(Integer.toHexString(System.identityHashCode(this))).append('[');
         sb.append("generalUse");
         sb.append('=');
-        sb.append(((this.generalUse == null)?"<null>":this.generalUse));
+        sb.append((Objects.isNull(this.generalUse)?"<null>":this.generalUse));
         sb.append(',');
         sb.append("hmbResearch");
         sb.append('=');
-        sb.append(((this.hmbResearch == null)?"<null>":this.hmbResearch));
+        sb.append((Objects.isNull(this.hmbResearch)?"<null>":this.hmbResearch));
         sb.append(',');
         sb.append("diseaseRestrictions");
         sb.append('=');
-        sb.append(((this.diseaseRestrictions == null)?"<null>":this.diseaseRestrictions));
+        sb.append((Objects.isNull(this.diseaseRestrictions)?"<null>":this.diseaseRestrictions));
         sb.append(',');
         sb.append("populationOriginsAncestry");
         sb.append('=');
-        sb.append(((this.populationOriginsAncestry == null)?"<null>":this.populationOriginsAncestry));
+        sb.append((Objects.isNull(this.populationOriginsAncestry)?"<null>":this.populationOriginsAncestry));
         sb.append(',');
         sb.append("commercialUse");
         sb.append('=');
-        sb.append(((this.commercialUse == null)?"<null>":this.commercialUse));
+        sb.append((Objects.isNull(this.commercialUse)?"<null>":this.commercialUse));
         sb.append(',');
         sb.append("nonProfitUse");
         sb.append('=');
-        sb.append(((this.nonProfitUse == null)?"<null>":this.nonProfitUse));
+        sb.append((Objects.isNull(this.nonProfitUse)?"<null>":this.nonProfitUse));
         sb.append(',');
         sb.append("methodsResearch");
         sb.append('=');
-        sb.append(((this.methodsResearch == null)?"<null>":this.methodsResearch));
+        sb.append((Objects.isNull(this.methodsResearch)?"<null>":this.methodsResearch));
         sb.append(',');
         sb.append("other");
         sb.append('=');
-        sb.append(((this.other == null)?"<null>":this.other));
+        sb.append((Objects.isNull(this.other)?"<null>":this.other));
         sb.append(',');
         sb.append("secondaryOther");
         sb.append('=');
-        sb.append(((this.secondaryOther == null)?"<null>":this.secondaryOther));
+        sb.append((Objects.isNull(this.secondaryOther)?"<null>":this.secondaryOther));
         sb.append(',');
         sb.append("ethicsApprovalRequired");
         sb.append('=');
-        sb.append(((this.ethicsApprovalRequired == null)?"<null>":this.ethicsApprovalRequired));
+        sb.append((Objects.isNull(this.ethicsApprovalRequired)?"<null>":this.ethicsApprovalRequired));
         sb.append(',');
         sb.append("collaboratorRequired");
         sb.append('=');
-        sb.append(((this.collaboratorRequired == null)?"<null>":this.collaboratorRequired));
+        sb.append((Objects.isNull(this.collaboratorRequired)?"<null>":this.collaboratorRequired));
         sb.append(',');
         sb.append("geographicalRestrictions");
         sb.append('=');
-        sb.append(((this.geographicalRestrictions == null)?"<null>":this.geographicalRestrictions));
+        sb.append((Objects.isNull(this.geographicalRestrictions)?"<null>":this.geographicalRestrictions));
         sb.append(',');
         sb.append("geneticStudiesOnly");
         sb.append('=');
-        sb.append(((this.geneticStudiesOnly == null)?"<null>":this.geneticStudiesOnly));
+        sb.append((Objects.isNull(this.geneticStudiesOnly)?"<null>":this.geneticStudiesOnly));
         sb.append(',');
         sb.append("publicationResults");
         sb.append('=');
-        sb.append(((this.publicationResults == null)?"<null>":this.publicationResults));
+        sb.append((Objects.isNull(this.publicationResults)?"<null>":this.publicationResults));
         sb.append(',');
         sb.append("publicationMoratorium");
         sb.append('=');
-        sb.append(((this.publicationMoratorium == null)?"<null>":this.publicationMoratorium));
+        sb.append((Objects.isNull(this.publicationMoratorium)?"<null>":this.publicationMoratorium));
         sb.append(',');
         if (sb.charAt((sb.length()- 1)) == ',') {
             sb.setCharAt((sb.length()- 1), ']');
@@ -287,21 +286,21 @@ public class DataUseV3 {
     @Override
     public int hashCode() {
         int result = 1;
-        result = ((result* 31)+((this.commercialUse == null)? 0 :this.commercialUse.hashCode()));
-        result = ((result* 31)+((this.nonProfitUse == null)? 0 :this.nonProfitUse.hashCode()));
-        result = ((result* 31)+((this.other == null)? 0 :this.other.hashCode()));
-        result = ((result* 31)+((this.geneticStudiesOnly == null)? 0 :this.geneticStudiesOnly.hashCode()));
-        result = ((result* 31)+((this.generalUse == null)? 0 :this.generalUse.hashCode()));
-        result = ((result* 31)+((this.publicationResults == null)? 0 :this.publicationResults.hashCode()));
-        result = ((result* 31)+((this.diseaseRestrictions == null)? 0 :this.diseaseRestrictions.hashCode()));
-        result = ((result* 31)+((this.methodsResearch == null)? 0 :this.methodsResearch.hashCode()));
-        result = ((result* 31)+((this.publicationMoratorium == null)? 0 :this.publicationMoratorium.hashCode()));
-        result = ((result* 31)+((this.collaboratorRequired == null)? 0 :this.collaboratorRequired.hashCode()));
-        result = ((result* 31)+((this.populationOriginsAncestry == null)? 0 :this.populationOriginsAncestry.hashCode()));
-        result = ((result* 31)+((this.ethicsApprovalRequired == null)? 0 :this.ethicsApprovalRequired.hashCode()));
-        result = ((result* 31)+((this.secondaryOther == null)? 0 :this.secondaryOther.hashCode()));
-        result = ((result* 31)+((this.hmbResearch == null)? 0 :this.hmbResearch.hashCode()));
-        result = ((result* 31)+((this.geographicalRestrictions == null)? 0 :this.geographicalRestrictions.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.commercialUse)? 0 :this.commercialUse.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.nonProfitUse)? 0 :this.nonProfitUse.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.other)? 0 :this.other.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.geneticStudiesOnly)? 0 :this.geneticStudiesOnly.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.generalUse)? 0 :this.generalUse.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.publicationResults)? 0 :this.publicationResults.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.diseaseRestrictions)? 0 :this.diseaseRestrictions.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.methodsResearch)? 0 :this.methodsResearch.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.publicationMoratorium)? 0 :this.publicationMoratorium.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.collaboratorRequired)? 0 :this.collaboratorRequired.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.populationOriginsAncestry)? 0 :this.populationOriginsAncestry.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.ethicsApprovalRequired)? 0 :this.ethicsApprovalRequired.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.secondaryOther)? 0 :this.secondaryOther.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.hmbResearch)? 0 :this.hmbResearch.hashCode()));
+        result = ((result* 31)+(Objects.isNull(this.geographicalRestrictions)? 0 :this.geographicalRestrictions.hashCode()));
         return result;
     }
 
@@ -310,11 +309,19 @@ public class DataUseV3 {
         if (other == this) {
             return true;
         }
-        if ((other instanceof DataUseV3) == false) {
+        if (!(other instanceof DataUseV3)) {
             return false;
         }
         DataUseV3 rhs = ((DataUseV3) other);
-        return (((((((((((((((((((((((((((((((((((((((this.commercialUse == rhs.commercialUse)||((this.commercialUse!= null)&&this.commercialUse.equals(rhs.commercialUse)))&&((this.nonProfitUse == rhs.nonProfitUse)||((this.nonProfitUse!= null)&&this.nonProfitUse.equals(rhs.nonProfitUse)))&&((this.other == rhs.other)||((this.other!= null)&&this.other.equals(rhs.other))))&&((this.geneticStudiesOnly == rhs.geneticStudiesOnly)||((this.geneticStudiesOnly!= null)&&this.geneticStudiesOnly.equals(rhs.geneticStudiesOnly))))&&((this.generalUse == rhs.generalUse)||((this.generalUse!= null)&&this.generalUse.equals(rhs.generalUse))))&&((this.publicationResults == rhs.publicationResults)||((this.publicationResults!= null)&&this.publicationResults.equals(rhs.publicationResults))))&&((this.diseaseRestrictions == rhs.diseaseRestrictions)||((this.diseaseRestrictions!= null)&&this.diseaseRestrictions.equals(rhs.diseaseRestrictions))))&&((this.methodsResearch == rhs.methodsResearch)||((this.methodsResearch!= null)&&this.methodsResearch.equals(rhs.methodsResearch))))&&((this.publicationMoratorium == rhs.publicationMoratorium)||((this.publicationMoratorium!= null)&&this.publicationMoratorium.equals(rhs.publicationMoratorium))))&&((this.collaboratorRequired == rhs.collaboratorRequired)||((this.collaboratorRequired!= null)&&this.collaboratorRequired.equals(rhs.collaboratorRequired))))&&((this.populationOriginsAncestry == rhs.populationOriginsAncestry)||((this.populationOriginsAncestry!= null)&&this.populationOriginsAncestry.equals(rhs.populationOriginsAncestry))))&&((this.ethicsApprovalRequired == rhs.ethicsApprovalRequired)||((this.ethicsApprovalRequired!= null)&&this.ethicsApprovalRequired.equals(rhs.ethicsApprovalRequired))))&&((this.secondaryOther == rhs.secondaryOther)||((this.secondaryOther!= null)&&this.secondaryOther.equals(rhs.secondaryOther))))&&((this.hmbResearch == rhs.hmbResearch)||((this.hmbResearch!= null)&&this.hmbResearch.equals(rhs.hmbResearch))))&&((this.geographicalRestrictions == rhs.geographicalRestrictions)||((this.geographicalRestrictions!= null)&&this.geographicalRestrictions.equals(rhs.geographicalRestrictions))))))))))))))))))))))))))));
+        return Objects.equals(this.commercialUse,
+            rhs.commercialUse) && Objects.equals(this.nonProfitUse, rhs.nonProfitUse)
+            && Objects.equals(
+            this.other, rhs.other) && Objects.equals(this.generalUse, rhs.generalUse)
+            && Objects.equals(this.diseaseRestrictions, rhs.diseaseRestrictions) && Objects.equals(
+            this.methodsResearch, rhs.methodsResearch) && Objects.equals(
+            this.populationOriginsAncestry, rhs.populationOriginsAncestry) && Objects.equals(
+            this.secondaryOther, rhs.secondaryOther) && Objects.equals(this.hmbResearch,
+            rhs.hmbResearch);
     }
 
 }
