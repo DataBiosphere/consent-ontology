@@ -38,4 +38,5 @@ public final class DataUseUtil {
     return purposeTermIdList;
   }
 
+
 }

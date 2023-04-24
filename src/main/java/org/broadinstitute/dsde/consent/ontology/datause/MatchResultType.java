@@ -1,9 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import java.util.function.Predicate;
-import java.util.regex.MatchResult;
-
-public enum MatchResultType implements Predicate<MatchResultType> {
+public enum MatchResultType {
   APPROVE,
   DENY,
   ABSTAIN;
@@ -16,8 +13,4 @@ public enum MatchResultType implements Predicate<MatchResultType> {
 
   public static Boolean Abstain(MatchResultType x) { return x == ABSTAIN; }
 
-  @Override
-  public boolean test(MatchResultType matchResultType) {
-    return false;
-  }
 }
