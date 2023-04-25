@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.inject.Inject;
 import java.util.List;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -23,17 +24,15 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 @Produces("application/json")
 public class MatchResource {
 
-    private DataUseMatcher dataUseMatcher;
+    private final DataUseMatcher dataUseMatcher;
 
-    private DataUseMatcherV3 dataUseMatcherV3;
+    private final DataUseMatcherV3 dataUseMatcherV3;
 
-    MatchResource(DataUseMatcher dataUseMatcher) {
+    @Inject
+    MatchResource(DataUseMatcher dataUseMatcher, DataUseMatcherV3 dataUseMatcherV3) {
         this.dataUseMatcher = dataUseMatcher;
+        this.dataUseMatcherV3 = dataUseMatcherV3;
     }
-    MatchResource(DataUseMatcherV3 dataUseMatcherV3) {
-      this.dataUseMatcherV3 = dataUseMatcherV3;
-    }
-
 
     /**
      * Most recent version of matching logic as implemented in FireCloud
@@ -85,6 +84,13 @@ public class MatchResource {
     DataUseV3 purpose = matchPair.getPurpose();
     DataUseV3 dataset = matchPair.getConsent();
     try {
+      ErrorResponse error = new ErrorResponse();
+      error.setCode(Response.Status.BAD_REQUEST.getStatusCode());
+      if (purpose == null) {
+        error.setMessage("Purpose is required");
+      } else {
+        error.setMessage("Dataset is required");
+      }
       if (purpose != null && dataset != null) {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
@@ -98,13 +104,6 @@ public class MatchResource {
                 "failureReasons", failures))
             .type(MediaType.APPLICATION_JSON)
             .build();
-      }
-      ErrorResponse error = new ErrorResponse();
-      error.setCode(Response.Status.BAD_REQUEST.getStatusCode());
-      if (purpose == null) {
-        error.setMessage("Purpose is required");
-      } else {
-        error.setMessage("Dataset is required");
       }
       return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON).build();
     } catch (Exception e) {

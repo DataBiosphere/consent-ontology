@@ -7,7 +7,7 @@ public class MatchResult {
   private final MatchResultType matchResultType;
   private final List<String> message;
 
-  private MatchResult(MatchResultType matchResultType, List<String> message) {
+  public MatchResult(MatchResultType matchResultType, List<String> message) {
     this.matchResultType = matchResultType;
     this.message = message;
   }

@@ -21,8 +21,13 @@ import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCases
 import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.abstainDecision;
 
 public class DataUseMatcherV3 {
-  public DataUseMatcherV3() {}
-  private DataUseUtil dataUseUtil = new DataUseUtil();
+
+  private final DataUseUtil dataUseUtil;
+
+  public DataUseMatcherV3() {
+    dataUseUtil = new DataUseUtil();
+  }
+
   @Inject
   public void setAutocompleteService(AutocompleteService autocompleteService) {
     dataUseUtil.setAutocompleteService(autocompleteService);

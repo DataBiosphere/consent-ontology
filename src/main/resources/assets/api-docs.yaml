@@ -341,6 +341,7 @@ definitions:
     description: JSON model of a set of data use recommendations
     example:
       { "http://purl.obolibrary.org/obo/DUO_0000042": {"title": "General Research Use", "category": "Data Use Permission" } }
+
   DataUseMatchPair:
     type: object
     description: JSON model of research purpose and dataset
@@ -358,6 +359,32 @@ definitions:
         description: Result of the match algorithm on the provided purpose and dataset
       matchPair:
         $ref: '#/definitions/DataUseMatchPair'
+        description: The provided purpose and consent
+      failureReasons:
+        type: array
+        items:
+          type: string
+        description: |
+          Optional list of reasons why a match result may have failed. Only supported in
+          in versions 2 and higher
+
+  DataUseMatchPairV3:
+    type: object
+    description: JSON model of research purpose and dataset
+    properties:
+      purpose:
+        $ref: '#/definitions/DataUseV3'
+      consent:
+        $ref: '#/definitions/DataUseV3'
+
+  DataUseMatchPairResultV3:
+    type: object
+    properties:
+      result:
+        type: boolean
+        description: Result of the match algorithm on the provided purpose and dataset
+      matchPair:
+        $ref: '#/definitions/DataUseMatchPairV3'
         description: The provided purpose and consent
       failureReasons:
         type: array
