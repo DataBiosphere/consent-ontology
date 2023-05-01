@@ -13,6 +13,7 @@ import org.broadinstitute.dsp.ontology.performance.scenarios.Autocomplete;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseTranslate;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Matching;
+import org.broadinstitute.dsp.ontology.performance.scenarios.MatchingV3;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Search;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Status;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Validate;
@@ -40,6 +41,7 @@ public class TestRunner extends Simulation {
                 new DataUseSchema().tests,
                 new DataUseTranslate().tests,
                 new Matching().tests,
+                new MatchingV3().tests,
                 new Search().tests,
                 new Status().tests,
                 new Validate().tests,

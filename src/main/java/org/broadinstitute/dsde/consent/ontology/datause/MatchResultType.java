@@ -1,6 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-enum MatchResultType {
+public enum MatchResultType {
   APPROVE,
   DENY,
   ABSTAIN;

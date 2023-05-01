@@ -1,6 +1,8 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
+import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
+import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
