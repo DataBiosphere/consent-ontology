@@ -35,7 +35,7 @@ public class MatchResource {
     }
 
     /**
-     * Most recent version of matching logic as implemented in FireCloud
+     * Matching logic as implemented in FireCloud
      *
      * @param matchPair The DataUseMatchPair
      * @return Response
@@ -73,7 +73,7 @@ public class MatchResource {
     }
 
   /**
-   * Most recent version of matching logic as implemented in FireCloud
+   * Version 3 of matching logic
    *
    * @param matchPair The DataUseMatchPairV3
    * @return Response
