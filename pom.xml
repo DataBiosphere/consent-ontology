@@ -323,7 +323,7 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.2.10</version>
+            <version>1.4.7</version>
         </dependency>
 
         <!-- Support for JSON logging -->
@@ -331,6 +331,12 @@
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-json-logging</artifactId>
             <version>${dropwizard.version}</version>
+            <exclusions>
+              <exclusion>
+                <groupId>ch.qos.logback</groupId>
+                <artifactId>logback-classic</artifactId>
+              </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
