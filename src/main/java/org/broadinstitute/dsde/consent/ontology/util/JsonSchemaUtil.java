@@ -11,7 +11,7 @@ import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 
-import javax.ws.rs.BadRequestException;
+import jakarta.ws.rs.BadRequestException;
 import java.nio.charset.Charset;
 import java.util.concurrent.ExecutionException;
 

@@ -8,7 +8,7 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import com.google.api.client.http.HttpStatusCodes;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import javax.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response;
 import org.eclipse.jetty.server.Request;
 import org.junit.Before;
 import org.junit.Test;
