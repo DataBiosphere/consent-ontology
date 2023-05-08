@@ -12,6 +12,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseResponseEntity;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
@@ -24,53 +25,55 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 @Produces("application/json")
 public class MatchResource {
 
-    private final DataUseMatcher dataUseMatcher;
+  private final DataUseMatcher dataUseMatcher;
 
-    private final DataUseMatcherV3 dataUseMatcherV3;
+  private final DataUseMatcherV3 dataUseMatcherV3;
 
-    @Inject
-    MatchResource(DataUseMatcher dataUseMatcher, DataUseMatcherV3 dataUseMatcherV3) {
-        this.dataUseMatcher = dataUseMatcher;
-        this.dataUseMatcherV3 = dataUseMatcherV3;
+  @Inject
+  MatchResource(DataUseMatcher dataUseMatcher, DataUseMatcherV3 dataUseMatcherV3) {
+    this.dataUseMatcher = dataUseMatcher;
+    this.dataUseMatcherV3 = dataUseMatcherV3;
+  }
+
+  /**
+   * Matching logic as implemented in FireCloud
+   *
+   * @param matchPair The DataUseMatchPair
+   * @return Response
+   */
+  @Path("/v2")
+  @POST
+  public Response matchDataUse(final DataUseMatchPair matchPair) {
+    DataUse purpose = matchPair.getPurpose();
+    DataUse dataset = matchPair.getConsent();
+    try {
+      if (purpose != null && dataset != null) {
+        ImmutablePair<Boolean, List<String>> matchResult = dataUseMatcher.matchPurposeAndDatasetV2(
+            purpose, dataset);
+        boolean match = matchResult.getLeft();
+        List<String> failures = matchResult.getRight();
+        return Response
+            .ok()
+            .entity(ImmutableMap.of(
+                "result", match,
+                "matchPair", matchPair,
+                "failureReasons", failures))
+            .type(MediaType.APPLICATION_JSON)
+            .build();
+      }
+      ErrorResponse error = new ErrorResponse();
+      error.setCode(Response.Status.BAD_REQUEST.getStatusCode());
+      if (purpose == null) {
+        error.setMessage("Purpose is required");
+      } else {
+        error.setMessage("Dataset is required");
+      }
+      return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON)
+          .build();
+    } catch (Exception e) {
+      return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
     }
-
-    /**
-     * Matching logic as implemented in FireCloud
-     *
-     * @param matchPair The DataUseMatchPair
-     * @return Response
-     */
-    @Path("/v2")
-    @POST
-    public Response matchDataUse(final DataUseMatchPair matchPair) {
-        DataUse purpose = matchPair.getPurpose();
-        DataUse dataset = matchPair.getConsent();
-        try {
-            if (purpose != null && dataset != null) {
-                ImmutablePair<Boolean, List<String>> matchResult = dataUseMatcher.matchPurposeAndDatasetV2(purpose, dataset);
-                boolean match = matchResult.getLeft();
-                List<String> failures = matchResult.getRight();
-                return Response
-                        .ok()
-                        .entity(ImmutableMap.of(
-                                "result", match,
-                                "matchPair", matchPair,
-                                "failureReasons", failures))
-                        .type(MediaType.APPLICATION_JSON)
-                        .build();
-            }
-            ErrorResponse error = new ErrorResponse();
-            error.setCode(Response.Status.BAD_REQUEST.getStatusCode());
-            if (purpose == null) {
-                error.setMessage("Purpose is required");
-            } else {
-                error.setMessage("Dataset is required");
-            }
-            return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON).build();
-        } catch (Exception e) {
-            return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
-        }
-    }
+  }
 
   /**
    * Version 3 of matching logic
@@ -98,14 +101,12 @@ public class MatchResource {
         // nosemgrep
         return Response
             .ok()
-            .entity(ImmutableMap.of(
-                "result", match,
-                "matchPair", matchPair,
-                "failureReasons", failures))
+            .entity(new DataUseResponseEntity(match, matchPair, failures).get())
             .type(MediaType.APPLICATION_JSON)
             .build();
       }
-      return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON).build();
+      return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON)
+          .build();
     } catch (Exception e) {
       return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
     }
