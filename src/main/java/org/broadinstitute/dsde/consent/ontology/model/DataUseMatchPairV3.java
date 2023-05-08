@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.model;
 
 import com.google.gson.Gson;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 
 @SuppressWarnings("unused")
 public class DataUseMatchPairV3 {
@@ -9,7 +10,8 @@ public class DataUseMatchPairV3 {
 
   private DataUseV3 consent;
 
-  public DataUseMatchPairV3() { }
+  public DataUseMatchPairV3() {
+  }
 
   public DataUseMatchPairV3(DataUseV3 purpose, DataUseV3 consent) {
     this.purpose = purpose;
@@ -37,4 +39,17 @@ public class DataUseMatchPairV3 {
     return new Gson().toJson(this);
   }
 
+  @Override
+  public boolean equals(Object other) {
+    if (other == this) {
+      return true;
+    }
+    if (!(other instanceof DataUseMatchPairV3 rhs)) {
+      return false;
+    }
+    return new EqualsBuilder()
+        .append(purpose, rhs.purpose)
+        .append(consent, rhs.consent)
+        .isEquals();
+  }
 }
