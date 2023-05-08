@@ -1,17 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilderV3;
-import org.broadinstitute.dsde.consent.ontology.model.TermParent;
-import org.broadinstitute.dsde.consent.ontology.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.Abstain;
 import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.Approve;
 import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.Deny;
@@ -20,6 +8,18 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilderV3;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
+import org.broadinstitute.dsde.consent.ontology.model.TermParent;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 
 public class DataUseMatcherV3Test {
 
@@ -127,7 +127,8 @@ public class DataUseMatcherV3Test {
   @Test
   public void testHMB_negative_case_2() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
-    DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(Collections.singletonList(cancerNode)).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(
+        Collections.singletonList(cancerNode)).build();
     assertDeny(purpose, dataset);
   }
 
@@ -184,7 +185,8 @@ public class DataUseMatcherV3Test {
 
   @Test
   public void testMDS_positive_case_3() {
-    DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(Collections.singletonList(cancerNode)).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(
+        Collections.singletonList(cancerNode)).build();
     DataUseV3 purpose = new DataUseBuilderV3().setMethodsResearch(true).build();
     assertApprove(purpose, dataset);
   }
@@ -223,12 +225,14 @@ public class DataUseMatcherV3Test {
     DataUseV3 purpose = new DataUseBuilderV3().setCommercialUse(true).build();
     assertDeny(purpose, dataset);
   }
+
   @Test
   public void testAbstainDecision_COL() {
     DataUseV3 purpose = new DataUseBuilderV3().setCollaboratorRequired(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
+
   @Test
   public void testAbstainDecision_Other() {
     DataUseV3 purpose = new DataUseBuilderV3().setOther("other").build();

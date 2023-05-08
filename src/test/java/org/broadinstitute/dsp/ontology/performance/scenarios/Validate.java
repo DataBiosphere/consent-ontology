@@ -18,6 +18,8 @@ public class Validate implements Endpoints {
       """;
 
   public List<ScenarioBuilder> tests = List.of(
-      scenario("Validate Use Restriction").exec(validateUseRestriction(useRestriction).check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)
+      scenario("Validate Use Restriction").exec(
+              validateUseRestriction(useRestriction).check(status().is(HttpStatusCodes.STATUS_CODE_OK)))
+          .pause(1, 5)
   );
 }

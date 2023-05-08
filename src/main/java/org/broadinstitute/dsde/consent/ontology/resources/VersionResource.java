@@ -12,20 +12,20 @@ import org.broadinstitute.dsde.consent.ontology.model.Version;
 @Path("/version")
 public class VersionResource implements OntologyLogger {
 
-    @GET
-    @Produces("application/json")
-    public Response content() {
-        Version version = new Version(getGitProperties());
-        return Response.ok().entity(version).build();
-    }
+  @GET
+  @Produces("application/json")
+  public Response content() {
+    Version version = new Version(getGitProperties());
+    return Response.ok().entity(version).build();
+  }
 
-    private String getGitProperties() {
-        try {
-            return IOUtils.resourceToString("/git.properties", Charset.defaultCharset());
-        } catch (Exception e) {
-            logException(e);
-        }
-        return null;
+  private String getGitProperties() {
+    try {
+      return IOUtils.resourceToString("/git.properties", Charset.defaultCharset());
+    } catch (Exception e) {
+      logException(e);
     }
+    return null;
+  }
 
 }

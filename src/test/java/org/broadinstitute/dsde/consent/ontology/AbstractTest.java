@@ -19,24 +19,25 @@ import java.io.IOException;
  */
 public class AbstractTest {
 
-    protected static HttpResponse getMockHttpResponse(String content) throws IOException {
-      HttpTransport transport = new MockHttpTransport() {
-        @Override
-        public LowLevelHttpRequest buildRequest(String method, String url) {
-          return new MockLowLevelHttpRequest() {
-            @Override
-            public LowLevelHttpResponse execute() {
-              MockLowLevelHttpResponse response = new MockLowLevelHttpResponse();
-              response.setStatusCode(HttpStatusCodes.STATUS_CODE_OK);
-              response.setContentType(Json.MEDIA_TYPE);
-              response.setContent(content);
-              return response;
-            }
-          };
-        }
-      };
-      HttpRequest request = transport.createRequestFactory().buildGetRequest(HttpTesting.SIMPLE_GENERIC_URL);
-      return request.execute();
-    }
+  protected static HttpResponse getMockHttpResponse(String content) throws IOException {
+    HttpTransport transport = new MockHttpTransport() {
+      @Override
+      public LowLevelHttpRequest buildRequest(String method, String url) {
+        return new MockLowLevelHttpRequest() {
+          @Override
+          public LowLevelHttpResponse execute() {
+            MockLowLevelHttpResponse response = new MockLowLevelHttpResponse();
+            response.setStatusCode(HttpStatusCodes.STATUS_CODE_OK);
+            response.setContentType(Json.MEDIA_TYPE);
+            response.setContent(content);
+            return response;
+          }
+        };
+      }
+    };
+    HttpRequest request = transport.createRequestFactory()
+        .buildGetRequest(HttpTesting.SIMPLE_GENERIC_URL);
+    return request.execute();
+  }
 
 }

@@ -9,7 +9,8 @@ public class DataUseMatchPairV3 {
 
   private DataUseV3 consent;
 
-  public DataUseMatchPairV3() { }
+  public DataUseMatchPairV3() {
+  }
 
   public DataUseMatchPairV3(DataUseV3 purpose, DataUseV3 consent) {
     this.purpose = purpose;

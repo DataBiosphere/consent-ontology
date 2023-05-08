@@ -1,12 +1,12 @@
 package org.broadinstitute.dsde.consent.ontology.util;
 
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 public final class DataUseUtil {
 
@@ -17,7 +17,8 @@ public final class DataUseUtil {
   private AutocompleteService autocompleteService;
 
   // Get a map of disease term to list of parent term ids (which also includes disease term id)
-  public Map<String, List<String>> generatePurposeDiseaseIdMap(List<String> diseaseRestrictions) throws IOException {
+  public Map<String, List<String>> generatePurposeDiseaseIdMap(List<String> diseaseRestrictions)
+      throws IOException {
     Map<String, List<String>> map = new HashMap<>();
     for (String r : diseaseRestrictions) {
       map.put(r, getParentTermIds(r));

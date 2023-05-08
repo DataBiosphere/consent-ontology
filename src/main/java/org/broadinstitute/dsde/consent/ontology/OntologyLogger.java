@@ -7,6 +7,7 @@ public interface OntologyLogger {
 
   /**
    * Logs an error message to the console and to Sentry
+   *
    * @param message Error Message
    */
   default void logError(String message) {
@@ -16,6 +17,7 @@ public interface OntologyLogger {
 
   /**
    * Logs an exception to the console and to Sentry
+   *
    * @param e Exception
    */
   default void logException(Exception e) {
@@ -30,6 +32,7 @@ public interface OntologyLogger {
 
   /**
    * Logs a warning message to the console
+   *
    * @param message Error Message
    */
   default void logWarn(String message) {
@@ -38,6 +41,7 @@ public interface OntologyLogger {
 
   /**
    * Logs an info message to the console
+   *
    * @param message Error Message
    */
   default void logInfo(String message) {
@@ -46,6 +50,7 @@ public interface OntologyLogger {
 
   /**
    * Logs a debug message to the console
+   *
    * @param message Error Message
    */
   default void logDebug(String message) {
