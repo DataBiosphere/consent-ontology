@@ -12,7 +12,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseResponseEntity;
+import org.broadinstitute.dsde.consent.ontology.datause.MatchV3ResponseEntity;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
@@ -101,7 +101,7 @@ public class MatchResource {
         // nosemgrep
         return Response
             .ok()
-            .entity(new DataUseResponseEntity(match, matchPair, failures).get())
+            .entity(new MatchV3ResponseEntity(match, matchPair, failures).get())
             .type(MediaType.APPLICATION_JSON)
             .build();
       }

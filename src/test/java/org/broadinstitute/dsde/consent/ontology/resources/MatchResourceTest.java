@@ -14,7 +14,7 @@ import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseResponseEntity;
+import org.broadinstitute.dsde.consent.ontology.datause.MatchV3ResponseEntity;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
@@ -54,7 +54,6 @@ public class MatchResourceTest {
             any(DataUseV3.class))).thenReturn(
         new MatchResult(MatchResultType.APPROVE, Collections.emptyList())
     );
-
   }
 
   private void initResource() {
@@ -122,15 +121,57 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testOKV3Response() {
+  public void testOKV3Response_approve() {
     initResource();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
     try (Response response = resource.matchDataUseV3(pair)) {
       String stringEntity = response.getEntity().toString();
-      DataUseResponseEntity entity = new Gson().fromJson(stringEntity, DataUseResponseEntity.class);
+      MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
       assertEquals(MatchResultType.APPROVE, entity.getResult());
+      assertEquals(pair, entity.getMatchPair());
+      assertEquals(Collections.emptyList(), entity.getFailureReasons());
+    }
+  }
+
+  @Test
+  public void testOKV3Response_deny() {
+    initResource();
+    MatchResultType result_deny = MatchResultType.DENY;
+    when(
+        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
+            any(DataUseV3.class))).thenReturn(
+        new MatchResult(result_deny, Collections.emptyList())
+    );
+    DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("true").build();
+    DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
+    DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
+    try (Response response = resource.matchDataUseV3(pair)) {
+      String stringEntity = response.getEntity().toString();
+      MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
+      assertEquals(result_deny, entity.getResult());
+      assertEquals(pair, entity.getMatchPair());
+      assertEquals(Collections.emptyList(), entity.getFailureReasons());
+    }
+  }
+
+  @Test
+  public void testOKV3Response_abstain() {
+    initResource();
+    MatchResultType result_abstain = MatchResultType.ABSTAIN;
+    when(
+        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
+            any(DataUseV3.class))).thenReturn(
+        new MatchResult(result_abstain, Collections.emptyList())
+    );
+    DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("true").build();
+    DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
+    DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
+    try (Response response = resource.matchDataUseV3(pair)) {
+      String stringEntity = response.getEntity().toString();
+      MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
+      assertEquals(result_abstain, entity.getResult());
       assertEquals(pair, entity.getMatchPair());
       assertEquals(Collections.emptyList(), entity.getFailureReasons());
     }

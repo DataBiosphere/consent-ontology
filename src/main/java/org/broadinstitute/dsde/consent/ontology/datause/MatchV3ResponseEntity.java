@@ -4,13 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV3;
 
-public class DataUseResponseEntity {
-
+public class MatchV3ResponseEntity {
   private final MatchResultType result;
   private final DataUseMatchPairV3 matchPair;
   private final List<String> failureReasons;
 
-  public DataUseResponseEntity(MatchResultType result, DataUseMatchPairV3 matchPair,
+  public MatchV3ResponseEntity(MatchResultType result, DataUseMatchPairV3 matchPair,
       List<String> failureReasons) {
     this.result = result;
     this.matchPair = matchPair;
