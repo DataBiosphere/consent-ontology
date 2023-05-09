@@ -121,7 +121,7 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testOKV3Response_approve() {
+  public void testOKV3ResponseApprove() {
     initResource();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
@@ -136,13 +136,13 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testOKV3Response_deny() {
+  public void testOKV3ResponseDeny() {
     initResource();
-    MatchResultType result_deny = MatchResultType.DENY;
+    MatchResultType deny = MatchResultType.DENY;
     when(
         dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
             any(DataUseV3.class))).thenReturn(
-        new MatchResult(result_deny, Collections.emptyList())
+        new MatchResult(deny, Collections.emptyList())
     );
     DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("true").build();
     DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
@@ -150,20 +150,20 @@ public class MatchResourceTest {
     try (Response response = resource.matchDataUseV3(pair)) {
       String stringEntity = response.getEntity().toString();
       MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
-      assertEquals(result_deny, entity.getResult());
+      assertEquals(deny, entity.getResult());
       assertEquals(pair, entity.getMatchPair());
       assertEquals(Collections.emptyList(), entity.getFailureReasons());
     }
   }
 
   @Test
-  public void testOKV3Response_abstain() {
+  public void testOKV3ResponseAbstain() {
     initResource();
-    MatchResultType result_abstain = MatchResultType.ABSTAIN;
+    MatchResultType abstain = MatchResultType.ABSTAIN;
     when(
         dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
             any(DataUseV3.class))).thenReturn(
-        new MatchResult(result_abstain, Collections.emptyList())
+        new MatchResult(abstain, Collections.emptyList())
     );
     DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("true").build();
     DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
@@ -171,7 +171,7 @@ public class MatchResourceTest {
     try (Response response = resource.matchDataUseV3(pair)) {
       String stringEntity = response.getEntity().toString();
       MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
-      assertEquals(result_abstain, entity.getResult());
+      assertEquals(abstain, entity.getResult());
       assertEquals(pair, entity.getMatchPair());
       assertEquals(Collections.emptyList(), entity.getFailureReasons());
     }
