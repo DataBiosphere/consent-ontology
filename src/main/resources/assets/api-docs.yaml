@@ -381,7 +381,8 @@ definitions:
     type: object
     properties:
       result:
-        type: boolean
+        type: string
+        enum: [APPROVE, DENY, ABSTAIN]
         description: Result of the match algorithm on the provided purpose and dataset
       matchPair:
         $ref: '#/definitions/DataUseMatchPairV3'
