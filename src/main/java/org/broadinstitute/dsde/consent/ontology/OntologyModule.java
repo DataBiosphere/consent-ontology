@@ -17,51 +17,51 @@ import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchAutocomplet
 
 public class OntologyModule extends AbstractModule {
 
-    private final OntologyConfiguration config;
-    private final Environment environment;
+  private final OntologyConfiguration config;
+  private final Environment environment;
 
-    OntologyModule(OntologyConfiguration configuration, Environment environment){
-        this.config = configuration;
-        this.environment = environment;
-    }
+  OntologyModule(OntologyConfiguration configuration, Environment environment) {
+    this.config = configuration;
+    this.environment = environment;
+  }
 
-    @Override
-    protected void configure() {
-        bind(Configuration.class).toInstance(config);
-        bind(Environment.class).toInstance(environment);
-    }
+  @Override
+  protected void configure() {
+    bind(Configuration.class).toInstance(config);
+    bind(Environment.class).toInstance(environment);
+  }
 
-    @Provides
-    @Singleton
-    public TextTranslationService providesTextTranslationService() {
-        return new TextTranslationServiceImpl(providesAutocomplete(), providesGCSStore());
-    }
+  @Provides
+  @Singleton
+  public TextTranslationService providesTextTranslationService() {
+    return new TextTranslationServiceImpl(providesAutocomplete(), providesGCSStore());
+  }
 
-    @Provides
-    @Singleton
-    public AutocompleteService providesAutocomplete() {
-        return new ElasticSearchAutocomplete(config.getElasticSearchConfiguration());
-    }
+  @Provides
+  @Singleton
+  public AutocompleteService providesAutocomplete() {
+    return new ElasticSearchAutocomplete(config.getElasticSearchConfiguration());
+  }
 
-    @Provides
-    @Singleton
-    public GCSStore providesGCSStore() {
-        try {
-            return new GCSStore(config.getCloudStoreConfiguration());
-        } catch (GeneralSecurityException | IOException e) {
-            throw new IllegalStateException(e);
-        }
+  @Provides
+  @Singleton
+  public GCSStore providesGCSStore() {
+    try {
+      return new GCSStore(config.getCloudStoreConfiguration());
+    } catch (GeneralSecurityException | IOException e) {
+      throw new IllegalStateException(e);
     }
+  }
 
-    @Provides
-    public ElasticSearchConfiguration providesElasticSearchConfiguration() {
-        return config.getElasticSearchConfiguration();
-    }
+  @Provides
+  public ElasticSearchConfiguration providesElasticSearchConfiguration() {
+    return config.getElasticSearchConfiguration();
+  }
 
-    @Provides
-    public HealthCheckRegistry providesHealthCheckRegistry() {
-        return environment.healthChecks();
-    }
+  @Provides
+  public HealthCheckRegistry providesHealthCheckRegistry() {
+    return environment.healthChecks();
+  }
 
 }
 

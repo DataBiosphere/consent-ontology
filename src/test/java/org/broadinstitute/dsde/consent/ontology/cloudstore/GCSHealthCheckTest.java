@@ -15,31 +15,31 @@ import org.mockito.Mock;
 
 public class GCSHealthCheckTest {
 
-    private GCSHealthCheck healthCheck;
+  private GCSHealthCheck healthCheck;
 
-    @Mock
-    private GCSStore store;
+  @Mock
+  private GCSStore store;
 
-    @BeforeEach
-    public void setUpClass() {
-        openMocks(this);
-        healthCheck = new GCSHealthCheck(store);
-    }
+  @BeforeEach
+  public void setUpClass() {
+    openMocks(this);
+    healthCheck = new GCSHealthCheck(store);
+  }
 
-    @Test
-    public void testBucketExists() throws IOException, GeneralSecurityException {
-        when(store.getBucketMetadata()).thenReturn(new Bucket());
+  @Test
+  public void testBucketExists() throws IOException, GeneralSecurityException {
+    when(store.getBucketMetadata()).thenReturn(new Bucket());
 
-        HealthCheck.Result result = healthCheck.execute();
-        assertTrue(result.isHealthy());
-    }
+    HealthCheck.Result result = healthCheck.execute();
+    assertTrue(result.isHealthy());
+  }
 
-    @Test
-    public void testBucketMissing() throws Exception {
-        when(store.getBucketMetadata()).thenReturn(null);
+  @Test
+  public void testBucketMissing() throws Exception {
+    when(store.getBucketMetadata()).thenReturn(null);
 
-        HealthCheck.Result result = healthCheck.execute();
-        assertFalse(result.isHealthy());
-        assertTrue(result.getMessage().contains("GCS bucket unreachable"));
-    }
+    HealthCheck.Result result = healthCheck.execute();
+    assertFalse(result.isHealthy());
+    assertTrue(result.getMessage().contains("GCS bucket unreachable"));
+  }
 }

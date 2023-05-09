@@ -6,6 +6,7 @@ import java.util.List;
  * Syntactic sugar for creating a DataUseV3 object.
  */
 public class DataUseBuilderV3 {
+
   private DataUseV3 du;
 
   public DataUseBuilderV3() {

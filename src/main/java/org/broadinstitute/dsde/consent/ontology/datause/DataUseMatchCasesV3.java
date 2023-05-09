@@ -1,16 +1,15 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
-import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
-import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 
 public class DataUseMatchCasesV3 {
+
   private static final String HMB_F1 = "The GRU Research Purpose does not match the HMB data use limitations.";
   private static final String HMB_F2 = "The HMB Research Purpose does not match the Disease-Specific data use limitations.";
   private static final String HMB_F3 = "The HMB Research Purpose does not match the POA data use limitations.";
@@ -21,19 +20,15 @@ public class DataUseMatchCasesV3 {
   private static final String ABSTAIN = "The Research Purpose does not result in DUOS Decision.";
 
   /**
-   * RP: Disease Focused Research
-   * Future use is limited to research involving the following disease area(s) [DS]
-   * Datasets:
-   *      Any dataset with GRU=true
-   *      Any dataset with HMB=true
-   *      Any dataset tagged to this disease exactly
-   *      Any dataset tagged to a DOID ontology Parent of disease X
-   * Denied Datasets:
-   *      Any dataset NOT the DS- or a subclass
+   * RP: Disease Focused Research Future use is limited to research involving the following disease
+   * area(s) [DS] Datasets: Any dataset with GRU=true Any dataset with HMB=true Any dataset tagged
+   * to this disease exactly Any dataset tagged to a DOID ontology Parent of disease X Denied
+   * Datasets: Any dataset NOT the DS- or a subclass
    *
-   * @param purpose The data use object representing the Research Purpose
-   * @param dataset The data use object representing the Dataset
-   * @param purposeDiseaseIdMap is a map of each purpose term id to a list of that term's parent term ids
+   * @param purpose             The data use object representing the Research Purpose
+   * @param dataset             The data use object representing the Dataset
+   * @param purposeDiseaseIdMap is a map of each purpose term id to a list of that term's parent
+   *                            term ids
    */
   static MatchResult matchDiseases(
       DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap) {
@@ -63,21 +58,17 @@ public class DataUseMatchCasesV3 {
           .stream()
           .anyMatch(dataset.getDiseaseRestrictions()::contains);
       if (!match) {
-        failures.add(String.format(DS_F2,  entry.getKey()));
+        failures.add(String.format(DS_F2, entry.getKey()));
       }
     }
 
-    return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY, failures);
+    return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY,
+        failures);
   }
 
   /**
-   * RP: HMB
-   * Approved Datasets:
-   *      Any dataset tagged with GRU
-   *      Any dataset tagged with HMB
-   * Denied Datasets:
-   *        Any dataset tagged with DS-
-   *        Any dataset tagged with POA
+   * RP: HMB Approved Datasets: Any dataset tagged with GRU Any dataset tagged with HMB Denied
+   * Datasets: Any dataset tagged with DS- Any dataset tagged with POA
    *
    * @param purpose The data use object representing the Research Purpose
    * @param dataset The data use object representing the Dataset
@@ -119,23 +110,17 @@ public class DataUseMatchCasesV3 {
     // Approve dataset HMB condition
     if (purposeHMB && datasetHMB) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
-    }
+    } else {
 
-    else {
-
-      return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY, failures);
+      return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY,
+          failures);
     }
   }
 
   /**
-   * RP: Study population origins or ancestry
-   * Future use is limited to research involving a specific population [POA]
-   * Approved Datasets:
-   *      Any dataset tagged with GRU
-   *      Any dataset tagged with POA
-   * Denied Datasets:
-   *       Any dataset tagged with DS-
-   *       Any dataset tagged with HMB
+   * RP: Study population origins or ancestry Future use is limited to research involving a specific
+   * population [POA] Approved Datasets: Any dataset tagged with GRU Any dataset tagged with POA
+   * Denied Datasets: Any dataset tagged with DS- Any dataset tagged with HMB
    */
   static MatchResult matchPOA(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit if no POA clause
@@ -167,15 +152,10 @@ public class DataUseMatchCasesV3 {
   }
 
   /**
-   * RP: Methods development/Validation study
-   * Future use for methods research (analytic/software/technology development) outside the
-   *      bounds of the other specified restrictions
-   * Approved Datasets:
-   *      Any dataset where GRU = true
-   *      Any dataset where HMB = true
-   *      Any dataset where POA = true
-   *      Any dataset where DS-X match
-   *
+   * RP: Methods development/Validation study Future use for methods research
+   * (analytic/software/technology development) outside the bounds of the other specified
+   * restrictions Approved Datasets: Any dataset where GRU = true Any dataset where HMB = true Any
+   * dataset where POA = true Any dataset where DS-X match
    */
   static MatchResult matchMDS(DataUseV3 purpose, DataUseV3 dataset, MatchResultType diseaseMatch) {
     // short-circuit if no disease focused research
@@ -217,21 +197,17 @@ public class DataUseMatchCasesV3 {
   }
 
   /**
-   * RP: Commercial purpose/by a commercial entity
-   * Future commercial use is prohibited [NCU]
-   * Future use by for-profit entities is prohibited [NPU]
-   * Approved Datasets:
-   *      Any dataset where NPU and NCU are both false
-   * Denied Datasets:
-   *      Any dataset tagged with NCU
-   *      Any dataset tagged with NPU
+   * RP: Commercial purpose/by a commercial entity Future commercial use is prohibited [NCU] Future
+   * use by for-profit entities is prohibited [NPU] Approved Datasets: Any dataset where NPU and NCU
+   * are both false Denied Datasets: Any dataset tagged with NCU Any dataset tagged with NPU
    */
   static MatchResult matchCommercial(DataUseV3 purpose, DataUseV3 dataset) {
     // short-circuit if no commercial/ non-profit clauses
-    if (Objects.isNull(purpose.getCommercialUse())){
+    if (Objects.isNull(purpose.getCommercialUse())) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
-    if ((Objects.isNull(dataset.getCommercialUse())) && (Objects.isNull(dataset.getNonProfitUse()))){
+    if ((Objects.isNull(dataset.getCommercialUse())) && (Objects.isNull(
+        dataset.getNonProfitUse()))) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
@@ -244,7 +220,7 @@ public class DataUseMatchCasesV3 {
       failures.add(NCU_F1);
     }
 
-    if ((purposeCommercial && datasetNPU)){
+    if ((purposeCommercial && datasetNPU)) {
       failures.add(NCU_F1);
     }
 
@@ -257,17 +233,16 @@ public class DataUseMatchCasesV3 {
   }
 
   /**
-   * DUOS Algorithm: Abstain From Decision
-   * Due to the variety of sensitive research areas, ethical reasons, and areas where categorization is not possible,
-   * the DUOS system will not render a decision in any of the cases not addressed in the methods above.
-   *
-   * Abstained RP's:
-   *      Any RP that is not GRU, DS-X, POA, MDS, Commercial
-   *
+   * DUOS Algorithm: Abstain From Decision Due to the variety of sensitive research areas, ethical
+   * reasons, and areas where categorization is not possible, the DUOS system will not render a
+   * decision in any of the cases not addressed in the methods above.
+   * <p>
+   * Abstained RP's: Any RP that is not GRU, DS-X, POA, MDS, Commercial
    */
 
-  static MatchResult abstainDecision (
-      DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap, MatchResultType diseaseMatch) {
+  static MatchResult abstainDecision(
+      DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap,
+      MatchResultType diseaseMatch) {
     // Valid RPs
     boolean purposeDSX = getNullableOrFalse(!purpose.getDiseaseRestrictions().isEmpty());
     boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
@@ -277,19 +252,19 @@ public class DataUseMatchCasesV3 {
     boolean purposeGRU = getNullableOrFalse(purpose.getGeneralUse());
 
     // If RP is valid then call that method
-    if (purposeDSX){
+    if (purposeDSX) {
       return matchDiseases(purpose, dataset, purposeDiseaseIdMap);
     }
-    if (purposeHMB || purposeGRU){
+    if (purposeHMB || purposeGRU) {
       return matchHMB(purpose, dataset);
     }
-    if (purposePOA){
+    if (purposePOA) {
       return matchPOA(purpose, dataset);
     }
-    if (purposeMDS){
+    if (purposeMDS) {
       return matchMDS(purpose, dataset, diseaseMatch);
     }
-    if (purposeCommercial){
+    if (purposeCommercial) {
       return matchCommercial(purpose, dataset);
     }
     return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(ABSTAIN));

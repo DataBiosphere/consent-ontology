@@ -9,13 +9,13 @@ import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
 
 public interface TextTranslationService {
 
-    DataUseSummary translateDataUseSummary(String dataUseString);
+  DataUseSummary translateDataUseSummary(String dataUseString);
 
-    String translateDataset(String dataUse) throws IOException;
+  String translateDataset(String dataUse) throws IOException;
 
-    Map<String, Recommendation> translateParagraph(String paragraph) throws IOException;
+  Map<String, Recommendation> translateParagraph(String paragraph) throws IOException;
 
-    String translatePurpose(String dataUse) throws IOException;
+  String translatePurpose(String dataUse) throws IOException;
 
-    String translate(DataUse dataUse, TranslateFor translateFor);
+  String translate(DataUse dataUse, TranslateFor translateFor);
 }

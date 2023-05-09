@@ -1,38 +1,37 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.inject.Inject;
-import org.broadinstitute.dsde.consent.ontology.model.TermResource;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-
+import java.util.Arrays;
+import java.util.List;
 import javax.ws.rs.DefaultValue;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import java.util.Arrays;
-import java.util.List;
+import org.broadinstitute.dsde.consent.ontology.model.TermResource;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 
 @Path("/autocomplete")
 public class AutocompleteResource {
 
-    private AutocompleteService service;
+  private AutocompleteService service;
 
-    @Inject
-    public AutocompleteResource(AutocompleteService service) {
-        this.service = service;
-    }
+  @Inject
+  public AutocompleteResource(AutocompleteService service) {
+    this.service = service;
+  }
 
-    @GET
-    @Produces("application/json")
-    public List<TermResource> getTerms(
-            @QueryParam("q") String queryTerm,
-            @QueryParam("types") @DefaultValue("") String ontologyNames,
-            @QueryParam("count") @DefaultValue("20") int limit) {
-        if (ontologyNames == null || ontologyNames.isEmpty()) {
-            return service.lookup(queryTerm, limit);
-        } else {
-            return service.lookup(Arrays.asList(ontologyNames.split(",")), queryTerm, limit);
-        }
+  @GET
+  @Produces("application/json")
+  public List<TermResource> getTerms(
+      @QueryParam("q") String queryTerm,
+      @QueryParam("types") @DefaultValue("") String ontologyNames,
+      @QueryParam("count") @DefaultValue("20") int limit) {
+    if (ontologyNames == null || ontologyNames.isEmpty()) {
+      return service.lookup(queryTerm, limit);
+    } else {
+      return service.lookup(Arrays.asList(ontologyNames.split(",")), queryTerm, limit);
     }
+  }
 
 }
