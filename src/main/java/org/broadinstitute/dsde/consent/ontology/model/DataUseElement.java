@@ -1,27 +1,28 @@
 package org.broadinstitute.dsde.consent.ontology.model;
 
 public class DataUseElement {
-    String code;
-    String description;
 
-    public DataUseElement(String code, String description) {
-        setCode(code);
-        setDescription(description);
-    }
+  String code;
+  String description;
 
-    public String getCode() {
-        return code;
-    }
+  public DataUseElement(String code, String description) {
+    setCode(code);
+    setDescription(description);
+  }
 
-    public void setCode(String code) {
-        this.code = code;
-    }
+  public String getCode() {
+    return code;
+  }
 
-    public String getDescription() {
-        return description;
-    }
+  public void setCode(String code) {
+    this.code = code;
+  }
 
-    public void setDescription(String description) {
-        this.description = description.replaceAll("\\[.+]", "").trim();
-    }
+  public String getDescription() {
+    return description;
+  }
+
+  public void setDescription(String description) {
+    this.description = description.replaceAll("\\[.+]", "").trim();
+  }
 }

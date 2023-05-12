@@ -15,28 +15,30 @@ import java.util.Collections;
 
 public class StorageFactory {
 
-    private static Storage instance = null;
-    private static String STORAGE_APPLICATION_NAME = "DUOS Oversight Ontology";
+  private static Storage instance = null;
+  private static String STORAGE_APPLICATION_NAME = "DUOS Oversight Ontology";
 
-    public static synchronized Storage getService(String password) throws IOException, GeneralSecurityException {
-        if (instance == null) {
-            instance = buildService(password);
-        }
-        return instance;
+  public static synchronized Storage getService(String password)
+      throws IOException, GeneralSecurityException {
+    if (instance == null) {
+      instance = buildService(password);
     }
+    return instance;
+  }
 
-    private static Storage buildService(String password) throws IOException, GeneralSecurityException {
-        HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
-        JsonFactory jsonFactory = new GsonFactory();
-        GoogleCredential credential = GoogleCredential.
-                fromStream(new FileInputStream(password)).
-                createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
+  private static Storage buildService(String password)
+      throws IOException, GeneralSecurityException {
+    HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
+    JsonFactory jsonFactory = new GsonFactory();
+    GoogleCredential credential = GoogleCredential.
+        fromStream(new FileInputStream(password)).
+        createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
 
-        Collection<String> scopes = StorageScopes.all();
-        credential = credential.createScoped(scopes);
+    Collection<String> scopes = StorageScopes.all();
+    credential = credential.createScoped(scopes);
 
-        return new Storage.Builder(transport, jsonFactory, credential)
-                .setApplicationName(STORAGE_APPLICATION_NAME)
-                .build();
-    }
+    return new Storage.Builder(transport, jsonFactory, credential)
+        .setApplicationName(STORAGE_APPLICATION_NAME)
+        .build();
+  }
 }

@@ -62,43 +62,44 @@ public class TranslateResource implements OntologyLogger {
     }
   }
 
-    @Path("paragraph")
-    @POST
-    public Response translateParagraph(final String jsonString) {
-        try {
-          final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {});
-          String paragraph = body.get("paragraph");
-          if (StringUtils.isBlank(paragraph)) {
-              return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
-          }
-          return buildResponse(PARAGRAPH, paragraph);
-        } catch (Exception e) {
-          String message = "Server Error translating paragraph";
-          logException(message, e);
-          return Response
-            .status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message)
-            .build();
-        }
+  @Path("paragraph")
+  @POST
+  public Response translateParagraph(final String jsonString) {
+    try {
+      final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {
+      });
+      String paragraph = body.get("paragraph");
+      if (StringUtils.isBlank(paragraph)) {
+        return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
+      }
+      return buildResponse(PARAGRAPH, paragraph);
+    } catch (Exception e) {
+      String message = "Server Error translating paragraph";
+      logException(message, e);
+      return Response
+          .status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message)
+          .build();
     }
+  }
 
-    /**
-     * Helper method to build a response from any form of text translation service
-     *
-     * @param forParam Either "purpose" or "dataset"
-     * @param dataUse  JSON representation of the data use object
-     * @return Response The Response
-     * @throws Exception The Exception
-     */
-    private Response buildResponse(TranslateFor forParam, String dataUse) throws Exception {
-        String result = switch(forParam) {
-          case PARAGRAPH -> {
-            Map<String, Recommendation> response = translationService.translateParagraph(dataUse);
-            yield new Gson().toJson(response);
-          }
-          case PURPOSE -> translationService.translatePurpose(dataUse);
-          case DATASET -> translationService.translateDataset(dataUse);
-        };
-        return Response.ok().entity(result).build();
-    }
+  /**
+   * Helper method to build a response from any form of text translation service
+   *
+   * @param forParam Either "purpose" or "dataset"
+   * @param dataUse  JSON representation of the data use object
+   * @return Response The Response
+   * @throws Exception The Exception
+   */
+  private Response buildResponse(TranslateFor forParam, String dataUse) throws Exception {
+    String result = switch (forParam) {
+      case PARAGRAPH -> {
+        Map<String, Recommendation> response = translationService.translateParagraph(dataUse);
+        yield new Gson().toJson(response);
+      }
+      case PURPOSE -> translationService.translatePurpose(dataUse);
+      case DATASET -> translationService.translateDataset(dataUse);
+    };
+    return Response.ok().entity(result).build();
+  }
 
 }

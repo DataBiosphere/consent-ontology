@@ -8,9 +8,9 @@ import jakarta.ws.rs.core.Response;
 @Path("liveness")
 public class LivenessResource {
 
-    @GET
-    @Produces("text/plain")
-    public Response getStatus() {
-        return Response.ok("Healthy!").build();
-    }
+  @GET
+  @Produces("text/plain")
+  public Response getStatus() {
+    return Response.ok("Healthy!").build();
+  }
 }

@@ -11,9 +11,12 @@ import org.broadinstitute.dsp.ontology.performance.Endpoints;
 public class Autocomplete implements Endpoints {
 
   public List<ScenarioBuilder> tests = List.of(
-    scenario("Autocomplete: Cancer").exec(autocomplete("cancer").check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
-    scenario("Autocomplete: Diabetes").exec(autocomplete("diabetes").check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
-    scenario("Autocomplete: Apnea").exec(autocomplete("apnea").check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)
+      scenario("Autocomplete: Cancer").exec(
+          autocomplete("cancer").check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
+      scenario("Autocomplete: Diabetes").exec(
+          autocomplete("diabetes").check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5),
+      scenario("Autocomplete: Apnea").exec(
+          autocomplete("apnea").check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)
   );
 
 }

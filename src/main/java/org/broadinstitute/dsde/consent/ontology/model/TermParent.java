@@ -1,59 +1,59 @@
 package org.broadinstitute.dsde.consent.ontology.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
 import java.util.List;
 
 @SuppressWarnings("unused")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class TermParent {
-    public String id;
-    public Integer order;
-    public String label;
-    public String definition;
-    public List<String> synonyms;
 
-    public TermParent() {
-    }
+  public String id;
+  public Integer order;
+  public String label;
+  public String definition;
+  public List<String> synonyms;
 
-    public String getId() {
-        return this.id;
-    }
+  public TermParent() {
+  }
 
-    public Integer getOrder() {
-        return order;
-    }
+  public String getId() {
+    return this.id;
+  }
 
-    public String getLabel() {
-        return label;
-    }
+  public Integer getOrder() {
+    return order;
+  }
 
-    public String getDefinition() {
-        return definition;
-    }
+  public String getLabel() {
+    return label;
+  }
 
-    public List<String> getSynonyms() {
-        return synonyms;
-    }
+  public String getDefinition() {
+    return definition;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public List<String> getSynonyms() {
+    return synonyms;
+  }
 
-    public void setOrder(Integer order) {
-        this.order = order;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
+  public void setOrder(Integer order) {
+    this.order = order;
+  }
 
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
-    public void setSynonyms(List<String> synonyms) {
-        this.synonyms = synonyms;
-    }
+  public void setDefinition(String definition) {
+    this.definition = definition;
+  }
+
+  public void setSynonyms(List<String> synonyms) {
+    this.synonyms = synonyms;
+  }
 
 }

@@ -14,68 +14,68 @@ import org.mockito.Mock;
 
 public class StatusResourceTest {
 
-    private final Result deadlocks = Result.healthy();
-    private final Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
-    private final Result gcs = Result.healthy();
+  private final Result deadlocks = Result.healthy();
+  private final Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
+  private final Result gcs = Result.healthy();
 
-    @Mock
-    private HealthCheckRegistry healthChecks;
+  @Mock
+  private HealthCheckRegistry healthChecks;
 
-    private StatusResource initStatusResource(SortedMap<String, Result> checks) {
-        openMocks(this);
-        when(healthChecks.runHealthChecks()).thenReturn(checks);
-        return new StatusResource(healthChecks);
-    }
+  private StatusResource initStatusResource(SortedMap<String, Result> checks) {
+    openMocks(this);
+    when(healthChecks.runHealthChecks()).thenReturn(checks);
+    return new StatusResource(healthChecks);
+  }
 
-    @Test
-    public void testHealthy() {
-        SortedMap<String, Result> checks = new TreeMap<>();
-        checks.put("deadlocks", deadlocks);
-        checks.put("elastic-search", elasticSearch);
-        checks.put("google-cloud-storage", gcs);
-        StatusResource statusResource = initStatusResource(checks);
+  @Test
+  public void testHealthy() {
+    SortedMap<String, Result> checks = new TreeMap<>();
+    checks.put("deadlocks", deadlocks);
+    checks.put("elastic-search", elasticSearch);
+    checks.put("google-cloud-storage", gcs);
+    StatusResource statusResource = initStatusResource(checks);
 
-        Response response = statusResource.getStatus();
-        assertEquals(200, response.getStatus());
-    }
+    Response response = statusResource.getStatus();
+    assertEquals(200, response.getStatus());
+  }
 
-    @Test
-    public void testUnhealthyDeadlocks() {
-        SortedMap<String, Result> checks = new TreeMap<>();
-        checks.put("deadlocks", deadlocks);
-        checks.put("elastic-search", Result.unhealthy("ClusterHealth is RED"));
-        checks.put("google-cloud-storage", gcs);
-        StatusResource statusResource = initStatusResource(checks);
+  @Test
+  public void testUnhealthyDeadlocks() {
+    SortedMap<String, Result> checks = new TreeMap<>();
+    checks.put("deadlocks", deadlocks);
+    checks.put("elastic-search", Result.unhealthy("ClusterHealth is RED"));
+    checks.put("google-cloud-storage", gcs);
+    StatusResource statusResource = initStatusResource(checks);
 
-        Response response = statusResource.getStatus();
-        // We still expect a 200 response, but expect a warning log
-        assertEquals(200, response.getStatus());
-    }
+    Response response = statusResource.getStatus();
+    // We still expect a 200 response, but expect a warning log
+    assertEquals(200, response.getStatus());
+  }
 
-    @Test
-    public void testUnhealthyElasticSearch() {
-        SortedMap<String, Result> checks = new TreeMap<>();
-        checks.put("deadlocks", Result.unhealthy(new Exception("Unhealthy Deadlocks")));
-        checks.put("elastic-search", elasticSearch);
-        checks.put("google-cloud-storage", gcs);
-        StatusResource statusResource = initStatusResource(checks);
+  @Test
+  public void testUnhealthyElasticSearch() {
+    SortedMap<String, Result> checks = new TreeMap<>();
+    checks.put("deadlocks", Result.unhealthy(new Exception("Unhealthy Deadlocks")));
+    checks.put("elastic-search", elasticSearch);
+    checks.put("google-cloud-storage", gcs);
+    StatusResource statusResource = initStatusResource(checks);
 
-        Response response = statusResource.getStatus();
-        // We still expect a 200 response, but expect a warning log
-        assertEquals(200, response.getStatus());
-    }
+    Response response = statusResource.getStatus();
+    // We still expect a 200 response, but expect a warning log
+    assertEquals(200, response.getStatus());
+  }
 
-    @Test
-    public void testUnhealthyGCS() {
-        SortedMap<String, Result> checks = new TreeMap<>();
-        checks.put("deadlocks", deadlocks);
-        checks.put("elastic-search", elasticSearch);
-        checks.put("google-cloud-storage", Result.unhealthy("GCS Unreachable"));
-        StatusResource statusResource = initStatusResource(checks);
+  @Test
+  public void testUnhealthyGCS() {
+    SortedMap<String, Result> checks = new TreeMap<>();
+    checks.put("deadlocks", deadlocks);
+    checks.put("elastic-search", elasticSearch);
+    checks.put("google-cloud-storage", Result.unhealthy("GCS Unreachable"));
+    StatusResource statusResource = initStatusResource(checks);
 
-        Response response = statusResource.getStatus();
-        // We still expect a 200 response, but expect a warning log
-        assertEquals(200, response.getStatus());
-    }
+    Response response = statusResource.getStatus();
+    // We still expect a 200 response, but expect a warning log
+    assertEquals(200, response.getStatus());
+  }
 
 }

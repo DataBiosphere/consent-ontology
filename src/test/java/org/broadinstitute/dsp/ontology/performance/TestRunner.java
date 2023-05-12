@@ -12,17 +12,17 @@ import java.util.stream.Stream;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Autocomplete;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseSchema;
 import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseTranslate;
+import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseV3;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Matching;
 import org.broadinstitute.dsp.ontology.performance.scenarios.MatchingV3;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Search;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Status;
 import org.broadinstitute.dsp.ontology.performance.scenarios.Validate;
-import org.broadinstitute.dsp.ontology.performance.scenarios.DataUseV3;
 
 
 /**
- * This is the main entry point for smoke/performance tests
- * Headers common to all requests are defined here in the protocol builder.
+ * This is the main entry point for smoke/performance tests Headers common to all requests are
+ * defined here in the protocol builder.
  */
 public class TestRunner extends Simulation {
 

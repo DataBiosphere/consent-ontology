@@ -6,12 +6,13 @@ import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 
 public class LivenessResourceTest {
-    @Test
-    public void testHealthy() {
-        LivenessResource resource = new LivenessResource();
-        Response response = resource.getStatus();
-        assertEquals(200, response.getStatus());
-        assertEquals("Healthy!", response.getEntity());
-    }
+
+  @Test
+  public void testHealthy() {
+    LivenessResource resource = new LivenessResource();
+    Response response = resource.getStatus();
+    assertEquals(200, response.getStatus());
+    assertEquals("Healthy!", response.getEntity());
+  }
 
 }

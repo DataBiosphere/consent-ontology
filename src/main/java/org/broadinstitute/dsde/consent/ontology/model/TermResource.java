@@ -2,7 +2,6 @@ package org.broadinstitute.dsde.consent.ontology.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
-
 import java.util.List;
 
 @SuppressWarnings("unused")
@@ -10,69 +9,69 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class TermResource {
 
-    public String id;
+  public String id;
 
-    public String ontology;
+  public String ontology;
 
-    public Boolean usable;
+  public Boolean usable;
 
-    public String label;
+  public String label;
 
-    public String definition;
+  public String definition;
 
-    public List<String> synonyms;
+  public List<String> synonyms;
 
-    public List<TermParent> parents;
+  public List<TermParent> parents;
 
-    public TermResource() {
-    }
+  public TermResource() {
+  }
 
-    public String getId() {
-        return id;
-    }
+  public String getId() {
+    return id;
+  }
 
-    public String getLabel() {
-        return label;
-    }
+  public String getLabel() {
+    return label;
+  }
 
-    public String getDefinition() {
-        return definition;
-    }
+  public String getDefinition() {
+    return definition;
+  }
 
-    public List<String> getSynonyms() {
-        return synonyms;
-    }
+  public List<String> getSynonyms() {
+    return synonyms;
+  }
 
-    public List<TermParent> getParents() {
-        return parents;
-    }
+  public List<TermParent> getParents() {
+    return parents;
+  }
 
-    public void setId(String id) {
-        this.id = id;
-    }
+  public void setId(String id) {
+    this.id = id;
+  }
 
-    public void setOntology(String ontology) {
-        this.ontology = ontology;
-    }
+  public void setOntology(String ontology) {
+    this.ontology = ontology;
+  }
 
-    public void setUsable(Boolean usable) {
-        this.usable = usable;
-    }
+  public void setUsable(Boolean usable) {
+    this.usable = usable;
+  }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
+  public void setLabel(String label) {
+    this.label = label;
+  }
 
-    public void setDefinition(String definition) {
-        this.definition = definition;
-    }
+  public void setDefinition(String definition) {
+    this.definition = definition;
+  }
 
-    public void setSynonyms(List<String> synonyms) {
-        this.synonyms = synonyms;
-    }
+  public void setSynonyms(List<String> synonyms) {
+    this.synonyms = synonyms;
+  }
 
-    public void setParents(List<TermParent> parents) {
-        this.parents = parents;
-    }
+  public void setParents(List<TermParent> parents) {
+    this.parents = parents;
+  }
 
 }

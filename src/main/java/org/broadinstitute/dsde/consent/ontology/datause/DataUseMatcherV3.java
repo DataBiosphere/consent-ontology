@@ -1,24 +1,23 @@
 package org.broadinstitute.dsde.consent.ontology.datause;
 
-import com.google.inject.Inject;
-import org.apache.commons.lang3.StringUtils;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.broadinstitute.dsde.consent.ontology.util.DataUseUtil;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.abstainDecision;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchCommercial;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchDiseases;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchHMB;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchMDS;
+import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchPOA;
 
+import com.google.inject.Inject;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchDiseases;
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchHMB;
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchPOA;
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchMDS;
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.matchCommercial;
-import static org.broadinstitute.dsde.consent.ontology.datause.DataUseMatchCasesV3.abstainDecision;
+import org.apache.commons.lang3.StringUtils;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
+import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
+import org.broadinstitute.dsde.consent.ontology.util.DataUseUtil;
 
 public class DataUseMatcherV3 {
 
