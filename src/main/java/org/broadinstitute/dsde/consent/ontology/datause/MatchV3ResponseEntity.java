@@ -5,6 +5,7 @@ import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV3;
 
 public class MatchV3ResponseEntity {
+
   private final MatchResultType result;
   private final DataUseMatchPairV3 matchPair;
   private final List<String> failureReasons;
