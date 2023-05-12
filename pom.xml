@@ -10,7 +10,7 @@
     <properties>
         <dropwizard.version>4.0.0</dropwizard.version>
         <gatling.highcharts.version>3.9.4</gatling.highcharts.version>
-        <gatling.plugin.version>4.3.1</gatling.plugin.version>
+        <gatling.plugin.version>4.3.4</gatling.plugin.version>
         <java.version>17</java.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
