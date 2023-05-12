@@ -9,14 +9,14 @@ import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.google.gson.Gson;
+import jakarta.ws.rs.core.Response;
 import java.util.Collections;
-import javax.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
-import org.broadinstitute.dsde.consent.ontology.datause.MatchV3ResponseEntity;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
+import org.broadinstitute.dsde.consent.ontology.datause.MatchV3ResponseEntity;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilderV3;

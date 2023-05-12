@@ -5,7 +5,7 @@ import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 /**
  * This interface defines all possible endpoints in the Ontology system. Some endpoints require
