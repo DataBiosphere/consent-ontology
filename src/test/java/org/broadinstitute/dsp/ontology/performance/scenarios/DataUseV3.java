@@ -19,6 +19,8 @@ public class DataUseV3 implements Endpoints {
       """;
 
   public List<ScenarioBuilder> tests = List.of(
-      scenario("Validate Data Use").exec(validateDataUseV3(dataUseV3).check(status().is(HttpStatusCodes.STATUS_CODE_OK))).pause(1, 5)
+      scenario("Validate Data Use").exec(
+              validateDataUseV3(dataUseV3).check(status().is(HttpStatusCodes.STATUS_CODE_OK)))
+          .pause(1, 5)
   );
 }

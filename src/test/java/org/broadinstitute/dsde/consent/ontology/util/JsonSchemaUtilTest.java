@@ -1,12 +1,11 @@
 package org.broadinstitute.dsde.consent.ontology.util;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import java.util.List;
-
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+
+import java.util.List;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
 public class JsonSchemaUtilTest {
 

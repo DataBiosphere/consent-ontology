@@ -6,7 +6,10 @@
 *.iml
 
 ## Directory-based project format:
-.idea/
+.idea/*
+
+## Do not ignore project based code styles
+!.idea/codeStyles
 
 ## File-based project format:
 *.ipr

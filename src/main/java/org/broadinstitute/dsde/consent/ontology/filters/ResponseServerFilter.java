@@ -1,10 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.filters;
 
 import java.io.IOException;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.ext.Provider;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.ext.Provider;
 
 @Provider
 public class ResponseServerFilter implements ContainerResponseFilter {

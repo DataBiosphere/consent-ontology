@@ -5,13 +5,13 @@ import static io.gatling.javaapi.core.CoreDsl.StringBody;
 import static io.gatling.javaapi.http.HttpDsl.http;
 
 import io.gatling.javaapi.http.HttpRequestActionBuilder;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.MediaType;
 
 /**
- * This interface defines all possible endpoints in the Ontology system.
- * Some endpoints require different accept/content-type headers so define those here.
- * Each endpoint defined should cover a single use case. In the event of APIs having
- * multiple inputs, there should be explicit methods for each variation.
+ * This interface defines all possible endpoints in the Ontology system. Some endpoints require
+ * different accept/content-type headers so define those here. Each endpoint defined should cover a
+ * single use case. In the event of APIs having multiple inputs, there should be explicit methods
+ * for each variation.
  */
 public interface Endpoints {
 
@@ -75,6 +75,15 @@ public interface Endpoints {
     return
         http("Match V2")
             .post("/match/v2")
+            .body(StringBody(json))
+            .header("Accept", MediaType.APPLICATION_JSON)
+            .header("Content-Type", MediaType.APPLICATION_JSON);
+  }
+
+  default HttpRequestActionBuilder matchV3(String json) {
+    return
+        http("Match V3")
+            .post("/match/v3")
             .body(StringBody(json))
             .header("Accept", MediaType.APPLICATION_JSON)
             .header("Content-Type", MediaType.APPLICATION_JSON);

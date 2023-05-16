@@ -1,21 +1,20 @@
 package org.broadinstitute.dsde.consent.ontology.util;
 
-import java.util.List;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import jakarta.ws.rs.BadRequestException;
+import java.nio.charset.Charset;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
 import org.apache.commons.io.IOUtils;
+import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.everit.json.schema.Schema;
 import org.everit.json.schema.ValidationException;
 import org.everit.json.schema.loader.SchemaLoader;
 import org.json.JSONObject;
-import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 
-import javax.ws.rs.BadRequestException;
-import java.nio.charset.Charset;
-import java.util.concurrent.ExecutionException;
-
-public class JsonSchemaUtil implements OntologyLogger{
+public class JsonSchemaUtil implements OntologyLogger {
 
   private final LoadingCache<String, String> cache;
   private final String dataUseSchemaV3 = "/data-use-v3.json";
@@ -41,6 +40,7 @@ public class JsonSchemaUtil implements OntologyLogger{
 
   /**
    * Loads a Schema populated from the data use V3 schema
+   *
    * @return Schema The Schema
    * @throws ExecutionException Error reading from cache
    */
@@ -57,6 +57,7 @@ public class JsonSchemaUtil implements OntologyLogger{
 
   /**
    * Compares an instance of a data use object to the data use V3 schema
+   *
    * @param dataUseV3Instance The string instance of a data use object
    * @return True if the instance validates, false otherwise
    */
@@ -73,6 +74,7 @@ public class JsonSchemaUtil implements OntologyLogger{
       logDebug("Provided instance does not validate: " + ve.getMessage());
       return ve.getAllMessages();
     } catch (Exception e) {
-      throw new BadRequestException("Invalid schema");}
+      throw new BadRequestException("Invalid schema");
+    }
   }
 }
