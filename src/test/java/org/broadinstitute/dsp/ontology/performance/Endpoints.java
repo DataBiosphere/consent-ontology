@@ -29,22 +29,6 @@ public interface Endpoints {
             .header("Accept", MediaType.APPLICATION_JSON);
   }
 
-  default HttpRequestActionBuilder dataUseTranslateConsent(String json) {
-    return
-        http("Translate Consent DataUse to UseRestriction")
-            .post("/schemas/data-use/consent/translate")
-            .body(StringBody(json))
-            .header("Accept", MediaType.APPLICATION_JSON);
-  }
-
-  default HttpRequestActionBuilder dataUseTranslateDAR(String json) {
-    return
-        http("Translate DAR DataUse to UseRestriction")
-            .post("/schemas/data-use/dar/translate")
-            .body(StringBody(json))
-            .header("Accept", MediaType.APPLICATION_JSON);
-  }
-
   default HttpRequestActionBuilder dataUseTranslateFor(String translateFor, String json) {
     return
         http(String.format("Translate For: %s", translateFor))
@@ -57,15 +41,6 @@ public interface Endpoints {
     return
         http("Translate Summary")
             .post("/translate/summary")
-            .body(StringBody(json))
-            .header("Accept", MediaType.APPLICATION_JSON)
-            .header("Content-Type", MediaType.APPLICATION_JSON);
-  }
-
-  default HttpRequestActionBuilder matchV1(String json) {
-    return
-        http("Match V1")
-            .post("/match/v1")
             .body(StringBody(json))
             .header("Accept", MediaType.APPLICATION_JSON)
             .header("Content-Type", MediaType.APPLICATION_JSON);
@@ -117,19 +92,10 @@ public interface Endpoints {
             .header("Accept", MediaType.APPLICATION_JSON);
   }
 
-  default HttpRequestActionBuilder validateUseRestriction(String json) {
-    return
-        http("Validate Use Restriction")
-            .post("/validate/userestriction")
-            .body(StringBody(json))
-            .header("Accept", MediaType.APPLICATION_JSON)
-            .header("Content-Type", MediaType.APPLICATION_JSON);
-  }
-
   default HttpRequestActionBuilder validateDataUseV3(String json) {
     return
         http("Validate Data Use")
-            .post("/data-use/v3")
+            .post("schemas/data-use/v3")
             .body(StringBody(json))
             .header("Accept", MediaType.APPLICATION_JSON)
             .header("Content-Type", MediaType.APPLICATION_JSON);
