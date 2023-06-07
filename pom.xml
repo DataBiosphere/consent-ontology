@@ -290,6 +290,9 @@
                     <skipProvidedScope>true</skipProvidedScope>
                     <skipRuntimeScope>true</skipRuntimeScope>
                     <failBuildOnCVSS>1</failBuildOnCVSS>
+                    <suppressionFiles>
+                      <suppressionFile>owaspSuppression.xml</suppressionFile>
+                    </suppressionFiles>
                 </configuration>
                 <executions>
                     <execution>
@@ -343,18 +346,6 @@
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
             <version>6.21.0</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.5.1</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-beanutils</artifactId>
-                    <groupId>commons-beanutils</groupId>
-                </exclusion>
-            </exclusions>
         </dependency>
 
         <dependency>
@@ -466,7 +457,18 @@
                     <groupId>com.fasterxml.jackson.core</groupId>
                     <artifactId>jackson-databind</artifactId>
                 </exclusion>
+              <exclusion>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+              </exclusion>
             </exclusions>
+        </dependency>
+
+        <!--  -->
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>2.0</version>
         </dependency>
 
         <dependency>
@@ -508,6 +510,7 @@
             <version>2.15.2</version>
         </dependency>
 
+        <!-- TODO: Replace this with com.networknt:json-schema-validator -->
         <dependency>
             <groupId>org.everit.json</groupId>
             <artifactId>org.everit.json.schema</artifactId>
