@@ -7,7 +7,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
-import com.networknt.schema.SpecVersion;
+import com.networknt.schema.SpecVersion.VersionFlag;
 import com.networknt.schema.ValidationMessage;
 import jakarta.ws.rs.BadRequestException;
 import java.nio.charset.Charset;
@@ -42,14 +42,13 @@ public class JsonSchemaUtil implements OntologyLogger {
   }
 
   /**
-   * Loads a Schema populated from the data use V3 schema
+   * Loads a JsonSchema populated from the data use V3 schema
    *
    * @return Schema The Schema
-   * @throws ExecutionException Error reading from cache
    */
-  private JsonSchema getDataUseInstance() throws ExecutionException {
+  private JsonSchema getDataUseInstance() {
     String schemaString = getDataUseSchemaV3();
-    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
     return factory.getSchema(schemaString);
   }
 
@@ -66,10 +65,8 @@ public class JsonSchemaUtil implements OntologyLogger {
       JsonSchema schema = getDataUseInstance();
       Set<ValidationMessage> messages = schema.validate(jsonSubject);
       return messages.stream().map(ValidationMessage::getMessage).toList();
-    } catch (ExecutionException ee) {
-      logError("Unable to load the data use schema: " + ee.getMessage());
-      return List.of(ee.getMessage());
     } catch (Exception e) {
+      logError("Unable to load the data use schema: " + e.getMessage());
       throw new BadRequestException("Invalid schema");
     }
   }
