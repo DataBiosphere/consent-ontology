@@ -3,64 +3,38 @@ package org.broadinstitute.dsde.consent.ontology.resources.model;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dropwizard.testing.junit5.DropwizardClientExtension;
-import io.dropwizard.testing.junit5.DropwizardExtensionsSupport;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion;
+import com.networknt.schema.ValidationMessage;
+import java.util.Set;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
-import org.broadinstitute.dsde.consent.ontology.resources.DataUseResource;
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
-import org.everit.json.schema.loader.SchemaLoader;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.parboiled.common.FileUtils;
 
-@ExtendWith(DropwizardExtensionsSupport.class)
 public class DataUseTest {
 
-  /**
-   * This spins up a server so we can ensure that SchemaLoader will be able to resolve
-   * `data-use.json` URL
-   */
-  public static final DropwizardClientExtension RULE = new DropwizardClientExtension(
-      new DataUseResource());
-
-  private static ObjectMapper MAPPER;
-  private static String DU_CONTENT;
-  private static JSONObject RAW_SCHEMA;
-  private static SchemaLoader LOADER;
-  private static Schema DU_SCHEMA;
+  private static final ObjectMapper MAPPER = new ObjectMapper();
+  private static JsonSchema JSON_SCHEMA;
 
   @BeforeAll
-  public static void setUp() {
-    MAPPER = new ObjectMapper();
-    DU_CONTENT = FileUtils.readAllTextFromResource("data-use.json");
-    RAW_SCHEMA = new JSONObject(DU_CONTENT);
-    LOADER = SchemaLoader.builder().schemaJson(RAW_SCHEMA).
-        resolutionScope(RULE.baseUri() + "/schemas/data-use").build();
-    DU_SCHEMA = LOADER.load().build();
+  public static void setUp() throws Exception {
+    String DU_CONTENT = FileUtils.readAllTextFromResource("data-use.json");
+    JsonSchemaFactory LOADER = JsonSchemaFactory.getInstance(SpecVersion.VersionFlag.V4);
+    JSON_SCHEMA = LOADER.getSchema(MAPPER.readTree(DU_CONTENT));
   }
 
-  private void assertInvalidJson(String snippet) {
-    try {
-      DU_SCHEMA.validate(new JSONObject(snippet));
-      fail("Snippet <" + snippet + "> should not have been able to pass schema validation");
-    } catch (ValidationException e) {
-      assertTrue(true, "Snippet <" + snippet + "> correctly failed schema validation");
-    }
+  private void assertInvalidJson(String snippet) throws Exception {
+    Set<ValidationMessage> messages = JSON_SCHEMA.validate(MAPPER.readTree(snippet));
+    assertFalse(messages.isEmpty());
   }
 
-  private void assertValidJson(String snippet) {
-    try {
-      DU_SCHEMA.validate(new JSONObject(snippet));
-      assertTrue(true);
-    } catch (ValidationException e) {
-      fail("snippet <" + snippet + "> did not pass validation: " + e.getMessage());
-    }
+  private void assertValidJson(String snippet) throws Exception {
+    Set<ValidationMessage> messages = JSON_SCHEMA.validate(MAPPER.readTree(snippet));
+    assertTrue(messages.isEmpty());
   }
 
   /*

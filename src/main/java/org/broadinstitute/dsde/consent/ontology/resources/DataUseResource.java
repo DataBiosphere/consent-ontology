@@ -1,6 +1,7 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.api.client.http.HttpStatusCodes;
+import jakarta.ws.rs.BadRequestException;
 import java.util.List;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
@@ -44,13 +45,18 @@ public class DataUseResource implements OntologyLogger {
   @Path("/data-use/v3")
   @Produces(MediaType.APPLICATION_JSON)
   public Response validateSchemaV3(String json) {
-    List<String> errors = jsonSchemaUtil.validateDataUseV3Schema(json);
-    if (errors.isEmpty()) {
-      return Response.ok().type(MediaType.APPLICATION_JSON).build();
-    } else {
-      // nosemgrep
-      return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors)
-          .type(MediaType.APPLICATION_JSON).build();
+    try {
+      List<String> errors = jsonSchemaUtil.validateDataUseV3Schema(json);
+      if (errors.isEmpty()) {
+        return Response.ok().type(MediaType.APPLICATION_JSON).build();
+      } else {
+        // nosemgrep
+        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors)
+            .type(MediaType.APPLICATION_JSON).build();
+      }
+    } catch (BadRequestException e) {
+        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(e.getMessage())
+            .type(MediaType.APPLICATION_JSON).build();
     }
   }
 

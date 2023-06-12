@@ -1,18 +1,21 @@
 package org.broadinstitute.dsde.consent.ontology.util;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
+import com.networknt.schema.JsonSchema;
+import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SpecVersion.VersionFlag;
+import com.networknt.schema.ValidationMessage;
 import jakarta.ws.rs.BadRequestException;
 import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
-import org.everit.json.schema.Schema;
-import org.everit.json.schema.ValidationException;
-import org.everit.json.schema.loader.SchemaLoader;
-import org.json.JSONObject;
 
 public class JsonSchemaUtil implements OntologyLogger {
 
@@ -39,41 +42,31 @@ public class JsonSchemaUtil implements OntologyLogger {
   }
 
   /**
-   * Loads a Schema populated from the data use V3 schema
+   * Loads a JsonSchema populated from the data use V3 schema
    *
    * @return Schema The Schema
-   * @throws ExecutionException Error reading from cache
    */
-  private Schema getDataUseInstance() throws ExecutionException {
+  private JsonSchema getDataUseInstance() {
     String schemaString = getDataUseSchemaV3();
-    JSONObject jsonSchema = new JSONObject(schemaString);
-    return SchemaLoader
-        .builder()
-        .schemaJson(jsonSchema)
-        .build()
-        .load()
-        .build();
+    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+    return factory.getSchema(schemaString);
   }
 
   /**
    * Compares an instance of a data use object to the data use V3 schema
    *
    * @param dataUseV3Instance The string instance of a data use object
-   * @return True if the instance validates, false otherwise
+   * @return List of validation messages
    */
   public List<String> validateDataUseV3Schema(String dataUseV3Instance) {
     try {
-      JSONObject jsonSubject = new JSONObject(dataUseV3Instance);
-      Schema schema = getDataUseInstance();
-      schema.validate(jsonSubject);
-      return List.of();
-    } catch (ExecutionException ee) {
-      logError("Unable to load the data use schema: " + ee.getMessage());
-      return List.of(ee.getMessage());
-    } catch (ValidationException ve) {
-      logDebug("Provided instance does not validate: " + ve.getMessage());
-      return ve.getAllMessages();
+      ObjectMapper mapper = new ObjectMapper();
+      JsonNode jsonSubject = mapper.readTree(dataUseV3Instance);
+      JsonSchema schema = getDataUseInstance();
+      Set<ValidationMessage> messages = schema.validate(jsonSubject);
+      return messages.stream().map(ValidationMessage::getMessage).toList();
     } catch (Exception e) {
+      logError("Unable to load the data use schema: " + e.getMessage());
       throw new BadRequestException("Invalid schema");
     }
   }

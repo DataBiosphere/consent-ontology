@@ -4,11 +4,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
-import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,8 +28,9 @@ public class DataUseResourceTest {
     String content = response.getEntity().toString().trim();
     assertTrue(content.contains("Data Use"));
     try {
-      new JSONObject(content);
-    } catch (JSONException e) {
+      ObjectMapper mapper = new ObjectMapper();
+      mapper.readTree(content);
+    } catch (Exception e) {
       fail("The response entity is not valid json");
     }
   }
@@ -54,9 +54,9 @@ public class DataUseResourceTest {
   public void testValidateSchemaV3GoodRequest() {
     try (Response response = dataUseResource.validateSchemaV3("""
         {
-        "generalUse": true,
-        "diseaseRestrictions": ["test"],
-        "hmbResearch": true,
+          "generalUse": true,
+          "diseaseRestrictions": ["test"],
+          "hmbResearch": true
         }
         """)) {
       assertEquals(Status.OK.getStatusCode(), response.getStatus());

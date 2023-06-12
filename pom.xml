@@ -509,11 +509,16 @@
             <version>2.15.2</version>
         </dependency>
 
-        <!-- TODO: Replace this with com.networknt:json-schema-validator -->
         <dependency>
-            <groupId>org.everit.json</groupId>
-            <artifactId>org.everit.json.schema</artifactId>
-            <version>1.5.1</version>
+          <groupId>com.networknt</groupId>
+          <artifactId>json-schema-validator</artifactId>
+          <version>1.0.79</version>
+          <exclusions>
+            <exclusion>
+              <groupId>org.apache.commons</groupId>
+              <artifactId>commons-lang3</artifactId>
+            </exclusion>
+          </exclusions>
         </dependency>
 
         <dependency>
