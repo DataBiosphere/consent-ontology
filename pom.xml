@@ -287,8 +287,6 @@
                 <artifactId>dependency-check-maven</artifactId>
                 <version>8.3.1</version>
                 <configuration>
-                    <skipProvidedScope>true</skipProvidedScope>
-                    <skipRuntimeScope>true</skipRuntimeScope>
                     <failBuildOnCVSS>1</failBuildOnCVSS>
                     <suppressionFiles>
                       <suppressionFile>owaspSuppression.xml</suppressionFile>
