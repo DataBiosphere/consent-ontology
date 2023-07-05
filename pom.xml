@@ -423,7 +423,7 @@
         <dependency>
             <groupId>org.elasticsearch.client</groupId>
             <artifactId>elasticsearch-rest-client</artifactId>
-            <version>8.8.1</version>
+            <version>8.8.2</version>
         </dependency>
 
         <dependency>
