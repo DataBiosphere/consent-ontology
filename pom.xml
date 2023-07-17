@@ -17,7 +17,7 @@
         <jena.version>2.6.4</jena.version>
         <jersey.version>2.19</jersey.version>
         <mockserver.version>5.15.0</mockserver.version>
-        <swagger.ui.version>5.1.0</swagger.ui.version>
+        <swagger.ui.version>5.1.2</swagger.ui.version>
         <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -343,7 +343,7 @@
         <dependency>
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
-            <version>6.25.1</version>
+            <version>6.25.2</version>
         </dependency>
 
         <dependency>
