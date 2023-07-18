@@ -51,13 +51,13 @@ public class MatchResource {
         ImmutablePair<Boolean, List<String>> matchResult = dataUseMatcher.matchPurposeAndDatasetV2(
             purpose, dataset);
         boolean match = matchResult.getLeft();
-        List<String> failures = matchResult.getRight();
+        List<String> rationale = matchResult.getRight();
         return Response
             .ok()
             .entity(ImmutableMap.of(
                 "result", match,
                 "matchPair", matchPair,
-                "failureReasons", failures))
+                "rationale", rationale))
             .type(MediaType.APPLICATION_JSON)
             .build();
       }
@@ -97,11 +97,11 @@ public class MatchResource {
       if (purpose != null && dataset != null) {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
-        List<String> failures = matchResult.getMessage();
+        List<String> rationale = matchResult.getMessage();
         // nosemgrep
         return Response
             .ok()
-            .entity(new MatchV3ResponseEntity(match, matchPair, failures).get())
+            .entity(new MatchV3ResponseEntity(match, matchPair, rationale).get())
             .type(MediaType.APPLICATION_JSON)
             .build();
       }

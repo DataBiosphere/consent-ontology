@@ -360,7 +360,7 @@ definitions:
       matchPair:
         $ref: '#/definitions/DataUseMatchPair'
         description: The provided purpose and consent
-      failureReasons:
+      rationale:
         type: array
         items:
           type: string
@@ -387,12 +387,12 @@ definitions:
       matchPair:
         $ref: '#/definitions/DataUseMatchPairV3'
         description: The provided purpose and consent
-      failureReasons:
+      rationale:
         type: array
         items:
           type: string
         description: |
-          Optional list of reasons why a match result may have failed. Only supported in
+          List of reasons why a match result occurred. Only supported in
           in versions 2 and higher
 
   TranslateParagraph:

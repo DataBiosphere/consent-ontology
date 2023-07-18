@@ -10,6 +10,7 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 
 public class DataUseMatchCasesV3 {
 
+  // rationale for failures
   private static final String HMB_F1 = "The GRU Research Purpose does not match the HMB data use limitations.";
   private static final String HMB_F2 = "The HMB Research Purpose does not match the Disease-Specific data use limitations.";
   private static final String HMB_F3 = "The HMB Research Purpose does not match the POA data use limitations.";
@@ -17,6 +18,17 @@ public class DataUseMatchCasesV3 {
   private static final String MDS_F1 = "The Methods development Research Purpose does not match the Disease-Specific data use limitations.";
   private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
   private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commercial Use data use limitation.";
+
+  // rationale for approvals - based on dataset terms
+  private static final String DS_APPROVE_GRU = "The proposed disease-specific research is within the bounds of the general research use permissions of the dataset(s)";
+  private static final String DS_APPROVE_HMB = "The proposed disease-specific research is within the bounds of the health, medical, biomedical use permissions of the dataset(s)";
+  private static final String HMB_APPROVE_HMB = "The proposed health, medical, biomedical research is within the bounds of the health, medical, biomedical use permissions of the dataset(s)";
+  private static final String HMB_APPROVE_GRU = "The proposed health, medical, biomedical research is within the bounds of the general research use permissions of the dataset(s)";
+  private static final String POA_APPROVE_GRU = "The proposed population, origins, and/or ancestry research is within the bounds of the general research use permissions of the dataset(s)";
+  private static final String POA_APPROVE_POA = "The proposed population, origins, and/or ancestry research is within the bounds of the population, origins, and/or ancestry use permissions of the dataset(s)";
+  private static final String MDS_APPROVE = "Methods research is permitted on controlled-access data so long as it is not expressly prohibited";
+
+  // rationale for abstain cases
   private static final String ABSTAIN = "The Research Purpose does not result in DUOS Decision.";
 
   /**
@@ -44,11 +56,11 @@ public class DataUseMatchCasesV3 {
     }
     // Approve dataset GRU condition
     if (purposeDSX && datasetGRU) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(DS_APPROVE_GRU));
     }
     // Approve dataset HMB condition
     if (purposeDSX && datasetHMB) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(DS_APPROVE_HMB));
     }
 
     // We want all-purpose disease IDs to be a subclass of any dataset disease ID
@@ -104,12 +116,12 @@ public class DataUseMatchCasesV3 {
 
     // Approve dataset GRU condition
     if (datasetGRU) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(HMB_APPROVE_GRU));
     }
 
     // Approve dataset HMB condition
     if (purposeHMB && datasetHMB) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(HMB_APPROVE_HMB));
     } else {
 
       return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY,
@@ -134,12 +146,12 @@ public class DataUseMatchCasesV3 {
 
     // Approve dataset GRU condition
     if (datasetGRU) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(POA_APPROVE_GRU));
     }
 
     // Approve dataset POA condition
     if (purposePOA && datasetPOA) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(POA_APPROVE_POA));
     }
 
     List<String> failures = new ArrayList<>();
@@ -175,22 +187,22 @@ public class DataUseMatchCasesV3 {
 
     // Approve dataset GRU condition
     if (datasetGRU) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(MDS_APPROVE));
     }
 
     // Approve dataset HMB condition
     if (purposeMDS && datasetHMB) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(MDS_APPROVE));
     }
 
     // Approve dataset POA condition
     if (purposeMDS && datasetPOA) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(MDS_APPROVE));
     }
 
     // short-circuit if there is a disease match
     if (diseaseMatch == MatchResultType.APPROVE) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
+      return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(MDS_APPROVE));
     } else {
       return MatchResult.from(MatchResultType.DENY, Collections.singletonList(MDS_F1));
     }
