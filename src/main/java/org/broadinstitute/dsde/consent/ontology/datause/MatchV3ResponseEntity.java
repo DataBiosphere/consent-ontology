@@ -8,20 +8,20 @@ public class MatchV3ResponseEntity {
 
   private final MatchResultType result;
   private final DataUseMatchPairV3 matchPair;
-  private final List<String> failureReasons;
+  private final List<String> rationale;
 
   public MatchV3ResponseEntity(MatchResultType result, DataUseMatchPairV3 matchPair,
-      List<String> failureReasons) {
+      List<String> rationale) {
     this.result = result;
     this.matchPair = matchPair;
-    this.failureReasons = failureReasons;
+    this.rationale = rationale;
   }
 
   public ImmutableMap<String, Object> get() {
     return ImmutableMap.of(
         "result", this.result,
         "matchPair", this.matchPair,
-        "failureReasons", this.failureReasons);
+        "rationale", this.rationale);
   }
 
   public MatchResultType getResult() {
@@ -31,8 +31,7 @@ public class MatchV3ResponseEntity {
   public DataUseMatchPairV3 getMatchPair() {
     return this.matchPair;
   }
-
-  public List<String> getFailureReasons() {
-    return this.failureReasons;
+  public List<String> getRationale() {
+    return this.rationale;
   }
 }

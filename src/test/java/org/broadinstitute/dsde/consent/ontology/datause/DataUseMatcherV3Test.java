@@ -257,7 +257,6 @@ public class DataUseMatcherV3Test {
   private void assertApprove(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
     assertTrue(Approve(match.getMatchResultType()));
-    assertTrue(match.getMessage().isEmpty());
   }
 
   private void assertDeny(DataUseV3 purpose, DataUseV3 dataset) {

@@ -131,7 +131,7 @@ public class MatchResourceTest {
       MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
       assertEquals(MatchResultType.APPROVE, entity.getResult());
       assertEquals(pair, entity.getMatchPair());
-      assertEquals(Collections.emptyList(), entity.getFailureReasons());
+      assertEquals(Collections.emptyList(), entity.getRationale());
     }
   }
 
@@ -152,7 +152,7 @@ public class MatchResourceTest {
       MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
       assertEquals(deny, entity.getResult());
       assertEquals(pair, entity.getMatchPair());
-      assertEquals(Collections.emptyList(), entity.getFailureReasons());
+      assertEquals(Collections.emptyList(), entity.getRationale());
     }
   }
 
@@ -173,7 +173,7 @@ public class MatchResourceTest {
       MatchV3ResponseEntity entity = new Gson().fromJson(stringEntity, MatchV3ResponseEntity.class);
       assertEquals(abstain, entity.getResult());
       assertEquals(pair, entity.getMatchPair());
-      assertEquals(Collections.emptyList(), entity.getFailureReasons());
+      assertEquals(Collections.emptyList(), entity.getRationale());
     }
   }
 
