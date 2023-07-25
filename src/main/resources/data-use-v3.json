@@ -1,64 +1,138 @@
 {
-  "$id": "https://consent-ontology.dsde-prod.broadinstitute.org/schemas/data-use",
-  "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Data Use Schema V3",
-  "version": 2,
-  "type": "object",
-  "anyOf": [
-    {"required":  ["generalUse"]},
-    {"required" : ["diseaseRestrictions"]},
-    {"required" : ["hmbResearch"]}
+  "$id" : "https://consent-ontology.dsde-prod.broadinstitute.org/schemas/data-use",
+  "$schema" : "http://json-schema.org/draft-07/schema#",
+  "title" : "Data Use Schema V3",
+  "version" : 3,
+  "type" : "object",
+  "anyOf" : [
+    {
+      "required" : [
+        "generalUse"
+      ]
+    },
+    {
+      "required" : [
+        "diseaseRestrictions"
+      ]
+    },
+    {
+      "required" : [
+        "hmbResearch"
+      ]
+    }
   ],
-  "properties": {
-    "generalUse": {
-      "type": "boolean"
+  "properties" : {
+    "generalUse" : {
+      "type" : "boolean",
+      "consentDescription" : "General Research Use"
     },
-    "diseaseRestrictions": {
-      "type": "array",
-      "items": {
-        "type": "string",
-        "uniqueItems": true
-      }
+    "diseaseRestrictions" : {
+      "type" : "array",
+      "items" : {
+        "type" : "string",
+        "uniqueItems" : true
+      },
+      "purposeDescription" : "Is the primary purpose of this research to investigate a specific disease(s)?",
+      "consentDescription" : "Disease-Specific Research Use"
     },
-    "hmbResearch": {
-      "type": "boolean"
+    "hmbResearch" : {
+      "type" : "boolean",
+      "purposeDescription" : "Is the primary purpose health/medical/biomedical research in nature?",
+      "consentDescription" : "Health/Medical/Biomedical Research Use"
     },
-    "populationOriginsAncestry": {
-      "type": "boolean"
+    "populationOriginsAncestry" : {
+      "type" : "boolean",
+      "purposeDescription" : "Is the primary purpose of this research regarding population origins or ancestry?",
+      "consentDescription" : "Populations, Origins, Ancestry Use"
     },
-    "methodsResearch": {
-      "type": "boolean"
+    "methodsResearch" : {
+      "type" : "boolean",
+      "purposeDescription" : "Is the primary purpose of this research to develop or validate new methods for analyzing/interpreting data?",
+      "consentDescription" : "No methods development or validation studies (NMDS)"
     },
-    "commercialUse": {
-      "type": "boolean"
+    "commercialUse" : {
+      "type" : "boolean",
+      "purposeDescription" : "Conduct research for an exclusively or partially commercial purpose.",
+      "consentDescription" : ""
     },
-    "nonProfitUse": {
-      "type": "boolean"
+    "nonProfitUse" : {
+      "type" : "boolean",
+      "consentDescription" : "Non-profit Use Only (NPU)"
     },
-    "other": {
-      "type": "string"
+    "other" : {
+      "type" : "string",
+      "purposeDescription" : "Other",
+      "consentDescription" : "Other"
     },
-    "secondaryOther": {
-      "type": "string"
+    "secondaryOther" : {
+      "type" : "string",
+      "purposeDescription" : "Other",
+      "consentDescription" : "Other"
     },
-    "ethicsApprovalRequired": {
-      "type": "boolean"
+    "ethicsApprovalRequired" : {
+      "type" : "boolean",
+      "consentDescription" : "Ethics Approval Required (IRB)"
     },
-    "collaboratorRequired": {
-      "type": "boolean"
+    "collaboratorRequired" : {
+      "type" : "boolean",
+      "consentDescription" : "Collaboration Required (COL)"
     },
-    "geographicalRestrictions": {
-      "type": "string"
+    "geographicalRestrictions" : {
+      "type" : "string",
+      "consentDescription" : "Geographic Restriction (GS-)"
     },
-    "geneticStudiesOnly": {
-      "type": "boolean"
+    "geneticStudiesOnly" : {
+      "type" : "boolean",
+      "consentDescription" : "Genetic studies only (GSO)"
     },
-    "publicationResults": {
-      "type": "boolean"
+    "publicationResults" : {
+      "type" : "boolean",
+      "consentDescription" : "Publication Required (PUB)"
     },
-    "publicationMoratorium": {
-      "type": "string",
-      "format": "date"
+    "publicationMoratorium" : {
+      "type" : "string",
+      "format" : "date",
+      "consentDescription" : "Publication Moratorium (MOR)"
+    },
+    "controls" : {
+      "type" : "boolean",
+      "purposeDescription" : "Increase controls available for a comparison group (e.g. a case-control study)."
+    },
+    "gender" : {
+      "type" : "string",
+      "purposeDescription" : "Limited to one gender"
+    },
+    "pediatric" : {
+      "type" : "boolean",
+      "purposeDescription" : "Limited to a pediatric population (under the age of 18)"
+    },
+    "population" : {
+      "type" : "boolean",
+      "purposeDescription" : "Study variation in the general population (e.g. calling variants and/or studying their distribution)."
+    },
+    "illegalBehavior" : {
+      "type" : "boolean",
+      "purposeDescription" : "Illegal behaviors (violence, domestic abuse, prostitution, sexual victimization)"
+    },
+    "sexualDiseases" : {
+      "type" : "boolean",
+      "purposeDescription" : "Sexual preferences or sexually transmitted diseases"
+    },
+    "stigmatizeDiseases" : {
+      "type" : "boolean",
+      "purposeDescription" : "Stigmatizing illnesses"
+    },
+    "vulnerablePopulations" : {
+      "type" : "boolean",
+      "purposeDescription" : "Targeting a vulnerable population as defined in 456 CFR (children, prisoners, pregnant women, mentally disabled persons, or [“SIGNIFICANTLY”] economically or educationally disadvantaged persons)"
+    },
+    "psychologicalTraits" : {
+      "type" : "boolean",
+      "purposeDescription" : "Psychological traits, intelligence, or attention"
+    },
+    "notHealth" : {
+      "type" : "boolean",
+      "purposeDescription" : "Correlating ethnicity, race, or gender with genotypic or phenotypic variables for purposes beyond biomedical or health-related research, or in ways not easily related to health"
     }
   }
 }
