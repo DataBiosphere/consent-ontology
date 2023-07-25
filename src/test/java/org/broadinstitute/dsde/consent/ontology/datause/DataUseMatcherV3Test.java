@@ -254,6 +254,76 @@ public class DataUseMatcherV3Test {
     assertAbstain(purpose, dataset);
   }
 
+  @Test
+  public void testAbstainDecision_controls() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setControls(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_population() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setPopulation(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_gender() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setGender("M").build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_pediatric() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setPediatric(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_vulnerablePopulations() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setVulnerablePopulations(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_illegalBehavior() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setIllegalBehavior(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_sexualDiseases() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setSexualDiseases(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_psychologicalTraits() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setPsychologicalTraits(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_notHealth() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setNotHealth(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testAbstainDecision_stigmatizedDiseases() {
+    DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setStigmatizeDiseases(true).build();
+    DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
   private void assertApprove(DataUseV3 purpose, DataUseV3 dataset) {
     MatchResult match = matchPurposeAndDataset(purpose, dataset);
     assertTrue(Approve(match.getMatchResultType()));

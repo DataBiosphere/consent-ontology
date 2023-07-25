@@ -72,4 +72,75 @@ public class DataUseBuilderV3 {
     du.setCollaboratorRequired(collaboratorRequired);
     return this;
   }
+
+  public DataUseBuilderV3 setGeographicalRestrictions(String geographicalRestrictions) {
+    du.setGeographicalRestrictions(geographicalRestrictions);
+    return this;
+  }
+
+  public DataUseBuilderV3 setGeneticStudiesOnly(boolean geneticStudiesOnly) {
+    du.setGeneticStudiesOnly(geneticStudiesOnly);
+    return this;
+  }
+
+  public DataUseBuilderV3 setPublicationResults(boolean publicationResults) {
+    du.setPublicationResults(publicationResults);
+    return this;
+  }
+
+  public DataUseBuilderV3 setPublicationMoratorium(String publicationMoratorium) {
+    du.setPublicationMoratorium(publicationMoratorium);
+    return this;
+  }
+
+  public DataUseBuilderV3 setControls(boolean controls) {
+    du.setControls(controls);
+    return this;
+  }
+
+  public DataUseBuilderV3 setGender(String gender) {
+    du.setGender(gender);
+    return this;
+  }
+
+  public DataUseBuilderV3 setPediatric(boolean pediatric) {
+    du.setPediatric(pediatric);
+    return this;
+  }
+
+  public DataUseBuilderV3 setPopulation(boolean population) {
+    du.setPopulation(population);
+    return this;
+  }
+
+  public DataUseBuilderV3 setIllegalBehavior(boolean illegalBehavior) {
+    du.setIllegalBehavior(illegalBehavior);
+    return this;
+  }
+
+  public DataUseBuilderV3 setSexualDiseases(boolean sexualDiseases) {
+    du.setSexualDiseases(sexualDiseases);
+    return this;
+  }
+
+  public DataUseBuilderV3 setStigmatizeDiseases(boolean stigmatizeDiseases) {
+    du.setStigmatizeDiseases(stigmatizeDiseases);
+    return this;
+  }
+
+  public DataUseBuilderV3 setVulnerablePopulations(boolean vulnerablePopulations) {
+    du.setVulnerablePopulations(vulnerablePopulations);
+    return this;
+  }
+
+  public DataUseBuilderV3 setPsychologicalTraits(boolean psychologicalTraits) {
+    du.setPsychologicalTraits(psychologicalTraits);
+    return this;
+  }
+
+  public DataUseBuilderV3 setNotHealth(boolean notHealth) {
+    du.setNotHealth(notHealth);
+    return this;
+  }
+
 }
