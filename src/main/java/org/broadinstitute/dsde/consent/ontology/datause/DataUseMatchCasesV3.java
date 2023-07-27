@@ -255,6 +255,23 @@ public class DataUseMatchCasesV3 {
   static MatchResult abstainDecision(
       DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap,
       MatchResultType diseaseMatch) {
+
+    // Immediate Abstain Cases:
+    if (
+        getNullableOrFalse(purpose.getControls()) ||
+            getNullableOrFalse(purpose.getPopulation()) ||
+            Objects.nonNull(purpose.getGender()) ||
+            getNullableOrFalse(purpose.getPediatric()) ||
+            getNullableOrFalse(purpose.getVulnerablePopulations()) ||
+            getNullableOrFalse(purpose.getIllegalBehavior()) ||
+            getNullableOrFalse(purpose.getSexualDiseases()) ||
+            getNullableOrFalse(purpose.getPsychologicalTraits()) ||
+            getNullableOrFalse(purpose.getNotHealth()) ||
+            getNullableOrFalse(purpose.getStigmatizeDiseases())
+    ) {
+      return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(ABSTAIN));
+    }
+
     // Valid RPs
     boolean purposeDSX = getNullableOrFalse(!purpose.getDiseaseRestrictions().isEmpty());
     boolean purposeHMB = getNullableOrFalse(purpose.getHmbResearch());
