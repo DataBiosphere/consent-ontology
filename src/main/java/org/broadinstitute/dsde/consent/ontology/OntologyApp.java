@@ -3,15 +3,12 @@ package org.broadinstitute.dsde.consent.ontology;
 import com.google.common.util.concurrent.UncaughtExceptionHandlers;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
-import io.dropwizard.core.Application;
 import io.dropwizard.assets.AssetsBundle;
+import io.dropwizard.core.Application;
 import io.dropwizard.core.setup.Bootstrap;
 import io.dropwizard.core.setup.Environment;
 import io.sentry.Sentry;
 import io.sentry.SentryLevel;
-import java.util.EnumSet;
-import jakarta.servlet.DispatcherType;
-import jakarta.servlet.FilterRegistration;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.filters.ResponseServerFilter;
@@ -27,7 +24,6 @@ import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
 import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
-import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 /**
  * Top-level entry point to the entire application.
@@ -78,16 +74,6 @@ public class OntologyApp extends Application<OntologyConfiguration> {
         injector.getInstance(ElasticSearchHealthCheck.class));
     env.healthChecks().register(GCSHealthCheck.NAME, injector.getInstance(GCSHealthCheck.class));
     env.jersey().register(injector.getInstance(StatusResource.class));
-
-    FilterRegistration.Dynamic corsFilter = env.servlets()
-        .addFilter("CORS", CrossOriginFilter.class);
-    corsFilter.addMappingForUrlPatterns(EnumSet.of(DispatcherType.REQUEST), false,
-        env.getApplicationContext().getContextPath() + "/autocomplete");
-    corsFilter.setInitParameter(CrossOriginFilter.ALLOWED_METHODS_PARAM, "GET,OPTIONS");
-    corsFilter.setInitParameter(CrossOriginFilter.ALLOWED_ORIGINS_PARAM, "*");
-    corsFilter.setInitParameter(CrossOriginFilter.ACCESS_CONTROL_ALLOW_ORIGIN_HEADER, "*");
-    corsFilter.setInitParameter(CrossOriginFilter.ALLOWED_HEADERS_PARAM,
-        "Content-Type,Authorization,X-Requested-With,Content-Length,Accept,Origin,Pragma,Cache-Control,X-App-ID");
 
   }
 
