@@ -68,7 +68,7 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     env.jersey().register(injector.getInstance(DataUseResource.class));
     env.jersey().register(injector.getInstance(SwaggerResource.class));
     env.jersey().register(injector.getInstance(VersionResource.class));
-    env.jersey().register(new LivenessResource());
+    env.jersey().register(injector.getInstance(LivenessResource.class));
 
     env.healthChecks().register(ElasticSearchHealthCheck.NAME,
         injector.getInstance(ElasticSearchHealthCheck.class));
