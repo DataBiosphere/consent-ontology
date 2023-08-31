@@ -37,7 +37,7 @@ public class OntologySearchResource {
           .build();
     }
 
-    String[] queries = queryTerm.toUpperCase().split(",");
+    String[] queries = queryTerm.split(",");
     try {
       List<TermResource> results = new Streams.FailableStream<>(Arrays.stream(queries))
           .filter(Objects::nonNull)

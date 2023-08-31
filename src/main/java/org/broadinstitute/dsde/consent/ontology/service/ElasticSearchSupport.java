@@ -157,8 +157,9 @@ class ElasticSearchSupport {
   }
 
   private String convertQueryToUrl(String query) {
-    if (query.substring(0, 4).equals("DOID")) {
-      return "http://purl.obolibrary.org/obo/" + query;
+    if (query.substring(0, 4).toUpperCase().equals("DOID")) {
+      var doid = "DOID_" + query.substring(5);
+      return "http://purl.obolibrary.org/obo/" + doid;
     }
     return query;
   }
