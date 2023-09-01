@@ -7,6 +7,7 @@ import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
@@ -30,9 +31,9 @@ public class OntologySearchResource {
   public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) {
     if (queryTerm.isBlank()) {
       return Response
-          .status(Response.Status.BAD_REQUEST)
+          .status(Status.BAD_REQUEST)
           .entity(new ErrorResponse("Ontology ID term cannot be empty.",
-              Response.Status.BAD_REQUEST.getStatusCode()))
+              Status.BAD_REQUEST.getStatusCode()))
           .build();
     }
 
@@ -47,9 +48,9 @@ public class OntologySearchResource {
           .collect(Collectors.toList());
       return checkOntologyRetrieval(results);
     } catch (Exception e) {
-      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+      return Response.status(Status.NOT_FOUND)
           .entity(new ErrorResponse("Ontology could not be successfully retrieved.",
-              Response.Status.INTERNAL_SERVER_ERROR.getStatusCode()))
+              Status.NOT_FOUND.getStatusCode()))
           .build();
     }
 
@@ -57,9 +58,9 @@ public class OntologySearchResource {
 
   private Response checkOntologyRetrieval(List<TermResource> results) {
     if (results.isEmpty()) {
-      return Response.status(Response.Status.NOT_FOUND)
+      return Response.status(Status.NOT_FOUND)
           .entity(new ErrorResponse("Supplied IDs do not match any known ontologies.",
-              Response.Status.NOT_FOUND.getStatusCode()))
+              Status.NOT_FOUND.getStatusCode()))
           .build();
     } else {
       return Response.ok().entity(results).build();
