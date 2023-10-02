@@ -343,7 +343,7 @@
         <dependency>
             <groupId>io.sentry</groupId>
             <artifactId>sentry</artifactId>
-            <version>6.29.0</version>
+            <version>6.30.0</version>
         </dependency>
 
         <dependency>
@@ -401,7 +401,7 @@
         <dependency>
             <groupId>com.google.apis</groupId>
             <artifactId>google-api-services-storage</artifactId>
-            <version>v1-rev20230922-2.0.0</version>
+            <version>v1-rev20230926-2.0.0</version>
         </dependency>
 
         <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
@@ -538,7 +538,7 @@
         <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
-            <version>2.13.0</version>
+            <version>2.14.0</version>
         </dependency>
 
         <dependency>
@@ -552,7 +552,7 @@
         <dependency>
             <groupId>org.testcontainers</groupId>
             <artifactId>mockserver</artifactId>
-            <version>1.19.0</version>
+            <version>1.19.1</version>
             <scope>test</scope>
         </dependency>
 
