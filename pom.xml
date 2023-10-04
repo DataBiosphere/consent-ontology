@@ -331,22 +331,9 @@
 
     <!-- Support for JSON logging -->
     <dependency>
-      <groupId>ch.qos.logback</groupId>
-      <artifactId>logback-classic</artifactId>
-      <version>1.4.7</version>
-    </dependency>
-
-    <!-- Support for JSON logging -->
-    <dependency>
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-json-logging</artifactId>
       <version>${dropwizard.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>ch.qos.logback</groupId>
-          <artifactId>logback-classic</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
     <dependency>
@@ -384,16 +371,6 @@
       <artifactId>google-api-client</artifactId>
       <version>2.2.0</version>
       <exclusions>
-        <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
-        <exclusion>
-          <groupId>org.apache.httpcomponents</groupId>
-          <artifactId>httpclient-osgi</artifactId>
-        </exclusion>
-        <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
-        <exclusion>
-          <groupId>org.apache.httpcomponents</groupId>
-          <artifactId>httpclient</artifactId>
-        </exclusion>
         <exclusion>
           <groupId>io.grpc</groupId>
           <artifactId>grpc-context</artifactId>
@@ -401,6 +378,7 @@
       </exclusions>
     </dependency>
 
+    <!-- OWASP dependency vulnerabilty: grpc-context-1.27.2.jar 10/04/2023 -->
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
@@ -411,13 +389,6 @@
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-storage</artifactId>
       <version>v1-rev20230926-2.0.0</version>
-    </dependency>
-
-    <!-- SourceClear fix https://broadinstitute-dsp.sourceclear.io/teams/jppForw/issues/vulnerabilities/5391949/3285366 -->
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <version>4.5.14</version>
     </dependency>
 
     <dependency>
