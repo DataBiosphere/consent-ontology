@@ -11,4 +11,13 @@
     <cve>CVE-2023-35116</cve>
   </suppress>
 
+  <!-- Dropwizard dependency that does not have an upgrade -->
+  <suppress>
+    <notes><![CDATA[
+   file name: jetty-servlets-11.0.16.jar
+   ]]></notes>
+    <packageUrl regex="true">^pkg:maven/org\.eclipse\.jetty/jetty\-servlets@.*$</packageUrl>
+    <vulnerabilityName>CVE-2023-36479</vulnerabilityName>
+  </suppress>
+
 </suppressions>
