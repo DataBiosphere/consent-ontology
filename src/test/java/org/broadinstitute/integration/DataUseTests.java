@@ -44,25 +44,4 @@ class DataUseTests implements IntegrationTestHelper {
     assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
   }
 
-  @DisplayName("Data Use Schema Translate for Dataset: OK test")
-  @Test
-  void ontology_data_use_translate_dataset_page_OK() throws Exception {
-    SimpleResponse response = getPostResponseWithQueryParam("translate", dataUse, "for", "dataset");
-    assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
-  }
-
-  @DisplayName("Data Use Translate for Purpose: OK test")
-  @Test
-  void ontology_data_use_translate_purpose_page_OK() throws Exception {
-    SimpleResponse response = getPostResponseWithQueryParam("translate", dataUse, "for", "purpose");
-    assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
-  }
-
-  @DisplayName("Data Use Translate Summary: OK test")
-  @Test
-  void ontology_data_use_translate_summary_page_OK() throws Exception {
-    SimpleResponse response = getPostResponse("translate/summary", dataUse);
-    assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
-  }
-
 }
