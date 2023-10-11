@@ -1,5 +1,6 @@
 package org.broadinstitute.integration;
 
+import java.net.URI;
 import java.nio.charset.Charset;
 import java.util.Optional;
 import java.util.concurrent.Executors;
@@ -10,6 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
 import org.apache.hc.client5.http.impl.classic.CloseableHttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
+import org.apache.hc.core5.net.URIBuilder;
 
 public interface IntegrationTestHelper {
 
@@ -27,7 +29,7 @@ public interface IntegrationTestHelper {
     String baseUrl = System.getenv("baseUrl");
     return Optional.ofNullable(baseUrl)
         .filter(Predicate.not(String::isBlank))
-        .orElse("https://consent.dsde-dev.broadinstitute.org/");
+        .orElse("https://consent-ontology.dsde-dev.broadinstitute.org/");
   }
 
   int poolSize = 5;
@@ -37,6 +39,19 @@ public interface IntegrationTestHelper {
   default SimpleResponse fetchGetResponse(String path) throws Exception {
     try (CloseableHttpClient client = HttpClients.createDefault()) {
       HttpGet request = new HttpGet(getBaseUrl() + path);
+      final ScheduledExecutorService executor = Executors.newScheduledThreadPool(poolSize);
+      executor.schedule(request::cancel, delay, TimeUnit.SECONDS);
+      return client.execute(request, httpResponse ->
+          new SimpleResponse(
+              httpResponse.getCode(),
+              IOUtils.toString(httpResponse.getEntity().getContent(), Charset.defaultCharset())));
+    }
+  }
+
+  default SimpleResponse fetchGetResponseWithQueryParam(String path, String term, String val) throws Exception {
+    try (CloseableHttpClient client = HttpClients.createDefault()) {
+      URI uri = new URIBuilder(getBaseUrl() + path).addParameter(term, val).build();
+      HttpGet request = new HttpGet(uri);
       final ScheduledExecutorService executor = Executors.newScheduledThreadPool(poolSize);
       executor.schedule(request::cancel, delay, TimeUnit.SECONDS);
       return client.execute(request, httpResponse ->
