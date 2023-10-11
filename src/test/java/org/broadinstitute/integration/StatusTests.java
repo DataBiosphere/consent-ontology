@@ -1,4 +1,4 @@
-package org.broadinstitute.integration.status;
+package org.broadinstitute.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
