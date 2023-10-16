@@ -1,4 +1,4 @@
-name: consent-smoke-tests
+name: ontology-smoke-tests
 
 on:
   pull_request:
