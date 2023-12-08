@@ -10,7 +10,8 @@
   <name>Consent Management: Ontology Services</name>
 
   <properties>
-    <dropwizard.version>4.0.2</dropwizard.version>
+    <dropwizard.version>4.0.4</dropwizard.version>
+    <logback.version>1.4.14</logback.version>
     <java.version>17</java.version>
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
@@ -379,6 +380,25 @@
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-json-logging</artifactId>
       <version>${dropwizard.version}</version>
+    </dependency>
+
+    <!-- Security update. See https://broadworkbench.atlassian.net/browse/DUOS-2826 -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-access</artifactId>
+        <version>${logback.version}</version>
+    </dependency>
+    <!-- Security update. See https://broadworkbench.atlassian.net/browse/DUOS-2826 -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-classic</artifactId>
+        <version>${logback.version}</version>
+    </dependency>
+    <!-- Security update. See https://broadworkbench.atlassian.net/browse/DUOS-2826 -->
+    <dependency>
+        <groupId>ch.qos.logback</groupId>
+        <artifactId>logback-core</artifactId>
+        <version>${logback.version}</version>
     </dependency>
 
     <dependency>
