@@ -214,30 +214,49 @@ public class DataUseMatchCasesV3 {
    * are both false Denied Datasets: Any dataset tagged with NCU Any dataset tagged with NPU
    */
   static MatchResult matchCommercial(DataUseV3 purpose, DataUseV3 dataset) {
-    // short-circuit if no commercial/ non-profit clauses
-    if (Objects.isNull(purpose.getCommercialUse())) {
+    // short-circuit if no commercial / non-profit clauses
+    if (purpose.getCommercialUse() == null &&
+        purpose.getNonProfitUse() == null) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
-    if ((Objects.isNull(dataset.getCommercialUse())) && (Objects.isNull(
-        dataset.getNonProfitUse()))) {
+    if (dataset.getCommercialUse() == null &&
+        dataset.getNonProfitUse() == null) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
     List<String> failures = new ArrayList<>();
     boolean purposeCommercial = getNullableOrFalse(purpose.getCommercialUse());
+    boolean purposeNpu = getNullableOrFalse(purpose.getNonProfitUse());
     boolean datasetCommercial = getNullableOrFalse(dataset.getCommercialUse());
     boolean datasetNPU = getNullableOrFalse(dataset.getNonProfitUse());
 
+    // DAR: Commercial -> Dataset Non-commercial
     if (purposeCommercial && !datasetCommercial) {
       failures.add(NCU_F1);
     }
 
-    if ((purposeCommercial && datasetNPU)) {
+    // DAR: Commercial -> Dataset Non-profit
+    if (purposeCommercial && datasetNPU) {
       failures.add(NCU_F1);
     }
 
-    // Approve if dataset is not NCU OR not NPU
-    if ((purposeCommercial && datasetCommercial)) {
+    // DAR: Non-profit -> Dataset Commercial
+    if (purposeNpu && datasetCommercial) {
+      failures.add(NCU_F1);
+    }
+
+    // DAR: Non-profit -> Dataset NOT non-profit
+    if (purposeNpu && !datasetNPU) {
+      failures.add(NCU_F1);
+    }
+
+    // DAR: NOT non-profit -> Dataset IS non-profit
+    if (!purposeNpu && datasetNPU) {
+      failures.add(NCU_F1);
+    }
+
+    // Approve if dataset no failure conditions exist
+    if (failures.isEmpty()) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     } else {
       return MatchResult.from(MatchResultType.DENY, failures);

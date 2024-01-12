@@ -227,6 +227,20 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
+  public void testCommercial_abstain_case_1() {
+    DataUseV3 dataset = new DataUseBuilderV3().setCommercialUse(true).build();
+    DataUseV3 purpose = new DataUseBuilderV3().setNonProfitUse(true).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
+  public void testCommercial_abstain_case_2() {
+    DataUseV3 dataset = new DataUseBuilderV3().setCommercialUse(false).build();
+    DataUseV3 purpose = new DataUseBuilderV3().setNonProfitUse(false).build();
+    assertAbstain(purpose, dataset);
+  }
+
+  @Test
   public void testAbstainDecision_COL() {
     DataUseV3 purpose = new DataUseBuilderV3().setCollaboratorRequired(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();

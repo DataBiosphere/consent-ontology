@@ -64,6 +64,7 @@ public class DataUseMatcherV3 {
         map(MatchResult::getMessage).
         flatMap(Collection::stream).
         filter(StringUtils::isNotBlank).
+        distinct().
         collect(Collectors.toList());
     // if all items match, decision is APPROVED
     // if not, determine whether DENY or ABSTAIN
