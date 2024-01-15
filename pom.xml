@@ -19,7 +19,7 @@
     <jersey.version>2.19</jersey.version>
     <junit.version>5.10.1</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
-    <surefire.version>3.2.3</surefire.version>
+    <surefire.version>3.2.5</surefire.version>
     <swagger.ui.version>5.10.3</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -404,7 +404,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>7.1.0</version>
+      <version>7.2.0</version>
     </dependency>
 
     <dependency>
@@ -447,19 +447,19 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
-      <version>1.60.1</version>
+      <version>1.61.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-storage</artifactId>
-      <version>v1-rev20231202-2.0.0</version>
+      <version>v1-rev20240105-2.0.0</version>
     </dependency>
 
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>8.11.3</version>
+      <version>8.11.4</version>
     </dependency>
 
     <dependency>
