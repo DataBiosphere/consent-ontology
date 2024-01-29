@@ -347,7 +347,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>9.0.8</version>
+        <version>9.0.9</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -459,7 +459,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>8.11.4</version>
+      <version>8.12.0</version>
     </dependency>
 
     <dependency>
@@ -523,7 +523,7 @@
     <dependency>
       <groupId>com.networknt</groupId>
       <artifactId>json-schema-validator</artifactId>
-      <version>1.1.0</version>
+      <version>1.3.0</version>
     </dependency>
 
     <dependency>
@@ -557,7 +557,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>mockserver</artifactId>
-      <version>1.19.3</version>
+      <version>1.19.4</version>
       <scope>test</scope>
     </dependency>
 
