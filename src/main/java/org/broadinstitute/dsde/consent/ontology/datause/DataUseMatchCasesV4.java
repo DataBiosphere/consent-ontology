@@ -17,7 +17,7 @@ public class DataUseMatchCasesV4 {
   private static final String DS_F2 = "The Disease-Specific: %s Research Purpose is not a valid subclass of the Disease-Specific data use limitations.";
   private static final String MDS_F1 = "The Methods development Research Purpose does not match the Disease-Specific data use limitations.";
   private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
-  private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commercial Use data use limitation.";
+  private static final String NCU_F1 = "The For-Profit Research Purpose does not match the Non-Profit Use (NPU) only data use limitation.";
 
   // rationale for approvals - based on dataset terms
   private static final String DS_APPROVE_GRU = "The proposed disease-specific research is within the bounds of the general research use permissions of the dataset(s)";
@@ -209,9 +209,11 @@ public class DataUseMatchCasesV4 {
   }
 
   /**
-   * RP: Commercial purpose/by a commercial entity Future commercial use is prohibited [NCU] Future
-   * use by for-profit entities is prohibited [NPU] Approved Datasets: Any dataset where NPU and NCU
-   * are both false Denied Datasets: Any dataset tagged with NCU Any dataset tagged with NPU
+   * RP: Non-profit Use [NPU]=true
+   * Approved Datasets: Any dataset where [NPU]= true OR false
+   * When a dataset [NPU] == false, that means there are effectively NO NPU restrictions on it.
+   * That means that any purpose [NPU] == true|false should be approved.
+   * However, if the RP is [NPU]=false and the dataset is NPU=true, then it should be denied.
    */
   static MatchResult matchNonProfitUse(DataUseV4 purpose, DataUseV4 dataset) {
     // short-circuit if no non-profit clauses
@@ -223,16 +225,19 @@ public class DataUseMatchCasesV4 {
     boolean datasetNPU = getNullableOrFalse(dataset.getNonProfitUse());
     List<String> failures = new ArrayList<>();
 
-    if (purposeNpu != datasetNPU) {
-      failures.add(NCU_F1);
+    // Approve if the dataset NPU=false as that reflects the case where the dataset has no NPU
+    // restrictions.
+    if (!datasetNPU) {
+      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
-    // Approve if NPU cases match
-    if (purposeNpu == datasetNPU) {
-      return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
-    } else {
+    // At this point, we have a dataset NPU=true, so we need to check the purpose NPU
+    if (!purposeNpu) {
+      failures.add(NCU_F1);
       return MatchResult.from(MatchResultType.DENY, failures);
     }
+
+    return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
   }
 
   /**

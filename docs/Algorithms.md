@@ -89,12 +89,18 @@ dataset matches **ALL** conditions specified in the research purpose.
 			<td>Non-profit use (i.e. <strong>NPU</strong>)</td>
 			<td>
 				<ul>
-					<li>Any dataset tagged with <strong>NPU</strong>=true</li>
+					<li>
+              Any dataset tagged with <strong>NPU</strong>=true OR <strong>NPU</strong>=false
+              Datasets with <strong>NPU</strong>=false set effectively have no restriction on NPU usage.
+          </li>
 				</ul>
 			</td>
 			<td>
 				<ul>
-          <li><strong>Deny</strong> if the dataset's <strong>NPU</strong> term is false.</li>
+          <li>
+              <strong>Deny</strong> if the research purpose is <strong>NPU</strong>=false and
+              the dataset's DUO term is <strong>NPU</strong>=true
+          </li>
 				</ul>
 			</td>
 		</tr>

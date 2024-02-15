@@ -212,17 +212,18 @@ public class DataUseMatcherV4Test {
     assertApprove(purpose, dataset);
   }
 
+  // This is a confusing case. When a dataset NPU == false, that means there are effectively NO
+  // NPU restrictions on it. That means that any purpose NPU == true|false should be approved.
+  @Test
+  public void testNPU_positive_case_3() {
+    DataUseV4 dataset = new DataUseBuilderV4().setNonProfitUse(false).build();
+    DataUseV4 purpose = new DataUseBuilderV4().setNonProfitUse(true).build();
+    assertApprove(purpose, dataset);
+  }
   @Test
   public void testNPU_negative_case_1() {
     DataUseV4 dataset = new DataUseBuilderV4().setNonProfitUse(true).build();
     DataUseV4 purpose = new DataUseBuilderV4().setNonProfitUse(false).build();
-    assertDeny(purpose, dataset);
-  }
-
-  @Test
-  public void testNPU_negative_case_2() {
-    DataUseV4 dataset = new DataUseBuilderV4().setNonProfitUse(false).build();
-    DataUseV4 purpose = new DataUseBuilderV4().setNonProfitUse(true).build();
     assertDeny(purpose, dataset);
   }
 
