@@ -41,12 +41,39 @@ public class DataUseResource implements OntologyLogger {
     return Response.ok().entity(content).type(MediaType.APPLICATION_JSON).build();
   }
 
+  @GET
+  @Path("/data-use/v4")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response getSchemaV4() {
+    String content = FileUtils.readAllTextFromResource("data-use-v4.json");
+    return Response.ok().entity(content).type(MediaType.APPLICATION_JSON).build();
+  }
+
   @POST
   @Path("/data-use/v3")
   @Produces(MediaType.APPLICATION_JSON)
   public Response validateSchemaV3(String json) {
     try {
       List<String> errors = jsonSchemaUtil.validateDataUseV3Schema(json);
+      if (errors.isEmpty()) {
+        return Response.ok().type(MediaType.APPLICATION_JSON).build();
+      } else {
+        // nosemgrep
+        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors)
+            .type(MediaType.APPLICATION_JSON).build();
+      }
+    } catch (BadRequestException e) {
+        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(e.getMessage())
+            .type(MediaType.APPLICATION_JSON).build();
+    }
+  }
+
+  @POST
+  @Path("/data-use/v4")
+  @Produces(MediaType.APPLICATION_JSON)
+  public Response validateSchemaV4(String json) {
+    try {
+      List<String> errors = jsonSchemaUtil.validateDataUseV4Schema(json);
       if (errors.isEmpty()) {
         return Response.ok().type(MediaType.APPLICATION_JSON).build();
       } else {

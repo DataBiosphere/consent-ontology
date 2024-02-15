@@ -2,15 +2,15 @@ package org.broadinstitute.dsde.consent.ontology.datause;
 
 import com.google.common.collect.ImmutableMap;
 import java.util.List;
-import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV3;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV4;
 
-public class MatchV3ResponseEntity {
+public class MatchV4ResponseEntity {
 
   private final MatchResultType result;
-  private final DataUseMatchPairV3 matchPair;
+  private final DataUseMatchPairV4 matchPair;
   private final List<String> rationale;
 
-  public MatchV3ResponseEntity(MatchResultType result, DataUseMatchPairV3 matchPair,
+  public MatchV4ResponseEntity(MatchResultType result, DataUseMatchPairV4 matchPair,
       List<String> rationale) {
     this.result = result;
     this.matchPair = matchPair;
@@ -28,7 +28,7 @@ public class MatchV3ResponseEntity {
     return this.result;
   }
 
-  public DataUseMatchPairV3 getMatchPair() {
+  public DataUseMatchPairV4 getMatchPair() {
     return this.matchPair;
   }
   public List<String> getRationale() {

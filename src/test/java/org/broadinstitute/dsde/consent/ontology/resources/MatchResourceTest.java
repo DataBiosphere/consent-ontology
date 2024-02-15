@@ -14,6 +14,7 @@ import java.util.Collections;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV4;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchV3ResponseEntity;
@@ -39,6 +40,9 @@ public class MatchResourceTest {
   @Mock
   private final DataUseMatcherV3 dataUseMatcherV3 = new DataUseMatcherV3();
 
+  @Mock
+  private final DataUseMatcherV4 dataUseMatcherV4 = new DataUseMatcherV4();
+
   private MatchResource resource;
 
   @BeforeEach
@@ -58,7 +62,7 @@ public class MatchResourceTest {
 
   private void initResource() {
     dataUseMatcher.setAutocompleteService(autocompleteService);
-    resource = new MatchResource(dataUseMatcher, dataUseMatcherV3);
+    resource = new MatchResource(dataUseMatcher, dataUseMatcherV3, dataUseMatcherV4);
   }
 
   @Test
