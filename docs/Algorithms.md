@@ -12,7 +12,8 @@ matching at scale.
 
 This version of the algorithm uses a custom set of business rules to match a research purpose and consented dataset.
 In determining a positive match between research purpose and consented dataset, we make sure that the consented
-dataset matches **ALL** conditions specified in the research purpose.
+dataset matches **ALL** conditions specified in the research purpose. The primary difference between this version
+and the previous version is the update to Non-Profit Use (<strong>NPU</strong>) business logic.
 
 <table>
 	<thead>
