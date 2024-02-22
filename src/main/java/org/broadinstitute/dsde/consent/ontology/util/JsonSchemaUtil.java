@@ -7,6 +7,7 @@ import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
+import com.networknt.schema.SchemaValidatorsConfig;
 import com.networknt.schema.SpecVersion.VersionFlag;
 import com.networknt.schema.ValidationMessage;
 import jakarta.ws.rs.BadRequestException;
@@ -49,7 +50,11 @@ public class JsonSchemaUtil implements OntologyLogger {
   private JsonSchema getDataUseInstance() {
     String schemaString = getDataUseSchemaV3();
     JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
-    return factory.getSchema(schemaString);
+    SchemaValidatorsConfig config = new SchemaValidatorsConfig();
+    config.setHandleNullableField(false);
+    config.setTypeLoose(false);
+    config.setFormatAssertionsEnabled(true);
+    return factory.getSchema(schemaString, config);
   }
 
   /**
