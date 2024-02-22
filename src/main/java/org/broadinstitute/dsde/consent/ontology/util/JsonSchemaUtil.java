@@ -103,7 +103,7 @@ public class JsonSchemaUtil implements OntologyLogger {
     try {
       ObjectMapper mapper = new ObjectMapper();
       JsonNode jsonSubject = mapper.readTree(dataUseV4Instance);
-      JsonSchema schema = getDataUseV3Instance();
+      JsonSchema schema = getDataUseV4Instance();
       Set<ValidationMessage> messages = schema.validate(jsonSubject);
       return messages.stream().map(ValidationMessage::getMessage).toList();
     } catch (Exception e) {
