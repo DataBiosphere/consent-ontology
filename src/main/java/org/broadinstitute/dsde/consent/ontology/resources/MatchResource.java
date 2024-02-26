@@ -12,13 +12,17 @@ import jakarta.ws.rs.core.Response;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
+import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV4;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResultType;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchV3ResponseEntity;
+import org.broadinstitute.dsde.consent.ontology.datause.MatchV4ResponseEntity;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV3;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV4;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
+import org.broadinstitute.dsde.consent.ontology.model.DataUseV4;
 
 @Path("/match")
 @Consumes("application/json")
@@ -28,11 +32,13 @@ public class MatchResource {
   private final DataUseMatcher dataUseMatcher;
 
   private final DataUseMatcherV3 dataUseMatcherV3;
+  private final DataUseMatcherV4 dataUseMatcherV4;
 
   @Inject
-  MatchResource(DataUseMatcher dataUseMatcher, DataUseMatcherV3 dataUseMatcherV3) {
+  MatchResource(DataUseMatcher dataUseMatcher, DataUseMatcherV3 dataUseMatcherV3, DataUseMatcherV4 dataUseMatcherV4) {
     this.dataUseMatcher = dataUseMatcher;
     this.dataUseMatcherV3 = dataUseMatcherV3;
+    this.dataUseMatcherV4 = dataUseMatcherV4;
   }
 
   /**
@@ -102,6 +108,42 @@ public class MatchResource {
         return Response
             .ok()
             .entity(new MatchV3ResponseEntity(match, matchPair, rationale).get())
+            .type(MediaType.APPLICATION_JSON)
+            .build();
+      }
+      return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON)
+          .build();
+    } catch (Exception e) {
+      return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
+    }
+  }
+
+  /**
+   * Version 4 of matching logic
+   *
+   * @param matchPair The DataUseMatchPairV4
+   * @return Response
+   */
+  @Path("/v4")
+  @POST
+  public Response matchDataUseV4(final DataUseMatchPairV4 matchPair) {
+    DataUseV4 purpose = matchPair.getPurpose();
+    DataUseV4 dataset = matchPair.getConsent();
+    try {
+      ErrorResponse error = new ErrorResponse();
+      error.setCode(Response.Status.BAD_REQUEST.getStatusCode());
+      if (purpose == null) {
+        error.setMessage("Purpose is required");
+      } else {
+        error.setMessage("Dataset is required");
+      }
+      if (purpose != null && dataset != null) {
+        MatchResult matchResult = dataUseMatcherV4.matchPurposeAndDatasetV4(purpose, dataset);
+        MatchResultType match = matchResult.getMatchResultType();
+        List<String> rationale = matchResult.getMessage();
+        return Response
+            .ok()
+            .entity(new MatchV4ResponseEntity(match, matchPair, rationale).get())
             .type(MediaType.APPLICATION_JSON)
             .build();
       }

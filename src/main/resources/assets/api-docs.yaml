@@ -65,6 +65,35 @@ paths:
         400:
           description: Bad Request if data use term is invalid or required terms are missing.
 
+  /schemas/data-use/v4:
+    get:
+      summary: Data Use Questions and Answers Version 4
+      description: JSON representation of data use questions + answers for use in defining structured data use restrictions and data access requests.
+      tags:
+        - Data Use
+      responses:
+        200:
+          description: The json representation for all data use questions + answers
+        default:
+          description: Unexpected error
+    post:
+      summary: Validate Data Use Terms
+      description: Checks if the Data Use terms has the correct format and context
+      parameters:
+        - name: body
+          in: body
+          description: DataUseV4
+          required: true
+          schema:
+            $ref: '#/definitions/DataUseV4'
+      tags:
+        - Data Use
+      responses:
+        200:
+          description: Successful.
+        400:
+          description: Bad Request if data use term is invalid or required terms are missing.
+
   /translate:
     post:
       summary: Translate Data Use JSON into plain English
@@ -179,6 +208,29 @@ paths:
           description: Successful matching.
           schema:
             $ref: '#/definitions/DataUseMatchPairResultV3'
+        400:
+          description: Bad Request if either purpose or consent are not provided.
+        500:
+          description: Internal Server Error
+
+  /match/v4:
+    post:
+      summary: Match DataUse Purpose and Consent V4
+      description: Determine if a Research Purpose and Consent logically match.
+      parameters:
+        - name: body
+          in: body
+          description: Research Purpose and Dataset DataUse pair.
+          required: true
+          schema:
+            $ref: '#/definitions/DataUseMatchPairV4'
+      tags:
+        - Match
+      responses:
+        200:
+          description: Successful matching.
+          schema:
+            $ref: '#/definitions/DataUseMatchPairResultV4'
         400:
           description: Bad Request if either purpose or consent are not provided.
         500:
@@ -336,6 +388,12 @@ definitions:
     example:
       { "generalUse": false, "hmbResearch": true, "nonProfitUse": false }
 
+  DataUseV4:
+    type: object
+    description: JSON model of a set of data use questions and answers
+    example:
+      { "generalUse": false, "hmbResearch": true, "nonProfitUse": false }
+
   DataUseRecommendation:
     type: object
     description: JSON model of a set of data use recommendations
@@ -377,6 +435,15 @@ definitions:
       consent:
         $ref: '#/definitions/DataUseV3'
 
+  DataUseMatchPairV4:
+    type: object
+    description: JSON model of research purpose and dataset
+    properties:
+      purpose:
+        $ref: '#/definitions/DataUseV4'
+      consent:
+        $ref: '#/definitions/DataUseV4'
+
   DataUseMatchPairResultV3:
     type: object
     properties:
@@ -386,6 +453,24 @@ definitions:
         description: Result of the match algorithm on the provided purpose and dataset
       matchPair:
         $ref: '#/definitions/DataUseMatchPairV3'
+        description: The provided purpose and consent
+      rationale:
+        type: array
+        items:
+          type: string
+        description: |
+          List of reasons why a match result occurred. Only supported in
+          in versions 2 and higher
+
+  DataUseMatchPairResultV4:
+    type: object
+    properties:
+      result:
+        type: string
+        enum: [APPROVE, DENY, ABSTAIN]
+        description: Result of the match algorithm on the provided purpose and dataset
+      matchPair:
+        $ref: '#/definitions/DataUseMatchPairV4'
         description: The provided purpose and consent
       rationale:
         type: array

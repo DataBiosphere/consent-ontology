@@ -23,6 +23,8 @@ public class JsonSchemaUtil implements OntologyLogger {
   private final LoadingCache<String, String> cache;
   private final String dataUseSchemaV3 = "/data-use-v3.json";
 
+  private final String dataUseSchemaV4 = "/data-use-v4.json";
+
   public JsonSchemaUtil() {
     CacheLoader<String, String> loader = new CacheLoader<>() {
       @Override
@@ -42,12 +44,21 @@ public class JsonSchemaUtil implements OntologyLogger {
     }
   }
 
+  public String getDataUseSchemaV4() {
+    try {
+      return cache.get(dataUseSchemaV4);
+    } catch (ExecutionException ee) {
+      logError("Unable to load the data use schema V3: " + ee.getMessage());
+      return null;
+    }
+  }
+
   /**
    * Loads a JsonSchema populated from the data use V3 schema
    *
    * @return Schema The Schema
    */
-  private JsonSchema getDataUseInstance() {
+  private JsonSchema getDataUseV3Instance() {
     String schemaString = getDataUseSchemaV3();
     JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
     SchemaValidatorsConfig config = new SchemaValidatorsConfig();
@@ -55,6 +66,17 @@ public class JsonSchemaUtil implements OntologyLogger {
     config.setTypeLoose(false);
     config.setFormatAssertionsEnabled(true);
     return factory.getSchema(schemaString, config);
+  }
+
+  /**
+   * Loads a JsonSchema populated from the data use V3 schema
+   *
+   * @return Schema The Schema
+   */
+  private JsonSchema getDataUseV4Instance() {
+    String schemaString = getDataUseSchemaV4();
+    JsonSchemaFactory factory = JsonSchemaFactory.getInstance(VersionFlag.V7);
+    return factory.getSchema(schemaString);
   }
 
   /**
@@ -67,7 +89,7 @@ public class JsonSchemaUtil implements OntologyLogger {
     try {
       ObjectMapper mapper = new ObjectMapper();
       JsonNode jsonSubject = mapper.readTree(dataUseV3Instance);
-      JsonSchema schema = getDataUseInstance();
+      JsonSchema schema = getDataUseV3Instance();
       Set<ValidationMessage> messages = schema.validate(jsonSubject);
       return messages.stream().map(ValidationMessage::getMessage).toList();
     } catch (Exception e) {
@@ -75,4 +97,24 @@ public class JsonSchemaUtil implements OntologyLogger {
       throw new BadRequestException("Invalid schema");
     }
   }
+
+  /**
+   * Compares an instance of a data use object to the data use V4 schema
+   *
+   * @param dataUseV4Instance The string instance of a data use object
+   * @return List of validation messages
+   */
+  public List<String> validateDataUseV4Schema(String dataUseV4Instance) {
+    try {
+      ObjectMapper mapper = new ObjectMapper();
+      JsonNode jsonSubject = mapper.readTree(dataUseV4Instance);
+      JsonSchema schema = getDataUseV4Instance();
+      Set<ValidationMessage> messages = schema.validate(jsonSubject);
+      return messages.stream().map(ValidationMessage::getMessage).toList();
+    } catch (Exception e) {
+      logError("Unable to load the data use schema: " + e.getMessage());
+      throw new BadRequestException("Invalid schema");
+    }
+  }
+
 }
