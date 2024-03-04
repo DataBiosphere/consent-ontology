@@ -20,7 +20,7 @@
     <junit.version>5.10.2</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.2.5</surefire.version>
-    <swagger.ui.version>5.10.3</swagger.ui.version>
+    <swagger.ui.version>5.11.8</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -404,7 +404,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>7.4.0</version>
+      <version>7.5.0</version>
     </dependency>
 
     <dependency>
@@ -447,7 +447,7 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
-      <version>1.61.1</version>
+      <version>1.62.2</version>
     </dependency>
 
     <dependency>
