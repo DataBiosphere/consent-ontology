@@ -7,7 +7,7 @@ import java.util.List;
  */
 public class DataUseBuilder {
 
-  private DataUse du;
+  private final DataUse du;
 
   public DataUseBuilder() {
     du = new DataUse();
@@ -38,13 +38,13 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setPopulationStructure(Boolean populationStructure) {
-    du.setPopulationStructure(populationStructure);
+  public DataUseBuilder setPopulation(Boolean population) {
+    du.setPopulation(population);
     return this;
   }
 
-  public DataUseBuilder setCommercialUse(Boolean commercialUse) {
-    du.setCommercialUse(commercialUse);
+  public DataUseBuilder setNonProfitUse(Boolean nonProfitUse) {
+    du.setNonProfitUse(nonProfitUse);
     return this;
   }
 
@@ -53,13 +53,8 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setAggregateResearch(String aggregateResearch) {
-    du.setAggregateResearch(aggregateResearch);
-    return this;
-  }
-
-  public DataUseBuilder setControlSetOption(String controlSetOption) {
-    du.setControlSetOption(controlSetOption);
+  public DataUseBuilder setControls(Boolean controls) {
+    du.setControls(controls);
     return this;
   }
 
@@ -70,46 +65,6 @@ public class DataUseBuilder {
 
   public DataUseBuilder setPediatric(Boolean pediatric) {
     du.setPediatric(pediatric);
-    return this;
-  }
-
-  public DataUseBuilder setPopulationRestrictions(List<String> populationRestrictions) {
-    du.setPopulationRestrictions(populationRestrictions);
-    return this;
-  }
-
-  public DataUseBuilder setDateRestriction(String dateRestriction) {
-    du.setDateRestriction(dateRestriction);
-    return this;
-  }
-
-  public DataUseBuilder setRecontactingDataSubjects(Boolean recontactingDataSubjects) {
-    du.setRecontactingDataSubjects(recontactingDataSubjects);
-    return this;
-  }
-
-  public DataUseBuilder setRecontactMay(String recontactMay) {
-    du.setRecontactMay(recontactMay);
-    return this;
-  }
-
-  public DataUseBuilder setRecontactMust(String recontactMust) {
-    du.setRecontactMust(recontactMust);
-    return this;
-  }
-
-  public DataUseBuilder setGenomicPhenotypicData(String genomicPhenotypicData) {
-    du.setGenomicPhenotypicData(genomicPhenotypicData);
-    return this;
-  }
-
-  public DataUseBuilder setOtherRestrictions(Boolean otherRestrictions) {
-    du.setOtherRestrictions(otherRestrictions);
-    return this;
-  }
-
-  public DataUseBuilder setCloudStorage(String cloudStorage) {
-    du.setCloudStorage(cloudStorage);
     return this;
   }
 
@@ -138,11 +93,6 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setAddiction(Boolean addiction) {
-    du.setAddiction(addiction);
-    return this;
-  }
-
   public DataUseBuilder setSexualDiseases(Boolean sexualDiseases) {
     du.setSexualDiseases(sexualDiseases);
     return this;
@@ -163,13 +113,8 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setNonBiomedical(Boolean nonBiomedical) {
-    du.setNonBiomedical(nonBiomedical);
-    return this;
-  }
-
-  public DataUseBuilder setManualReview(Boolean manualReview) {
-    du.setManualReview(manualReview);
+  public DataUseBuilder setNotHealth(Boolean notHealth) {
+    du.setNotHealth(notHealth);
     return this;
   }
 
@@ -183,18 +128,8 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setGenomicResults(Boolean genomicResults) {
-    du.setGenomicResults(genomicResults);
-    return this;
-  }
-
-  public DataUseBuilder setGenomicSummaryResults(String genomicSummaryResults) {
-    du.setGenomicSummaryResults(genomicSummaryResults);
-    return this;
-  }
-
-  public DataUseBuilder setCollaborationInvestigators(Boolean collaborationInvestigators) {
-    du.setCollaborationInvestigators(collaborationInvestigators);
+  public DataUseBuilder setCollaborationRequired(Boolean collaborationRequired) {
+    du.setCollaboratorRequired(collaborationRequired);
     return this;
   }
 

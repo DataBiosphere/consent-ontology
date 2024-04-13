@@ -11,8 +11,6 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import com.google.gson.Gson;
 import jakarta.ws.rs.core.Response;
 import java.util.Collections;
-import org.apache.commons.lang3.tuple.ImmutablePair;
-import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcher;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV3;
 import org.broadinstitute.dsde.consent.ontology.datause.DataUseMatcherV4;
 import org.broadinstitute.dsde.consent.ontology.datause.MatchResult;
@@ -35,9 +33,6 @@ public class MatchResourceTest {
   private AutocompleteService autocompleteService;
 
   @Mock
-  private final DataUseMatcher dataUseMatcher = new DataUseMatcher();
-
-  @Mock
   private final DataUseMatcherV3 dataUseMatcherV3 = new DataUseMatcherV3();
 
   @Mock
@@ -50,10 +45,6 @@ public class MatchResourceTest {
     openMocks(this);
     when(autocompleteService.lookupById(anyString())).thenReturn(Collections.emptyList());
     when(
-        dataUseMatcher.matchPurposeAndDatasetV2(any(DataUse.class), any(DataUse.class))).thenReturn(
-        new ImmutablePair<>(Boolean.TRUE, Collections.emptyList())
-    );
-    when(
         dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
             any(DataUseV3.class))).thenReturn(
         new MatchResult(MatchResultType.APPROVE, Collections.emptyList())
@@ -61,55 +52,17 @@ public class MatchResourceTest {
   }
 
   private void initResource() {
-    dataUseMatcher.setAutocompleteService(autocompleteService);
-    resource = new MatchResource(dataUseMatcher, dataUseMatcherV3, dataUseMatcherV4);
+    resource = new MatchResource(dataUseMatcherV3, dataUseMatcherV4);
   }
 
   @Test
-  public void testOK() {
+  public void testGone() {
     initResource();
     DataUse purpose = new DataUseBuilder().setHmbResearch(true).build();
     DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
     DataUseMatchPair pair = new DataUseMatchPair(purpose, dataset);
     try (Response response = resource.matchDataUse(pair)) {
-      assertEquals(200, response.getStatus());
-    }
-  }
-
-  @Test
-  public void testNullPurpose() {
-    initResource();
-    DataUse purpose = null;
-    DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
-    DataUseMatchPair pair = new DataUseMatchPair(purpose, dataset);
-    try (Response response = resource.matchDataUse(pair)) {
-      assertEquals(400, response.getStatus());
-    }
-  }
-
-  @Test
-  public void testNullDataset() {
-    initResource();
-    DataUse purpose = new DataUseBuilder().setGeneralUse(true).build();
-    DataUse dataset = null;
-    DataUseMatchPair pair = new DataUseMatchPair(purpose, dataset);
-    try (Response response = resource.matchDataUse(pair)) {
-      assertEquals(400, response.getStatus());
-    }
-  }
-
-  @Test
-  public void testInternalServerError() {
-    doThrow(new RuntimeException("Something went wrong")).when(dataUseMatcher)
-        .matchPurposeAndDatasetV2(any(DataUse.class), any(DataUse.class));
-    initResource();
-    DataUse purpose = new DataUseBuilder().setDiseaseRestrictions(
-            Collections.singletonList("http://purl.obolibrary.org/obo/DOID_162"))
-        .setMethodsResearch(true).build();
-    DataUse dataset = new DataUseBuilder().setHmbResearch(true).build();
-    DataUseMatchPair pair = new DataUseMatchPair(purpose, dataset);
-    try (Response response = resource.matchDataUse(pair)) {
-      assertEquals(500, response.getStatus());
+      assertEquals(410, response.getStatus());
     }
   }
 

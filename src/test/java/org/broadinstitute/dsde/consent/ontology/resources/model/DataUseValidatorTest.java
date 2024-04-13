@@ -3,6 +3,7 @@ package org.broadinstitute.dsde.consent.ontology.resources.model;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseValidator;
 import org.junit.jupiter.api.Test;
@@ -22,64 +23,32 @@ public class DataUseValidatorTest {
     dataUse.setGeneralUse(true);
     DataUseValidator validator = new DataUseValidator(dataUse);
     assertTrue(validator.getIsValid());
-
-    dataUse = new DataUse();
-    dataUse.setGeneralUse(true);
-    dataUse.getDiseaseRestrictions().add("restriction");
-    validator = new DataUseValidator(dataUse);
-    assertFalse(validator.getIsValid());
-  }
-
-  @Test
-  public void testRecontact() {
-    DataUse dataUse = new DataUse();
-    dataUse.setRecontactingDataSubjects(true);
-    dataUse.setRecontactMay("weekends");
-    DataUseValidator validator = new DataUseValidator(dataUse);
-    assertTrue(validator.getIsValid());
-
-    dataUse = new DataUse();
-    dataUse.setRecontactingDataSubjects(true);
-    dataUse.setRecontactMust("weekends");
-    validator = new DataUseValidator(dataUse);
-    assertTrue(validator.getIsValid());
-
-    dataUse = new DataUse();
-    dataUse.setRecontactingDataSubjects(true);
-    validator = new DataUseValidator(dataUse);
-    assertFalse(validator.getIsValid());
   }
 
   @Test
   public void testOther() {
     DataUse dataUse = new DataUse();
-    dataUse.setOtherRestrictions(true);
     dataUse.setOther("weekends");
     DataUseValidator validator = new DataUseValidator(dataUse);
     assertTrue(validator.getIsValid());
 
     dataUse = new DataUse();
-    dataUse.setOtherRestrictions(true);
-    dataUse.setCloudStorage("Yes");
+    dataUse.setSecondaryOther("secondary");
     validator = new DataUseValidator(dataUse);
     assertTrue(validator.getIsValid());
 
     dataUse = new DataUse();
-    dataUse.setOtherRestrictions(true);
+    dataUse.setOther("weekends");
     dataUse.setEthicsApprovalRequired(true);
     validator = new DataUseValidator(dataUse);
     assertTrue(validator.getIsValid());
 
     dataUse = new DataUse();
-    dataUse.setOtherRestrictions(true);
+    dataUse.setOther("weekends");
     dataUse.setGeographicalRestrictions("US");
     validator = new DataUseValidator(dataUse);
     assertTrue(validator.getIsValid());
 
-    dataUse = new DataUse();
-    dataUse.setOtherRestrictions(true);
-    validator = new DataUseValidator(dataUse);
-    assertFalse(validator.getIsValid());
   }
 
 }
