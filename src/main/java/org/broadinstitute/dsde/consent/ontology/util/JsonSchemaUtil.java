@@ -15,6 +15,8 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutionException;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 
@@ -110,6 +112,30 @@ public class JsonSchemaUtil implements OntologyLogger {
       JsonNode jsonSubject = mapper.readTree(dataUseV4Instance);
       JsonSchema schema = getDataUseV4Instance();
       Set<ValidationMessage> messages = schema.validate(jsonSubject);
+      List<String> validationMessages = messages.stream().map(ValidationMessage::getMessage).toList();
+      // Additional validation for the required fields. One of GRU or HMB must be true or
+      // there must be a non-empty Disease Restriction array.
+      JsonNode gru = jsonSubject.get("generalUse");
+      JsonNode hmb = jsonSubject.get("hmbResearch");
+      JsonNode diseases = jsonSubject.get("diseaseRestrictions");
+      boolean minRequired = false;
+      if (gru != null && gru.asBoolean()) {
+        minRequired = true;
+      }
+      if (!minRequired && (hmb != null && hmb.asBoolean())) {
+        minRequired = true;
+      }
+      if (!minRequired && (diseases != null && diseases.isArray())) {
+        List<JsonNode> diseaseNodes = StreamSupport
+            .stream( diseases.spliterator(), false).toList();
+        minRequired = !diseaseNodes.isEmpty();
+      }
+      if (!minRequired) {
+        List<String> required = List.of("$: At least one of 'generalUse', 'hmbResearch' must be true or 'diseaseRestrictions' cannot be empty");
+        return Stream.
+            concat(validationMessages.stream(), required.stream()).
+            toList();
+      }
       return messages.stream().map(ValidationMessage::getMessage).toList();
     } catch (Exception e) {
       logError("Unable to load the data use schema: " + e.getMessage());
