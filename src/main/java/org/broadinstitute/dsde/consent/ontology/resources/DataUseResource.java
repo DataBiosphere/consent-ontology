@@ -16,7 +16,7 @@ import org.parboiled.common.FileUtils;
 @Path("/schemas")
 public class DataUseResource implements OntologyLogger {
 
-  private JsonSchemaUtil jsonSchemaUtil = new JsonSchemaUtil();
+  private final JsonSchemaUtil jsonSchemaUtil = new JsonSchemaUtil();
 
   @GET
   @Path("/data-use")
@@ -58,7 +58,6 @@ public class DataUseResource implements OntologyLogger {
       if (errors.isEmpty()) {
         return Response.ok().type(MediaType.APPLICATION_JSON).build();
       } else {
-        // nosemgrep
         return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors)
             .type(MediaType.APPLICATION_JSON).build();
       }
@@ -77,7 +76,6 @@ public class DataUseResource implements OntologyLogger {
       if (errors.isEmpty()) {
         return Response.ok().type(MediaType.APPLICATION_JSON).build();
       } else {
-        // nosemgrep
         return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors)
             .type(MediaType.APPLICATION_JSON).build();
       }
