@@ -119,9 +119,7 @@ public class JsonSchemaUtil implements OntologyLogger {
       JsonNode gru = jsonSubject.get("generalUse");
       JsonNode hmb = jsonSubject.get("hmbResearch");
       JsonNode diseases = jsonSubject.get("diseaseRestrictions");
-      boolean gruPositive = false;
-      boolean hmbPositive = false;
-      boolean diseasePositive = false;
+      boolean gruPositive = false, hmbPositive = false, diseasePositive = false;
       if (gru != null && gru.asBoolean()) {
         gruPositive = true;
       }
