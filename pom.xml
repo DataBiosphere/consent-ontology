@@ -20,7 +20,7 @@
     <junit.version>5.10.2</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.2.5</surefire.version>
-    <swagger.ui.version>5.15.2-1</swagger.ui.version>
+    <swagger.ui.version>5.16.1</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -289,8 +289,7 @@
               <goal>wget</goal>
             </goals>
             <configuration>
-              <url>https://github.com/swagger-api/swagger-ui/archive/v${swagger.ui.version}.tar.gz
-              </url>
+              <url>https://github.com/swagger-api/swagger-ui/archive/v${swagger.ui.version}.tar.gz</url>
               <unpack>true</unpack>
               <outputDirectory>${project.build.directory}</outputDirectory>
             </configuration>
