@@ -180,16 +180,16 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
       primary.add(new DataUseElement("NPOA", POA));
     }
 
+    if (StringUtils.isNotBlank(dataUse.getOther())) {
+      primary.add(new DataUseElement("OTHER", String.format(OTHER, dataUse.getOther())));
+    }
+
     if (BooleanUtils.isTrue(dataUse.getMethodsResearch())) {
       secondary.add(new DataUseElement("NMDS", NMDS));
     }
 
     if (BooleanUtils.isTrue(dataUse.getNonProfitUse())) {
       secondary.add(new DataUseElement("NCU", NCU));
-    }
-
-    if (StringUtils.isNotBlank(dataUse.getOther())) {
-      secondary.add(new DataUseElement("OTHER", String.format(OTHER, dataUse.getOther())));
     }
 
     if (StringUtils.isNotBlank(dataUse.getSecondaryOther())) {
