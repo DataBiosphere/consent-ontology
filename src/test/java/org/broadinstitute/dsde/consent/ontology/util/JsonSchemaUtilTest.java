@@ -85,7 +85,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -98,7 +97,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -111,7 +109,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -124,7 +121,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -137,7 +133,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -150,7 +145,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -163,7 +157,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -176,7 +169,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -189,7 +181,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -202,7 +193,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -215,7 +205,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -228,7 +217,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -241,7 +229,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -254,7 +241,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -267,7 +253,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -280,7 +265,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -293,7 +277,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -306,7 +289,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -319,7 +301,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -332,7 +313,7 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
+
     assertFalse(errors.isEmpty());
   }
 
@@ -345,7 +326,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
@@ -358,7 +338,6 @@ class JsonSchemaUtilTest {
             }
         """;
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
-    System.out.println(errors);
     assertFalse(errors.isEmpty());
   }
 
