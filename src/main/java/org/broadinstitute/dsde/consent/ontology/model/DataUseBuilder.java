@@ -23,13 +23,13 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setHmbResearch(Boolean hmbResearch) {
-    du.setHmbResearch(hmbResearch);
+  public DataUseBuilder setDiseaseRestrictions(List<String> diseaseRestrictions) {
+    du.setDiseaseRestrictions(diseaseRestrictions);
     return this;
   }
 
-  public DataUseBuilder setDiseaseRestrictions(List<String> diseaseRestrictions) {
-    du.setDiseaseRestrictions(diseaseRestrictions);
+  public DataUseBuilder setHmbResearch(Boolean hmbResearch) {
+    du.setHmbResearch(hmbResearch);
     return this;
   }
 
@@ -38,8 +38,8 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setPopulation(Boolean population) {
-    du.setPopulation(population);
+  public DataUseBuilder setMethodsResearch(Boolean methodsResearch) {
+    du.setMethodsResearch(methodsResearch);
     return this;
   }
 
@@ -48,8 +48,43 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setMethodsResearch(Boolean methodsResearch) {
-    du.setMethodsResearch(methodsResearch);
+  public DataUseBuilder setOther(String other) {
+    du.setOther(other);
+    return this;
+  }
+
+  public DataUseBuilder setSecondaryOther(String secondaryOther) {
+    du.setSecondaryOther(secondaryOther);
+    return this;
+  }
+
+  public DataUseBuilder setEthicsApprovalRequired(Boolean ethicsApprovalRequired) {
+    du.setEthicsApprovalRequired(ethicsApprovalRequired);
+    return this;
+  }
+
+  public DataUseBuilder setCollaborationRequired(Boolean collaborationRequired) {
+    du.setCollaboratorRequired(collaborationRequired);
+    return this;
+  }
+
+  public DataUseBuilder setGeographicalRestrictions(String geographicalRestrictions) {
+    du.setGeographicalRestrictions(geographicalRestrictions);
+    return this;
+  }
+
+  public DataUseBuilder setGeneticStudiesOnly(Boolean geneticStudiesOnly) {
+    du.setGeneticStudiesOnly(geneticStudiesOnly);
+    return this;
+  }
+
+  public DataUseBuilder setPublicationResults(Boolean publicationResults) {
+    du.setPublicationResults(publicationResults);
+    return this;
+  }
+
+  public DataUseBuilder setPublicationMoratorium(String publicationMoratorium) {
+    du.setPublicationMoratorium(publicationMoratorium);
     return this;
   }
 
@@ -68,23 +103,8 @@ public class DataUseBuilder {
     return this;
   }
 
-  public DataUseBuilder setEthicsApprovalRequired(Boolean ethicsApprovalRequired) {
-    du.setEthicsApprovalRequired(ethicsApprovalRequired);
-    return this;
-  }
-
-  public DataUseBuilder setGeographicalRestrictions(String geographicalRestrictions) {
-    du.setGeographicalRestrictions(geographicalRestrictions);
-    return this;
-  }
-
-  public DataUseBuilder setOther(String other) {
-    du.setOther(other);
-    return this;
-  }
-
-  public DataUseBuilder setSecondaryOther(String secondaryOther) {
-    du.setSecondaryOther(secondaryOther);
+  public DataUseBuilder setPopulation(Boolean population) {
+    du.setPopulation(population);
     return this;
   }
 
@@ -115,26 +135,6 @@ public class DataUseBuilder {
 
   public DataUseBuilder setNotHealth(Boolean notHealth) {
     du.setNotHealth(notHealth);
-    return this;
-  }
-
-  public DataUseBuilder setGeneticStudiesOnly(Boolean geneticStudiesOnly) {
-    du.setGeneticStudiesOnly(geneticStudiesOnly);
-    return this;
-  }
-
-  public DataUseBuilder setPublicationResults(Boolean publicationResults) {
-    du.setPublicationResults(publicationResults);
-    return this;
-  }
-
-  public DataUseBuilder setCollaborationRequired(Boolean collaborationRequired) {
-    du.setCollaboratorRequired(collaborationRequired);
-    return this;
-  }
-
-  public DataUseBuilder setPublicationMoratorium(String publicationMoratorium) {
-    du.setPublicationMoratorium(publicationMoratorium);
     return this;
   }
 
