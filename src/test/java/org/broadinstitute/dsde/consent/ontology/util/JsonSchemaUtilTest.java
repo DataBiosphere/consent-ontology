@@ -12,40 +12,40 @@ class JsonSchemaUtilTest {
 
   private final String dataUseV3Instance = """
       {
-      "generalUse": false,
-      "diseaseRestrictions": ["test"],
-      "hmbResearch": false,
-      "populationOriginsAncestry": true,
-      "methodsResearch": true,
-      "commercialUse": true,
-      "nonProfitUse": true,
-      "other": "other",
-      "secondaryOther": "secondaryOther",
-      "ethicsApprovalRequired": true,
-      "collaboratorRequired": true,
-      "geographicalRestrictions": "geographicalRestrictions",
-      "geneticStudiesOnly": true,
-      "publicationResults": true,
-      "publicationMoratorium": "2023-03-09"
+        "generalUse": false,
+        "diseaseRestrictions": ["test"],
+        "hmbResearch": false,
+        "populationOriginsAncestry": true,
+        "methodsResearch": true,
+        "commercialUse": true,
+        "nonProfitUse": true,
+        "other": "other",
+        "secondaryOther": "secondaryOther",
+        "ethicsApprovalRequired": true,
+        "collaboratorRequired": true,
+        "geographicalRestrictions": "geographicalRestrictions",
+        "geneticStudiesOnly": true,
+        "publicationResults": true,
+        "publicationMoratorium": "2023-03-09"
       }
       """;
 
   private final String dataUseV4Instance = """
       {
-      "generalUse": false,
-      "diseaseRestrictions": ["test"],
-      "hmbResearch": false,
-      "populationOriginsAncestry": true,
-      "methodsResearch": true,
-      "nonProfitUse": true,
-      "other": "other",
-      "secondaryOther": "secondaryOther",
-      "ethicsApprovalRequired": true,
-      "collaboratorRequired": true,
-      "geographicalRestrictions": "geographicalRestrictions",
-      "geneticStudiesOnly": true,
-      "publicationResults": true,
-      "publicationMoratorium": "2023-03-09"
+        "generalUse": false,
+        "diseaseRestrictions": ["test"],
+        "hmbResearch": false,
+        "populationOriginsAncestry": true,
+        "methodsResearch": true,
+        "nonProfitUse": true,
+        "other": "other",
+        "secondaryOther": "secondaryOther",
+        "ethicsApprovalRequired": true,
+        "collaboratorRequired": true,
+        "geographicalRestrictions": "geographicalRestrictions",
+        "geneticStudiesOnly": true,
+        "publicationResults": true,
+        "publicationMoratorium": "2023-03-09"
       }
       """;
 
