@@ -72,7 +72,6 @@ public class MatchResource {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
         List<String> rationale = matchResult.getMessage();
-        // nosemgrep
         return Response
             .ok()
             .entity(new MatchV3ResponseEntity(match, matchPair, rationale).get())
