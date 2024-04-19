@@ -279,25 +279,6 @@
       </plugin>
 
       <plugin>
-        <groupId>com.googlecode.maven-download-plugin</groupId>
-        <artifactId>download-maven-plugin</artifactId>
-        <version>1.9.0</version>
-        <executions>
-          <execution>
-            <id>swagger-ui</id>
-            <goals>
-              <goal>wget</goal>
-            </goals>
-            <configuration>
-              <url>https://github.com/swagger-api/swagger-ui/archive/v${swagger.ui.version}.tar.gz
-              </url>
-              <unpack>true</unpack>
-              <outputDirectory>${project.build.directory}</outputDirectory>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
-      <plugin>
         <artifactId>maven-resources-plugin</artifactId>
         <version>3.3.1</version>
         <executions>
