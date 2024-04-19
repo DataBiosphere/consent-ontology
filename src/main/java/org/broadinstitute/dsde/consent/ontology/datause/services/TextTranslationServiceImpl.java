@@ -39,7 +39,7 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
   private static final String OTHER = "Other restrictions: %s.";
   private static final String SECONDARY_OTHER = "Secondary other restrictions: %s.";
   private static final String ETHICS_APPROVAL = "Local ethics committee approval is required.";
-  private static final String COLLABORATION_REQUIRED = "Collaboration with the primary study investigators required.";
+  private static final String COLLABORATION_REQUIRED = "Collaboration with the primary study investigators required. [COL]";
   private static final String GEO_RESTRICTION = "Geographical restrictions: %s.";
   private static final String GSO = "Future use is limited to genetic studies only [GSO]";
   private static final String PUB_REQUIRED = "Publishing results of studies using the data available to the larger scientific community is required";
