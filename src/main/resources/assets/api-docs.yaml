@@ -169,6 +169,7 @@ paths:
 
   /match/v2:
     post:
+      deprecated: true
       summary: Match DataUse Purpose and Consent
       description: Determine if a Research Purpose and Consent logically match.
       parameters:
@@ -181,17 +182,12 @@ paths:
       tags:
         - Match
       responses:
-        200:
-          description: Successful matching.
-          schema:
-            $ref: '#/definitions/DataUseMatchPairResult'
-        400:
-          description: Bad Request if either purpose or consent are not provided.
-        500:
-          description: Internal Server Error
+        410:
+          description: This endpoint is deprecated and no longer functional
 
   /match/v3:
     post:
+      deprecated: true
       summary: Match DataUse Purpose and Consent V3
       description: Determine if a Research Purpose and Consent logically match.
       parameters:
