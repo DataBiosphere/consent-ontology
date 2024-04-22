@@ -5,29 +5,31 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 import static org.mockserver.model.HttpError.error;
 import static org.mockserver.model.HttpRequest.request;
 import static org.mockserver.model.HttpResponse.response;
 
 import com.google.api.client.http.HttpStatusCodes;
-import java.util.Collections;
-import java.util.List;
 import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.InternalServerErrorException;
 import jakarta.ws.rs.NotFoundException;
+import java.util.Collections;
+import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.WithMockServer;
 import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConfiguration;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockserver.client.MockServerClient;
 import org.mockserver.matchers.Times;
 import org.testcontainers.containers.MockServerContainer;
 
-public class ElasticSearchAutocompleteTest implements WithMockServer {
+@ExtendWith(MockitoExtension.class)
+class ElasticSearchAutocompleteTest implements WithMockServer {
 
   private ElasticSearchAutocomplete autocompleteAPI;
   private MockServerClient mockServerClient;
@@ -40,7 +42,6 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   @BeforeEach
   void setUp() {
     container.start();
-    openMocks(this);
     ElasticSearchConfiguration configuration = new ElasticSearchConfiguration();
     configuration.setIndex(INDEX_NAME);
     configuration.setServers(Collections.singletonList(container.getHost()));
@@ -55,7 +56,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testRetrySuccessAfterOneFailure() {
+  void testRetrySuccessAfterOneFailure() {
     mockServerClient.when(request(), Times.exactly(1)).error(error().withDropConnection(true));
     mockServerClient.when(request(), Times.exactly(1))
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
@@ -65,7 +66,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testRetrySuccessAfterTwoFailures() {
+  void testRetrySuccessAfterTwoFailures() {
     mockServerClient.when(request(), Times.exactly(2)).error(error().withDropConnection(true));
     mockServerClient.when(request(), Times.exactly(1))
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
@@ -75,7 +76,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testRetryFailureAfterThreeFailures() {
+  void testRetryFailureAfterThreeFailures() {
     mockServerClient.when(request(), Times.exactly(3)).error(error().withDropConnection(true));
     mockServerClient.when(request(), Times.exactly(1))
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
@@ -85,7 +86,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testRetryFailure() {
+  void testRetryFailure() {
     mockServerClient.when(request()).error(error().withDropConnection(true));
     assertThrows(InternalServerErrorException.class, () -> {
       autocompleteAPI.lookup("cancer", 1);
@@ -93,7 +94,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testBadRequest() {
+  void testBadRequest() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_BAD_REQUEST));
     assertThrows(BadRequestException.class, () -> {
@@ -102,7 +103,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testNotFound() {
+  void testNotFound() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_NOT_FOUND));
     assertThrows(NotFoundException.class, () -> {
@@ -111,7 +112,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testInvalidIdStringError() {
+  void testInvalidIdStringError() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
     when(elasticSearchSupport.getEncodedEndpoint(anyString(), anyString())).thenThrow(
@@ -123,7 +124,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testLookup() {
+  void testLookup() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
     List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
@@ -132,7 +133,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testLookupWithTags() {
+  void testLookupWithTags() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
     List<TermResource> termResource = autocompleteAPI.lookup(Collections.singletonList("tag"),
@@ -142,7 +143,7 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   @Test
-  public void testLookupById() {
+  void testLookupById() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerGetJson));
     List<TermResource> termResource = autocompleteAPI.lookupById(
@@ -152,81 +153,81 @@ public class ElasticSearchAutocompleteTest implements WithMockServer {
   }
 
   // mock response for a search
-  private static final String cancerJson = "{\n" +
-      "  \"took\": 15,\n" +
-      "  \"timed_out\": false,\n" +
-      "  \"_shards\": {\n" +
-      "    \"total\": 5,\n" +
-      "    \"successful\": 5,\n" +
-      "    \"failed\": 0\n" +
-      "  },\n" +
-      "  \"hits\": {\n" +
-      "    \"total\": 1,\n" +
-      "    \"max_score\": 100,\n" +
-      "    \"hits\": [\n" +
-      "      {\n" +
-      "        \"_index\": \"local-ontology\",\n" +
-      "        \"_type\": \"ontology_term\",\n" +
-      "        \"_id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
-      "        \"_score\": 21.416782,\n" +
-      "        \"_source\": {\n" +
-      "          \"id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
-      "          \"ontology\": \"Disease\",\n" +
-      "          \"synonyms\": [\n" +
-      "            \"primary cancer\",\n" +
-      "            \"malignant tumor \",\n" +
-      "            \"malignant neoplasm\"\n" +
-      "          ],\n" +
-      "          \"label\": \"cancer\",\n" +
-      "          \"definition\": \"A disease of cellular proliferation that is malignant and primary, characterized by uncontrolled cellular proliferation, local cell invasion and metastasis.\",\n"
-      +
-      "          \"usable\": true,\n" +
-      "          \"parents\": [\n" +
-      "            {\n" +
-      "              \"id\": \"http://purl.obolibrary.org/obo/DOID_14566\",\n" +
-      "              \"order\": 1\n" +
-      "            },\n" +
-      "            {\n" +
-      "              \"id\": \"http://purl.obolibrary.org/obo/DOID_4\",\n" +
-      "              \"order\": 2\n" +
-      "            }\n" +
-      "          ]\n" +
-      "        }\n" +
-      "      }\n" +
-      "    ]\n" +
-      "  }\n" +
-      "}";
+  private static final String cancerJson = """
+      {
+        "took": 15,
+        "timed_out": false,
+        "_shards": {
+          "total": 5,
+          "successful": 5,
+          "failed": 0
+        },
+        "hits": {
+          "total": 1,
+          "max_score": 100,
+          "hits": [
+            {
+              "_index": "local-ontology",
+              "_type": "ontology_term",
+              "_id": "http://purl.obolibrary.org/obo/DOID_162",
+              "_score": 21.416782,
+              "_source": {
+                "id": "http://purl.obolibrary.org/obo/DOID_162",
+                "ontology": "Disease",
+                "synonyms": [
+                  "primary cancer",
+                  "malignant tumor ",
+                  "malignant neoplasm"
+                ],
+                "label": "cancer",
+                "definition": "A disease of cellular proliferation that is malignant and primary, characterized by uncontrolled cellular proliferation, local cell invasion and metastasis.",
+                "usable": true,
+                "parents": [
+                  {
+                    "id": "http://purl.obolibrary.org/obo/DOID_14566",
+                    "order": 1
+                  },
+                  {
+                    "id": "http://purl.obolibrary.org/obo/DOID_4",
+                    "order": 2
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      }""";
 
   // mock response for a document get-by-id
-  private static final String cancerGetJson = "{\n" +
-      "  \"_index\": \"ontology\",\n" +
-      "  \"_type\": \"ontology_term\",\n" +
-      "  \"_id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
-      "  \"_version\": 32,\n" +
-      "  \"found\": true,\n" +
-      "  \"_source\": {\n" +
-      "    \"id\": \"http://purl.obolibrary.org/obo/DOID_162\",\n" +
-      "    \"ontology\": \"Disease\",\n" +
-      "    \"synonyms\": [\n" +
-      "      \"primary cancer\",\n" +
-      "      \"malignant tumor \",\n" +
-      "      \"malignant neoplasm\"\n" +
-      "    ],\n" +
-      "    \"label\": \"cancer\",\n" +
-      "    \"definition\": \"A disease of cellular proliferation that is malignant and primary, characterized by uncontrolled cellular proliferation, local cell invasion and metastasis.\",\n"
-      +
-      "    \"usable\": true,\n" +
-      "    \"parents\": [\n" +
-      "      {\n" +
-      "        \"id\": \"http://purl.obolibrary.org/obo/DOID_14566\",\n" +
-      "        \"order\": 1\n" +
-      "      },\n" +
-      "      {\n" +
-      "        \"id\": \"http://purl.obolibrary.org/obo/DOID_4\",\n" +
-      "        \"order\": 2\n" +
-      "      }\n" +
-      "    ]\n" +
-      "  }\n" +
-      "}";
+  private static final String cancerGetJson = """
+      {
+        "_index": "ontology",
+        "_type": "ontology_term",
+        "_id": "http://purl.obolibrary.org/obo/DOID_162",
+        "_version": 32,
+        "found": true,
+        "_source": {
+          "id": "http://purl.obolibrary.org/obo/DOID_162",
+          "ontology": "Disease",
+          "synonyms": [
+            "primary cancer",
+            "malignant tumor ",
+            "malignant neoplasm"
+          ],
+          "label": "cancer",
+          "definition": "A disease of cellular proliferation that is malignant and primary, characterized by uncontrolled cellular proliferation, local cell invasion and metastasis.",
+          "usable": true,
+          "parents": [
+            {
+              "id": "http://purl.obolibrary.org/obo/DOID_14566",
+              "order": 1
+            },
+            {
+              "id": "http://purl.obolibrary.org/obo/DOID_4",
+              "order": 2
+            }
+          ]
+        }
+      }""";
 
 }

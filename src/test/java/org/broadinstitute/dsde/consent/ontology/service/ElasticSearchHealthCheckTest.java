@@ -14,10 +14,13 @@ import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConf
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.mockserver.client.MockServerClient;
 import org.testcontainers.containers.MockServerContainer;
 
-public class ElasticSearchHealthCheckTest implements WithMockServer {
+@ExtendWith(MockitoExtension.class)
+class ElasticSearchHealthCheckTest implements WithMockServer {
 
   private ElasticSearchHealthCheck elasticSearchHealthCheck;
   private MockServerClient mockServerClient;
@@ -42,27 +45,29 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
   private void mockRequest(String color, Boolean timedOut) {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).
-            withBody("{\n" +
-                "  \"cluster_name\": \"docker-cluster\",\n" +
-                "  \"status\": \"" + color + "\",\n" +
-                "  \"timed_out\": " + timedOut + ",\n" +
-                "  \"number_of_nodes\": 1,\n" +
-                "  \"number_of_data_nodes\": 1,\n" +
-                "  \"active_primary_shards\": 2,\n" +
-                "  \"active_shards\": 2,\n" +
-                "  \"relocating_shards\": 0,\n" +
-                "  \"initializing_shards\": 0,\n" +
-                "  \"unassigned_shards\": 2,\n" +
-                "  \"delayed_unassigned_shards\": 0,\n" +
-                "  \"number_of_pending_tasks\": 0,\n" +
-                "  \"number_of_in_flight_fetch\": 0,\n" +
-                "  \"task_max_waiting_in_queue_millis\": 0,\n" +
-                "  \"active_shards_percent_as_number\": 50\n" +
-                "}"));
+            withBody(
+                """
+                    {
+                      "cluster_name": "docker-cluster",
+                      "status": "%s",
+                      "timed_out": %s,
+                      "number_of_nodes": 1,
+                      "number_of_data_nodes": 1,
+                      "active_primary_shards": 2,
+                      "active_shards": 2,
+                      "relocating_shards": 0,
+                      "initializing_shards": 0,
+                      "unassigned_shards": 2,
+                      "delayed_unassigned_shards": 0,
+                      "number_of_pending_tasks": 0,
+                      "number_of_in_flight_fetch": 0,
+                      "task_max_waiting_in_queue_millis": 0,
+                      "active_shards_percent_as_number": 50
+                    }""".formatted(color, timedOut)));
   }
 
   @Test
-  public void testCheckTimeOut() {
+  void testCheckTimeOut() {
     mockRequest("red", true);
     HealthCheck.Result result = elasticSearchHealthCheck.check();
     assertFalse(result.isHealthy());
@@ -70,7 +75,7 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
   }
 
   @Test
-  public void testCheckStatusRed() {
+  void testCheckStatusRed() {
     mockRequest("red", false);
     HealthCheck.Result result = elasticSearchHealthCheck.check();
     assertFalse(result.isHealthy());
@@ -78,7 +83,7 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
   }
 
   @Test
-  public void testCheckStatusYellow() {
+  void testCheckStatusYellow() {
     mockRequest("yellow", false);
     HealthCheck.Result result = elasticSearchHealthCheck.check();
     assertTrue(result.isHealthy());
@@ -86,21 +91,21 @@ public class ElasticSearchHealthCheckTest implements WithMockServer {
   }
 
   @Test
-  public void testCheckStatusOK() {
+  void testCheckStatusOK() {
     mockRequest("green", false);
     HealthCheck.Result result = elasticSearchHealthCheck.check();
     assertTrue(result.isHealthy());
   }
 
   @Test
-  public void testCheckDroppedConnection() {
+  void testCheckDroppedConnection() {
     mockServerClient.when(request()).error(error().withDropConnection(true));
     HealthCheck.Result result = elasticSearchHealthCheck.check();
     assertFalse(result.isHealthy());
   }
 
   @Test
-  public void testErrorStatus() {
+  void testErrorStatus() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_SERVER_ERROR));
     HealthCheck.Result result = elasticSearchHealthCheck.check();

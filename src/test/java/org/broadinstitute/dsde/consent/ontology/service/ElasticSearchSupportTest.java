@@ -14,14 +14,17 @@ import org.broadinstitute.dsde.consent.ontology.configurations.ElasticSearchConf
 import org.elasticsearch.client.RestClient;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class ElasticSearchSupportTest {
+@ExtendWith(MockitoExtension.class)
+class ElasticSearchSupportTest {
 
   private ElasticSearchConfiguration configuration;
   private ElasticSearchSupport elasticSearchSupport;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     configuration = new ElasticSearchConfiguration();
     configuration.setIndex("local-ontology");
     configuration.setServers(Collections.singletonList("localhost"));
@@ -29,27 +32,27 @@ public class ElasticSearchSupportTest {
   }
 
   @Test
-  public void testGetRestClient() {
+  void testGetRestClient() {
     RestClient client = elasticSearchSupport.createRestClient(configuration);
     assertNotNull(client);
   }
 
   @Test
-  public void testGetIndexPath() {
+  void testGetIndexPath() {
     String path = elasticSearchSupport.getIndexPath(configuration.getIndex());
     assertNotNull(path);
     assertTrue(path.contains(configuration.getIndex()));
   }
 
   @Test
-  public void testGetClusterHealthPath() {
+  void testGetClusterHealthPath() {
     String path = elasticSearchSupport.getClusterHealthPath();
     assertNotNull(path);
     assertTrue(path.contains("health"));
   }
 
   @Test
-  public void testBuildFilterQuery() {
+  void testBuildFilterQuery() {
     String termId = "term_id";
     List<String> filters = Arrays.asList("Disease", "Organization");
     String query = elasticSearchSupport.buildFilterQuery(termId, filters);
