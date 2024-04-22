@@ -80,35 +80,27 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
     mockServerClient.when(request(), Times.exactly(3)).error(error().withDropConnection(true));
     mockServerClient.when(request(), Times.exactly(1))
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
-    assertThrows(InternalServerErrorException.class, () -> {
-      autocompleteAPI.lookup("cancer", 1);
-    });
+    assertThrows(InternalServerErrorException.class, () -> autocompleteAPI.lookup("cancer", 1));
   }
 
   @Test
   void testRetryFailure() {
     mockServerClient.when(request()).error(error().withDropConnection(true));
-    assertThrows(InternalServerErrorException.class, () -> {
-      autocompleteAPI.lookup("cancer", 1);
-    });
+    assertThrows(InternalServerErrorException.class, () -> autocompleteAPI.lookup("cancer", 1));
   }
 
   @Test
   void testBadRequest() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_BAD_REQUEST));
-    assertThrows(BadRequestException.class, () -> {
-      autocompleteAPI.lookup("cancer", 1);
-    });
+    assertThrows(BadRequestException.class, () -> autocompleteAPI.lookup("cancer", 1));
   }
 
   @Test
   void testNotFound() {
     mockServerClient.when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_NOT_FOUND));
-    assertThrows(NotFoundException.class, () -> {
-      autocompleteAPI.lookup("cancer", 1);
-    });
+    assertThrows(NotFoundException.class, () -> autocompleteAPI.lookup("cancer", 1));
   }
 
   @Test
@@ -118,9 +110,7 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
     when(elasticSearchSupport.getEncodedEndpoint(anyString(), anyString())).thenThrow(
         new BadRequestException());
     autocompleteAPI.setElasticSearchSupport(elasticSearchSupport);
-    assertThrows(BadRequestException.class, () -> {
-      autocompleteAPI.lookupById("cancer");
-    });
+    assertThrows(BadRequestException.class, () -> autocompleteAPI.lookupById("cancer"));
   }
 
   @Test
