@@ -1,25 +1,25 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.MockitoAnnotations.openMocks;
+import static org.mockito.Mockito.when;
 
+import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import jakarta.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-@SuppressWarnings("SimplifiableJUnitAssertion")
-public class OntologySearchParentTest {
+@ExtendWith(MockitoExtension.class)
+class OntologySearchParentTest {
 
   @Mock
   AutocompleteService api;
@@ -32,8 +32,7 @@ public class OntologySearchParentTest {
   private static final TermResource parent2 = new TermResource();
 
   @BeforeEach
-  public void setUp() throws Exception {
-    openMocks(this);
+  void setUp() {
     resource = new OntologySearchResource(api);
 
     parent1.setId("parent1");
@@ -61,28 +60,26 @@ public class OntologySearchParentTest {
     child.setParents(new ArrayList<>());
     child.getParents().add(childParent1);
     child.getParents().add(childParent2);
-
-    Mockito.when(api.lookupById(child.getId())).thenReturn(Collections.singletonList(child));
-    Mockito.when(api.lookupById(parent1.getId())).thenReturn(Collections.singletonList(parent1));
-
   }
 
   @Test
-  public void testGetNodeWithNoParents() throws Exception {
+  void testGetNodeWithNoParents() throws Exception {
+    when(api.lookupById(parent1.getId())).thenReturn(Collections.singletonList(parent1));
     Response response = resource.getOntologyById(parent1.getId());
     assertOKstatusAndTermSize(response);
   }
 
   @Test
-  public void testGetChildWithParents() throws Exception {
+  void testGetChildWithParents() throws Exception {
+    when(api.lookupById(child.getId())).thenReturn(Collections.singletonList(child));
     Response response = resource.getOntologyById(child.getId());
     List<TermResource> terms = assertOKstatusAndTermSize(response);
 
     TermResource term = terms.get(0);
-    assertTrue(child.getId().equals(term.getId()));
-    assertTrue(child.getLabel().equals(term.getLabel()));
-    assertTrue(child.getDefinition().equals(term.getDefinition()));
-    assertTrue(child.getSynonyms().equals(term.getSynonyms()));
+    assertEquals(child.getId(), term.getId());
+    assertEquals(child.getLabel(), term.getLabel());
+    assertEquals(child.getDefinition(), term.getDefinition());
+    assertEquals(child.getSynonyms(), term.getSynonyms());
 
     assertEquals(2, term.getParents().size(), "Expected two parents");
     term.getParents().sort(Comparator.comparingInt(TermParent::getOrder));
@@ -90,15 +87,15 @@ public class OntologySearchParentTest {
     TermParent actualParent1 = term.getParents().get(0);
     TermParent actualParent2 = term.getParents().get(1);
 
-    assertTrue(actualParent1.getId().equals(parent1.getId()));
-    assertTrue(actualParent2.getId().equals(parent2.getId()));
+    assertEquals(actualParent1.getId(), parent1.getId());
+    assertEquals(actualParent2.getId(), parent2.getId());
   }
 
   @SuppressWarnings("unchecked")
   private List<TermResource> assertOKstatusAndTermSize(Response response) {
-    assertTrue(response.getStatus() == 200);
+    assertEquals(200, response.getStatus());
     List<TermResource> terms = (List<TermResource>) response.getEntity();
-    assertTrue(terms.size() == 1);
+    assertEquals(1, terms.size());
     return terms;
   }
 

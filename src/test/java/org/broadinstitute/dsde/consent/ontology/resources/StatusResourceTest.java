@@ -10,9 +10,12 @@ import java.util.SortedMap;
 import java.util.TreeMap;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class StatusResourceTest {
+@ExtendWith(MockitoExtension.class)
+class StatusResourceTest {
 
   private final Result deadlocks = Result.healthy();
   private final Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
@@ -22,13 +25,12 @@ public class StatusResourceTest {
   private HealthCheckRegistry healthChecks;
 
   private StatusResource initStatusResource(SortedMap<String, Result> checks) {
-    openMocks(this);
     when(healthChecks.runHealthChecks()).thenReturn(checks);
     return new StatusResource(healthChecks);
   }
 
   @Test
-  public void testHealthy() {
+  void testHealthy() {
     SortedMap<String, Result> checks = new TreeMap<>();
     checks.put("deadlocks", deadlocks);
     checks.put("elastic-search", elasticSearch);
@@ -40,7 +42,7 @@ public class StatusResourceTest {
   }
 
   @Test
-  public void testUnhealthyDeadlocks() {
+  void testUnhealthyDeadlocks() {
     SortedMap<String, Result> checks = new TreeMap<>();
     checks.put("deadlocks", deadlocks);
     checks.put("elastic-search", Result.unhealthy("ClusterHealth is RED"));
@@ -53,7 +55,7 @@ public class StatusResourceTest {
   }
 
   @Test
-  public void testUnhealthyElasticSearch() {
+  void testUnhealthyElasticSearch() {
     SortedMap<String, Result> checks = new TreeMap<>();
     checks.put("deadlocks", Result.unhealthy(new Exception("Unhealthy Deadlocks")));
     checks.put("elastic-search", elasticSearch);
@@ -66,7 +68,7 @@ public class StatusResourceTest {
   }
 
   @Test
-  public void testUnhealthyGCS() {
+  void testUnhealthyGCS() {
     SortedMap<String, Result> checks = new TreeMap<>();
     checks.put("deadlocks", deadlocks);
     checks.put("elastic-search", elasticSearch);

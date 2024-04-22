@@ -4,24 +4,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.atLeastOnce;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.google.gson.Gson;
-import java.util.HashMap;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
+import java.util.HashMap;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.DataUse;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilder;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class TranslateResourceTest {
+@ExtendWith(MockitoExtension.class)
+class TranslateResourceTest {
 
   @Mock
   private TextTranslationService service;
@@ -29,15 +30,13 @@ public class TranslateResourceTest {
   private TranslateResource resource;
 
   @BeforeEach
-  public void setUp() {
-    openMocks(this);
+  void setUp() {
     resource = new TranslateResource(service);
   }
 
   @Test
-  public void testDatasetTranslate() {
+  void testDatasetTranslate() {
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    spy(service);
     try (Response response = resource.translate(
         TranslateFor.DATASET.name(),
         gson.toJson(datause))) {
@@ -49,9 +48,8 @@ public class TranslateResourceTest {
   }
 
   @Test
-  public void testPurposeTranslate() {
+  void testPurposeTranslate() {
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    spy(service);
     try (Response response = resource.translate(
         TranslateFor.PURPOSE.name(),
         gson.toJson(datause))) {
@@ -63,21 +61,21 @@ public class TranslateResourceTest {
   }
 
   @Test
-  public void testTranslateParagraphBadRequest() {
+  void testTranslateParagraphBadRequest() {
     try (Response response = resource.translateParagraph("{}")) {
       assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
     }
   }
 
   @Test
-  public void testTranslateParagraphServerError() {
+  void testTranslateParagraphServerError() {
     try (Response response = resource.translateParagraph("")) {
       assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());
     }
   }
 
   @Test
-  public void testTranslateParagraph() throws Exception {
+  void testTranslateParagraph() throws Exception {
     when(service.translateParagraph(any())).thenReturn(new HashMap<>());
     try (Response response = resource.translateParagraph("{\"paragraph\":\"Not for Profit\"}")) {
       assertEquals(Status.OK.getStatusCode(), response.getStatus());

@@ -3,19 +3,22 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
+import static org.mockito.Mockito.when;
 
+import jakarta.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.List;
-import jakarta.ws.rs.core.Response;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class OntologySearchResourceTest {
+@ExtendWith(MockitoExtension.class)
+class OntologySearchResourceTest {
 
   @Mock
   private AutocompleteService autocompleteService;
@@ -25,20 +28,17 @@ public class OntologySearchResourceTest {
   private final List<TermResource> emptyTermList = new ArrayList<>();
 
   @BeforeEach
-  public void setUp() throws Exception {
-    openMocks(this);
+  void setUp() {
     resource = new OntologySearchResource(autocompleteService);
     TermResource term = new TermResource();
     term.id = "DOID_4";
     term.label = "Some label";
     term.definition = "Some definition";
     nonEmptyTermList.add(term);
-    Mockito.when(autocompleteService.lookupById("DOID_4")).thenReturn(nonEmptyTermList);
-    Mockito.when(autocompleteService.lookupById("DOID_404")).thenReturn(emptyTermList);
   }
 
   @Test
-  public void testGetByIdBadRequest() throws Exception {
+  void testGetByIdBadRequest() throws Exception {
     Response response = resource.getOntologyById("");
     assertEquals(400, response.getStatus());
     ErrorResponse error = (ErrorResponse) response.getEntity();
@@ -47,7 +47,7 @@ public class OntologySearchResourceTest {
   }
 
   @Test
-  public void testGetByIdNotFound() throws Exception {
+  void testGetByIdNotFound() throws Exception {
     Response response = resource.getOntologyById("DOID_404");
     assertEquals(404, response.getStatus());
     ErrorResponse error = (ErrorResponse) response.getEntity();
@@ -57,7 +57,8 @@ public class OntologySearchResourceTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testGetById() throws Exception {
+  void testGetById() throws Exception {
+    when(autocompleteService.lookupById("DOID_4")).thenReturn(nonEmptyTermList);
     Response response = resource.getOntologyById("DOID_4");
     assertEquals(200, response.getStatus());
     List<TermResource> terms = (List<TermResource>) response.getEntity();
@@ -69,14 +70,17 @@ public class OntologySearchResourceTest {
   }
 
   @Test
-  public void testGetByIdMultiple() throws Exception {
+  void testGetByIdMultiple() throws Exception {
+    when(autocompleteService.lookupById("DOID_4")).thenReturn(nonEmptyTermList);
+    when(autocompleteService.lookupById("DOID_5")).thenReturn(emptyTermList);
+    when(autocompleteService.lookupById("DOID_6")).thenReturn(emptyTermList);
     Response response = resource.getOntologyById("DOID_4,DOID_5,DOID_6");
     assertEquals(200, response.getStatus());
     verify(autocompleteService, times(3)).lookupById(Mockito.anyString());
   }
 
   @Test
-  public void testGetByIdMultipleEmpty() throws Exception {
+  void testGetByIdMultipleEmpty() throws Exception {
     Response response = resource.getOntologyById(",,,");
     assertEquals(404, response.getStatus());
     ErrorResponse error = (ErrorResponse) response.getEntity();
@@ -85,7 +89,7 @@ public class OntologySearchResourceTest {
   }
 
   @Test
-  public void testGetByIdMultipleNotFound() throws Exception {
+  void testGetByIdMultipleNotFound() throws Exception {
     Response response = resource.getOntologyById(",DOID_404,");
     assertEquals(404, response.getStatus());
     ErrorResponse error = (ErrorResponse) response.getEntity();
@@ -95,7 +99,9 @@ public class OntologySearchResourceTest {
 
   @SuppressWarnings("unchecked")
   @Test
-  public void testGetByIdSomeFound() throws Exception {
+  void testGetByIdSomeFound() throws Exception {
+    when(autocompleteService.lookupById("DOID_4")).thenReturn(nonEmptyTermList);
+    when(autocompleteService.lookupById("DOID_3")).thenReturn(emptyTermList);
     Response response = resource.getOntologyById(",DOID_3,,DOID_4");
     assertEquals(200, response.getStatus());
     List<TermResource> terms = (List<TermResource>) response.getEntity();

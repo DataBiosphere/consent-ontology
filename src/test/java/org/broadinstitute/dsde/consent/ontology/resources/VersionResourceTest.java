@@ -7,20 +7,22 @@ import static org.mockito.MockitoAnnotations.openMocks;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class VersionResourceTest {
+@ExtendWith(MockitoExtension.class)
+class VersionResourceTest {
 
   VersionResource resource;
 
   @BeforeEach
-  public void setUp() {
-    openMocks(this);
+  void setUp() {
     resource = new VersionResource();
   }
 
 
   @Test
-  public void testGetVersion() {
+  void testGetVersion() {
     try (Response response = resource.content()) {
       assertEquals(200, response.getStatus());
     } catch (Exception e) {
