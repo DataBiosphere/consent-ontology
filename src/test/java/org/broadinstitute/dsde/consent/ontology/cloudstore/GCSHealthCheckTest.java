@@ -11,9 +11,12 @@ import java.io.IOException;
 import java.security.GeneralSecurityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class GCSHealthCheckTest {
+@ExtendWith(MockitoExtension.class)
+class GCSHealthCheckTest {
 
   private GCSHealthCheck healthCheck;
 
@@ -21,13 +24,12 @@ public class GCSHealthCheckTest {
   private GCSStore store;
 
   @BeforeEach
-  public void setUpClass() {
-    openMocks(this);
+  void setUpClass() {
     healthCheck = new GCSHealthCheck(store);
   }
 
   @Test
-  public void testBucketExists() throws IOException, GeneralSecurityException {
+  void testBucketExists() throws IOException, GeneralSecurityException {
     when(store.getBucketMetadata()).thenReturn(new Bucket());
 
     HealthCheck.Result result = healthCheck.execute();
@@ -35,7 +37,7 @@ public class GCSHealthCheckTest {
   }
 
   @Test
-  public void testBucketMissing() throws Exception {
+  void testBucketMissing() throws Exception {
     when(store.getBucketMetadata()).thenReturn(null);
 
     HealthCheck.Result result = healthCheck.execute();
