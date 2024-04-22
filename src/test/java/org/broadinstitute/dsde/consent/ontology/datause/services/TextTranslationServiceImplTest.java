@@ -6,7 +6,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.google.api.client.http.HttpResponse;
 import com.google.common.io.Resources;
@@ -28,11 +27,14 @@ import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.slf4j.Logger;
 
-public class TextTranslationServiceImplTest extends AbstractTest {
+@ExtendWith(MockitoExtension.class)
+class TextTranslationServiceImplTest extends AbstractTest {
 
   private final Logger log = Utils.getLogger(this.getClass());
 
@@ -44,18 +46,16 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   @Mock
   private GCSStore gcsStore;
 
-  public TextTranslationServiceImplTest() {
+  TextTranslationServiceImplTest() {
   }
 
   @BeforeEach
-  public void setUpClass() {
-    openMocks(this);
+  void setUpClass() {
     service = new TextTranslationServiceImpl(autocompleteService, gcsStore);
   }
 
   @Test
-  public void testTranslateSummary() throws Exception {
-    initializeTerm();
+  void testTranslateSummary() {
     Gson gson = new Gson();
     DataUse dataUse = new DataUseBuilder().setGeneralUse(true).build();
     String dataUseString = gson.toJson(dataUse);
@@ -69,7 +69,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testDiseaseLookup() throws Exception {
+  void testDiseaseLookup() throws Exception {
     initializeTerm();
     Gson gson = new Gson();
     DataUse dataset = new DataUseBuilder().setDiseaseRestrictions(List.of("term id")).build();
@@ -82,8 +82,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testTranslateDataset() throws Exception {
-    initializeTerm();
+  void testTranslateDataset() throws Exception {
     Gson gson = new Gson();
     DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
     String datasetString = gson.toJson(dataset);
@@ -94,7 +93,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testTranslateParagraphNormal() throws Exception {
+  void testTranslateParagraphNormal() throws Exception {
     // Given
     HttpResponse response = loadTermItemsResponse();
     when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
@@ -115,7 +114,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testTranslateParagraphMixed() throws Exception {
+  void testTranslateParagraphMixed() throws Exception {
     // Given
     HttpResponse response = loadTermItemsResponse();
     when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
@@ -136,7 +135,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testTranslatePurpose() throws IOException {
+  void testTranslatePurpose() throws IOException {
     Gson gson = new Gson();
     DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
     String datasetString = gson.toJson(dataset);
@@ -147,7 +146,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testTranslateCoverageTrue() throws IOException {
+  void testTranslateCoverageTrue() throws IOException {
     Gson gson = new Gson();
     DataUse dataset = new DataUseBuilder()
         .setGeneralUse(true)
@@ -178,7 +177,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testTranslateCoverageFalse() throws Exception {
+  void testTranslateCoverageFalse() throws Exception {
     initializeTerm();
     Gson gson = new Gson();
     DataUse dataset = new DataUseBuilder()
@@ -210,7 +209,7 @@ public class TextTranslationServiceImplTest extends AbstractTest {
   }
 
   @Test
-  public void testInvalidDate() throws IOException {
+  void testInvalidDate() throws IOException {
     Gson gson = new Gson();
     DataUse dataset = new DataUseBuilder()
         .setGeneralUse(true)

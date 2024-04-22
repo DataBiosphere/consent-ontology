@@ -5,9 +5,7 @@ import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.A
 import static org.broadinstitute.dsde.consent.ontology.datause.MatchResultType.Deny;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -17,11 +15,13 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 import org.broadinstitute.dsde.consent.ontology.model.TermParent;
 import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class DataUseMatcherV3Test {
+@ExtendWith(MockitoExtension.class)
+class DataUseMatcherV3Test {
 
   private static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
   private static final String intestinalCancerNode = "http://purl.obolibrary.org/obo/DOID_10155";
@@ -29,18 +29,8 @@ public class DataUseMatcherV3Test {
   @Mock
   private AutocompleteService autocompleteService;
 
-  @BeforeEach
-  public void setUp() {
-    openMocks(this);
-    try {
-      when(autocompleteService.lookupById(any())).thenReturn(Collections.emptyList());
-    } catch (Exception e) {
-      //
-    }
-  }
-
   @Test
-  public void testDiseaseMatching_positive() throws Exception {
+  void testDiseaseMatching_positive() throws Exception {
     DataUseV3 dataset = new DataUseBuilderV3()
         .setDiseaseRestrictions(Collections.singletonList(cancerNode))
         .build();
@@ -76,7 +66,7 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testDiseaseMatching_negative() throws Exception {
+  void testDiseaseMatching_negative() throws Exception {
     DataUseV3 dataset = new DataUseBuilderV3()
         .setDiseaseRestrictions(Collections.singletonList(intestinalCancerNode))
         .build();
@@ -104,28 +94,28 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testHMB_positive_case_1() {
+  void testHMB_positive_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testHMB_positive_case_2() {
+  void testHMB_positive_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testHMB_negative_case_1() {
+  void testHMB_negative_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setGeneralUse(true).build();
     assertDeny(purpose, dataset);
   }
 
   @Test
-  public void testHMB_negative_case_2() {
+  void testHMB_negative_case_2() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(
         Collections.singletonList(cancerNode)).build();
@@ -133,35 +123,35 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testHMB_negative_case_3() {
+  void testHMB_negative_case_3() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     assertDeny(purpose, dataset);
   }
 
   @Test
-  public void testPOA_positive_case_1() {
+  void testPOA_positive_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testPOA_positive_case_2() {
+  void testPOA_positive_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testPOA_negative_case_1() {
+  void testPOA_negative_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     assertDeny(purpose, dataset);
   }
 
   @Test
-  public void testPOA_negative_case_2() {
+  void testPOA_negative_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3()
         .setDiseaseRestrictions(Collections.singletonList(cancerNode))
         .build();
@@ -170,21 +160,21 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testMDS_positive_case_1() {
+  void testMDS_positive_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setMethodsResearch(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testMDS_positive_case_2() {
+  void testMDS_positive_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setMethodsResearch(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testMDS_positive_case_3() {
+  void testMDS_positive_case_3() {
     DataUseV3 dataset = new DataUseBuilderV3().setDiseaseRestrictions(
         Collections.singletonList(cancerNode)).build();
     DataUseV3 purpose = new DataUseBuilderV3().setMethodsResearch(true).build();
@@ -192,133 +182,133 @@ public class DataUseMatcherV3Test {
   }
 
   @Test
-  public void testMDS_positive_case_4() {
+  void testMDS_positive_case_4() {
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setMethodsResearch(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testCommercial_positive_case_1() {
+  void testCommercial_positive_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setCommercialUse(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setCommercialUse(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testCommercial_positive_case_2() {
+  void testCommercial_positive_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setCommercialUse(true).build();
     assertApprove(purpose, dataset);
   }
 
   @Test
-  public void testCommercial_negative_case_1() {
+  void testCommercial_negative_case_1() {
     DataUseV3 dataset = new DataUseBuilderV3().setNonProfitUse(true).build();
     DataUseV3 purpose = new DataUseBuilderV3().setCommercialUse(true).build();
     assertDeny(purpose, dataset);
   }
 
   @Test
-  public void testCommercial_negative_case_2() {
+  void testCommercial_negative_case_2() {
     DataUseV3 dataset = new DataUseBuilderV3().setCommercialUse(false).build();
     DataUseV3 purpose = new DataUseBuilderV3().setCommercialUse(true).build();
     assertDeny(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_COL() {
+  void testAbstainDecision_COL() {
     DataUseV3 purpose = new DataUseBuilderV3().setCollaboratorRequired(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_Other() {
+  void testAbstainDecision_Other() {
     DataUseV3 purpose = new DataUseBuilderV3().setOther("other").build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_SecondaryOther() {
+  void testAbstainDecision_SecondaryOther() {
     DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("secondary other").build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_ethicsApprovalRequired() {
+  void testAbstainDecision_ethicsApprovalRequired() {
     DataUseV3 purpose = new DataUseBuilderV3().setEthicsApprovalRequired(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_controls() {
+  void testAbstainDecision_controls() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setControls(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_population() {
+  void testAbstainDecision_population() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setPopulation(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_gender() {
+  void testAbstainDecision_gender() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setGender("M").build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_pediatric() {
+  void testAbstainDecision_pediatric() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setPediatric(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_vulnerablePopulations() {
+  void testAbstainDecision_vulnerablePopulations() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setVulnerablePopulations(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_illegalBehavior() {
+  void testAbstainDecision_illegalBehavior() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setIllegalBehavior(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_sexualDiseases() {
+  void testAbstainDecision_sexualDiseases() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setSexualDiseases(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_psychologicalTraits() {
+  void testAbstainDecision_psychologicalTraits() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setPsychologicalTraits(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_notHealth() {
+  void testAbstainDecision_notHealth() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setNotHealth(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
-  public void testAbstainDecision_stigmatizedDiseases() {
+  void testAbstainDecision_stigmatizedDiseases() {
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).setStigmatizeDiseases(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
