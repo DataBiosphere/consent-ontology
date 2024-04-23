@@ -3,10 +3,8 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.google.gson.Gson;
 import jakarta.ws.rs.core.Response;
@@ -22,15 +20,13 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseBuilderV3;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPair;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseMatchPairV3;
 import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
-import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class MatchResourceTest {
-
-  @Mock
-  private AutocompleteService autocompleteService;
+@ExtendWith(MockitoExtension.class)
+class MatchResourceTest {
 
   @Mock
   private final DataUseMatcherV3 dataUseMatcherV3 = new DataUseMatcherV3();
@@ -40,23 +36,12 @@ public class MatchResourceTest {
 
   private MatchResource resource;
 
-  @BeforeEach
-  public void setUp() throws Exception {
-    openMocks(this);
-    when(autocompleteService.lookupById(anyString())).thenReturn(Collections.emptyList());
-    when(
-        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
-            any(DataUseV3.class))).thenReturn(
-        new MatchResult(MatchResultType.APPROVE, Collections.emptyList())
-    );
-  }
-
   private void initResource() {
     resource = new MatchResource(dataUseMatcherV3, dataUseMatcherV4);
   }
 
   @Test
-  public void testGone() {
+  void testGone() {
     initResource();
     DataUse purpose = new DataUseBuilder().setHmbResearch(true).build();
     DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
@@ -67,7 +52,12 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testOKV3() {
+  void testOKV3() {
+    when(
+        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
+            any(DataUseV3.class))).thenReturn(
+        new MatchResult(MatchResultType.APPROVE, Collections.emptyList())
+    );
     initResource();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
@@ -78,7 +68,12 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testOKV3ResponseApprove() {
+  void testOKV3ResponseApprove() {
+    when(
+        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
+            any(DataUseV3.class))).thenReturn(
+        new MatchResult(MatchResultType.APPROVE, Collections.emptyList())
+    );
     initResource();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
@@ -93,7 +88,7 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testOKV3ResponseDeny() {
+  void testOKV3ResponseDeny() {
     initResource();
     MatchResultType deny = MatchResultType.DENY;
     when(
@@ -114,7 +109,7 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testOKV3ResponseAbstain() {
+  void testOKV3ResponseAbstain() {
     initResource();
     MatchResultType abstain = MatchResultType.ABSTAIN;
     when(
@@ -135,7 +130,7 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testNullPurposeV3() {
+  void testNullPurposeV3() {
     initResource();
     DataUseV3 purpose = null;
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
@@ -146,7 +141,7 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testNullDatasetV3() {
+  void testNullDatasetV3() {
     initResource();
     DataUseV3 purpose = new DataUseBuilderV3().setGeneralUse(true).build();
     DataUseV3 dataset = null;
@@ -157,7 +152,7 @@ public class MatchResourceTest {
   }
 
   @Test
-  public void testInternalServerErrorV3() {
+  void testInternalServerErrorV3() {
     doThrow(new RuntimeException("Something went wrong")).when(dataUseMatcherV3)
         .matchPurposeAndDatasetV3(any(DataUseV3.class), any(DataUseV3.class));
     initResource();

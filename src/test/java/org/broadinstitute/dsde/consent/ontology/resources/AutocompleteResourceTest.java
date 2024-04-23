@@ -2,10 +2,9 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.nullable;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.openMocks;
+import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +12,13 @@ import org.broadinstitute.dsde.consent.ontology.model.TermResource;
 import org.broadinstitute.dsde.consent.ontology.service.AutocompleteService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 
-public class AutocompleteResourceTest {
+@ExtendWith(MockitoExtension.class)
+class AutocompleteResourceTest {
 
   @Mock
   private AutocompleteService apiMockUp;
@@ -25,29 +26,26 @@ public class AutocompleteResourceTest {
   private AutocompleteResource autocompleteResource;
 
   @BeforeEach
-  public void setUp() {
-    openMocks(this);
+  void setUp() {
     autocompleteResource = new AutocompleteResource(apiMockUp);
   }
 
   @Test
-  public void testGetTermWithOntologyNamesNull() {
+  void testGetTermWithOntologyNamesNull() {
     int limit = 1;
     List<TermResource> termResources = new ArrayList<>();
 
-    Mockito.when(apiMockUp.lookup(null, limit)).thenReturn(termResources);
-    spy(apiMockUp);
+    when(apiMockUp.lookup(null, limit)).thenReturn(termResources);
     autocompleteResource.getTerms(null, null, limit);
     verify(apiMockUp, times(1)).lookup(nullable(String.class), anyInt());
   }
 
   @Test
-  public void testGetTermWithOntologyNames() {
+  void testGetTermWithOntologyNames() {
     int limit = 20;
     List<TermResource> termResources = new ArrayList<>();
-    String ontologyName = "Kidney Cancer";
-    Mockito.when(apiMockUp.lookup(ontologyName, limit)).thenReturn(termResources);
-    spy(apiMockUp);
+
+    when(apiMockUp.lookup(null, limit)).thenReturn(termResources);
     autocompleteResource.getTerms(null, null, limit);
     verify(apiMockUp, times(1)).lookup(nullable(String.class), anyInt());
   }

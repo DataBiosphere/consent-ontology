@@ -1,31 +1,27 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.google.api.client.http.HttpStatusCodes;
+import jakarta.ws.rs.core.Response;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
-import jakarta.ws.rs.core.Response;
 import org.eclipse.jetty.server.Request;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class ErrorResourceTest {
+@ExtendWith(MockitoExtension.class)
+class ErrorResourceTest {
 
   @Mock
   private Request request;
 
-  @Before
-  public void setUp() {
-    openMocks(this);
-  }
-
   @Test
-  public void testNotFound() {
+  void testNotFound() {
     ErrorResource resource = new ErrorResource();
     when(request.getOriginalURI()).thenReturn("not_found");
     try (Response response = resource.notFound(request)) {
@@ -34,7 +30,7 @@ public class ErrorResourceTest {
   }
 
   @Test
-  public void testNotFoundDecoded() {
+  void testNotFoundDecoded() {
     String unicode = "¥";
     String encoded = URLEncoder.encode(unicode, Charset.defaultCharset());
     ErrorResource resource = new ErrorResource();

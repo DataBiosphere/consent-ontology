@@ -9,18 +9,21 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.junit.jupiter.MockitoExtension;
 
-public class SwaggerResourceTest {
+@ExtendWith(MockitoExtension.class)
+class SwaggerResourceTest {
 
   private SwaggerResource swaggerResource;
 
   @BeforeEach
-  public void setUp() {
+  void setUp() {
     swaggerResource = new SwaggerResource();
   }
 
   @Test
-  public void testIndex() {
+  void testIndex() {
     try (Response response = swaggerResource.content("index.html")) {
       checkStatusAndHeader(response, MediaType.TEXT_HTML);
       String content = response.getEntity().toString().trim();
@@ -30,7 +33,7 @@ public class SwaggerResourceTest {
   }
 
   @Test
-  public void testInitializer() {
+  void testInitializer() {
     try (Response response = swaggerResource.content("swagger-initializer.js")) {
       checkStatusAndHeader(response, MEDIA_TYPE_JS);
       String content = response.getEntity().toString().trim();
@@ -39,14 +42,14 @@ public class SwaggerResourceTest {
   }
 
   @Test
-  public void testNotFound() {
+  void testNotFound() {
     try (Response response = swaggerResource.content("foo/bar.txt")) {
       assertEquals(response.getStatus(), Response.Status.NOT_FOUND.getStatusCode());
     }
   }
 
   @Test
-  public void testImageNotFound() {
+  void testImageNotFound() {
     try (Response response = swaggerResource.content("foo/bar.png")) {
       assertEquals(response.getStatus(), Response.Status.NOT_FOUND.getStatusCode());
     }
