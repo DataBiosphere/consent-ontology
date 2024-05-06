@@ -1,15 +1,15 @@
 version: 2
 updates:
-  - package-ecosystem: "github-actions"
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      # Check for updates to GitHub Actions every week
-      interval: "weekly"
+      interval: weekly
+    open-pull-requests-limit: 10
     target-branch: develop
     reviewers:
       - "@DataBiosphere/DUOS"
     commit-message:
-      prefix: "[DUOS-1740-actions]"
+      prefix: "[DCJ-308-actions]"
     groups:
       action-dependencies:
         patterns:
@@ -25,7 +25,7 @@ updates:
     labels:
       - dependency
     commit-message:
-      prefix: "[DUOS-1740-maven]"
+      prefix: "[DCJ-308-maven]"
     groups:
       maven-dependencies:
         patterns:
@@ -41,7 +41,7 @@ updates:
     labels:
       - dependency
     commit-message:
-      prefix: "[DUOS-1740-docker]"
+      prefix: "[DCJ-308-docker]"
     groups:
       docker-dependencies:
         patterns:
