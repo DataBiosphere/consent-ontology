@@ -9,7 +9,7 @@ updates:
     reviewers:
       - "@DataBiosphere/DUOS"
     commit-message:
-      prefix: "[DCJ-308-actions]"
+      prefix: "[DCJ-304-actions]"
     groups:
       action-dependencies:
         patterns:
@@ -25,7 +25,7 @@ updates:
     labels:
       - dependency
     commit-message:
-      prefix: "[DCJ-308-maven]"
+      prefix: "[DCJ-304-maven]"
     groups:
       maven-dependencies:
         patterns:
@@ -41,7 +41,7 @@ updates:
     labels:
       - dependency
     commit-message:
-      prefix: "[DCJ-308-docker]"
+      prefix: "[DCJ-304-docker]"
     groups:
       docker-dependencies:
         patterns:
