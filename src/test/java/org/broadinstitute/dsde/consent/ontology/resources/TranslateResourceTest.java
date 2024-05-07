@@ -53,6 +53,16 @@ class TranslateResourceTest {
   }
 
   @Test
+  void testTranslateSummaryInvalidJson() {
+    when(service.translateDataUseSummary(any())).thenThrow(new IllegalArgumentException());
+    try (Response response = resource.translateSummary("[$@][")) {
+      assertEquals(400, response.getStatus());
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+
+  @Test
   void testTranslateSummaryException() {
     when(service.translateDataUseSummary(any())).thenThrow(new RuntimeException());
     String restriction = new DataUseBuilder().setGeneralUse(true).toString();
@@ -132,6 +142,18 @@ class TranslateResourceTest {
     try (Response response = resource.translate(
         TranslateFor.PURPOSE.name(),
         "")) {
+      assertEquals(400, response.getStatus());
+    } catch (Exception e) {
+      fail(e.getMessage());
+    }
+  }
+
+  @Test
+  void testPurposeTranslateInvalidJson() throws Exception {
+    when(service.translatePurpose(any())).thenThrow(new IllegalArgumentException());
+    try (Response response = resource.translate(
+        TranslateFor.PURPOSE.name(),
+        "[$@][")) {
       assertEquals(400, response.getStatus());
     } catch (Exception e) {
       fail(e.getMessage());
