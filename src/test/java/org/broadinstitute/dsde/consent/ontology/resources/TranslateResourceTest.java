@@ -68,6 +68,13 @@ class TranslateResourceTest {
   }
 
   @Test
+  void testTranslateParagraphBadRequestJsonSyntax() {
+    try (Response response = resource.translateParagraph("{]}[@")) {
+      assertEquals(Status.BAD_REQUEST.getStatusCode(), response.getStatus());
+    }
+  }
+
+  @Test
   void testTranslateParagraphServerError() {
     try (Response response = resource.translateParagraph("")) {
       assertEquals(Status.INTERNAL_SERVER_ERROR.getStatusCode(), response.getStatus());

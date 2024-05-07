@@ -6,6 +6,7 @@ import static org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.inject.Inject;
 import java.util.Map;
 import jakarta.ws.rs.Consumes;
@@ -75,6 +76,8 @@ public class TranslateResource implements OntologyLogger {
         return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
       }
       return buildResponse(PARAGRAPH, paragraph);
+    } catch (JsonParseException jpe) {
+      return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is invalid").build();
     } catch (Exception e) {
       String message = "Server Error translating paragraph";
       logException(message, e);
