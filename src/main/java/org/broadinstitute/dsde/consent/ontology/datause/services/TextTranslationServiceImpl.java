@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.HttpResponse;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
+import com.google.gson.JsonSyntaxException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -62,8 +63,15 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
 
   @Override
   public DataUseSummary translateDataUseSummary(String dataUseString) {
-    DataUse dataUse = new Gson().fromJson(dataUseString, DataUse.class);
-    return translateSummary(dataUse);
+    if (StringUtils.isBlank(dataUseString)) {
+      throw new IllegalArgumentException("Invalid JSON: " + dataUseString);
+    }
+    try {
+      DataUse dataUse = new Gson().fromJson(dataUseString, DataUse.class);
+      return translateSummary(dataUse);
+    } catch (JsonSyntaxException e) {
+      throw new IllegalArgumentException("Invalid JSON: " + dataUseString);
+    }
   }
 
   @Override

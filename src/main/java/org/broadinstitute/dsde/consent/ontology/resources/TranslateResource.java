@@ -38,6 +38,8 @@ public class TranslateResource implements OntologyLogger {
   public Response translateSummary(String restriction) {
     try {
       return Response.ok().entity(translationService.translateDataUseSummary(restriction)).build();
+    } catch (IllegalArgumentException iae) {
+      return Response.status(Response.Status.BAD_REQUEST).entity(iae.getMessage()).build();
     } catch (Exception e) {
       logException("Error while translating", e);
       return Response.
