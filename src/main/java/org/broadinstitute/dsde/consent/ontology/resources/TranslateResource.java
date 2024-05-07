@@ -2,12 +2,11 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor.PARAGRAPH;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.fasterxml.jackson.core.JsonParseException;
 import com.google.inject.Inject;
-import jakarta.ws.rs.BadRequestException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
