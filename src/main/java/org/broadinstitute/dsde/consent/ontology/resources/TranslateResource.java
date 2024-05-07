@@ -1,6 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-
 import static org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor.PARAGRAPH;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -8,19 +7,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.google.inject.Inject;
-import java.util.Map;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.datause.services.TextTranslationService;
 import org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor;
 import org.broadinstitute.dsde.consent.ontology.model.Recommendation;
-
 
 @Path("/translate")
 public class TranslateResource implements OntologyLogger {
@@ -37,12 +35,15 @@ public class TranslateResource implements OntologyLogger {
   @Path("summary")
   @Consumes(MediaType.APPLICATION_JSON)
   public Response translateSummary(String restriction) {
+    if (StringUtils.isBlank(restriction)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
     try {
       return Response.ok().entity(translationService.translateDataUseSummary(restriction)).build();
     } catch (IllegalArgumentException iae) {
       return Response.status(Response.Status.BAD_REQUEST).entity(iae.getMessage()).build();
     } catch (Exception e) {
-      logException("Error while translating", e);
+      logWarn("Error while translating restriction: " + e.getMessage());
       return Response.
           status(Response.Status.INTERNAL_SERVER_ERROR).
           entity("Error while translating: " + e.getMessage()).
@@ -53,11 +54,14 @@ public class TranslateResource implements OntologyLogger {
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   public Response translate(@QueryParam("for") String forParam, String restriction) {
+    if (StringUtils.isBlank(forParam) || StringUtils.isBlank(restriction)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
     try {
       TranslateFor translateFor = TranslateFor.find(forParam);
       return buildResponse(translateFor, restriction);
     } catch (Exception e) {
-      logException("Error while translating", e);
+      logWarn("Error while translating restriction: " + e.getMessage());
       return Response.
           status(Response.Status.INTERNAL_SERVER_ERROR).
           entity("Error while translating: " + e.getMessage()).
@@ -68,6 +72,9 @@ public class TranslateResource implements OntologyLogger {
   @Path("paragraph")
   @POST
   public Response translateParagraph(final String jsonString) {
+    if (StringUtils.isBlank(jsonString)) {
+      return Response.status(Response.Status.BAD_REQUEST).build();
+    }
     try {
       final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {
       });
@@ -80,7 +87,7 @@ public class TranslateResource implements OntologyLogger {
       return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is invalid").build();
     } catch (Exception e) {
       String message = "Server Error translating paragraph";
-      logException(message, e);
+      logWarn("Error while translating paragraph: " + e.getMessage());
       return Response
           .status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message)
           .build();
