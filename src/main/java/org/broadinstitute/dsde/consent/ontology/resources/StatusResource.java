@@ -3,13 +3,12 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 import com.codahale.metrics.health.HealthCheck;
 import com.codahale.metrics.health.HealthCheckRegistry;
 import com.google.inject.Inject;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.Response;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.cloudstore.GCSHealthCheck;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
@@ -25,14 +24,6 @@ public class StatusResource implements OntologyLogger {
   @Inject
   public StatusResource(HealthCheckRegistry healthChecks) {
     this.healthChecks = healthChecks;
-  }
-
-  @GET
-  @Produces("application/json")
-  @Path("error")
-  public Response error(@QueryParam("message") String message) {
-    logError(String.format("Logged Exception: %s", message));
-    return Response.ok().build();
   }
 
   @GET
