@@ -1,6 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.datause.services;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.api.client.http.HttpResponse;
 import com.google.common.reflect.TypeToken;
 import com.google.gson.Gson;
@@ -62,15 +61,25 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
 
   @Override
   public DataUseSummary translateDataUseSummary(String dataUseString) {
-    DataUse dataUse = new Gson().fromJson(dataUseString, DataUse.class);
-    return translateSummary(dataUse);
+    if (StringUtils.isBlank(dataUseString)) {
+      throw new IllegalArgumentException("Invalid JSON: " + dataUseString);
+    }
+    try {
+      DataUse dataUse = new Gson().fromJson(dataUseString, DataUse.class);
+      return translateSummary(dataUse);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid JSON: " + dataUseString);
+    }
   }
 
   @Override
-  public String translateDataset(String dataUseString) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
-    return translate(dataUse, TranslateFor.DATASET);
+  public String translateDataset(String dataUseString) {
+    try {
+      DataUse dataUse = new Gson().fromJson(dataUseString, DataUse.class);
+      return translate(dataUse, TranslateFor.DATASET);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid JSON: " + dataUseString);
+    }
   }
 
   @Override
@@ -105,10 +114,13 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
   }
 
   @Override
-  public String translatePurpose(String dataUseString) throws IOException {
-    ObjectMapper mapper = new ObjectMapper();
-    DataUse dataUse = mapper.readValue(dataUseString, DataUse.class);
-    return translate(dataUse, TranslateFor.PURPOSE);
+  public String translatePurpose(String dataUseString) {
+    try {
+      DataUse dataUse = new Gson().fromJson(dataUseString, DataUse.class);
+      return translate(dataUse, TranslateFor.PURPOSE);
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Invalid JSON: " + dataUseString);
+    }
   }
 
   private static boolean searchForKeyword(final String keyword, final String targetText) {
@@ -193,7 +205,8 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
     }
 
     if (StringUtils.isNotBlank(dataUse.getSecondaryOther())) {
-      secondary.add(new DataUseElement("OTHER", String.format(SECONDARY_OTHER, dataUse.getSecondaryOther())));
+      secondary.add(
+          new DataUseElement("OTHER", String.format(SECONDARY_OTHER, dataUse.getSecondaryOther())));
     }
 
     if (BooleanUtils.isTrue(dataUse.getEthicsApprovalRequired())) {
@@ -218,7 +231,8 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
     }
 
     if (StringUtils.isNotBlank(dataUse.getPublicationMoratorium())) {
-      secondary.add(new DataUseElement("MOR", String.format(PUB_MORATORIUM, dataUse.getPublicationMoratorium())));
+      secondary.add(new DataUseElement("MOR",
+          String.format(PUB_MORATORIUM, dataUse.getPublicationMoratorium())));
     }
 
     if (BooleanUtils.isTrue(dataUse.getControls())) {

@@ -2,6 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.broadinstitute.dsde.consent.ontology.enumerations.TranslateFor.PARAGRAPH;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
@@ -39,6 +40,8 @@ public class TranslateResource implements OntologyLogger {
     }
     try {
       return Response.ok().entity(translationService.translateDataUseSummary(restriction)).build();
+    } catch (IllegalArgumentException iae) {
+      return Response.status(Response.Status.BAD_REQUEST).entity(iae.getMessage()).build();
     } catch (Exception e) {
       logWarn("Error while translating restriction: " + e.getMessage());
       return Response.
@@ -57,6 +60,8 @@ public class TranslateResource implements OntologyLogger {
     try {
       TranslateFor translateFor = TranslateFor.find(forParam);
       return buildResponse(translateFor, restriction);
+    } catch (IllegalArgumentException iae) {
+      return Response.status(Response.Status.BAD_REQUEST).entity(iae.getMessage()).build();
     } catch (Exception e) {
       logWarn("Error while translating restriction: " + e.getMessage());
       return Response.
@@ -80,6 +85,8 @@ public class TranslateResource implements OntologyLogger {
         return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
       }
       return buildResponse(PARAGRAPH, paragraph);
+    } catch (JsonParseException jpe) {
+      return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is invalid").build();
     } catch (Exception e) {
       String message = "Server Error translating paragraph";
       logWarn("Error while translating paragraph: " + e.getMessage());
