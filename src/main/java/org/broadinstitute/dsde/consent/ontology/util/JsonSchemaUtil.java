@@ -95,7 +95,7 @@ public class JsonSchemaUtil implements OntologyLogger {
       Set<ValidationMessage> messages = schema.validate(jsonSubject);
       return messages.stream().map(ValidationMessage::getMessage).toList();
     } catch (Exception e) {
-      logError("Unable to load the data use schema: " + e.getMessage());
+      logWarn("Unable to load the data use schema: " + e.getMessage());
       throw new BadRequestException("Invalid schema");
     }
   }
@@ -151,7 +151,7 @@ public class JsonSchemaUtil implements OntologyLogger {
       }
       return messages.stream().map(ValidationMessage::getMessage).toList();
     } catch (Exception e) {
-      logError("Unable to load the data use schema: " + e.getMessage());
+      logWarn("Unable to load the data use schema: " + e.getMessage());
       throw new BadRequestException("Invalid schema");
     }
   }
