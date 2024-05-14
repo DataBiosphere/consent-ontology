@@ -24,7 +24,7 @@
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mockito.version>5.11.0</mockito.version>
+    <mockito.version>5.12.0</mockito.version>
   </properties>
 
   <profiles>
@@ -386,7 +386,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>7.8.0</version>
+      <version>7.9.0</version>
     </dependency>
 
     <dependency>
@@ -416,7 +416,7 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
-      <version>2.4.1</version>
+      <version>2.5.0</version>
       <exclusions>
         <exclusion>
           <groupId>io.grpc</groupId>
@@ -441,7 +441,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>8.13.3</version>
+      <version>8.13.4</version>
     </dependency>
 
     <dependency>
@@ -546,7 +546,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>mockserver</artifactId>
-      <version>1.19.7</version>
+      <version>1.19.8</version>
       <scope>test</scope>
     </dependency>
 
