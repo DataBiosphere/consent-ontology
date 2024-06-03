@@ -20,7 +20,7 @@
     <junit.version>5.10.2</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.2.5</surefire.version>
-    <swagger.ui.version>5.17.11</swagger.ui.version>
+    <swagger.ui.version>5.17.14</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -214,7 +214,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.5.3</version>
+        <version>3.6.0</version>
         <configuration>
           <finalName>consent-ontology</finalName>
           <createDependencyReducedPom>true</createDependencyReducedPom>
@@ -398,7 +398,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.2.0-jre</version>
+      <version>33.2.1-jre</version>
     </dependency>
 
     <dependency>
