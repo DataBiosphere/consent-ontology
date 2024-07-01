@@ -17,7 +17,7 @@
     <maven.compiler.target>21</maven.compiler.target>
     <jena.version>2.6.4</jena.version>
     <jersey.version>2.19</jersey.version>
-    <junit.version>5.10.2</junit.version>
+    <junit.version>5.10.3</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.3.0</surefire.version>
     <swagger.ui.version>5.17.14</swagger.ui.version>
@@ -329,7 +329,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>9.2.0</version>
+        <version>10.0.0</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -386,7 +386,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>7.10.0</version>
+      <version>7.11.0</version>
     </dependency>
 
     <dependency>
@@ -429,13 +429,13 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
-      <version>1.64.0</version>
+      <version>1.65.0</version>
     </dependency>
 
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-storage</artifactId>
-      <version>v1-rev20240524-2.0.0</version>
+      <version>v1-rev20240621-2.0.0</version>
     </dependency>
 
     <dependency>
@@ -505,7 +505,7 @@
     <dependency>
       <groupId>com.networknt</groupId>
       <artifactId>json-schema-validator</artifactId>
-      <version>1.4.2</version>
+      <version>1.4.3</version>
     </dependency>
 
     <dependency>
