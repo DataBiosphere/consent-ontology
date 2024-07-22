@@ -329,7 +329,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>10.0.2</version>
+        <version>10.0.3</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -546,7 +546,7 @@
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>mockserver</artifactId>
-      <version>1.19.8</version>
+      <version>1.20.0</version>
       <scope>test</scope>
     </dependency>
 
