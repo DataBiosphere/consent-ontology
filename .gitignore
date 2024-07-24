@@ -75,3 +75,6 @@ src/main/resources/assets/oauth2-redirect.html
 
 # vscode
 .vscode/
+
+## GHA Credentials
+gha-creds-*.json
