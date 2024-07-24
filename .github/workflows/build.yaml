@@ -47,12 +47,6 @@ jobs:
         .
     - name: Log Github Actor
       run: echo "${{ github.actor }}"
-    - name: Auth to GCP
-      if: github.actor != 'dependabot[bot]'
-      uses: google-github-actions/auth@v2
-      with:
-        workload_identity_provider: 'projects/1038484894585/locations/global/workloadIdentityPools/github-wi-pool/providers/github-wi-provider'
-        service_account: 'gcr-publish@broad-dsp-gcr-public.iam.gserviceaccount.com'
     - id: 'auth'
       if: github.actor != 'dependabot[bot]'
       name: 'Authenticate to Google Cloud'
