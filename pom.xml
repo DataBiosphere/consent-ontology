@@ -386,7 +386,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>7.12.0</version>
+      <version>7.12.1</version>
     </dependency>
 
     <dependency>
@@ -505,7 +505,7 @@
     <dependency>
       <groupId>com.networknt</groupId>
       <artifactId>json-schema-validator</artifactId>
-      <version>1.5.0</version>
+      <version>1.5.1</version>
     </dependency>
 
     <dependency>
