@@ -11,7 +11,7 @@
 
   <properties>
     <dropwizard.version>4.0.4</dropwizard.version>
-    <logback.version>1.4.14</logback.version>
+    <logback.version>1.5.7</logback.version>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
@@ -365,10 +365,11 @@
     </dependency>
 
     <!-- Security update. See https://broadworkbench.atlassian.net/browse/DUOS-2826 -->
+    <!-- Logback Access module moved to new location. See https://logback.qos.ch/news.html -->
     <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-access</artifactId>
-        <version>${logback.version}</version>
+      <groupId>ch.qos.logback.access</groupId>
+      <artifactId>common</artifactId>
+      <version>2.0.3</version>
     </dependency>
     <!-- Security update. See https://broadworkbench.atlassian.net/browse/DUOS-2826 -->
     <dependency>
