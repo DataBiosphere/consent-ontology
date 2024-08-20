@@ -10,7 +10,7 @@
   <name>Consent Management: Ontology Services</name>
 
   <properties>
-    <dropwizard.version>4.0.4</dropwizard.version>
+    <dropwizard.version>4.0.7</dropwizard.version>
     <logback.version>1.5.7</logback.version>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
