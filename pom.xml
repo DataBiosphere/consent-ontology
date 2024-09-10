@@ -11,7 +11,7 @@
 
   <properties>
     <dropwizard.version>4.0.7</dropwizard.version>
-    <logback.version>1.5.7</logback.version>
+    <logback.version>1.5.8</logback.version>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
@@ -442,7 +442,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>8.15.0</version>
+      <version>8.15.1</version>
     </dependency>
 
     <dependency>
@@ -487,7 +487,7 @@
     <dependency>
       <groupId>org.eclipse.jetty.http2</groupId>
       <artifactId>http2-common</artifactId>
-      <version>11.0.23</version>
+      <version>11.0.24</version>
     </dependency>
 
     <dependency>
