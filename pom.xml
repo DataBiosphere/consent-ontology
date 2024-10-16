@@ -11,7 +11,7 @@
 
   <properties>
     <dropwizard.version>4.0.7</dropwizard.version>
-    <logback.version>1.5.8</logback.version>
+    <logback.version>1.5.10</logback.version>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
@@ -387,7 +387,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>7.14.0</version>
+      <version>7.15.0</version>
     </dependency>
 
     <dependency>
@@ -436,7 +436,7 @@
     <dependency>
       <groupId>com.google.apis</groupId>
       <artifactId>google-api-services-storage</artifactId>
-      <version>v1-rev20240924-2.0.0</version>
+      <version>v1-rev20241008-2.0.0</version>
     </dependency>
 
     <dependency>
