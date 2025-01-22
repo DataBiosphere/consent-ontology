@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 @DisplayName("Match Related Tests")
 class MatchTests implements IntegrationTestHelper {
 
-  private static final String matchPair = """
+  private static final String matchPair =
+      """
       {
         "purpose": {
           "generalUse": false,
@@ -42,5 +43,4 @@ class MatchTests implements IntegrationTestHelper {
     SimpleResponse response = getPostResponse("match/v3", matchPair);
     assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
   }
-
 }

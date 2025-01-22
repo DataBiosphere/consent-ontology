@@ -1,6 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doThrow;
@@ -28,11 +27,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class MatchResourceTest {
 
-  @Mock
-  private final DataUseMatcherV3 dataUseMatcherV3 = new DataUseMatcherV3();
+  @Mock private final DataUseMatcherV3 dataUseMatcherV3 = new DataUseMatcherV3();
 
-  @Mock
-  private final DataUseMatcherV4 dataUseMatcherV4 = new DataUseMatcherV4();
+  @Mock private final DataUseMatcherV4 dataUseMatcherV4 = new DataUseMatcherV4();
 
   private MatchResource resource;
 
@@ -53,11 +50,8 @@ class MatchResourceTest {
 
   @Test
   void testOKV3() {
-    when(
-        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
-            any(DataUseV3.class))).thenReturn(
-        new MatchResult(MatchResultType.APPROVE, Collections.emptyList())
-    );
+    when(dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class), any(DataUseV3.class)))
+        .thenReturn(new MatchResult(MatchResultType.APPROVE, Collections.emptyList()));
     initResource();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
@@ -69,11 +63,8 @@ class MatchResourceTest {
 
   @Test
   void testOKV3ResponseApprove() {
-    when(
-        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
-            any(DataUseV3.class))).thenReturn(
-        new MatchResult(MatchResultType.APPROVE, Collections.emptyList())
-    );
+    when(dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class), any(DataUseV3.class)))
+        .thenReturn(new MatchResult(MatchResultType.APPROVE, Collections.emptyList()));
     initResource();
     DataUseV3 purpose = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseV3 dataset = new DataUseBuilderV3().setGeneralUse(true).build();
@@ -91,11 +82,8 @@ class MatchResourceTest {
   void testOKV3ResponseDeny() {
     initResource();
     MatchResultType deny = MatchResultType.DENY;
-    when(
-        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
-            any(DataUseV3.class))).thenReturn(
-        new MatchResult(deny, Collections.emptyList())
-    );
+    when(dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class), any(DataUseV3.class)))
+        .thenReturn(new MatchResult(deny, Collections.emptyList()));
     DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("true").build();
     DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
@@ -112,11 +100,8 @@ class MatchResourceTest {
   void testOKV3ResponseAbstain() {
     initResource();
     MatchResultType abstain = MatchResultType.ABSTAIN;
-    when(
-        dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class),
-            any(DataUseV3.class))).thenReturn(
-        new MatchResult(abstain, Collections.emptyList())
-    );
+    when(dataUseMatcherV3.matchPurposeAndDatasetV3(any(DataUseV3.class), any(DataUseV3.class)))
+        .thenReturn(new MatchResult(abstain, Collections.emptyList()));
     DataUseV3 purpose = new DataUseBuilderV3().setSecondaryOther("true").build();
     DataUseV3 dataset = new DataUseBuilderV3().setPopulationOriginsAncestry(true).build();
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
@@ -153,17 +138,20 @@ class MatchResourceTest {
 
   @Test
   void testInternalServerErrorV3() {
-    doThrow(new RuntimeException("Something went wrong")).when(dataUseMatcherV3)
+    doThrow(new RuntimeException("Something went wrong"))
+        .when(dataUseMatcherV3)
         .matchPurposeAndDatasetV3(any(DataUseV3.class), any(DataUseV3.class));
     initResource();
-    DataUseV3 purpose = new DataUseBuilderV3().setDiseaseRestrictions(
-            Collections.singletonList("http://purl.obolibrary.org/obo/DOID_162"))
-        .setMethodsResearch(true).build();
+    DataUseV3 purpose =
+        new DataUseBuilderV3()
+            .setDiseaseRestrictions(
+                Collections.singletonList("http://purl.obolibrary.org/obo/DOID_162"))
+            .setMethodsResearch(true)
+            .build();
     DataUseV3 dataset = new DataUseBuilderV3().setHmbResearch(true).build();
     DataUseMatchPairV3 pair = new DataUseMatchPairV3(purpose, dataset);
     try (Response response = resource.matchDataUseV3(pair)) {
       assertEquals(500, response.getStatus());
     }
   }
-
 }

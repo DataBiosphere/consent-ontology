@@ -25,8 +25,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class TranslateResourceTest {
 
-  @Mock
-  private TextTranslationService service;
+  @Mock private TextTranslationService service;
   private final Gson gson = new Gson();
   private TranslateResource resource;
 
@@ -76,9 +75,8 @@ class TranslateResourceTest {
   @Test
   void testDatasetTranslate() {
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    try (Response response = resource.translate(
-        TranslateFor.DATASET.name(),
-        gson.toJson(datause))) {
+    try (Response response =
+        resource.translate(TranslateFor.DATASET.name(), gson.toJson(datause))) {
       assertEquals(200, response.getStatus());
       verify(service, atLeastOnce()).translateDataset(any());
     } catch (Exception e) {
@@ -90,9 +88,8 @@ class TranslateResourceTest {
   void testTranslateDatasetException() throws Exception {
     when(service.translateDataset(any())).thenThrow(new IOException());
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    try (Response response = resource.translate(
-        TranslateFor.DATASET.name(),
-        gson.toJson(datause))) {
+    try (Response response =
+        resource.translate(TranslateFor.DATASET.name(), gson.toJson(datause))) {
       assertEquals(500, response.getStatus());
     } catch (Exception e) {
       fail(e.getMessage());
@@ -102,9 +99,8 @@ class TranslateResourceTest {
   @Test
   void testPurposeTranslate() {
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    try (Response response = resource.translate(
-        TranslateFor.PURPOSE.name(),
-        gson.toJson(datause))) {
+    try (Response response =
+        resource.translate(TranslateFor.PURPOSE.name(), gson.toJson(datause))) {
       assertEquals(200, response.getStatus());
       verify(service, atLeastOnce()).translatePurpose(any());
     } catch (Exception e) {
@@ -116,9 +112,8 @@ class TranslateResourceTest {
   void testTranslatePurposeException() throws Exception {
     when(service.translatePurpose(any())).thenThrow(new IOException());
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    try (Response response = resource.translate(
-        TranslateFor.PURPOSE.name(),
-        gson.toJson(datause))) {
+    try (Response response =
+        resource.translate(TranslateFor.PURPOSE.name(), gson.toJson(datause))) {
       assertEquals(500, response.getStatus());
     } catch (Exception e) {
       fail(e.getMessage());
@@ -128,9 +123,7 @@ class TranslateResourceTest {
   @Test
   void testPurposeTranslateNoForParam() {
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    try (Response response = resource.translate(
-        null,
-        gson.toJson(datause))) {
+    try (Response response = resource.translate(null, gson.toJson(datause))) {
       assertEquals(400, response.getStatus());
     } catch (Exception e) {
       fail(e.getMessage());
@@ -139,9 +132,7 @@ class TranslateResourceTest {
 
   @Test
   void testPurposeTranslateNoForRestriction() {
-    try (Response response = resource.translate(
-        TranslateFor.PURPOSE.name(),
-        "")) {
+    try (Response response = resource.translate(TranslateFor.PURPOSE.name(), "")) {
       assertEquals(400, response.getStatus());
     } catch (Exception e) {
       fail(e.getMessage());
@@ -151,9 +142,7 @@ class TranslateResourceTest {
   @Test
   void testPurposeTranslateInvalidJson() throws Exception {
     when(service.translatePurpose(any())).thenThrow(new IllegalArgumentException());
-    try (Response response = resource.translate(
-        TranslateFor.PURPOSE.name(),
-        "[$@][")) {
+    try (Response response = resource.translate(TranslateFor.PURPOSE.name(), "[$@][")) {
       assertEquals(400, response.getStatus());
     } catch (Exception e) {
       fail(e.getMessage());
@@ -193,13 +182,11 @@ class TranslateResourceTest {
   void testParagraphTranslateException() throws Exception {
     when(service.translateParagraph(any())).thenThrow(new IOException());
     DataUse datause = new DataUseBuilder().setGeneralUse(true).build();
-    try (Response response = resource.translate(
-        TranslateFor.PARAGRAPH.name(),
-        gson.toJson(datause))) {
+    try (Response response =
+        resource.translate(TranslateFor.PARAGRAPH.name(), gson.toJson(datause))) {
       assertEquals(500, response.getStatus());
     } catch (Exception e) {
       fail(e.getMessage());
     }
   }
-
 }

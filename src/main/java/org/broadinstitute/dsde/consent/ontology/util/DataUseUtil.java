@@ -28,16 +28,14 @@ public final class DataUseUtil {
 
   // Get a list of term ids that represent a disease term + all parent ids
   public List<String> getParentTermIds(String purposeDiseaseId) throws IOException {
-    List<String> purposeTermIdList = autocompleteService.lookupById(purposeDiseaseId)
-        .stream()
-        .filter(Objects::nonNull)
-        .filter(t -> Objects.nonNull(t.getParents()) && !t.getParents().isEmpty())
-        .flatMap(t -> t.parents.stream())
-        .map(p -> p.id)
-        .collect(Collectors.toList());
+    List<String> purposeTermIdList =
+        autocompleteService.lookupById(purposeDiseaseId).stream()
+            .filter(Objects::nonNull)
+            .filter(t -> Objects.nonNull(t.getParents()) && !t.getParents().isEmpty())
+            .flatMap(t -> t.parents.stream())
+            .map(p -> p.id)
+            .collect(Collectors.toList());
     purposeTermIdList.add(purposeDiseaseId);
     return purposeTermIdList;
   }
-
-
 }

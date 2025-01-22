@@ -62,6 +62,4 @@ public class OntologyModule extends AbstractModule {
   public HealthCheckRegistry providesHealthCheckRegistry() {
     return environment.healthChecks();
   }
-
 }
-

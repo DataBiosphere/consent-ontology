@@ -32,22 +32,29 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
   private static final String GRU = "Data is available for general research use. [GRU]";
   private static final String DS = "Data use is limited for studying: %s [DS]";
   private static final String HMB = "Data is limited for health/medical/biomedical research. [HMB]";
-  private static final String POA = "Future use for population origins or ancestry research is prohibited. [POA]";
-  private static final String NMDS = "Data use for methods development research ONLY within the bounds of other data use limitations. [NMDS]";
+  private static final String POA =
+      "Future use for population origins or ancestry research is prohibited. [POA]";
+  private static final String NMDS =
+      "Data use for methods development research ONLY within the bounds of other data use limitations. [NMDS]";
   private static final String NCU = "Commercial use prohibited. [NCU]";
   private static final String OTHER = "Other restrictions: %s.";
   private static final String SECONDARY_OTHER = "Secondary other restrictions: %s.";
   private static final String ETHICS_APPROVAL = "Local ethics committee approval is required.";
-  private static final String COLLABORATION_REQUIRED = "Collaboration with the primary study investigators required. [COL]";
+  private static final String COLLABORATION_REQUIRED =
+      "Collaboration with the primary study investigators required. [COL]";
   private static final String GEO_RESTRICTION = "Geographical restrictions: %s.";
   private static final String GSO = "Future use is limited to genetic studies only [GSO]";
-  private static final String PUB_REQUIRED = "Publishing results of studies using the data available to the larger scientific community is required";
-  private static final String PUB_MORATORIUM = "Publishing moratorium until '%s' is in effect. [MOR]";
-  private static final String NCTRL = "Future use as a control set for diseases other than those specified is prohibited. [NCTRL]";
+  private static final String PUB_REQUIRED =
+      "Publishing results of studies using the data available to the larger scientific community is required";
+  private static final String PUB_MORATORIUM =
+      "Publishing moratorium until '%s' is in effect. [MOR]";
+  private static final String NCTRL =
+      "Future use as a control set for diseases other than those specified is prohibited. [NCTRL]";
   private static final String RS_M = "Data use is limited to research on males. [RS-M]";
   private static final String RS_FM = "Data use is limited to research on females. [RS-FM]";
   private static final String RS_PD = "Data use is limited to pediatric research. [RS-PD]";
-  private static final String POP = "Future use for study variation in the general population (e.g. calling variants and/or studying their distribution). [POP]";
+  private static final String POP =
+      "Future use for study variation in the general population (e.g. calling variants and/or studying their distribution). [POP]";
 
   private final AutocompleteService autocompleteService;
 
@@ -101,10 +108,7 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
       for (String keyword : keywords) {
         final boolean foundMatch = searchForKeyword(keyword, paragraph);
         if (foundMatch) {
-          recommendations.computeIfAbsent(url, key -> new Recommendation(
-              title,
-              category
-          ));
+          recommendations.computeIfAbsent(url, key -> new Recommendation(title, category));
           break;
         }
       }
@@ -131,11 +135,7 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
     try {
       HttpResponse response = gcsStore.getStorageDocument("ontology/search-terms.json");
       String terms = response.parseAsString();
-      return new Gson().fromJson(
-          terms,
-          new TypeToken<List<TermItem>>() {
-          }.getType()
-      );
+      return new Gson().fromJson(terms, new TypeToken<List<TermItem>>() {}.getType());
     } catch (Exception e) {
       logException("Error processing search terms from GCS", e);
     }
@@ -162,24 +162,27 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
 
     if (dataUse.getDiseaseRestrictions() != null && !dataUse.getDiseaseRestrictions().isEmpty()) {
       List<String> labels = new ArrayList<>();
-      dataUse.getDiseaseRestrictions().forEach(r -> {
-        try {
-          List<TermResource> terms = autocompleteService.lookupById(r);
-          if (!terms.isEmpty()) {
-            labels.add(terms.get(0).label);
-          } else {
-            logWarn("No terms returned for: " + r);
-          }
-        } catch (IOException e) {
-          logWarn("Unable to retrieve term id: " + r);
-        }
-      });
+      dataUse
+          .getDiseaseRestrictions()
+          .forEach(
+              r -> {
+                try {
+                  List<TermResource> terms = autocompleteService.lookupById(r);
+                  if (!terms.isEmpty()) {
+                    labels.add(terms.get(0).label);
+                  } else {
+                    logWarn("No terms returned for: " + r);
+                  }
+                } catch (IOException e) {
+                  logWarn("Unable to retrieve term id: " + r);
+                }
+              });
       if (!labels.isEmpty()) {
-        String dsRestrictions = labels
-            .stream()
-            .filter(Objects::nonNull)
-            .filter(r -> !r.isEmpty())
-            .collect(Collectors.joining(", "));
+        String dsRestrictions =
+            labels.stream()
+                .filter(Objects::nonNull)
+                .filter(r -> !r.isEmpty())
+                .collect(Collectors.joining(", "));
         primary.add(new DataUseElement("DS", String.format(DS, dsRestrictions)));
       }
     }
@@ -218,8 +221,9 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
     }
 
     if (StringUtils.isNotBlank(dataUse.getGeographicalRestrictions())) {
-      secondary.add(new DataUseElement("GS",
-          String.format(GEO_RESTRICTION, dataUse.getGeographicalRestrictions())));
+      secondary.add(
+          new DataUseElement(
+              "GS", String.format(GEO_RESTRICTION, dataUse.getGeographicalRestrictions())));
     }
 
     if (BooleanUtils.isTrue(dataUse.getGeneticStudiesOnly())) {
@@ -231,8 +235,9 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
     }
 
     if (StringUtils.isNotBlank(dataUse.getPublicationMoratorium())) {
-      secondary.add(new DataUseElement("MOR",
-          String.format(PUB_MORATORIUM, dataUse.getPublicationMoratorium())));
+      secondary.add(
+          new DataUseElement(
+              "MOR", String.format(PUB_MORATORIUM, dataUse.getPublicationMoratorium())));
     }
 
     if (BooleanUtils.isTrue(dataUse.getControls())) {
@@ -284,24 +289,27 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
 
     if (dataUse.getDiseaseRestrictions() != null && !dataUse.getDiseaseRestrictions().isEmpty()) {
       List<String> labels = new ArrayList<>();
-      dataUse.getDiseaseRestrictions().forEach(r -> {
-        try {
-          List<TermResource> terms = autocompleteService.lookupById(r);
-          if (!terms.isEmpty()) {
-            labels.add(terms.get(0).label);
-          } else {
-            logWarn("No terms returned for: " + r);
-          }
-        } catch (IOException e) {
-          logWarn("Unable to retrieve term id: " + r);
-        }
-      });
+      dataUse
+          .getDiseaseRestrictions()
+          .forEach(
+              r -> {
+                try {
+                  List<TermResource> terms = autocompleteService.lookupById(r);
+                  if (!terms.isEmpty()) {
+                    labels.add(terms.get(0).label);
+                  } else {
+                    logWarn("No terms returned for: " + r);
+                  }
+                } catch (IOException e) {
+                  logWarn("Unable to retrieve term id: " + r);
+                }
+              });
       if (!labels.isEmpty()) {
-        String dsRestrictions = labels
-            .stream()
-            .filter(Objects::nonNull)
-            .filter(r -> !r.isEmpty())
-            .collect(Collectors.joining(", "));
+        String dsRestrictions =
+            labels.stream()
+                .filter(Objects::nonNull)
+                .filter(r -> !r.isEmpty())
+                .collect(Collectors.joining(", "));
         summary.add(String.format(DS, dsRestrictions));
       }
     }
@@ -376,5 +384,4 @@ public class TextTranslationServiceImpl implements TextTranslationService, Ontol
 
     return String.join("\n", summary);
   }
-
 }

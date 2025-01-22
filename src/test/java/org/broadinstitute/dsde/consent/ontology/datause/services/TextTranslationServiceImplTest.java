@@ -41,14 +41,11 @@ class TextTranslationServiceImplTest extends AbstractTest {
 
   private TextTranslationServiceImpl service;
 
-  @Mock
-  private AutocompleteService autocompleteService;
+  @Mock private AutocompleteService autocompleteService;
 
-  @Mock
-  private GCSStore gcsStore;
+  @Mock private GCSStore gcsStore;
 
-  TextTranslationServiceImplTest() {
-  }
+  TextTranslationServiceImplTest() {}
 
   @BeforeEach
   void setUpClass() {
@@ -63,10 +60,13 @@ class TextTranslationServiceImplTest extends AbstractTest {
     DataUseSummary summary = service.translateDataUseSummary(dataUseString);
     assertFalse(summary.getPrimary().isEmpty());
     assertTrue(summary.getPrimary().get(0).getCode().equalsIgnoreCase("GRU"));
-    Stream.of(summary.getPrimary(), summary.getSecondary()).flatMap(List::stream).forEach(e -> {
-      assertFalse(e.getDescription().contains("["));
-      assertFalse(e.getDescription().contains("]"));
-    });
+    Stream.of(summary.getPrimary(), summary.getSecondary())
+        .flatMap(List::stream)
+        .forEach(
+            e -> {
+              assertFalse(e.getDescription().contains("["));
+              assertFalse(e.getDescription().contains("]"));
+            });
   }
 
   @Test
@@ -110,7 +110,8 @@ class TextTranslationServiceImplTest extends AbstractTest {
     when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
 
     // When
-    String mockParagraph = "GRU General research for some test with disease. This is not for profit.";
+    String mockParagraph =
+        "GRU General research for some test with disease. This is not for profit.";
     Map<String, Recommendation> translationNormal = service.translateParagraph(mockParagraph);
 
     String gruTitle = getTitle(translationNormal, "http://purl.obolibrary.org/obo/DUO_0000042");
@@ -131,7 +132,8 @@ class TextTranslationServiceImplTest extends AbstractTest {
     when(gcsStore.getStorageDocument(Mockito.anyString())).thenReturn(response);
 
     // When
-    String mockParagraph = "GrU geNEraL ResEArCh fOr some tesT wiTH DiseaSE. ThiS IS noT fOr pROFIT.";
+    String mockParagraph =
+        "GrU geNEraL ResEArCh fOr some tesT wiTH DiseaSE. ThiS IS noT fOr pROFIT.";
     Map<String, Recommendation> translation = service.translateParagraph(mockParagraph);
 
     String gruTitle = getTitle(translation, "http://purl.obolibrary.org/obo/DUO_0000042");
@@ -159,27 +161,28 @@ class TextTranslationServiceImplTest extends AbstractTest {
   @Test
   void testTranslateCoverageTrue() throws IOException {
     Gson gson = new Gson();
-    DataUse dataset = new DataUseBuilder()
-        .setGeneralUse(true)
-        .setHmbResearch(true)
-        .setDiseaseRestrictions(List.of("disease"))
-        .setMethodsResearch(true)
-        .setControls(true)
-        .setNonProfitUse(true)
-        .setGender("Male")
-        .setPediatric(true)
-        .setEthicsApprovalRequired(true)
-        .setIllegalBehavior(true)
-        .setNotHealth(true)
-        .setOther("Other")
-        .setGeographicalRestrictions("Geographical restriction")
-        .setPopulationOriginsAncestry(true)
-        .setPopulation(true)
-        .setPsychologicalTraits(true)
-        .setSexualDiseases(true)
-        .setStigmatizeDiseases(true)
-        .setVulnerablePopulations(true)
-        .build();
+    DataUse dataset =
+        new DataUseBuilder()
+            .setGeneralUse(true)
+            .setHmbResearch(true)
+            .setDiseaseRestrictions(List.of("disease"))
+            .setMethodsResearch(true)
+            .setControls(true)
+            .setNonProfitUse(true)
+            .setGender("Male")
+            .setPediatric(true)
+            .setEthicsApprovalRequired(true)
+            .setIllegalBehavior(true)
+            .setNotHealth(true)
+            .setOther("Other")
+            .setGeographicalRestrictions("Geographical restriction")
+            .setPopulationOriginsAncestry(true)
+            .setPopulation(true)
+            .setPsychologicalTraits(true)
+            .setSexualDiseases(true)
+            .setStigmatizeDiseases(true)
+            .setVulnerablePopulations(true)
+            .build();
     String datasetString = gson.toJson(dataset);
     String translation = service.translatePurpose(datasetString);
     log.info(translation);
@@ -191,27 +194,28 @@ class TextTranslationServiceImplTest extends AbstractTest {
   void testTranslateCoverageFalse() throws Exception {
     initializeTerm();
     Gson gson = new Gson();
-    DataUse dataset = new DataUseBuilder()
-        .setGeneralUse(false)
-        .setHmbResearch(false)
-        .setDiseaseRestrictions(List.of("disease"))
-        .setMethodsResearch(false)
-        .setControls(true)
-        .setNonProfitUse(false)
-        .setGender("Male")
-        .setPediatric(false)
-        .setEthicsApprovalRequired(false)
-        .setIllegalBehavior(false)
-        .setNotHealth(false)
-        .setOther("Other")
-        .setGeographicalRestrictions("Geographical restriction")
-        .setPopulationOriginsAncestry(false)
-        .setPopulation(false)
-        .setPsychologicalTraits(false)
-        .setSexualDiseases(false)
-        .setStigmatizeDiseases(false)
-        .setVulnerablePopulations(false)
-        .build();
+    DataUse dataset =
+        new DataUseBuilder()
+            .setGeneralUse(false)
+            .setHmbResearch(false)
+            .setDiseaseRestrictions(List.of("disease"))
+            .setMethodsResearch(false)
+            .setControls(true)
+            .setNonProfitUse(false)
+            .setGender("Male")
+            .setPediatric(false)
+            .setEthicsApprovalRequired(false)
+            .setIllegalBehavior(false)
+            .setNotHealth(false)
+            .setOther("Other")
+            .setGeographicalRestrictions("Geographical restriction")
+            .setPopulationOriginsAncestry(false)
+            .setPopulation(false)
+            .setPsychologicalTraits(false)
+            .setSexualDiseases(false)
+            .setStigmatizeDiseases(false)
+            .setVulnerablePopulations(false)
+            .build();
     String datasetString = gson.toJson(dataset);
     String translation = service.translatePurpose(datasetString);
     log.info(translation);
@@ -222,9 +226,7 @@ class TextTranslationServiceImplTest extends AbstractTest {
   @Test
   void testInvalidDate() throws IOException {
     Gson gson = new Gson();
-    DataUse dataset = new DataUseBuilder()
-        .setGeneralUse(true)
-        .build();
+    DataUse dataset = new DataUseBuilder().setGeneralUse(true).build();
     String datasetString = gson.toJson(dataset);
     String translation = service.translatePurpose(datasetString);
     log.info(translation);
@@ -232,10 +234,7 @@ class TextTranslationServiceImplTest extends AbstractTest {
     assertTrue(translation.contains("[GRU]"));
   }
 
-  /**
-   * Helper Methods
-   **/
-
+  /** Helper Methods */
   private void initializeTerm() throws Exception {
     TermResource mockTerm = new TermResource();
     mockTerm.setId("term id");
@@ -252,5 +251,4 @@ class TextTranslationServiceImplTest extends AbstractTest {
   private String getTitle(Map<String, Recommendation> translation, String urlKey) {
     return translation.get(urlKey).title();
   }
-
 }

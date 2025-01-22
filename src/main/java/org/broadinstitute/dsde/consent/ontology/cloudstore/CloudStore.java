@@ -6,5 +6,4 @@ import java.io.IOException;
 public interface CloudStore {
 
   HttpResponse getStorageDocument(String documentSuffix) throws IOException;
-
 }

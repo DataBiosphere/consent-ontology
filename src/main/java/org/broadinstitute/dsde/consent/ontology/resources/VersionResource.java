@@ -1,10 +1,10 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import java.nio.charset.Charset;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Response;
+import java.nio.charset.Charset;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.model.Version;
@@ -27,5 +27,4 @@ public class VersionResource implements OntologyLogger {
     }
     return null;
   }
-
 }

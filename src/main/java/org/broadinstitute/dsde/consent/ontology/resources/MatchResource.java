@@ -72,13 +72,14 @@ public class MatchResource {
         MatchResult matchResult = dataUseMatcherV3.matchPurposeAndDatasetV3(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
         List<String> rationale = matchResult.getMessage();
-        return Response
-            .ok()
+        return Response.ok()
             .entity(new MatchV3ResponseEntity(match, matchPair, rationale).get())
             .type(MediaType.APPLICATION_JSON)
             .build();
       }
-      return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON)
+      return Response.status(error.getCode())
+          .entity(error)
+          .type(MediaType.APPLICATION_JSON)
           .build();
     } catch (Exception e) {
       return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
@@ -108,17 +109,17 @@ public class MatchResource {
         MatchResult matchResult = dataUseMatcherV4.matchPurposeAndDatasetV4(purpose, dataset);
         MatchResultType match = matchResult.getMatchResultType();
         List<String> rationale = matchResult.getMessage();
-        return Response
-            .ok()
+        return Response.ok()
             .entity(new MatchV4ResponseEntity(match, matchPair, rationale).get())
             .type(MediaType.APPLICATION_JSON)
             .build();
       }
-      return Response.status(error.getCode()).entity(error).type(MediaType.APPLICATION_JSON)
+      return Response.status(error.getCode())
+          .entity(error)
+          .type(MediaType.APPLICATION_JSON)
           .build();
     } catch (Exception e) {
       return Response.serverError().entity(e).type(MediaType.APPLICATION_JSON).build();
     }
   }
-
 }

@@ -11,8 +11,8 @@ import org.testcontainers.utility.DockerImageName;
 public interface WithMockServer {
 
   Logger log = Utils.getLogger(WithMockServer.class);
-  DockerImageName IMAGE = DockerImageName.parse(
-      "mockserver/mockserver:mockserver-" + getMockServerVersion());
+  DockerImageName IMAGE =
+      DockerImageName.parse("mockserver/mockserver:mockserver-" + getMockServerVersion());
 
   default void stop(MockServerContainer container) {
     if (Objects.nonNull(container) && container.isRunning()) {
@@ -37,5 +37,4 @@ public interface WithMockServer {
     }
     return version;
   }
-
 }

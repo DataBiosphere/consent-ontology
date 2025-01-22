@@ -36,12 +36,13 @@ public class DataUseMatcherV3 {
   public MatchResult matchPurposeAndDatasetV3(DataUseV3 purpose, DataUseV3 dataset) {
     Map<String, List<String>> purposeDiseaseIdMap;
     try {
-      purposeDiseaseIdMap = dataUseUtil.generatePurposeDiseaseIdMap(
-          purpose.getDiseaseRestrictions());
+      purposeDiseaseIdMap =
+          dataUseUtil.generatePurposeDiseaseIdMap(purpose.getDiseaseRestrictions());
     } catch (Exception e) {
       String purposeRestrictions = StringUtils.join(purpose.getDiseaseRestrictions(), ", ");
-      List<String> errors = Arrays.asList(e.getMessage(),
-          "Error found in one of the purpose terms: " + purposeRestrictions);
+      List<String> errors =
+          Arrays.asList(
+              e.getMessage(), "Error found in one of the purpose terms: " + purposeRestrictions);
       return MatchResult.from(MatchResultType.DENY, errors);
     }
 
@@ -54,23 +55,26 @@ public class DataUseMatcherV3 {
     matchReasons.add(matchCommercial(purpose, dataset));
     matchReasons.add(
         abstainDecision(purpose, dataset, purposeDiseaseIdMap, diseaseMatch.getMatchResultType()));
-    final boolean allMatch = matchReasons.stream().
-        map(MatchResult::getMatchResultType).
-        allMatch(rt -> rt.equals(MatchResultType.APPROVE));
-    final boolean anyAbstain = matchReasons.stream().
-        map(MatchResult::getMatchResultType).
-        anyMatch(rt -> rt.equals(MatchResultType.ABSTAIN));
-    final List<String> reasons = matchReasons.stream().
-        map(MatchResult::getMessage).
-        flatMap(Collection::stream).
-        filter(StringUtils::isNotBlank).
-        collect(Collectors.toList());
+    final boolean allMatch =
+        matchReasons.stream()
+            .map(MatchResult::getMatchResultType)
+            .allMatch(rt -> rt.equals(MatchResultType.APPROVE));
+    final boolean anyAbstain =
+        matchReasons.stream()
+            .map(MatchResult::getMatchResultType)
+            .anyMatch(rt -> rt.equals(MatchResultType.ABSTAIN));
+    final List<String> reasons =
+        matchReasons.stream()
+            .map(MatchResult::getMessage)
+            .flatMap(Collection::stream)
+            .filter(StringUtils::isNotBlank)
+            .collect(Collectors.toList());
     // if all items match, decision is APPROVED
     // if not, determine whether DENY or ABSTAIN
-    MatchResultType type = allMatch ? MatchResultType.APPROVE :
-        anyAbstain ?
-            MatchResultType.ABSTAIN :
-            MatchResultType.DENY;
+    MatchResultType type =
+        allMatch
+            ? MatchResultType.APPROVE
+            : anyAbstain ? MatchResultType.ABSTAIN : MatchResultType.DENY;
     return MatchResult.from(type, reasons);
   }
 }

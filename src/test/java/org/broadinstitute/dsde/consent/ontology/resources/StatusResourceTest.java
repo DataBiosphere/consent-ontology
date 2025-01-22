@@ -2,13 +2,12 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import com.codahale.metrics.health.HealthCheck.Result;
 import com.codahale.metrics.health.HealthCheckRegistry;
+import jakarta.ws.rs.core.Response;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -21,8 +20,7 @@ class StatusResourceTest {
   private final Result elasticSearch = Result.healthy("ClusterHealth is GREEN");
   private final Result gcs = Result.healthy();
 
-  @Mock
-  private HealthCheckRegistry healthChecks;
+  @Mock private HealthCheckRegistry healthChecks;
 
   private StatusResource initStatusResource(SortedMap<String, Result> checks) {
     when(healthChecks.runHealthChecks()).thenReturn(checks);
@@ -79,5 +77,4 @@ class StatusResourceTest {
     // We still expect a 200 response, but expect a warning log
     assertEquals(200, response.getStatus());
   }
-
 }

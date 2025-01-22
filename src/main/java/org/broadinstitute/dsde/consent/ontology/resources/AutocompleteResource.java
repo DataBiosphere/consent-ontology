@@ -33,5 +33,4 @@ public class AutocompleteResource {
       return service.lookup(Arrays.asList(ontologyNames.split(",")), queryTerm, limit);
     }
   }
-
 }

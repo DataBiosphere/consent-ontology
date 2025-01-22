@@ -5,15 +5,11 @@ import java.util.List;
 
 public class ElasticSearchConfiguration {
 
-  @NotNull
-  public List<String> servers;
+  @NotNull public List<String> servers;
 
-  @NotNull
-  public String index;
+  @NotNull public String index;
 
-  /**
-   * This is configurable for testing purposes
-   */
+  /** This is configurable for testing purposes */
   private int port = 9200;
 
   public List<String> getServers() {

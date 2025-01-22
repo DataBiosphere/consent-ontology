@@ -17,8 +17,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class ErrorResourceTest {
 
-  @Mock
-  private Request request;
+  @Mock private Request request;
 
   @Test
   void testNotFound() {
@@ -39,5 +38,4 @@ class ErrorResourceTest {
       assertTrue(response.getEntity().toString().contains(unicode));
     }
   }
-
 }

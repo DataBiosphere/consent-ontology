@@ -25,5 +25,4 @@ class SearchTests implements IntegrationTestHelper {
     SimpleResponse response = fetchGetResponseWithQueryParam("search", "id", "invalid_term");
     assertEquals(HttpStatusCodes.STATUS_CODE_NOT_FOUND, response.code());
   }
-
 }

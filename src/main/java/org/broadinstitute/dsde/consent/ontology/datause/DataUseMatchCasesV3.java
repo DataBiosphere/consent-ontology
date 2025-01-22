@@ -11,22 +11,36 @@ import org.broadinstitute.dsde.consent.ontology.model.DataUseV3;
 public class DataUseMatchCasesV3 {
 
   // rationale for failures
-  private static final String HMB_F1 = "The GRU Research Purpose does not match the HMB data use limitations.";
-  private static final String HMB_F2 = "The HMB Research Purpose does not match the Disease-Specific data use limitations.";
-  private static final String HMB_F3 = "The HMB Research Purpose does not match the POA data use limitations.";
-  private static final String DS_F2 = "The Disease-Specific: %s Research Purpose is not a valid subclass of the Disease-Specific data use limitations.";
-  private static final String MDS_F1 = "The Methods development Research Purpose does not match the Disease-Specific data use limitations.";
-  private static final String POA_F1 = "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
-  private static final String NCU_F1 = "The Commercial Use Research Purpose does not match the No Commercial Use data use limitation.";
+  private static final String HMB_F1 =
+      "The GRU Research Purpose does not match the HMB data use limitations.";
+  private static final String HMB_F2 =
+      "The HMB Research Purpose does not match the Disease-Specific data use limitations.";
+  private static final String HMB_F3 =
+      "The HMB Research Purpose does not match the POA data use limitations.";
+  private static final String DS_F2 =
+      "The Disease-Specific: %s Research Purpose is not a valid subclass of the Disease-Specific data use limitations.";
+  private static final String MDS_F1 =
+      "The Methods development Research Purpose does not match the Disease-Specific data use limitations.";
+  private static final String POA_F1 =
+      "The Populations, Origins, Ancestry Research Purpose does not match the HMB or Disease-Specific data use limitation.";
+  private static final String NCU_F1 =
+      "The Commercial Use Research Purpose does not match the No Commercial Use data use limitation.";
 
   // rationale for approvals - based on dataset terms
-  private static final String DS_APPROVE_GRU = "The proposed disease-specific research is within the bounds of the general research use permissions of the dataset(s)";
-  private static final String DS_APPROVE_HMB = "The proposed disease-specific research is within the bounds of the health, medical, biomedical use permissions of the dataset(s)";
-  private static final String HMB_APPROVE_HMB = "The proposed health, medical, biomedical research is within the bounds of the health, medical, biomedical use permissions of the dataset(s)";
-  private static final String HMB_APPROVE_GRU = "The proposed health, medical, biomedical research is within the bounds of the general research use permissions of the dataset(s)";
-  private static final String POA_APPROVE_GRU = "The proposed population, origins, and/or ancestry research is within the bounds of the general research use permissions of the dataset(s)";
-  private static final String POA_APPROVE_POA = "The proposed population, origins, and/or ancestry research is within the bounds of the population, origins, and/or ancestry use permissions of the dataset(s)";
-  private static final String MDS_APPROVE = "Methods research is permitted on controlled-access data so long as it is not expressly prohibited";
+  private static final String DS_APPROVE_GRU =
+      "The proposed disease-specific research is within the bounds of the general research use permissions of the dataset(s)";
+  private static final String DS_APPROVE_HMB =
+      "The proposed disease-specific research is within the bounds of the health, medical, biomedical use permissions of the dataset(s)";
+  private static final String HMB_APPROVE_HMB =
+      "The proposed health, medical, biomedical research is within the bounds of the health, medical, biomedical use permissions of the dataset(s)";
+  private static final String HMB_APPROVE_GRU =
+      "The proposed health, medical, biomedical research is within the bounds of the general research use permissions of the dataset(s)";
+  private static final String POA_APPROVE_GRU =
+      "The proposed population, origins, and/or ancestry research is within the bounds of the general research use permissions of the dataset(s)";
+  private static final String POA_APPROVE_POA =
+      "The proposed population, origins, and/or ancestry research is within the bounds of the population, origins, and/or ancestry use permissions of the dataset(s)";
+  private static final String MDS_APPROVE =
+      "Methods research is permitted on controlled-access data so long as it is not expressly prohibited";
 
   // rationale for abstain cases
   private static final String ABSTAIN = "The Research Purpose does not result in DUOS Decision.";
@@ -37,10 +51,10 @@ public class DataUseMatchCasesV3 {
    * to this disease exactly Any dataset tagged to a DOID ontology Parent of disease X Denied
    * Datasets: Any dataset NOT the DS- or a subclass
    *
-   * @param purpose             The data use object representing the Research Purpose
-   * @param dataset             The data use object representing the Dataset
+   * @param purpose The data use object representing the Research Purpose
+   * @param dataset The data use object representing the Dataset
    * @param purposeDiseaseIdMap is a map of each purpose term id to a list of that term's parent
-   *                            term ids
+   *     term ids
    */
   static MatchResult matchDiseases(
       DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap) {
@@ -66,16 +80,15 @@ public class DataUseMatchCasesV3 {
     // We want all-purpose disease IDs to be a subclass of any dataset disease ID
     List<String> failures = new ArrayList<>();
     for (Map.Entry<String, List<String>> entry : purposeDiseaseIdMap.entrySet()) {
-      boolean match = entry.getValue()
-          .stream()
-          .anyMatch(dataset.getDiseaseRestrictions()::contains);
+      boolean match =
+          entry.getValue().stream().anyMatch(dataset.getDiseaseRestrictions()::contains);
       if (!match) {
         failures.add(String.format(DS_F2, entry.getKey()));
       }
     }
 
-    return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY,
-        failures);
+    return MatchResult.from(
+        failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY, failures);
   }
 
   /**
@@ -124,8 +137,8 @@ public class DataUseMatchCasesV3 {
       return MatchResult.from(MatchResultType.APPROVE, Collections.singletonList(HMB_APPROVE_HMB));
     } else {
 
-      return MatchResult.from(failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY,
-          failures);
+      return MatchResult.from(
+          failures.isEmpty() ? MatchResultType.APPROVE : MatchResultType.DENY, failures);
     }
   }
 
@@ -155,8 +168,7 @@ public class DataUseMatchCasesV3 {
     }
 
     List<String> failures = new ArrayList<>();
-    if (!(purpose.getPopulationOriginsAncestry() &&
-        getNullableOrFalse(dataset.getGeneralUse()))) {
+    if (!(purpose.getPopulationOriginsAncestry() && getNullableOrFalse(dataset.getGeneralUse()))) {
       failures.add(POA_F1);
     }
 
@@ -218,8 +230,8 @@ public class DataUseMatchCasesV3 {
     if (Objects.isNull(purpose.getCommercialUse())) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
-    if ((Objects.isNull(dataset.getCommercialUse())) && (Objects.isNull(
-        dataset.getNonProfitUse()))) {
+    if ((Objects.isNull(dataset.getCommercialUse()))
+        && (Objects.isNull(dataset.getNonProfitUse()))) {
       return MatchResult.from(MatchResultType.APPROVE, Collections.emptyList());
     }
 
@@ -248,27 +260,26 @@ public class DataUseMatchCasesV3 {
    * DUOS Algorithm: Abstain From Decision Due to the variety of sensitive research areas, ethical
    * reasons, and areas where categorization is not possible, the DUOS system will not render a
    * decision in any of the cases not addressed in the methods above.
-   * <p>
-   * Abstained RP's: Any RP that is not GRU, DS-X, POA, MDS, Commercial
+   *
+   * <p>Abstained RP's: Any RP that is not GRU, DS-X, POA, MDS, Commercial
    */
-
   static MatchResult abstainDecision(
-      DataUseV3 purpose, DataUseV3 dataset, Map<String, List<String>> purposeDiseaseIdMap,
+      DataUseV3 purpose,
+      DataUseV3 dataset,
+      Map<String, List<String>> purposeDiseaseIdMap,
       MatchResultType diseaseMatch) {
 
     // Immediate Abstain Cases:
-    if (
-        getNullableOrFalse(purpose.getControls()) ||
-            getNullableOrFalse(purpose.getPopulation()) ||
-            Objects.nonNull(purpose.getGender()) ||
-            getNullableOrFalse(purpose.getPediatric()) ||
-            getNullableOrFalse(purpose.getVulnerablePopulations()) ||
-            getNullableOrFalse(purpose.getIllegalBehavior()) ||
-            getNullableOrFalse(purpose.getSexualDiseases()) ||
-            getNullableOrFalse(purpose.getPsychologicalTraits()) ||
-            getNullableOrFalse(purpose.getNotHealth()) ||
-            getNullableOrFalse(purpose.getStigmatizeDiseases())
-    ) {
+    if (getNullableOrFalse(purpose.getControls())
+        || getNullableOrFalse(purpose.getPopulation())
+        || Objects.nonNull(purpose.getGender())
+        || getNullableOrFalse(purpose.getPediatric())
+        || getNullableOrFalse(purpose.getVulnerablePopulations())
+        || getNullableOrFalse(purpose.getIllegalBehavior())
+        || getNullableOrFalse(purpose.getSexualDiseases())
+        || getNullableOrFalse(purpose.getPsychologicalTraits())
+        || getNullableOrFalse(purpose.getNotHealth())
+        || getNullableOrFalse(purpose.getStigmatizeDiseases())) {
       return MatchResult.from(MatchResultType.ABSTAIN, Collections.singletonList(ABSTAIN));
     }
 
@@ -308,6 +319,4 @@ public class DataUseMatchCasesV3 {
   private static boolean getNullableOrFalse(Boolean bool) {
     return Optional.ofNullable(bool).orElse(false);
   }
-
-
 }

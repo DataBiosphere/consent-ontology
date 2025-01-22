@@ -8,5 +8,4 @@ public class Utils {
   public static Logger getLogger(Class clazz) {
     return LoggerFactory.getLogger(clazz);
   }
-
 }

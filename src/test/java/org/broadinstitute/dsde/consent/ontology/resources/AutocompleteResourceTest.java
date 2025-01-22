@@ -16,12 +16,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-
 @ExtendWith(MockitoExtension.class)
 class AutocompleteResourceTest {
 
-  @Mock
-  private AutocompleteService apiMockUp;
+  @Mock private AutocompleteService apiMockUp;
 
   private AutocompleteResource autocompleteResource;
 
@@ -49,5 +47,4 @@ class AutocompleteResourceTest {
     autocompleteResource.getTerms(null, null, limit);
     verify(apiMockUp, times(1)).lookup(nullable(String.class), anyInt());
   }
-
 }

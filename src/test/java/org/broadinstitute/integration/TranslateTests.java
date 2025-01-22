@@ -10,7 +10,8 @@ import org.junit.jupiter.api.Test;
 @DisplayName("Translate Related Tests")
 class TranslateTests implements IntegrationTestHelper {
 
-  private static final String dataUse = """
+  private static final String dataUse =
+      """
           {
             "hmbResearch": true
           }
@@ -50,5 +51,4 @@ class TranslateTests implements IntegrationTestHelper {
     SimpleResponse response = getPostResponse("translate/summary", dataUse);
     assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
   }
-
 }

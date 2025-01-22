@@ -56,5 +56,4 @@ public interface OntologyLogger {
   default void logDebug(String message) {
     Utils.getLogger(this.getClass()).debug(message);
   }
-
 }

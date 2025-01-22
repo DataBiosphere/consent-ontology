@@ -19,9 +19,7 @@ import org.apache.hc.core5.net.URIBuilder;
 
 public interface IntegrationTestHelper {
 
-  public record SimpleResponse(int code, String entity) {
-
-  }
+  public record SimpleResponse(int code, String entity) {}
 
   /**
    * Integration tests can pass in an alternative url to test against. By default, we'll test
@@ -45,23 +43,30 @@ public interface IntegrationTestHelper {
       HttpGet request = new HttpGet(getBaseUrl() + path);
       final ScheduledExecutorService executor = Executors.newScheduledThreadPool(poolSize);
       executor.schedule(request::cancel, delay, TimeUnit.SECONDS);
-      return client.execute(request, httpResponse ->
-          new SimpleResponse(
-              httpResponse.getCode(),
-              IOUtils.toString(httpResponse.getEntity().getContent(), Charset.defaultCharset())));
+      return client.execute(
+          request,
+          httpResponse ->
+              new SimpleResponse(
+                  httpResponse.getCode(),
+                  IOUtils.toString(
+                      httpResponse.getEntity().getContent(), Charset.defaultCharset())));
     }
   }
 
-  default SimpleResponse fetchGetResponseWithQueryParam(String path, String term, String val) throws Exception {
+  default SimpleResponse fetchGetResponseWithQueryParam(String path, String term, String val)
+      throws Exception {
     try (CloseableHttpClient client = HttpClients.createDefault()) {
       URI uri = new URIBuilder(getBaseUrl() + path).addParameter(term, val).build();
       HttpGet request = new HttpGet(uri);
       final ScheduledExecutorService executor = Executors.newScheduledThreadPool(poolSize);
       executor.schedule(request::cancel, delay, TimeUnit.SECONDS);
-      return client.execute(request, httpResponse ->
-          new SimpleResponse(
-              httpResponse.getCode(),
-              IOUtils.toString(httpResponse.getEntity().getContent(), Charset.defaultCharset())));
+      return client.execute(
+          request,
+          httpResponse ->
+              new SimpleResponse(
+                  httpResponse.getCode(),
+                  IOUtils.toString(
+                      httpResponse.getEntity().getContent(), Charset.defaultCharset())));
     }
   }
 
@@ -73,14 +78,18 @@ public interface IntegrationTestHelper {
       request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
       final ScheduledExecutorService executor = Executors.newScheduledThreadPool(poolSize);
       executor.schedule(request::cancel, delay, TimeUnit.SECONDS);
-      return client.execute(request, httpResponse ->
-          new SimpleResponse(
-              httpResponse.getCode(),
-              IOUtils.toString(httpResponse.getEntity().getContent(), Charset.defaultCharset())));
+      return client.execute(
+          request,
+          httpResponse ->
+              new SimpleResponse(
+                  httpResponse.getCode(),
+                  IOUtils.toString(
+                      httpResponse.getEntity().getContent(), Charset.defaultCharset())));
     }
   }
 
-  default SimpleResponse getPostResponseWithQueryParam(String path, String body, String term, String val) throws Exception {
+  default SimpleResponse getPostResponseWithQueryParam(
+      String path, String body, String term, String val) throws Exception {
     try (CloseableHttpClient client = HttpClients.createDefault()) {
       URI uri = new URIBuilder(getBaseUrl() + path).addParameter(term, val).build();
       HttpPost request = new HttpPost(uri);
@@ -88,11 +97,13 @@ public interface IntegrationTestHelper {
       request.setEntity(new StringEntity(body, ContentType.APPLICATION_JSON));
       final ScheduledExecutorService executor = Executors.newScheduledThreadPool(poolSize);
       executor.schedule(request::cancel, delay, TimeUnit.SECONDS);
-      return client.execute(request, httpResponse ->
-          new SimpleResponse(
-              httpResponse.getCode(),
-              IOUtils.toString(httpResponse.getEntity().getContent(), Charset.defaultCharset())));
+      return client.execute(
+          request,
+          httpResponse ->
+              new SimpleResponse(
+                  httpResponse.getCode(),
+                  IOUtils.toString(
+                      httpResponse.getEntity().getContent(), Charset.defaultCharset())));
     }
   }
-
 }

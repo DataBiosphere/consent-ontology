@@ -2,7 +2,6 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
-import static org.mockito.MockitoAnnotations.openMocks;
 
 import jakarta.ws.rs.core.Response;
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +19,6 @@ class VersionResourceTest {
     resource = new VersionResource();
   }
 
-
   @Test
   void testGetVersion() {
     try (Response response = resource.content()) {
@@ -29,5 +27,4 @@ class VersionResourceTest {
       fail(e.getMessage());
     }
   }
-
 }

@@ -1,13 +1,13 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.Response;
+import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import org.broadinstitute.dsde.consent.ontology.model.Error;
 import org.eclipse.jetty.server.Request;
 
@@ -24,5 +24,4 @@ public class ErrorResource {
     Error error = new Error(msg, 404);
     return Response.status(error.code()).entity(error).build();
   }
-
 }

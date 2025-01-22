@@ -20,8 +20,7 @@ public class MatchResult {
     return message;
   }
 
-  public static MatchResult from(MatchResultType matchResultType,
-      List<String> message) {
+  public static MatchResult from(MatchResultType matchResultType, List<String> message) {
     return new MatchResult(matchResultType, message);
   }
 }

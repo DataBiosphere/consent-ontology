@@ -39,7 +39,6 @@ public class ValidationResponse {
     this.errors.add(error);
   }
 
-
   public void addErrors(Collection<String> errors) {
     this.errors.addAll(errors);
   }

@@ -16,5 +16,4 @@ public enum MatchResultType {
   public static Boolean Abstain(MatchResultType x) {
     return x == ABSTAIN;
   }
-
 }

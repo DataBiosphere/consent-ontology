@@ -36,8 +36,7 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
   private static final String INDEX_NAME = "local-ontology";
   private final MockServerContainer container = new MockServerContainer(IMAGE);
 
-  @Mock
-  private ElasticSearchSupport elasticSearchSupport;
+  @Mock private ElasticSearchSupport elasticSearchSupport;
 
   @BeforeEach
   void setUp() {
@@ -58,7 +57,8 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
   @Test
   void testRetrySuccessAfterOneFailure() {
     mockServerClient.when(request(), Times.exactly(1)).error(error().withDropConnection(true));
-    mockServerClient.when(request(), Times.exactly(1))
+    mockServerClient
+        .when(request(), Times.exactly(1))
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
     List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
     assertEquals(1, termResource.size());
@@ -68,7 +68,8 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
   @Test
   void testRetrySuccessAfterTwoFailures() {
     mockServerClient.when(request(), Times.exactly(2)).error(error().withDropConnection(true));
-    mockServerClient.when(request(), Times.exactly(1))
+    mockServerClient
+        .when(request(), Times.exactly(1))
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
     List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
     assertEquals(1, termResource.size());
@@ -78,7 +79,8 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
   @Test
   void testRetryFailureAfterThreeFailures() {
     mockServerClient.when(request(), Times.exactly(3)).error(error().withDropConnection(true));
-    mockServerClient.when(request(), Times.exactly(1))
+    mockServerClient
+        .when(request(), Times.exactly(1))
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
     assertThrows(InternalServerErrorException.class, () -> autocompleteAPI.lookup("cancer", 1));
   }
@@ -91,31 +93,35 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
 
   @Test
   void testBadRequest() {
-    mockServerClient.when(request())
+    mockServerClient
+        .when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_BAD_REQUEST));
     assertThrows(BadRequestException.class, () -> autocompleteAPI.lookup("cancer", 1));
   }
 
   @Test
   void testNotFound() {
-    mockServerClient.when(request())
+    mockServerClient
+        .when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_NOT_FOUND));
     assertThrows(NotFoundException.class, () -> autocompleteAPI.lookup("cancer", 1));
   }
 
   @Test
   void testInvalidIdStringError() {
-    mockServerClient.when(request())
+    mockServerClient
+        .when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
-    when(elasticSearchSupport.getEncodedEndpoint(anyString(), anyString())).thenThrow(
-        new BadRequestException());
+    when(elasticSearchSupport.getEncodedEndpoint(anyString(), anyString()))
+        .thenThrow(new BadRequestException());
     autocompleteAPI.setElasticSearchSupport(elasticSearchSupport);
     assertThrows(BadRequestException.class, () -> autocompleteAPI.lookupById("cancer"));
   }
 
   @Test
   void testLookup() {
-    mockServerClient.when(request())
+    mockServerClient
+        .when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
     List<TermResource> termResource = autocompleteAPI.lookup("cancer", 1);
     assertEquals(1, termResource.size());
@@ -124,26 +130,29 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
 
   @Test
   void testLookupWithTags() {
-    mockServerClient.when(request())
+    mockServerClient
+        .when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerJson));
-    List<TermResource> termResource = autocompleteAPI.lookup(Collections.singletonList("tag"),
-        "cancer", 1);
+    List<TermResource> termResource =
+        autocompleteAPI.lookup(Collections.singletonList("tag"), "cancer", 1);
     assertEquals(1, termResource.size());
     assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
   }
 
   @Test
   void testLookupById() {
-    mockServerClient.when(request())
+    mockServerClient
+        .when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).withBody(cancerGetJson));
-    List<TermResource> termResource = autocompleteAPI.lookupById(
-        "http://purl.obolibrary.org/obo/DOID_162");
+    List<TermResource> termResource =
+        autocompleteAPI.lookupById("http://purl.obolibrary.org/obo/DOID_162");
     assertEquals(1, termResource.size());
     assertTrue(termResource.get(0).getSynonyms().contains("primary cancer"));
   }
 
   // mock response for a search
-  private static final String cancerJson = """
+  private static final String cancerJson =
+      """
       {
         "took": 15,
         "timed_out": false,
@@ -189,7 +198,8 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
       }""";
 
   // mock response for a document get-by-id
-  private static final String cancerGetJson = """
+  private static final String cancerGetJson =
+      """
       {
         "_index": "ontology",
         "_type": "ontology_term",
@@ -219,5 +229,4 @@ class ElasticSearchAutocompleteTest implements WithMockServer {
           ]
         }
       }""";
-
 }

@@ -22,8 +22,7 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
   public static String NAME = "elastic-search";
 
   @Override
-  public void start() {
-  }
+  public void start() {}
 
   @Override
   public void stop() throws Exception {
@@ -47,8 +46,8 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
       if (response.getStatusLine().getStatusCode() != 200) {
         return Result.unhealthy(response.getStatusLine().getReasonPhrase());
       }
-      String stringResponse = IOUtils.toString(response.getEntity().getContent(),
-          Charset.defaultCharset());
+      String stringResponse =
+          IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());
       JsonObject jsonResponse = JsonParser.parseString(stringResponse).getAsJsonObject();
       boolean timeout = jsonResponse.get("timed_out").getAsBoolean();
       String status = jsonResponse.get("status").getAsString();
@@ -66,5 +65,4 @@ public class ElasticSearchHealthCheck extends HealthCheck implements Managed {
     }
     return Result.healthy("ClusterHealth is GREEN");
   }
-
 }

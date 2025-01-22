@@ -9,8 +9,7 @@ public class DataUseMatchPair {
 
   private DataUse consent;
 
-  public DataUseMatchPair() {
-  }
+  public DataUseMatchPair() {}
 
   public DataUseMatchPair(DataUse purpose, DataUse consent) {
     this.purpose = purpose;
@@ -37,5 +36,4 @@ public class DataUseMatchPair {
   public String toString() {
     return new Gson().toJson(this);
   }
-
 }

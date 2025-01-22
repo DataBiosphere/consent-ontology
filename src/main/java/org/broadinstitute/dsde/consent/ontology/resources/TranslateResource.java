@@ -44,10 +44,9 @@ public class TranslateResource implements OntologyLogger {
       return Response.status(Response.Status.BAD_REQUEST).entity(iae.getMessage()).build();
     } catch (Exception e) {
       logWarn("Error while translating restriction: " + e.getMessage());
-      return Response.
-          status(Response.Status.INTERNAL_SERVER_ERROR).
-          entity("Error while translating: " + e.getMessage()).
-          build();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+          .entity("Error while translating: " + e.getMessage())
+          .build();
     }
   }
 
@@ -64,10 +63,9 @@ public class TranslateResource implements OntologyLogger {
       return Response.status(Response.Status.BAD_REQUEST).entity(iae.getMessage()).build();
     } catch (Exception e) {
       logWarn("Error while translating restriction: " + e.getMessage());
-      return Response.
-          status(Response.Status.INTERNAL_SERVER_ERROR).
-          entity("Error while translating: " + e.getMessage()).
-          build();
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR)
+          .entity("Error while translating: " + e.getMessage())
+          .build();
     }
   }
 
@@ -78,8 +76,7 @@ public class TranslateResource implements OntologyLogger {
       return Response.status(Response.Status.BAD_REQUEST).build();
     }
     try {
-      final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {
-      });
+      final Map<String, String> body = mapper.readValue(jsonString, new TypeReference<>() {});
       String paragraph = body.get("paragraph");
       if (StringUtils.isBlank(paragraph)) {
         return Response.status(Response.Status.BAD_REQUEST).entity("Paragraph is required").build();
@@ -90,8 +87,7 @@ public class TranslateResource implements OntologyLogger {
     } catch (Exception e) {
       String message = "Server Error translating paragraph";
       logWarn("Error while translating paragraph: " + e.getMessage());
-      return Response
-          .status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message)
+      return Response.status(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(), message)
           .build();
     }
   }
@@ -100,20 +96,20 @@ public class TranslateResource implements OntologyLogger {
    * Helper method to build a response from any form of text translation service
    *
    * @param forParam Either "purpose" or "dataset"
-   * @param dataUse  JSON representation of the data use object
+   * @param dataUse JSON representation of the data use object
    * @return Response The Response
    * @throws Exception The Exception
    */
   private Response buildResponse(TranslateFor forParam, String dataUse) throws Exception {
-    String result = switch (forParam) {
-      case PARAGRAPH -> {
-        Map<String, Recommendation> response = translationService.translateParagraph(dataUse);
-        yield new Gson().toJson(response);
-      }
-      case PURPOSE -> translationService.translatePurpose(dataUse);
-      case DATASET -> translationService.translateDataset(dataUse);
-    };
+    String result =
+        switch (forParam) {
+          case PARAGRAPH -> {
+            Map<String, Recommendation> response = translationService.translateParagraph(dataUse);
+            yield new Gson().toJson(response);
+          }
+          case PURPOSE -> translationService.translatePurpose(dataUse);
+          case DATASET -> translationService.translateDataset(dataUse);
+        };
     return Response.ok().entity(result).build();
   }
-
 }

@@ -30,37 +30,38 @@ public class OntologySearchResource {
   @Produces("application/json")
   public Response getOntologyById(@QueryParam("id") @DefaultValue("") String queryTerm) {
     if (queryTerm.isBlank()) {
-      return Response
-          .status(Status.BAD_REQUEST)
-          .entity(new ErrorResponse("Ontology ID term cannot be empty.",
-              Status.BAD_REQUEST.getStatusCode()))
+      return Response.status(Status.BAD_REQUEST)
+          .entity(
+              new ErrorResponse(
+                  "Ontology ID term cannot be empty.", Status.BAD_REQUEST.getStatusCode()))
           .build();
     }
 
     String[] queries = queryTerm.split(",");
     try {
-      List<TermResource> results = new Streams.FailableStream<>(Arrays.stream(queries))
-          .filter(Objects::nonNull)
-          .filter(q -> !q.isBlank())
-          .map(service::lookupById)
-          .stream()
-          .flatMap(List::stream)
-          .collect(Collectors.toList());
+      List<TermResource> results =
+          new Streams.FailableStream<>(Arrays.stream(queries))
+              .filter(Objects::nonNull).filter(q -> !q.isBlank()).map(service::lookupById).stream()
+                  .flatMap(List::stream)
+                  .collect(Collectors.toList());
       return checkOntologyRetrieval(results);
     } catch (Exception e) {
       return Response.status(Status.NOT_FOUND)
-          .entity(new ErrorResponse("Ontology could not be successfully retrieved.",
-              Status.NOT_FOUND.getStatusCode()))
+          .entity(
+              new ErrorResponse(
+                  "Ontology could not be successfully retrieved.",
+                  Status.NOT_FOUND.getStatusCode()))
           .build();
     }
-
   }
 
   private Response checkOntologyRetrieval(List<TermResource> results) {
     if (results.isEmpty()) {
       return Response.status(Status.NOT_FOUND)
-          .entity(new ErrorResponse("Supplied IDs do not match any known ontologies.",
-              Status.NOT_FOUND.getStatusCode()))
+          .entity(
+              new ErrorResponse(
+                  "Supplied IDs do not match any known ontologies.",
+                  Status.NOT_FOUND.getStatusCode()))
           .build();
     } else {
       return Response.ok().entity(results).build();

@@ -23,8 +23,7 @@ public class TermResource {
 
   public List<TermParent> parents;
 
-  public TermResource() {
-  }
+  public TermResource() {}
 
   public String getId() {
     return id;
@@ -73,5 +72,4 @@ public class TermResource {
   public void setParents(List<TermParent> parents) {
     this.parents = parents;
   }
-
 }

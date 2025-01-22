@@ -43,10 +43,13 @@ class ElasticSearchHealthCheckTest implements WithMockServer {
   }
 
   private void mockRequest(String color, Boolean timedOut) {
-    mockServerClient.when(request())
-        .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_OK).
-            withBody(
-                """
+    mockServerClient
+        .when(request())
+        .respond(
+            response()
+                .withStatusCode(HttpStatusCodes.STATUS_CODE_OK)
+                .withBody(
+                    """
                     {
                       "cluster_name": "docker-cluster",
                       "status": "%s",
@@ -63,7 +66,8 @@ class ElasticSearchHealthCheckTest implements WithMockServer {
                       "number_of_in_flight_fetch": 0,
                       "task_max_waiting_in_queue_millis": 0,
                       "active_shards_percent_as_number": 50
-                    }""".formatted(color, timedOut)));
+                    }"""
+                        .formatted(color, timedOut)));
   }
 
   @Test
@@ -106,10 +110,10 @@ class ElasticSearchHealthCheckTest implements WithMockServer {
 
   @Test
   void testErrorStatus() {
-    mockServerClient.when(request())
+    mockServerClient
+        .when(request())
         .respond(response().withStatusCode(HttpStatusCodes.STATUS_CODE_SERVER_ERROR));
     HealthCheck.Result result = elasticSearchHealthCheck.check();
     assertFalse(result.isHealthy());
   }
-
 }

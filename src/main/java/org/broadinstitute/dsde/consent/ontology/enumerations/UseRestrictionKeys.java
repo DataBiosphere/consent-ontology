@@ -1,7 +1,6 @@
 package org.broadinstitute.dsde.consent.ontology.enumerations;
 
 public enum UseRestrictionKeys {
-
   TYPE("type"),
   OPERANDS("operands"),
   OPERAND("operand"),
@@ -16,6 +15,4 @@ public enum UseRestrictionKeys {
   public String getValue() {
     return value;
   }
-
-
 }

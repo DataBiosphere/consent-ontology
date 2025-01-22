@@ -7,85 +7,105 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
-/**
- * Data Use Schema V4
- */
+/** Data Use Schema V4 */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
-    "generalUse",
-    "diseaseRestrictions",
-    "hmbResearch",
-    "populationOriginsAncestry",
-    "methodsResearch",
-    "nonProfitUse",
-    "other",
-    "secondaryOther",
-    "ethicsApprovalRequired",
-    "collaboratorRequired",
-    "geographicalRestrictions",
-    "geneticStudiesOnly",
-    "publicationResults",
-    "publicationMoratorium",
-    "controls",
-    "gender",
-    "pediatric",
-    "population",
-    "illegalBehavior",
-    "sexualDiseases",
-    "stigmatizeDiseases",
-    "vulnerablePopulations",
-    "psychologicalTraits",
-    "notHealth"
+  "generalUse",
+  "diseaseRestrictions",
+  "hmbResearch",
+  "populationOriginsAncestry",
+  "methodsResearch",
+  "nonProfitUse",
+  "other",
+  "secondaryOther",
+  "ethicsApprovalRequired",
+  "collaboratorRequired",
+  "geographicalRestrictions",
+  "geneticStudiesOnly",
+  "publicationResults",
+  "publicationMoratorium",
+  "controls",
+  "gender",
+  "pediatric",
+  "population",
+  "illegalBehavior",
+  "sexualDiseases",
+  "stigmatizeDiseases",
+  "vulnerablePopulations",
+  "psychologicalTraits",
+  "notHealth"
 })
 public class DataUseV4 {
 
   @JsonProperty("generalUse")
   private Boolean generalUse;
+
   @JsonProperty("diseaseRestrictions")
   private List<String> diseaseRestrictions = new ArrayList<>();
+
   @JsonProperty("hmbResearch")
   private Boolean hmbResearch;
+
   @JsonProperty("populationOriginsAncestry")
   private Boolean populationOriginsAncestry;
+
   @JsonProperty("methodsResearch")
   private Boolean methodsResearch;
+
   @JsonProperty("nonProfitUse")
   private Boolean nonProfitUse;
+
   @JsonProperty("other")
   private String other;
+
   @JsonProperty("secondaryOther")
   private String secondaryOther;
+
   @JsonProperty("ethicsApprovalRequired")
   private Boolean ethicsApprovalRequired;
+
   @JsonProperty("collaboratorRequired")
   private Boolean collaboratorRequired;
+
   @JsonProperty("geographicalRestrictions")
   private String geographicalRestrictions;
+
   @JsonProperty("geneticStudiesOnly")
   private Boolean geneticStudiesOnly;
+
   @JsonProperty("publicationResults")
   private Boolean publicationResults;
+
   @JsonProperty("publicationMoratorium")
   private String publicationMoratorium;
+
   @JsonProperty("controls")
   private Boolean controls;
+
   @JsonProperty("gender")
   private String gender;
+
   @JsonProperty("pediatric")
   private Boolean pediatric;
+
   @JsonProperty("population")
   private Boolean population;
+
   @JsonProperty("illegalBehavior")
   private Boolean illegalBehavior;
+
   @JsonProperty("sexualDiseases")
   private Boolean sexualDiseases;
+
   @JsonProperty("stigmatizeDiseases")
   private Boolean stigmatizeDiseases;
+
   @JsonProperty("vulnerablePopulations")
   private Boolean vulnerablePopulations;
+
   @JsonProperty("psychologicalTraits")
   private Boolean psychologicalTraits;
+
   @JsonProperty("notHealth")
   private Boolean notHealth;
 
@@ -332,8 +352,10 @@ public class DataUseV4 {
   @Override
   public String toString() {
     StringBuilder sb = new StringBuilder();
-    sb.append(DataUseV4.class.getName()).append('@')
-        .append(Integer.toHexString(System.identityHashCode(this))).append('[');
+    sb.append(DataUseV4.class.getName())
+        .append('@')
+        .append(Integer.toHexString(System.identityHashCode(this)))
+        .append('[');
     sb.append("generalUse");
     sb.append('=');
     sb.append(((this.generalUse == null) ? "<null>" : this.generalUse));
@@ -445,40 +467,55 @@ public class DataUseV4 {
     result = ((result * 31) + ((this.other == null) ? 0 : this.other.hashCode()));
     result = ((result * 31) + ((this.nonProfitUse == null) ? 0 : this.nonProfitUse.hashCode()));
     result = ((result * 31) + ((this.controls == null) ? 0 : this.controls.hashCode()));
-    result = ((result * 31) + ((this.psychologicalTraits == null) ? 0
-        : this.psychologicalTraits.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.psychologicalTraits == null) ? 0 : this.psychologicalTraits.hashCode()));
     result = ((result * 31) + ((this.gender == null) ? 0 : this.gender.hashCode()));
-    result = ((result * 31) + ((this.geneticStudiesOnly == null) ? 0
-        : this.geneticStudiesOnly.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.geneticStudiesOnly == null) ? 0 : this.geneticStudiesOnly.hashCode()));
     result = ((result * 31) + ((this.generalUse == null) ? 0 : this.generalUse.hashCode()));
-    result = ((result * 31) + ((this.publicationResults == null) ? 0
-        : this.publicationResults.hashCode()));
-    result = ((result * 31) + ((this.diseaseRestrictions == null) ? 0
-        : this.diseaseRestrictions.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.publicationResults == null) ? 0 : this.publicationResults.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.diseaseRestrictions == null) ? 0 : this.diseaseRestrictions.hashCode()));
     result = ((result * 31) + ((this.pediatric == null) ? 0 : this.pediatric.hashCode()));
-    result = ((result * 31) + ((this.vulnerablePopulations == null) ? 0
-        : this.vulnerablePopulations.hashCode()));
-    result = ((result * 31) + ((this.methodsResearch == null) ? 0
-        : this.methodsResearch.hashCode()));
-    result = ((result * 31) + ((this.publicationMoratorium == null) ? 0
-        : this.publicationMoratorium.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.vulnerablePopulations == null) ? 0 : this.vulnerablePopulations.hashCode()));
+    result =
+        ((result * 31) + ((this.methodsResearch == null) ? 0 : this.methodsResearch.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.publicationMoratorium == null) ? 0 : this.publicationMoratorium.hashCode()));
     result = ((result * 31) + ((this.sexualDiseases == null) ? 0 : this.sexualDiseases.hashCode()));
-    result = ((result * 31) + ((this.illegalBehavior == null) ? 0
-        : this.illegalBehavior.hashCode()));
-    result = ((result * 31) + ((this.collaboratorRequired == null) ? 0
-        : this.collaboratorRequired.hashCode()));
-    result = ((result * 31) + ((this.populationOriginsAncestry == null) ? 0
-        : this.populationOriginsAncestry.hashCode()));
-    result = ((result * 31) + ((this.ethicsApprovalRequired == null) ? 0
-        : this.ethicsApprovalRequired.hashCode()));
+    result =
+        ((result * 31) + ((this.illegalBehavior == null) ? 0 : this.illegalBehavior.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.collaboratorRequired == null) ? 0 : this.collaboratorRequired.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.populationOriginsAncestry == null)
+                ? 0
+                : this.populationOriginsAncestry.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.ethicsApprovalRequired == null) ? 0 : this.ethicsApprovalRequired.hashCode()));
     result = ((result * 31) + ((this.secondaryOther == null) ? 0 : this.secondaryOther.hashCode()));
     result = ((result * 31) + ((this.hmbResearch == null) ? 0 : this.hmbResearch.hashCode()));
-    result = ((result * 31) + ((this.geographicalRestrictions == null) ? 0
-        : this.geographicalRestrictions.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.geographicalRestrictions == null)
+                ? 0
+                : this.geographicalRestrictions.hashCode()));
     result = ((result * 31) + ((this.population == null) ? 0 : this.population.hashCode()));
     result = ((result * 31) + ((this.notHealth == null) ? 0 : this.notHealth.hashCode()));
-    result = ((result * 31) + ((this.stigmatizeDiseases == null) ? 0
-        : this.stigmatizeDiseases.hashCode()));
+    result =
+        ((result * 31)
+            + ((this.stigmatizeDiseases == null) ? 0 : this.stigmatizeDiseases.hashCode()));
     return result;
   }
 
@@ -490,29 +527,29 @@ public class DataUseV4 {
     if (!(other instanceof DataUseV4 rhs)) {
       return false;
     }
-    return
-        Objects.equals(this.other, rhs.other) && (Objects.equals(this.nonProfitUse,
-        rhs.nonProfitUse)) && (Objects.equals(this.controls, rhs.controls)) && (
-        Objects.equals(this.psychologicalTraits, rhs.psychologicalTraits)) && Objects.equals(
-        this.gender, rhs.gender) && (Objects.equals(this.geneticStudiesOnly,
-        rhs.geneticStudiesOnly)) && (Objects.equals(this.generalUse, rhs.generalUse))
-        && (Objects.equals(this.publicationResults,
-        rhs.publicationResults)) && (Objects.equals(this.diseaseRestrictions,
-        rhs.diseaseRestrictions)) && (Objects.equals(this.pediatric, rhs.pediatric)) && (
-        Objects.equals(this.vulnerablePopulations, rhs.vulnerablePopulations)) && (Objects.equals(
-        this.methodsResearch, rhs.methodsResearch))
-        && Objects.equals(this.publicationMoratorium, rhs.publicationMoratorium) && (
-        Objects.equals(this.sexualDiseases, rhs.sexualDiseases)) && (
-        Objects.equals(this.illegalBehavior, rhs.illegalBehavior)) && (
-        Objects.equals(this.collaboratorRequired, rhs.collaboratorRequired)) && (
-        Objects.equals(this.populationOriginsAncestry, rhs.populationOriginsAncestry)) && (
-        Objects.equals(this.ethicsApprovalRequired, rhs.ethicsApprovalRequired)) && Objects.equals(
-        this.secondaryOther, rhs.secondaryOther) && (Objects.equals(this.hmbResearch,
-        rhs.hmbResearch)) && Objects.equals(this.geographicalRestrictions,
-        rhs.geographicalRestrictions) && (Objects.equals(
-        this.population, rhs.population)) && (Objects.equals(this.notHealth, rhs.notHealth))
+    return Objects.equals(this.other, rhs.other)
+        && (Objects.equals(this.nonProfitUse, rhs.nonProfitUse))
+        && (Objects.equals(this.controls, rhs.controls))
+        && (Objects.equals(this.psychologicalTraits, rhs.psychologicalTraits))
+        && Objects.equals(this.gender, rhs.gender)
+        && (Objects.equals(this.geneticStudiesOnly, rhs.geneticStudiesOnly))
+        && (Objects.equals(this.generalUse, rhs.generalUse))
+        && (Objects.equals(this.publicationResults, rhs.publicationResults))
+        && (Objects.equals(this.diseaseRestrictions, rhs.diseaseRestrictions))
+        && (Objects.equals(this.pediatric, rhs.pediatric))
+        && (Objects.equals(this.vulnerablePopulations, rhs.vulnerablePopulations))
+        && (Objects.equals(this.methodsResearch, rhs.methodsResearch))
+        && Objects.equals(this.publicationMoratorium, rhs.publicationMoratorium)
+        && (Objects.equals(this.sexualDiseases, rhs.sexualDiseases))
+        && (Objects.equals(this.illegalBehavior, rhs.illegalBehavior))
+        && (Objects.equals(this.collaboratorRequired, rhs.collaboratorRequired))
+        && (Objects.equals(this.populationOriginsAncestry, rhs.populationOriginsAncestry))
+        && (Objects.equals(this.ethicsApprovalRequired, rhs.ethicsApprovalRequired))
+        && Objects.equals(this.secondaryOther, rhs.secondaryOther)
+        && (Objects.equals(this.hmbResearch, rhs.hmbResearch))
+        && Objects.equals(this.geographicalRestrictions, rhs.geographicalRestrictions)
+        && (Objects.equals(this.population, rhs.population))
+        && (Objects.equals(this.notHealth, rhs.notHealth))
         && (Objects.equals(this.stigmatizeDiseases, rhs.stigmatizeDiseases));
   }
-
 }
-

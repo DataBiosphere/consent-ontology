@@ -9,12 +9,12 @@ import org.junit.jupiter.api.Test;
 @DisplayName("Data Use Related Tests")
 class DataUseTests implements IntegrationTestHelper {
 
-  private static final String dataUse = """
+  private static final String dataUse =
+      """
           {
             "hmbResearch": true
           }
       """;
-
 
   @DisplayName("Data Use V1 Schema: OK test")
   @Test
@@ -43,5 +43,4 @@ class DataUseTests implements IntegrationTestHelper {
     SimpleResponse response = getPostResponse("schemas/data-use/v3", dataUse);
     assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
   }
-
 }

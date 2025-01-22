@@ -75,12 +75,10 @@ class ElasticSearchSupportTest {
     assertEquals(joMultiMatch.get("query").getAsString(), termId);
     assertTrue(joMultiMatch.has("type"));
     assertTrue(joMultiMatch.has("fields"));
-    assertEquals(joMultiMatch.getAsJsonArray("fields").size(),
-        elasticSearchSupport.searchFields.length);
+    assertEquals(
+        joMultiMatch.getAsJsonArray("fields").size(), elasticSearchSupport.searchFields.length);
 
     JsonArray joFilter = joBool.getAsJsonArray("filter");
     assertEquals(2, joFilter.size());
-
   }
-
 }

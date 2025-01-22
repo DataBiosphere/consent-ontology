@@ -3,7 +3,6 @@ package org.broadinstitute.integration;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.google.api.client.http.HttpStatusCodes;
-import org.broadinstitute.integration.IntegrationTestHelper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -30,5 +29,4 @@ class StatusTests implements IntegrationTestHelper {
     SimpleResponse response = fetchGetResponse("version");
     assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
   }
-
 }

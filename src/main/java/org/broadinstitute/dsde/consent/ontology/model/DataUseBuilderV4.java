@@ -2,9 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.util.List;
 
-/**
- * Syntactic sugar for creating a DataUseV4 object.
- */
+/** Syntactic sugar for creating a DataUseV4 object. */
 public class DataUseBuilderV4 {
 
   private DataUseV4 du;
@@ -16,7 +14,6 @@ public class DataUseBuilderV4 {
   public DataUseV4 build() {
     return du;
   }
-
 
   public DataUseBuilderV4 setGeneralUse(Boolean generalUse) {
     du.setGeneralUse(generalUse);
@@ -137,5 +134,4 @@ public class DataUseBuilderV4 {
     du.setNotHealth(notHealth);
     return this;
   }
-
 }

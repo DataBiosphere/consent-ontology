@@ -38,8 +38,8 @@ class DataUseResourceTest {
   }
 
   @SuppressWarnings("SameParameterValue")
-  private void assertStatusAndHeader(Response response, Response.Status status,
-      String contentType) {
+  private void assertStatusAndHeader(
+      Response response, Response.Status status, String contentType) {
     assertEquals(response.getStatus(), status.getStatusCode());
     Object header = response.getHeaders().get("Content-type");
     assertTrue(header.toString().contains(contentType));
@@ -54,7 +54,9 @@ class DataUseResourceTest {
 
   @Test
   void testValidateSchemaV3GoodRequest() {
-    try (Response response = dataUseResource.validateSchemaV3("""
+    try (Response response =
+        dataUseResource.validateSchemaV3(
+            """
         {
           "generalUse": true,
           "diseaseRestrictions": ["test"],
@@ -64,5 +66,4 @@ class DataUseResourceTest {
       assertEquals(Status.OK.getStatusCode(), response.getStatus());
     }
   }
-
 }

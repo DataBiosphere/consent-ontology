@@ -10,8 +10,7 @@ public class DataUseMatchPairV3 {
 
   private DataUseV3 consent;
 
-  public DataUseMatchPairV3() {
-  }
+  public DataUseMatchPairV3() {}
 
   public DataUseMatchPairV3(DataUseV3 purpose, DataUseV3 consent) {
     this.purpose = purpose;
@@ -47,9 +46,6 @@ public class DataUseMatchPairV3 {
     if (!(other instanceof DataUseMatchPairV3 rhs)) {
       return false;
     }
-    return new EqualsBuilder()
-        .append(purpose, rhs.purpose)
-        .append(consent, rhs.consent)
-        .isEquals();
+    return new EqualsBuilder().append(purpose, rhs.purpose).append(consent, rhs.consent).isEquals();
   }
 }

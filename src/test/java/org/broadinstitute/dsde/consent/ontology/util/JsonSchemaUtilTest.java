@@ -11,9 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class JsonSchemaUtilTest {
 
-  private final static JsonSchemaUtil schemaUtil = new JsonSchemaUtil();
+  private static final JsonSchemaUtil schemaUtil = new JsonSchemaUtil();
 
-  private final String dataUseV3Instance = """
+  private final String dataUseV3Instance =
+      """
       {
         "generalUse": false,
         "diseaseRestrictions": ["test"],
@@ -33,7 +34,8 @@ class JsonSchemaUtilTest {
       }
       """;
 
-  private final String dataUseV4Instance = """
+  private final String dataUseV4Instance =
+      """
       {
         "generalUse": false,
         "diseaseRestrictions": ["test"],
@@ -80,7 +82,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase2() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "diseaseRestrictions": ["test"],
@@ -93,7 +96,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase3() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "populationOriginsAncestry": "test"
@@ -105,7 +109,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase4() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "methodsResearch": "test"
@@ -117,7 +122,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase5() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "nonProfitUse": "test"
@@ -129,7 +135,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase6() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "other": true
@@ -141,7 +148,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase7() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "secondaryOther": true
@@ -153,7 +161,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase8() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "ethicsApprovalRequired": "true"
@@ -165,7 +174,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase9() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "collaboratorRequired": "true"
@@ -177,7 +187,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase10() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "geographicalRestrictions": true
@@ -189,7 +200,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase11() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "geneticStudiesOnly": "true"
@@ -201,7 +213,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase12() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "publicationResults": "true"
@@ -213,7 +226,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase13() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "publicationMoratorium": true
@@ -225,7 +239,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase14() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "controls": "true"
@@ -237,7 +252,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase15() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "gender": true
@@ -249,7 +265,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase16() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "pediatric": "true"
@@ -261,7 +278,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase17() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "population": "true"
@@ -273,7 +291,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase18() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "illegalBehavior": "true"
@@ -285,7 +304,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase19() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "sexualDiseases": "true"
@@ -297,7 +317,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase20() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "stigmatizeDiseases": "true"
@@ -309,7 +330,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase21() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "vulnerablePopulations": "true"
@@ -322,7 +344,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase22() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "psychologicalTraits": "true"
@@ -334,7 +357,8 @@ class JsonSchemaUtilTest {
 
   @Test
   void testValidateDataUseV4Schema_invalidCase23() {
-    String instance = """
+    String instance =
+        """
             {
               "generalUse": true,
               "notHealth": "true"
@@ -343,5 +367,4 @@ class JsonSchemaUtilTest {
     List<String> errors = schemaUtil.validateDataUseV4Schema(instance);
     assertFalse(errors.isEmpty());
   }
-
 }

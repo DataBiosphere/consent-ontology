@@ -27,22 +27,22 @@ import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
 
 /**
  * Top-level entry point to the entire application.
- * <p>
- * See the Dropwizard docs here:
- * <a href="https://www.dropwizard.io/">Dropwizard</a>
+ *
+ * <p>See the Dropwizard docs here: <a href="https://www.dropwizard.io/">Dropwizard</a>
  */
 public class OntologyApp extends Application<OntologyConfiguration> {
 
   public static void main(String[] args) throws Exception {
     String dsn = System.getProperties().getProperty("sentry.dsn");
     if (StringUtils.isNotBlank(dsn)) {
-      Sentry.init(config -> {
-        config.setDsn(dsn);
-        config.setDiagnosticLevel(SentryLevel.ERROR);
-        config.setServerName("Ontology");
-        config.addContextTag("Ontology");
-        config.addInAppInclude("org.broadinstitute");
-      });
+      Sentry.init(
+          config -> {
+            config.setDsn(dsn);
+            config.setDiagnosticLevel(SentryLevel.ERROR);
+            config.setServerName("Ontology");
+            config.addContextTag("Ontology");
+            config.addInAppInclude("org.broadinstitute");
+          });
       Thread.currentThread().setUncaughtExceptionHandler(UncaughtExceptionHandlers.systemExit());
     }
     new OntologyApp().run(args);
@@ -70,16 +70,15 @@ public class OntologyApp extends Application<OntologyConfiguration> {
     env.jersey().register(injector.getInstance(VersionResource.class));
     env.jersey().register(injector.getInstance(LivenessResource.class));
 
-    env.healthChecks().register(ElasticSearchHealthCheck.NAME,
-        injector.getInstance(ElasticSearchHealthCheck.class));
+    env.healthChecks()
+        .register(
+            ElasticSearchHealthCheck.NAME, injector.getInstance(ElasticSearchHealthCheck.class));
     env.healthChecks().register(GCSHealthCheck.NAME, injector.getInstance(GCSHealthCheck.class));
     env.jersey().register(injector.getInstance(StatusResource.class));
-
   }
 
   @Override
   public void initialize(Bootstrap<OntologyConfiguration> bootstrap) {
     bootstrap.addBundle(new AssetsBundle("/assets/", "/api-docs", "index.html"));
   }
-
 }

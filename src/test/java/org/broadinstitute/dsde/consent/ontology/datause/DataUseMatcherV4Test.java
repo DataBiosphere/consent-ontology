@@ -26,17 +26,18 @@ class DataUseMatcherV4Test {
   private static final String cancerNode = "http://purl.obolibrary.org/obo/DOID_162";
   private static final String intestinalCancerNode = "http://purl.obolibrary.org/obo/DOID_10155";
 
-  @Mock
-  private AutocompleteService autocompleteService;
+  @Mock private AutocompleteService autocompleteService;
 
   @Test
   void testDiseaseMatching_positive() throws Exception {
-    DataUseV4 dataset = new DataUseBuilderV4()
-        .setDiseaseRestrictions(Collections.singletonList(cancerNode))
-        .build();
-    DataUseV4 purpose = new DataUseBuilderV4()
-        .setDiseaseRestrictions(Collections.singletonList(intestinalCancerNode))
-        .build();
+    DataUseV4 dataset =
+        new DataUseBuilderV4()
+            .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+            .build();
+    DataUseV4 purpose =
+        new DataUseBuilderV4()
+            .setDiseaseRestrictions(Collections.singletonList(intestinalCancerNode))
+            .build();
     // Build a mock response of term parents based on what is returned when searching on DOID_10155
     List<TermResource> termResources = new ArrayList<>();
     TermResource resource = new TermResource();
@@ -67,12 +68,14 @@ class DataUseMatcherV4Test {
 
   @Test
   void testDiseaseMatching_negative() throws Exception {
-    DataUseV4 dataset = new DataUseBuilderV4()
-        .setDiseaseRestrictions(Collections.singletonList(intestinalCancerNode))
-        .build();
-    DataUseV4 purpose = new DataUseBuilderV4()
-        .setDiseaseRestrictions(Collections.singletonList(cancerNode))
-        .build();
+    DataUseV4 dataset =
+        new DataUseBuilderV4()
+            .setDiseaseRestrictions(Collections.singletonList(intestinalCancerNode))
+            .build();
+    DataUseV4 purpose =
+        new DataUseBuilderV4()
+            .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+            .build();
 
     // Build a mock response of term parents based on what is returned when searching on DOID_162
     List<TermResource> termResources = new ArrayList<>();
@@ -117,8 +120,10 @@ class DataUseMatcherV4Test {
   @Test
   void testHMB_negative_case_2() {
     DataUseV4 purpose = new DataUseBuilderV4().setHmbResearch(true).build();
-    DataUseV4 dataset = new DataUseBuilderV4().setDiseaseRestrictions(
-        Collections.singletonList(cancerNode)).build();
+    DataUseV4 dataset =
+        new DataUseBuilderV4()
+            .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+            .build();
     assertDeny(purpose, dataset);
   }
 
@@ -152,9 +157,10 @@ class DataUseMatcherV4Test {
 
   @Test
   void testPOA_negative_case_2() {
-    DataUseV4 dataset = new DataUseBuilderV4()
-        .setDiseaseRestrictions(Collections.singletonList(cancerNode))
-        .build();
+    DataUseV4 dataset =
+        new DataUseBuilderV4()
+            .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+            .build();
     DataUseV4 purpose = new DataUseBuilderV4().setPopulationOriginsAncestry(true).build();
     assertDeny(purpose, dataset);
   }
@@ -175,8 +181,10 @@ class DataUseMatcherV4Test {
 
   @Test
   void testMDS_positive_case_3() {
-    DataUseV4 dataset = new DataUseBuilderV4().setDiseaseRestrictions(
-        Collections.singletonList(cancerNode)).build();
+    DataUseV4 dataset =
+        new DataUseBuilderV4()
+            .setDiseaseRestrictions(Collections.singletonList(cancerNode))
+            .build();
     DataUseV4 purpose = new DataUseBuilderV4().setMethodsResearch(true).build();
     assertApprove(purpose, dataset);
   }
@@ -210,6 +218,7 @@ class DataUseMatcherV4Test {
     DataUseV4 purpose = new DataUseBuilderV4().setNonProfitUse(true).build();
     assertApprove(purpose, dataset);
   }
+
   @Test
   void testNPU_negative_case_1() {
     DataUseV4 dataset = new DataUseBuilderV4().setNonProfitUse(true).build();
@@ -275,14 +284,16 @@ class DataUseMatcherV4Test {
 
   @Test
   void testAbstainDecision_vulnerablePopulations() {
-    DataUseV4 purpose = new DataUseBuilderV4().setHmbResearch(true).setVulnerablePopulations(true).build();
+    DataUseV4 purpose =
+        new DataUseBuilderV4().setHmbResearch(true).setVulnerablePopulations(true).build();
     DataUseV4 dataset = new DataUseBuilderV4().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
 
   @Test
   void testAbstainDecision_illegalBehavior() {
-    DataUseV4 purpose = new DataUseBuilderV4().setHmbResearch(true).setIllegalBehavior(true).build();
+    DataUseV4 purpose =
+        new DataUseBuilderV4().setHmbResearch(true).setIllegalBehavior(true).build();
     DataUseV4 dataset = new DataUseBuilderV4().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
@@ -296,7 +307,8 @@ class DataUseMatcherV4Test {
 
   @Test
   void testAbstainDecision_psychologicalTraits() {
-    DataUseV4 purpose = new DataUseBuilderV4().setHmbResearch(true).setPsychologicalTraits(true).build();
+    DataUseV4 purpose =
+        new DataUseBuilderV4().setHmbResearch(true).setPsychologicalTraits(true).build();
     DataUseV4 dataset = new DataUseBuilderV4().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }
@@ -310,7 +322,8 @@ class DataUseMatcherV4Test {
 
   @Test
   void testAbstainDecision_stigmatizedDiseases() {
-    DataUseV4 purpose = new DataUseBuilderV4().setHmbResearch(true).setStigmatizeDiseases(true).build();
+    DataUseV4 purpose =
+        new DataUseBuilderV4().setHmbResearch(true).setStigmatizeDiseases(true).build();
     DataUseV4 dataset = new DataUseBuilderV4().setHmbResearch(true).build();
     assertAbstain(purpose, dataset);
   }

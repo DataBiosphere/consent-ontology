@@ -12,8 +12,7 @@ public class OntologyConfiguration extends Configuration {
   @JsonProperty
   private final ElasticSearchConfiguration elasticSearch = new ElasticSearchConfiguration();
 
-  @JsonProperty
-  private final StoreConfiguration googleStore = new StoreConfiguration();
+  @JsonProperty private final StoreConfiguration googleStore = new StoreConfiguration();
 
   public ElasticSearchConfiguration getElasticSearchConfiguration() {
     return elasticSearch;
@@ -22,5 +21,4 @@ public class OntologyConfiguration extends Configuration {
   public StoreConfiguration getCloudStoreConfiguration() {
     return googleStore;
   }
-
 }

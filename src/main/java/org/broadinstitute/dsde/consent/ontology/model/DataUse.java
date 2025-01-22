@@ -7,7 +7,6 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-
 public class DataUse {
 
   private Boolean generalUse;
@@ -245,20 +244,25 @@ public class DataUse {
 
     DataUse dataUse = (DataUse) o;
 
-    return new EqualsBuilder().append(generalUse, dataUse.generalUse)
+    return new EqualsBuilder()
+        .append(generalUse, dataUse.generalUse)
         .append(hmbResearch, dataUse.hmbResearch)
         .append(diseaseRestrictions, dataUse.diseaseRestrictions)
         .append(populationOriginsAncestry, dataUse.populationOriginsAncestry)
-        .append(methodsResearch, dataUse.methodsResearch).append(nonProfitUse, dataUse.nonProfitUse)
-        .append(other, dataUse.other).append(secondaryOther, dataUse.secondaryOther)
+        .append(methodsResearch, dataUse.methodsResearch)
+        .append(nonProfitUse, dataUse.nonProfitUse)
+        .append(other, dataUse.other)
+        .append(secondaryOther, dataUse.secondaryOther)
         .append(ethicsApprovalRequired, dataUse.ethicsApprovalRequired)
         .append(collaboratorRequired, dataUse.collaboratorRequired)
         .append(geographicalRestrictions, dataUse.geographicalRestrictions)
         .append(geneticStudiesOnly, dataUse.geneticStudiesOnly)
         .append(publicationResults, dataUse.publicationResults)
         .append(publicationMoratorium, dataUse.publicationMoratorium)
-        .append(controls, dataUse.controls).append(gender, dataUse.gender)
-        .append(pediatric, dataUse.pediatric).append(population, dataUse.population)
+        .append(controls, dataUse.controls)
+        .append(gender, dataUse.gender)
+        .append(pediatric, dataUse.pediatric)
+        .append(population, dataUse.population)
         .append(illegalBehavior, dataUse.illegalBehavior)
         .append(sexualDiseases, dataUse.sexualDiseases)
         .append(stigmatizeDiseases, dataUse.stigmatizeDiseases)
@@ -270,13 +274,31 @@ public class DataUse {
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder(17, 37).append(generalUse).append(hmbResearch)
-        .append(diseaseRestrictions).append(populationOriginsAncestry).append(methodsResearch)
-        .append(nonProfitUse).append(other).append(secondaryOther).append(ethicsApprovalRequired)
-        .append(collaboratorRequired).append(geographicalRestrictions).append(geneticStudiesOnly)
-        .append(publicationResults).append(publicationMoratorium).append(controls).append(gender)
-        .append(pediatric).append(population).append(illegalBehavior).append(sexualDiseases)
-        .append(stigmatizeDiseases).append(vulnerablePopulations).append(psychologicalTraits)
-        .append(notHealth).toHashCode();
+    return new HashCodeBuilder(17, 37)
+        .append(generalUse)
+        .append(hmbResearch)
+        .append(diseaseRestrictions)
+        .append(populationOriginsAncestry)
+        .append(methodsResearch)
+        .append(nonProfitUse)
+        .append(other)
+        .append(secondaryOther)
+        .append(ethicsApprovalRequired)
+        .append(collaboratorRequired)
+        .append(geographicalRestrictions)
+        .append(geneticStudiesOnly)
+        .append(publicationResults)
+        .append(publicationMoratorium)
+        .append(controls)
+        .append(gender)
+        .append(pediatric)
+        .append(population)
+        .append(illegalBehavior)
+        .append(sexualDiseases)
+        .append(stigmatizeDiseases)
+        .append(vulnerablePopulations)
+        .append(psychologicalTraits)
+        .append(notHealth)
+        .toHashCode();
   }
 }

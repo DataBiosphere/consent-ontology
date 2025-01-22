@@ -31,11 +31,11 @@ public class StatusResource implements OntologyLogger {
   public Response getStatus() {
     Map<String, HealthCheck.Result> results = healthChecks.runHealthChecks();
     // Log errors at the warning level for follow-up
-    results.entrySet().
-        stream().
-        filter(e -> !e.getValue().isHealthy()).
-        forEach(e -> logWarn(
-            "Error in service " + e.getKey() + ": " + formatResultError(e.getValue())));
+    results.entrySet().stream()
+        .filter(e -> !e.getValue().isHealthy())
+        .forEach(
+            e ->
+                logWarn("Error in service " + e.getKey() + ": " + formatResultError(e.getValue())));
     return Response.ok(formatResults(results)).build();
   }
 
@@ -45,10 +45,13 @@ public class StatusResource implements OntologyLogger {
     Map<String, Object> formattedResults = new LinkedHashMap<>();
     // Ontology can still work in a degraded status
     formattedResults.put(OK, true);
-    HealthCheck.Result gcs = results.getOrDefault(GCSHealthCheck.NAME,
-        HealthCheck.Result.unhealthy("Unable to access GCS"));
-    HealthCheck.Result elasticSearch = results.getOrDefault(ElasticSearchHealthCheck.NAME,
-        HealthCheck.Result.unhealthy("Unable to access ElasticSearch"));
+    HealthCheck.Result gcs =
+        results.getOrDefault(
+            GCSHealthCheck.NAME, HealthCheck.Result.unhealthy("Unable to access GCS"));
+    HealthCheck.Result elasticSearch =
+        results.getOrDefault(
+            ElasticSearchHealthCheck.NAME,
+            HealthCheck.Result.unhealthy("Unable to access ElasticSearch"));
     boolean degraded = (!gcs.isHealthy() || !elasticSearch.isHealthy());
     formattedResults.put(DEGRADED, degraded);
     formattedResults.put(SYSTEMS, results);
@@ -63,5 +66,4 @@ public class StatusResource implements OntologyLogger {
     }
     return "Healthcheck Result Error";
   }
-
 }

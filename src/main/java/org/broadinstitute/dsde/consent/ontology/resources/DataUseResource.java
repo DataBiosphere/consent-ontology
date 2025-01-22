@@ -2,13 +2,13 @@ package org.broadinstitute.dsde.consent.ontology.resources;
 
 import com.google.api.client.http.HttpStatusCodes;
 import jakarta.ws.rs.BadRequestException;
-import java.util.List;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import java.util.List;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.broadinstitute.dsde.consent.ontology.util.JsonSchemaUtil;
 import org.parboiled.common.FileUtils;
@@ -58,12 +58,16 @@ public class DataUseResource implements OntologyLogger {
       if (errors.isEmpty()) {
         return Response.ok().type(MediaType.APPLICATION_JSON).build();
       } else {
-        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors)
-            .type(MediaType.APPLICATION_JSON).build();
+        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST)
+            .entity(errors)
+            .type(MediaType.APPLICATION_JSON)
+            .build();
       }
     } catch (BadRequestException e) {
-        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(e.getMessage())
-            .type(MediaType.APPLICATION_JSON).build();
+      return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST)
+          .entity(e.getMessage())
+          .type(MediaType.APPLICATION_JSON)
+          .build();
     }
   }
 
@@ -76,13 +80,16 @@ public class DataUseResource implements OntologyLogger {
       if (errors.isEmpty()) {
         return Response.ok().type(MediaType.APPLICATION_JSON).build();
       } else {
-        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(errors)
-            .type(MediaType.APPLICATION_JSON).build();
+        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST)
+            .entity(errors)
+            .type(MediaType.APPLICATION_JSON)
+            .build();
       }
     } catch (BadRequestException e) {
-        return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST).entity(e.getMessage())
-            .type(MediaType.APPLICATION_JSON).build();
+      return Response.status(HttpStatusCodes.STATUS_CODE_BAD_REQUEST)
+          .entity(e.getMessage())
+          .type(MediaType.APPLICATION_JSON)
+          .build();
     }
   }
-
 }

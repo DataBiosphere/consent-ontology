@@ -4,14 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class ErrorResponse {
 
-  @JsonProperty
-  private String message;
+  @JsonProperty private String message;
 
-  @JsonProperty
-  private Integer code;
+  @JsonProperty private Integer code;
 
-  ErrorResponse() {
-  }
+  ErrorResponse() {}
 
   public ErrorResponse(String message, Integer code) {
     this.message = message;

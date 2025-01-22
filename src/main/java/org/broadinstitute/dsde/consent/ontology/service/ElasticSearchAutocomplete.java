@@ -8,6 +8,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import io.dropwizard.lifecycle.Managed;
+import jakarta.ws.rs.InternalServerErrorException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,7 +16,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import jakarta.ws.rs.InternalServerErrorException;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.entity.ContentType;
 import org.apache.http.nio.entity.NStringEntity;
@@ -37,8 +37,7 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed, 
   private ElasticSearchSupport elasticSearchSupport;
 
   @Override
-  public void start() {
-  }
+  public void start() {}
 
   @Override
   public void stop() throws Exception {
@@ -61,10 +60,10 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed, 
   /**
    * Basic search execution method that queries ES and returns results.
    *
-   * @param query      Query string in the form of an ES json query object
-   * @param limit      How many to limit the results to
+   * @param query Query string in the form of an ES json query object
+   * @param limit How many to limit the results to
    * @param thinFilter When true, we provide the minimal amount of information to keep the API
-   *                   responses thin. When false, we provide the fully populated object.
+   *     responses thin. When false, we provide the fully populated object.
    * @return List of TermResources that match the query
    */
   @SuppressWarnings("SameParameterValue")
@@ -74,8 +73,8 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed, 
     Request request = new Request(GET, endpoint);
     request.addParameter("size", String.valueOf(limit));
     request.setEntity(new NStringEntity(query, ContentType.APPLICATION_JSON));
-    JsonObject jsonResponse = parseResponseToJson(
-        elasticSearchSupport.retryRequest(client, request));
+    JsonObject jsonResponse =
+        parseResponseToJson(elasticSearchSupport.retryRequest(client, request));
     JsonObject hitsSummary = jsonResponse.getAsJsonObject("hits");
     if (hitsSummary != null) {
       JsonArray hits = hitsSummary.getAsJsonArray("hits");
@@ -93,17 +92,17 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed, 
   /**
    * Retrieve a single document from ES by its exact id.
    *
-   * @param query      id of the document to return
+   * @param query id of the document to return
    * @param thinFilter When true, we provide the minimal amount of information to keep the API
-   *                   responses thin. When false, we provide the fully populated object.
+   *     responses thin. When false, we provide the fully populated object.
    * @return List of TermResources that match the query. Will have either zero or one result.
    */
   private List<TermResource> executeGet(String query, Boolean thinFilter) {
     List<TermResource> termList = new ArrayList<>();
     String endpoint = elasticSearchSupport.getEncodedEndpoint(query, configuration.getIndex());
     Request request = new Request(GET, endpoint);
-    JsonObject jsonResponse = parseResponseToJson(
-        elasticSearchSupport.retryRequest(client, request));
+    JsonObject jsonResponse =
+        parseResponseToJson(elasticSearchSupport.retryRequest(client, request));
     JsonElement data = jsonResponse.getAsJsonObject("_source");
     TermResource resource = gson.fromJson(data, TermResource.class);
     termList.add(filterThin(resource, thinFilter));
@@ -125,8 +124,8 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed, 
       throw new InternalServerErrorException(response.getStatusLine().getReasonPhrase());
     }
     try {
-      String stringResponse = IOUtils.toString(response.getEntity().getContent(),
-          Charset.defaultCharset());
+      String stringResponse =
+          IOUtils.toString(response.getEntity().getContent(), Charset.defaultCharset());
       return JsonParser.parseString(stringResponse).getAsJsonObject();
     } catch (Exception e) {
       logException("Unable to parse response: ", e);
@@ -148,21 +147,20 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed, 
   public List<TermResource> lookupById(String query) {
     List<TermResource> terms = executeGet(query, false);
 
-    Collection<String> parentIds = terms.stream().
-        flatMap(p -> Optional.ofNullable(p.getParents()).orElse(new ArrayList<>()).stream()).
-        map(TermParent::getId).
-        collect(Collectors.toList());
+    Collection<String> parentIds =
+        terms.stream()
+            .flatMap(p -> Optional.ofNullable(p.getParents()).orElse(new ArrayList<>()).stream())
+            .map(TermParent::getId)
+            .collect(Collectors.toList());
 
-    Collection<TermResource> parentTerms = parentIds.stream().
-        flatMap(t -> executeGet(t, true).stream()).
-        collect(Collectors.toList());
+    Collection<TermResource> parentTerms =
+        parentIds.stream().flatMap(t -> executeGet(t, true).stream()).collect(Collectors.toList());
 
     // Populate each of the parent nodes with more complete information
     for (TermResource term : terms) {
       for (TermParent p : Optional.ofNullable(term.getParents()).orElse(new ArrayList<>())) {
-        Optional<TermResource> parentTermResource = parentTerms.stream().
-            filter(x -> x.getId().equals(p.getId())).
-            findFirst();
+        Optional<TermResource> parentTermResource =
+            parentTerms.stream().filter(x -> x.getId().equals(p.getId())).findFirst();
         if (parentTermResource.isPresent()) {
           p.setLabel(parentTermResource.get().getLabel());
           p.setSynonyms(parentTermResource.get().getSynonyms());
@@ -173,5 +171,4 @@ public class ElasticSearchAutocomplete implements AutocompleteService, Managed, 
 
     return terms;
   }
-
 }

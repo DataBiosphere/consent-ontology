@@ -20,8 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class OntologySearchResourceTest {
 
-  @Mock
-  private AutocompleteService autocompleteService;
+  @Mock private AutocompleteService autocompleteService;
 
   private OntologySearchResource resource;
   private final List<TermResource> nonEmptyTermList = new ArrayList<>();
@@ -112,5 +111,4 @@ class OntologySearchResourceTest {
     verify(autocompleteService, times(1)).lookupById("DOID_4");
     verify(autocompleteService, times(2)).lookupById(Mockito.anyString());
   }
-
 }

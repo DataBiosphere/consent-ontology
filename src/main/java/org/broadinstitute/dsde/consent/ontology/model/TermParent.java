@@ -13,8 +13,7 @@ public class TermParent {
   public String definition;
   public List<String> synonyms;
 
-  public TermParent() {
-  }
+  public TermParent() {}
 
   public String getId() {
     return this.id;
@@ -55,5 +54,4 @@ public class TermParent {
   public void setSynonyms(List<String> synonyms) {
     this.synonyms = synonyms;
   }
-
 }

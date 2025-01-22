@@ -2,9 +2,7 @@ package org.broadinstitute.dsde.consent.ontology.model;
 
 import java.util.List;
 
-/**
- * Syntactic sugar for creating a DataUse object.
- */
+/** Syntactic sugar for creating a DataUse object. */
 public class DataUseBuilder {
 
   private final DataUse du;
@@ -16,7 +14,6 @@ public class DataUseBuilder {
   public DataUse build() {
     return du;
   }
-
 
   public DataUseBuilder setGeneralUse(Boolean generalUse) {
     du.setGeneralUse(generalUse);
@@ -137,5 +134,4 @@ public class DataUseBuilder {
     du.setNotHealth(notHealth);
     return this;
   }
-
 }

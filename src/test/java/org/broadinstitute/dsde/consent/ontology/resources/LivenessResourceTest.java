@@ -17,5 +17,4 @@ class LivenessResourceTest {
     assertEquals(200, response.getStatus());
     assertEquals("Healthy!", response.getEntity());
   }
-
 }

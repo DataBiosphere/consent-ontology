@@ -15,5 +15,4 @@ class AutocompleteTests implements IntegrationTestHelper {
     SimpleResponse response = fetchGetResponseWithQueryParam("autocomplete", "q", "term");
     assertEquals(HttpStatusCodes.STATUS_CODE_OK, response.code());
   }
-
 }

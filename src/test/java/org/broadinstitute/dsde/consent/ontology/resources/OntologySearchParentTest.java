@@ -21,8 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 @ExtendWith(MockitoExtension.class)
 class OntologySearchParentTest {
 
-  @Mock
-  AutocompleteService api;
+  @Mock AutocompleteService api;
 
   private OntologySearchResource resource;
 
@@ -98,5 +97,4 @@ class OntologySearchParentTest {
     assertEquals(1, terms.size());
     return terms;
   }
-
 }

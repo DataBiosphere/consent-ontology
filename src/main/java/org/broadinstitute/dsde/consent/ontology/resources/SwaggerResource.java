@@ -1,8 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.resources;
 
-import java.io.InputStream;
-import java.net.URI;
-import java.util.Properties;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
@@ -11,6 +8,9 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriBuilder;
 import jakarta.ws.rs.core.UriInfo;
+import java.io.InputStream;
+import java.net.URI;
+import java.util.Properties;
 import org.apache.commons.lang3.StringUtils;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
 import org.parboiled.common.FileUtils;
@@ -18,11 +18,11 @@ import org.parboiled.common.FileUtils;
 @Path("/")
 public class SwaggerResource implements OntologyLogger {
 
-  private final static String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/latest/";
-  final static String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
-  final static String MEDIA_TYPE_JS = new MediaType("application", "javascript").toString();
-  final static String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
-  private final static String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
+  private static final String DEFAULT_LIB = "META-INF/resources/webjars/swagger-ui/latest/";
+  static final String MEDIA_TYPE_CSS = new MediaType("text", "css").toString();
+  static final String MEDIA_TYPE_JS = new MediaType("application", "javascript").toString();
+  static final String MEDIA_TYPE_PNG = new MediaType("image", "png").toString();
+  private static final String MEDIA_TYPE_GIF = new MediaType("image", "gif").toString();
 
   private String swaggerResource = null;
 
@@ -46,8 +46,7 @@ public class SwaggerResource implements OntologyLogger {
     return swaggerResource;
   }
 
-  @Context
-  UriInfo uriInfo;
+  @Context UriInfo uriInfo;
 
   @GET
   public Response main() {
@@ -128,5 +127,4 @@ public class SwaggerResource implements OntologyLogger {
         };
         """;
   }
-
 }

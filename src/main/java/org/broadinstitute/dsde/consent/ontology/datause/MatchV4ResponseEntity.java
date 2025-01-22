@@ -10,8 +10,8 @@ public class MatchV4ResponseEntity {
   private final DataUseMatchPairV4 matchPair;
   private final List<String> rationale;
 
-  public MatchV4ResponseEntity(MatchResultType result, DataUseMatchPairV4 matchPair,
-      List<String> rationale) {
+  public MatchV4ResponseEntity(
+      MatchResultType result, DataUseMatchPairV4 matchPair, List<String> rationale) {
     this.result = result;
     this.matchPair = matchPair;
     this.rationale = rationale.stream().distinct().toList();
@@ -31,6 +31,7 @@ public class MatchV4ResponseEntity {
   public DataUseMatchPairV4 getMatchPair() {
     return this.matchPair;
   }
+
   public List<String> getRationale() {
     return this.rationale;
   }

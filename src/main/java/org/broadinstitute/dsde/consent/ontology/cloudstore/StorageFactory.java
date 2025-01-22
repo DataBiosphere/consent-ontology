@@ -30,9 +30,9 @@ public class StorageFactory {
       throws IOException, GeneralSecurityException {
     HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
     JsonFactory jsonFactory = new GsonFactory();
-    GoogleCredential credential = GoogleCredential.
-        fromStream(new FileInputStream(password)).
-        createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
+    GoogleCredential credential =
+        GoogleCredential.fromStream(new FileInputStream(password))
+            .createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
 
     Collection<String> scopes = StorageScopes.all();
     credential = credential.createScoped(scopes);

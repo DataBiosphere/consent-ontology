@@ -19,7 +19,7 @@ import org.broadinstitute.dsde.consent.ontology.configurations.StoreConfiguratio
 
 public class GCSStore implements CloudStore, OntologyLogger {
 
-  private final static HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
+  private static final HttpTransport HTTP_TRANSPORT = new NetHttpTransport();
 
   private StoreConfiguration sConfig;
   private HttpRequestFactory requestFactory;
@@ -29,23 +29,19 @@ public class GCSStore implements CloudStore, OntologyLogger {
     requestFactory = HTTP_TRANSPORT.createRequestFactory(authorize());
   }
 
-
-  /**
-   * Authorizes the installed application to access user's protected data.
-   */
+  /** Authorizes the installed application to access user's protected data. */
   private GoogleCredential authorize() {
     GoogleCredential credential;
     try {
-      credential = GoogleCredential.
-          fromStream(new FileInputStream(sConfig.getPassword())).
-          createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
+      credential =
+          GoogleCredential.fromStream(new FileInputStream(sConfig.getPassword()))
+              .createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
     } catch (Exception e) {
       logException("Error on GCS Store initialization. Service won't work", e);
       throw new RuntimeException(e);
     }
     return credential;
   }
-
 
   @Override
   public HttpResponse getStorageDocument(String documentSuffix) throws IOException {
@@ -69,5 +65,4 @@ public class GCSStore implements CloudStore, OntologyLogger {
     // com.google.api.services.storage.Storage.Buckets.get()
     return client.buckets().get(sConfig.getBucket()).execute();
   }
-
 }
