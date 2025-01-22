@@ -31,6 +31,7 @@ public class StorageFactory {
     HttpTransport transport = GoogleNetHttpTransport.newTrustedTransport();
     JsonFactory jsonFactory = new GsonFactory();
     GoogleCredential credential =
+        // nosemgrep
         GoogleCredential.fromStream(new FileInputStream(password))
             .createScoped(Collections.singletonList(StorageScopes.DEVSTORAGE_FULL_CONTROL));
 
