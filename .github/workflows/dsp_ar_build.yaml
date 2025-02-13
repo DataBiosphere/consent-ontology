@@ -55,8 +55,16 @@ jobs:
       uses: 'google-github-actions/auth@v2'
       with:
         # Centralized in dsp-tools-k8s; ask in #dsp-devops-champions for help troubleshooting
+        token_format: 'access_token'
         workload_identity_provider: 'projects/1038484894585/locations/global/workloadIdentityPools/github-wi-pool/providers/github-wi-provider'
         service_account: 'dsp-artifact-registry-push@dsp-artifact-registry.iam.gserviceaccount.com'
+    # authenticate to GAR docker repo
+    - name: Docker Login
+      uses: 'docker/login-action@v3'
+      with:
+        registry: 'us-central1-docker.pkg.dev'
+        username: 'oauth2accesstoken'
+        password: '${{ steps.auth.outputs.access_token }}'
     - name: Push Image to DSP GAR
       if: github.actor != 'dependabot[bot]'
       run: |
