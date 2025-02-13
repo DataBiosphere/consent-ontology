@@ -38,4 +38,4 @@ jobs:
         run: |
           mvn -v
           mvn clean jacoco:prepare-agent test jacoco:report --batch-mode
-          mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN --batch-mode --no-fail
+          mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN --batch-mode --fail-never
