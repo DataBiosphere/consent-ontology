@@ -32,12 +32,12 @@ jobs:
     - name: Construct tags
       id: construct-tags
       run: |
-        SHA_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:${SHORT_SHA}"
+        SHA_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}/${SERVICE_NAME}:${SHORT_SHA}"
         ENVIRONMENT_TAG=""
         if ${{ github.event_name == 'pull_request'}}; then
-          ENVIRONMENT_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:pr-${SHORT_SHA}"
+          ENVIRONMENT_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}/${SERVICE_NAME}:pr-${SHORT_SHA}"
         elif ${{github.event_name == 'push' }}; then
-          ENVIRONMENT_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}:dev"
+          ENVIRONMENT_TAG="${REGISTRY_HOST}/${GOOGLE_PROJECT}/${SERVICE_NAME}/${SERVICE_NAME}:dev"
         fi
         echo "sha-tag=$SHA_TAG" >> $GITHUB_OUTPUT
         echo "environment-tag=$ENVIRONMENT_TAG" >> $GITHUB_OUTPUT
