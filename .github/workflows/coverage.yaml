@@ -31,6 +31,7 @@ jobs:
           MAVEN_OPTS: -Dorg.slf4j.simpleLogger.defaultLogLevel=warn -Dhttp.keepAlive=false -Dmaven.wagon.http.pool=false -Dmaven.wagon.httpconnectionManager.ttlSeconds=120
         run: mvn clean test --batch-mode
       - name: Test Report
+        continue-on-error: true
         if: github.actor != 'dependabot[bot]'
         env:
           COVERALLS_TOKEN: ${{ secrets.COVERALLS_TOKEN }}
@@ -38,4 +39,4 @@ jobs:
         run: |
           mvn -v
           mvn clean jacoco:prepare-agent test jacoco:report --batch-mode
-          mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN --batch-mode --fail-never
+          mvn coveralls:report -DrepoToken=$COVERALLS_TOKEN --batch-mode
