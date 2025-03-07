@@ -17,7 +17,7 @@
     <maven.compiler.target>21</maven.compiler.target>
     <jena.version>2.6.4</jena.version>
     <jersey.version>2.19</jersey.version>
-    <junit.version>5.11.3</junit.version>
+    <junit.version>5.12.0</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.5.1</surefire.version>
     <swagger.ui.version>5.17.14</swagger.ui.version>
@@ -48,13 +48,6 @@
               <includes>**/*.java</includes>
               <excludes>**/integration/**/*.java</excludes>
             </configuration>
-            <dependencies>
-              <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.version}</version>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>
@@ -70,13 +63,6 @@
             <configuration>
               <includes>**/integration/**/*.java</includes>
             </configuration>
-            <dependencies>
-              <dependency>
-                <groupId>org.junit.jupiter</groupId>
-                <artifactId>junit-jupiter-engine</artifactId>
-                <version>${junit.version}</version>
-              </dependency>
-            </dependencies>
           </plugin>
         </plugins>
       </build>
@@ -348,6 +334,18 @@
     </plugins>
   </build>
 
+  <dependencyManagement>
+    <dependencies>
+      <dependency>
+        <groupId>org.junit</groupId>
+        <artifactId>junit-bom</artifactId>
+        <version>${junit.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
   <dependencies>
 
     <dependency>
@@ -507,20 +505,6 @@
       <groupId>com.networknt</groupId>
       <artifactId>json-schema-validator</artifactId>
       <version>1.5.6</version>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-engine</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
-    </dependency>
-
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-params</artifactId>
-      <version>${junit.version}</version>
-      <scope>test</scope>
     </dependency>
 
     <dependency>
