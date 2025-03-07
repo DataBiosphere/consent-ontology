@@ -24,7 +24,7 @@
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mockito.version>5.14.2</mockito.version>
+    <mockito.version>5.16.0</mockito.version>
   </properties>
 
   <profiles>
@@ -315,7 +315,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>11.0.0</version>
+        <version>12.1.0</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
