@@ -17,14 +17,14 @@
     <maven.compiler.target>21</maven.compiler.target>
     <jena.version>2.6.4</jena.version>
     <jersey.version>2.19</jersey.version>
-    <junit.version>5.12.0</junit.version>
+    <junit.version>5.12.1</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.5.1</surefire.version>
-    <swagger.ui.version>5.20.0</swagger.ui.version>
+    <swagger.ui.version>5.20.1</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mockito.version>5.16.0</mockito.version>
+    <mockito.version>5.16.1</mockito.version>
   </properties>
 
   <profiles>
@@ -385,7 +385,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>8.3.0</version>
+      <version>8.4.0</version>
     </dependency>
 
     <dependency>
@@ -485,7 +485,7 @@
     <dependency>
       <groupId>org.eclipse.jetty.http2</groupId>
       <artifactId>http2-common</artifactId>
-      <version>11.0.24</version>
+      <version>11.0.25</version>
     </dependency>
 
     <dependency>
