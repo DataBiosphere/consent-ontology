@@ -428,7 +428,7 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
-      <version>1.71.0</version>
+      <version>1.72.0</version>
     </dependency>
 
     <dependency>
@@ -440,7 +440,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>8.17.4</version>
+      <version>9.0.0</version>
     </dependency>
 
     <dependency>
