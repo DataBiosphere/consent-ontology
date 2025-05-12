@@ -346,7 +346,7 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>libraries-bom</artifactId>
-        <version>26.59.0</version>
+        <version>26.60.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -446,7 +446,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>9.0.0</version>
+      <version>9.0.1</version>
     </dependency>
 
     <dependency>
