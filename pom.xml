@@ -17,7 +17,7 @@
     <maven.compiler.target>21</maven.compiler.target>
     <jena.version>2.6.4</jena.version>
     <jersey.version>2.19</jersey.version>
-    <junit.version>5.13.2</junit.version>
+    <junit.version>5.13.3</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.5.3</surefire.version>
     <swagger.ui.version>5.25.3</swagger.ui.version>
@@ -358,7 +358,7 @@
     <dependency>
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
-      <version>1.4.3</version>
+      <version>1.4.4</version>
       <scope>test</scope>
     </dependency>
 
