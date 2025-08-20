@@ -27,8 +27,8 @@
     <mockito.version>5.18.0</mockito.version>
     <sonar.plugin.version>5.1.0.4751</sonar.plugin.version>
     <sonar.organization>broad-databiosphere</sonar.organization>
-    <sonar.projectKey>DataBiosphere_consent_ontology</sonar.projectKey>
-    <sonar.projectName>consent_ontology</sonar.projectName>
+    <sonar.projectKey>DataBiosphere_consent-ontology</sonar.projectKey>
+    <sonar.projectName>consent-ontology</sonar.projectName>
   </properties>
 
   <profiles>
