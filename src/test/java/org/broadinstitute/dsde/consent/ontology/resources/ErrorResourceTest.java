@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 import com.google.api.client.http.HttpStatusCodes;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.ws.rs.core.Response;
 import java.net.URLEncoder;
 import java.nio.charset.Charset;
@@ -18,12 +19,12 @@ import org.mockito.junit.jupiter.MockitoExtension;
 class ErrorResourceTest {
 
   @Mock
-  private Request request;
+  private HttpServletRequest request;
 
   @Test
   void testNotFound() {
     ErrorResource resource = new ErrorResource();
-    when(request.getOriginalURI()).thenReturn("not_found");
+    when(request.getRequestURI()).thenReturn("not_found");
     try (Response response = resource.notFound(request)) {
       assertEquals(HttpStatusCodes.STATUS_CODE_NOT_FOUND, response.getStatus());
     }
@@ -34,7 +35,7 @@ class ErrorResourceTest {
     String unicode = "¥";
     String encoded = URLEncoder.encode(unicode, Charset.defaultCharset());
     ErrorResource resource = new ErrorResource();
-    when(request.getOriginalURI()).thenReturn(encoded);
+    when(request.getRequestURI()).thenReturn(encoded);
     try (Response response = resource.notFound(request)) {
       assertTrue(response.getEntity().toString().contains(unicode));
     }

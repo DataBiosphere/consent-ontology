@@ -23,7 +23,7 @@ import org.broadinstitute.dsde.consent.ontology.resources.SwaggerResource;
 import org.broadinstitute.dsde.consent.ontology.resources.TranslateResource;
 import org.broadinstitute.dsde.consent.ontology.resources.VersionResource;
 import org.broadinstitute.dsde.consent.ontology.service.ElasticSearchHealthCheck;
-import org.eclipse.jetty.servlet.ErrorPageErrorHandler;
+import org.eclipse.jetty.ee10.servlet.ErrorPageErrorHandler;
 
 /**
  * Top-level entry point to the entire application.

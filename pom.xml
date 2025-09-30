@@ -10,7 +10,7 @@
   <name>Consent Management: Ontology Services</name>
 
   <properties>
-    <dropwizard.version>4.0.11</dropwizard.version>
+    <dropwizard.version>5.0.0</dropwizard.version>
     <logback.version>1.5.18</logback.version>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
@@ -493,18 +493,11 @@
       <groupId>io.dropwizard</groupId>
       <artifactId>dropwizard-http2</artifactId>
       <version>${dropwizard.version}</version>
-      <exclusions>
-        <exclusion>
-          <groupId>org.eclipse.jetty.http2</groupId>
-          <artifactId>http2-common</artifactId>
-        </exclusion>
-      </exclusions>
     </dependency>
 
-    <!-- OWASP dependency vulnerability: http2-common-11.0.16.jar 10/12/2023 -->
     <dependency>
-      <groupId>org.eclipse.jetty.http2</groupId>
-      <artifactId>http2-common</artifactId>
+      <groupId>org.eclipse.jetty.http3</groupId>
+      <artifactId>http3-common</artifactId>
       <version>11.0.26</version>
     </dependency>
 
