@@ -541,6 +541,7 @@
     </dependency>
 
     <!-- Required for mocking elastic search responses -->
+    <!--suppress VulnerableLibrariesLocal -->
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>mockserver</artifactId>
@@ -549,6 +550,7 @@
     </dependency>
 
     <!-- Required for mocking client calls against elastic search -->
+    <!--suppress VulnerableLibrariesLocal -->
     <dependency>
       <groupId>org.mock-server</groupId>
       <artifactId>mockserver-client-java</artifactId>
