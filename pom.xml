@@ -11,7 +11,7 @@
 
   <properties>
     <dropwizard.version>4.0.11</dropwizard.version>
-    <logback.version>1.5.18</logback.version>
+    <logback.version>1.5.19</logback.version>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
@@ -142,7 +142,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
+        <version>3.14.1</version>
         <configuration>
           <release>17</release>
         </configuration>
@@ -318,7 +318,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>12.1.3</version>
+        <version>12.1.6</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -460,7 +460,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>9.1.3</version>
+      <version>9.1.4</version>
     </dependency>
 
     <dependency>
