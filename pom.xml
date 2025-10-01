@@ -11,20 +11,20 @@
 
   <properties>
     <dropwizard.version>5.0.0</dropwizard.version>
-    <logback.version>1.5.18</logback.version>
+    <logback.version>1.5.19</logback.version>
     <java.version>21</java.version>
     <maven.compiler.source>21</maven.compiler.source>
     <maven.compiler.target>21</maven.compiler.target>
     <jena.version>2.6.4</jena.version>
     <jersey.version>2.19</jersey.version>
-    <junit.version>5.13.4</junit.version>
+    <junit.version>6.0.0</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.5.4</surefire.version>
     <swagger.ui.version>5.28.1</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mockito.version>5.19.0</mockito.version>
+    <mockito.version>5.20.0</mockito.version>
     <sonar.plugin.version>5.2.0.4988</sonar.plugin.version>
     <sonar.organization>broad-databiosphere</sonar.organization>
     <sonar.projectKey>DataBiosphere_consent-ontology</sonar.projectKey>
@@ -142,7 +142,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.0</version>
+        <version>3.14.1</version>
         <configuration>
           <release>17</release>
         </configuration>
@@ -318,7 +318,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>12.1.3</version>
+        <version>12.1.6</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -360,7 +360,7 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>libraries-bom</artifactId>
-        <version>26.68.0</version>
+        <version>26.69.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -406,7 +406,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>8.21.1</version>
+      <version>8.22.0</version>
     </dependency>
 
     <dependency>
@@ -418,7 +418,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.4.8-jre</version>
+      <version>33.5.0-jre</version>
     </dependency>
 
     <dependency>
@@ -460,7 +460,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>9.1.3</version>
+      <version>9.1.4</version>
     </dependency>
 
     <dependency>
