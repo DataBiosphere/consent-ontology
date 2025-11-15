@@ -11,7 +11,7 @@
 
   <properties>
     <dropwizard.version>5.0.0</dropwizard.version>
-    <logback.version>1.5.20</logback.version>
+    <logback.version>1.5.21</logback.version>
     <java.version>25</java.version>
     <maven.compiler.source>25</maven.compiler.source>
     <maven.compiler.target>25</maven.compiler.target>
@@ -20,7 +20,7 @@
     <junit.version>6.0.1</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.5.4</surefire.version>
-    <swagger.ui.version>5.30.1</swagger.ui.version>
+    <swagger.ui.version>5.30.2</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -318,7 +318,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>12.1.8</version>
+        <version>12.1.9</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -460,7 +460,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>9.2.0</version>
+      <version>9.2.1</version>
     </dependency>
 
     <dependency>
