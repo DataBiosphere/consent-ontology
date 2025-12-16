@@ -1,7 +1,5 @@
 package org.broadinstitute.dsde.consent.ontology.util;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
@@ -18,6 +16,8 @@ import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 import org.apache.commons.io.IOUtils;
 import org.broadinstitute.dsde.consent.ontology.OntologyLogger;
+import tools.jackson.databind.JsonNode;
+import tools.jackson.databind.ObjectMapper;
 
 public class JsonSchemaUtil implements OntologyLogger {
 
