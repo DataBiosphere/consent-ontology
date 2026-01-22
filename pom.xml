@@ -11,7 +11,7 @@
 
   <properties>
     <dropwizard.version>5.0.0</dropwizard.version>
-    <logback.version>1.5.23</logback.version>
+    <logback.version>1.5.25</logback.version>
     <java.version>25</java.version>
     <maven.compiler.source>25</maven.compiler.source>
     <maven.compiler.target>25</maven.compiler.target>
