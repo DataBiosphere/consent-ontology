@@ -10,21 +10,21 @@
   <name>Consent Management: Ontology Services</name>
 
   <properties>
-    <dropwizard.version>5.0.0</dropwizard.version>
-    <logback.version>1.5.25</logback.version>
+    <dropwizard.version>5.0.1</dropwizard.version>
+    <logback.version>1.5.32</logback.version>
     <java.version>25</java.version>
     <maven.compiler.source>25</maven.compiler.source>
     <maven.compiler.target>25</maven.compiler.target>
     <jena.version>2.6.4</jena.version>
     <jersey.version>2.19</jersey.version>
-    <junit.version>6.0.1</junit.version>
+    <junit.version>6.0.3</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
-    <surefire.version>3.5.4</surefire.version>
-    <swagger.ui.version>5.31.0</swagger.ui.version>
+    <surefire.version>3.5.5</surefire.version>
+    <swagger.ui.version>5.32.1</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <mockito.version>5.21.0</mockito.version>
+    <mockito.version>5.23.0</mockito.version>
     <sonar.plugin.version>5.5.0.6356</sonar.plugin.version>
     <sonar.organization>broad-databiosphere</sonar.organization>
     <sonar.projectKey>DataBiosphere_consent-ontology</sonar.projectKey>
@@ -125,7 +125,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>properties-maven-plugin</artifactId>
-        <version>1.2.1</version>
+        <version>1.3.0</version>
         <executions>
           <execution>
             <phase>generate-resources</phase>
@@ -142,7 +142,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.14.1</version>
+        <version>3.15.0</version>
         <configuration>
           <release>${java.version}</release>
         </configuration>
@@ -183,7 +183,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.9.0</version>
+        <version>3.10.0</version>
         <executions>
           <execution>
             <id>copy-dependencies</id>
@@ -204,7 +204,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>3.6.2</version>
         <configuration>
           <finalName>consent-ontology</finalName>
           <createDependencyReducedPom>true</createDependencyReducedPom>
@@ -270,7 +270,7 @@
 
       <plugin>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>3.4.0</version>
+        <version>3.5.0</version>
         <executions>
           <execution>
             <id>copy-resources-to-src</id>
@@ -318,7 +318,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>12.1.9</version>
+        <version>12.2.0</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -360,7 +360,7 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>libraries-bom</artifactId>
-        <version>26.73.0</version>
+        <version>26.79.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -372,7 +372,7 @@
     <dependency>
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
-      <version>1.4.5</version>
+      <version>1.4.6</version>
       <scope>test</scope>
     </dependency>
 
@@ -406,7 +406,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>8.29.0</version>
+      <version>8.37.1</version>
     </dependency>
 
     <dependency>
@@ -436,7 +436,7 @@
     <dependency>
       <groupId>com.google.api-client</groupId>
       <artifactId>google-api-client</artifactId>
-      <version>2.8.1</version>
+      <version>2.9.0</version>
       <exclusions>
         <exclusion>
           <groupId>io.grpc</groupId>
@@ -449,7 +449,7 @@
     <dependency>
       <groupId>io.grpc</groupId>
       <artifactId>grpc-context</artifactId>
-      <version>1.78.0</version>
+      <version>1.80.0</version>
     </dependency>
 
     <dependency>
@@ -460,7 +460,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>9.2.3</version>
+      <version>9.3.2</version>
     </dependency>
 
     <dependency>
@@ -511,7 +511,7 @@
     <dependency>
       <groupId>com.fasterxml.jackson.core</groupId>
       <artifactId>jackson-annotations</artifactId>
-      <version>2.20</version>
+      <version>2.21</version>
     </dependency>
 
     <dependency>
