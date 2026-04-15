@@ -20,7 +20,7 @@
     <junit.version>6.0.3</junit.version>
     <mockserver.version>5.15.0</mockserver.version>
     <surefire.version>3.5.5</surefire.version>
-    <swagger.ui.version>5.32.1</swagger.ui.version>
+    <swagger.ui.version>5.32.2</swagger.ui.version>
     <swagger.ui.path>META-INF/resources/webjars/swagger-ui/${swagger.ui.version}/</swagger.ui.path>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -319,7 +319,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>12.2.0</version>
+        <version>12.2.1</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -361,7 +361,7 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>libraries-bom</artifactId>
-        <version>26.79.0</version>
+        <version>26.80.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -375,7 +375,7 @@
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-bom</artifactId>
-        <version>4.1.132.Final</version>
+        <version>4.2.12.Final</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -435,7 +435,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>8.37.1</version>
+      <version>8.38.0</version>
     </dependency>
 
     <dependency>
@@ -447,7 +447,7 @@
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
-      <version>33.5.0-jre</version>
+      <version>33.6.0-jre</version>
     </dependency>
 
     <dependency>
@@ -489,7 +489,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>9.3.2</version>
+      <version>9.3.3</version>
     </dependency>
 
     <dependency>
