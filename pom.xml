@@ -29,7 +29,7 @@
     <sonar.organization>broad-databiosphere</sonar.organization>
     <sonar.projectKey>DataBiosphere_consent-ontology</sonar.projectKey>
     <sonar.projectName>consent-ontology</sonar.projectName>
-    <jetty.version>12.1.8</jetty.version>
+    <jetty.version>12.1.9</jetty.version>
   </properties>
 
   <profiles>
@@ -319,7 +319,7 @@
       <plugin>
         <groupId>org.owasp</groupId>
         <artifactId>dependency-check-maven</artifactId>
-        <version>12.2.1</version>
+        <version>12.2.2</version>
         <configuration>
           <failBuildOnCVSS>1</failBuildOnCVSS>
           <suppressionFiles>
@@ -361,7 +361,7 @@
       <dependency>
         <groupId>com.google.cloud</groupId>
         <artifactId>libraries-bom</artifactId>
-        <version>26.80.0</version>
+        <version>26.82.0</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -375,14 +375,14 @@
       <dependency>
         <groupId>io.netty</groupId>
         <artifactId>netty-bom</artifactId>
-        <version>4.2.12.Final</version>
+        <version>4.2.13.Final</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
       <dependency>
         <groupId>org.eclipse.jetty.ee10</groupId>
         <artifactId>jetty-ee10-bom</artifactId>
-        <version>12.1.8</version>
+        <version>12.1.9</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -401,7 +401,7 @@
     <dependency>
       <groupId>com.typesafe</groupId>
       <artifactId>config</artifactId>
-      <version>1.4.7</version>
+      <version>1.4.8</version>
       <scope>test</scope>
     </dependency>
 
@@ -435,7 +435,7 @@
     <dependency>
       <groupId>io.sentry</groupId>
       <artifactId>sentry</artifactId>
-      <version>8.40.0</version>
+      <version>8.41.0</version>
     </dependency>
 
     <dependency>
@@ -489,7 +489,7 @@
     <dependency>
       <groupId>org.elasticsearch.client</groupId>
       <artifactId>elasticsearch-rest-client</artifactId>
-      <version>9.3.4</version>
+      <version>9.4.1</version>
     </dependency>
 
     <dependency>
